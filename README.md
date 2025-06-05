@@ -11,7 +11,7 @@ Bienvenido al repositorio oficial de **El Rinconcito de Sharpay**, una solución
 - **Integrantes del equipo:**
   - Gabriela Michelle Pérez Portillo – Frontend Developer
   - Daniel Rolando Soriano Solis – Backend Developer
-  - German Antonio González Mejía - Backend Developer
+  - German Antonio González Mejía - Full Stack Developer
   - Alessandro Antonio Muñoz Quijada – Diseñador UX/UI
   - Alessandro Imanol Ramírez Morán– Líder de Proyecto 
 - **Institución:** Instituto Técnico Ricaldone
