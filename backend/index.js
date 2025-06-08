@@ -1,5 +1,5 @@
 // importo el archivo app.js
-//import app from "./app.js";
+import app from "./app.js";
 import "./database.js";
 
 // Creo una función

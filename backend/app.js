@@ -1,13 +1,21 @@
+import express from 'express';
+import cookieParser from 'cookie-parser';
 
-
-
-
-
-
+import employeeRoutes from './src/routes/employee.js';
+import categoryRoutes from './src/routes/category.js';
 
 const app = express();
 
-//Que acepte datos en json
+
 app.use(express.json());
-//Que postman acepte guardar cookies
+
+
 app.use(cookieParser());
+
+
+app.use('/api/employees', employeeRoutes);
+
+
+app.use('/api/categories', categoryRoutes);
+
+export default app;
