@@ -1,14 +1,7 @@
-/*
-    Modelo: Employee
-    Campos:
-    - name: String, requerido, validaciones de formato y longitud
-    - email: String, requerido, formato email, único
-    - password: String, requerido, validaciones de seguridad
-*/
 
 import { Schema, model } from "mongoose";
 
-const EmployeeSchema = new Schema(
+const CostumerSchema = new Schema(
   {
     name: {
       type: String,
@@ -75,6 +68,14 @@ const EmployeeSchema = new Schema(
           message: 'La contraseña no puede contener espacios'
         }
       ]
+    },
+    department: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: String,
+      required: true,
     }
   },
   {
@@ -83,4 +84,4 @@ const EmployeeSchema = new Schema(
   }
 );
 
-export default model("Employee", EmployeeSchema);
+export default model("Costumer", CostumerSchema);
