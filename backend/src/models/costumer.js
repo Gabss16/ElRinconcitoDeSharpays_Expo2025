@@ -84,4 +84,4 @@ const CostumerSchema = new Schema(
   }
 );
 
-export default model("Employee", EmployeeSchema);
+export default model("Costumer", CostumerSchema);

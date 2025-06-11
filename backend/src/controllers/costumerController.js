@@ -66,4 +66,4 @@ export const deleteCostumer = async (req, res) => {
 };
 
 
-export default model("Costumer", CostumerSchema);
+
