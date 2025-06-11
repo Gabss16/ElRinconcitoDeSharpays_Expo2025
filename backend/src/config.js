@@ -24,9 +24,9 @@ export const config = {
     pass: process.env.USER_PASS
   },
   cloudinary: {
-cloudinary_name: process.env.CLOUDINARY_NAME,
-cloudinary_api_key: process.env.API_KEY,
-cloudinary_api_secret: process.env.API_SECRET
+cloudinary_name: process.env.CLAUDINARY_NAME,
+cloudinary_api_key: process.env.CLAUDINARY_API_KEY,
+cloudinary_api_secret: process.env.CLAUDINARY_API_SECRET
 
 
 

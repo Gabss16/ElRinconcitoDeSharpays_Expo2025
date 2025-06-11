@@ -31,11 +31,11 @@ productController.createProduct = async (req, res) => {
 
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "products",
+        folder: "public",
         allowed_formats: ["png", "jpg", "jpeg"]
       });
       imageURL = result.secure_url;
-      fs.unlinkSync(req.file.path); // Borra la imagen local temporal
+     
     }
 
     const newProduct = new Product({
@@ -51,7 +51,8 @@ productController.createProduct = async (req, res) => {
     await newProduct.save();
     res.json({ message: "Producto guardado exitosamente" });
   } catch (error) {
-    res.status(400).json({ message: "Error al crear el producto", error });
+    res.status(400).json({ message: "Error al crear el producto" });
+    console.log(error)
   }
 };
 
