@@ -7,6 +7,8 @@ import registerEmployeeRoutes from "./src/routes/registerEmployee.js";
 import login from "./src/routes/login.js"
 import logOut from "./src/routes/logOut.js"
 import recoveryPassword from "./src/routes/recoveryPassword.js"
+import CostumersRoutes from "./src/routes/costumer.js"
+import costumerRegisterRoutes from "./src/routes/registerCostumer.js";
 const app = express();
 
 
@@ -22,5 +24,7 @@ app.use('api/recoveryPassword', recoveryPassword);
 app.use('/api/employees', employeeRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use("/api/registeremployee", registerEmployeeRoutes);
+app.use("/api/costumer", CostumersRoutes)
+app.use("/api/registerCostumer", costumerRegisterRoutes)
 
 export default app;
