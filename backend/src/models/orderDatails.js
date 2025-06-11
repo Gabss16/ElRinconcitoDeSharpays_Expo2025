@@ -24,7 +24,7 @@ totalPrice: Number
 const orderDetailSchema = new Schema({
 customerId: {
 type: Schema.Types.ObjectId,
-ref: "Costomers",
+ref: "Costumers",
 required: true
 },
 items: [itemSchema],
