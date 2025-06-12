@@ -1,0 +1,100 @@
+.sidebar {
+    width: 260px;
+    background-color: #fff;
+    padding: 1.5rem 1rem;
+    border-right: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    top: 0;
+    transition: left 0.3s ease;
+    }
+    
+    .logo {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #c43a7d;
+    font-weight: bold;
+    }
+    
+    .nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0.7rem 0;
+    color: #666;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: 0.2s;
+    }
+    
+    .nav-item svg {
+    margin-right: 10px;
+    font-size: 1.2rem;
+    }
+    
+    .nav-item span {
+    font-size: 1rem;
+    }
+    
+    .nav-item.active,
+    .nav-item:hover {
+    color: #c43a7d;
+    font-weight: 500;
+    }
+    
+    .section-title {
+    margin: 1.5rem 0 0.5rem;
+    font-size: 0.9rem;
+    color: #bbb;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 4px;
+    }
+    
+    .logout-button {
+    margin-top: auto;
+    background: none;
+    border: none;
+    color: #c43a7d;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    }
+    
+    .logout-button svg {
+    margin-right: 10px;
+    font-size: 1.2rem;
+    }
+    
+    /* Botón hamburguesa */
+    .hamburger {
+    display: none;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    z-index: 200;
+    cursor: pointer;
+    color: #c43a7d;
+    }
+    
+    @media (max-width: 768px) {
+    .sidebar {
+    left: -260px;
+    }
+    
+    .sidebar.show {
+    left: 0;
+    }
+    
+    .hamburger {
+    display: block;
+    }
+    }
+    
