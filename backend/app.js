@@ -14,6 +14,7 @@ import costumerRegisterRoutes from "./src/routes/registerCostumer.js";
 import subCategoryRoutes from './src/routes/subCategory.js';
 import productRoutes from './src/routes/products.js';
 import orderDetailRoutes from "./src/routes/orderDetails.js";
+import orders from "./src/routes/order.js"
 
 const app = express();
 
@@ -36,5 +37,6 @@ app.use("/api/registerCostumer", costumerRegisterRoutes)
 app.use('/api/subCategory', subCategoryRoutes);
 app.use('/api/product', productRoutes);
 app.use("/api/orderDetail", orderDetailRoutes);
+app.use("/api/orders", orders)
 
 export default app;
