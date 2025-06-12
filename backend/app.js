@@ -29,7 +29,7 @@ app.use('api/recoveryPassword', recoveryPassword);
 
 app.use('/api/employees', employeeRoutes);
 app.use('/api/categories', categoryRoutes);
-app.use("/api/registeremployee", registerEmployeeRoutes);
+app.use("/api/registerEmployee", registerEmployeeRoutes);
 app.use("/api/costumer", CostumersRoutes)
 app.use("/api/registerCostumer", costumerRegisterRoutes)
 
