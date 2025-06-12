@@ -1,21 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "./App.css"
 import Sidebar from './components/Sidebar';
+import Login from "./pages/Login.jsx";
 
 
 
 function App() {
 return (
 <Router>
-<div className="app-layout" style={{ display: 'flex' }}>
-<Sidebar />
-<div className="content" style={{ flex: 1, padding: '1rem' }}>
 <Routes>
-
-
+    <Route path="/Login" element={<Login/>} />
 </Routes>
-</div>
-</div>
 </Router>
 );
 }
