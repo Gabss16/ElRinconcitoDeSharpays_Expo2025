@@ -1,11 +1,23 @@
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import "./App.css"
+import Sidebar from './components/Sidebar';
+
+
 
 function App() {
-  return (
-    <>
-      <h1 className='position-absolute top-50 start-50 translate-middle'>El rinconcito de Sharpays</h1>
-      </>
-  )
+return (
+<Router>
+<div className="app-layout" style={{ display: 'flex' }}>
+<Sidebar />
+<div className="content" style={{ flex: 1, padding: '1rem' }}>
+<Routes>
+
+
+</Routes>
+</div>
+</div>
+</Router>
+);
 }
 
-export default App
+export default App;
