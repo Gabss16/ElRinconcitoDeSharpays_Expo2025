@@ -15,10 +15,6 @@
   overflow: hidden;
 }
 
-.login-container .link-light {
-  text-align: start !important;
-}
-
 .light {
   position: absolute;
   border-radius: 50%;
@@ -27,6 +23,10 @@
   animation-name: floatLights;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
+}
+
+.login-content .custom-btn{
+  margin-top: 25px !important;
 }
 
 /* Animación  de las luces */
@@ -101,7 +101,8 @@
     text-align: center;
   }
 
-  .go-to-register .m-0{
+  .go-to-register p{
     display: none;
   }
+  
 }

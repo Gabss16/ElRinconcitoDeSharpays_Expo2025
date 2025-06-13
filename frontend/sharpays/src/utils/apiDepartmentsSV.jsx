@@ -10,10 +10,11 @@ const apiDeparmentsSV = () => {
       .then((res) => res.json())
       .then((data) => {
         // Extraer y mapear Departments
-        const dptos = data.map((dpto) => ({
-          codigo: dpto.codigo,
-          nombre: dpto.nombre
+        const dptos = data.departamentos.map((dpto) => ({
+          value: dpto.idMDepa,
+          label: dpto.nombre
         }));
+        console.log(dptos)
         setDepartments(dptos);
       })
       .catch((err) => console.error("Error al cargar datos:", err));
