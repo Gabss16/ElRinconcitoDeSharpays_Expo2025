@@ -19,14 +19,16 @@ productController.getProducts = async (req, res) => {
       .populate("subCategoryId");
     res.json(products);
   } catch (error) {
+    console.log("error" +error)
     res.status(500).json({ message: "Error al obtener productos", error });
+    
   }
 };
 
 // CREATE product
 productController.createProduct = async (req, res) => {
   try {
-    const { name, description, stock, price, categoryId, subCategoryId } = req.body;
+    const { name, description, stock, price, categoryId, subCategoryId, ...otherFields } = req.body;
     let imageURL = "";
 
     if (req.file) {
@@ -45,7 +47,8 @@ productController.createProduct = async (req, res) => {
       price,
       categoryId,
       subCategoryId,
-      image: imageURL
+      image: imageURL,
+      ...otherFields
     });
 
     await newProduct.save();
@@ -59,16 +62,16 @@ productController.createProduct = async (req, res) => {
 // UPDATE product (con cambio de imagen si se envía)
 productController.updateProduct = async (req, res) => {
   try {
-    const { name, description, stock, price, categoryId, subCategoryId } = req.body;
+    const { name, description, stock, price, categoryId, subCategoryId, ...otherFields } = req.body;
     let imageURL;
 
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
-        folder: "products",
+        folder: "public",
         allowed_formats: ["png", "jpg", "jpeg"]
       });
       imageURL = result.secure_url;
-      fs.unlinkSync(req.file.path); // Borra la imagen local temporal
+      
     }
 
     const updatedData = {
@@ -77,7 +80,8 @@ productController.updateProduct = async (req, res) => {
       stock,
       price,
       categoryId,
-      subCategoryId
+      subCategoryId,
+      ...otherFields
     };
 
     if (imageURL) {
