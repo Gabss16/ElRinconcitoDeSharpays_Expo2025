@@ -64,7 +64,7 @@ const Login = () => {
           <>
           <LogoLogin textStyle={"text-white fw-bold fs-5 pt-2 w-50"} />
                     
-                    <div className="d-flex justify-content-center align-items-center flex-column mt-4 w-100">
+                    <div className="login-content d-flex justify-content-center align-items-center flex-column mt-4 w-100">
                         <CustomTitle
                         style={"text-white fw-bold fs-2 mb-5"}
                         text={"Login"}
@@ -96,7 +96,7 @@ const Login = () => {
                         width={"100%"}
                         height={"50px"}
                         />
-                        <div className="text-center mt-5 d-flex">
+                        <div className="go-to-register text-center mt-5 d-flex">
                         <p className="m-0 ps-3 pe-1 text-white">¿No tienes cuenta?</p>
                         <LinkText 
                           text={"Registrarme"}

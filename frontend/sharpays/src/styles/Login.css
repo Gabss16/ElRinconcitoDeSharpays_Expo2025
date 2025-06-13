@@ -87,3 +87,21 @@
     width: 360px;
   }
 }
+
+@media (max-width: 320px) {
+  .login-container .glass-box {
+    width: 300px;
+  }
+
+  .login-content *{
+    width: 250px !important;
+  }
+
+  .login-content h1 {
+    text-align: center;
+  }
+
+  .go-to-register .m-0{
+    display: none;
+  }
+}
