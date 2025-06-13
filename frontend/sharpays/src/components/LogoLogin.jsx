@@ -1,11 +1,11 @@
 import sharpaysLogoWhite from "../assets/sharpaysLogoWhite.png";
 
-const LogoLogin = () => {
+const LogoLogin = ({textStyle}) => {
     return (
         <>
-        <div className="d-flex w-50">
-            <img src={sharpaysLogoWhite} style={{width:'60px', height: '60px'}}/>
-            <h1 className="fs-4 text-light pt-1">El rinconcito de Sharpay</h1>
+        <div className="d-flex justify-content-center align-items-center mt-3">
+            <img src={sharpaysLogoWhite} style={{width:'50px', height: '50px',marginLeft: '100px'}}/>
+            <h1 className={textStyle}>El rinconcito de Sharpay</h1>
         </div>
         </>
     );
