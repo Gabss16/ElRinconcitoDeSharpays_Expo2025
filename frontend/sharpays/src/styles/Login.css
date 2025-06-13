@@ -11,6 +11,8 @@
   rgba(0, 0, 0, 0.25) 0px 8px 6px, 
   rgba(0, 0, 0, 0.20) 0px 16px 10px, 
   rgba(0, 0, 0, 0.18) 0px 32px 20px;
+  position: relative !important;
+  overflow: hidden;
 }
 
 .login-container .link-light {
@@ -40,15 +42,66 @@
 }
 
 /* RESPONSIVE */
-@media (max-width: 1024px) {
+@media (max-width: 1440px ) {
+  .huella {
+    width: 400px;
+    top: 30px;
+    left: 0px;
+  }
+
+  .paleta {
+    width: 300px;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .cactus {
+    width: 300px;
+    bottom: 10px;
+    left: 20px;
+  }
+
+  .vela {
+    width: 300px;
+    bottom: 130px;
+    right: 20px;
+  }
+}
+@media (max-width: 1024px ) {
   .huella , .cactus , .vela , .paleta {
     display: none;
   }
 }
 @media (max-width: 768px) {
-  
+  .login-container .glass-box {
+    width: 400px;
+  }
+
+  .login-container img{
+    margin-left: 35px !important;
+  }
 }
 
 @media (max-width: 480px) {
-  
+  .login-container .glass-box {
+    width: 360px;
+  }
+}
+
+@media (max-width: 320px) {
+  .login-container .glass-box {
+    width: 300px;
+  }
+
+  .login-content *{
+    width: 250px !important;
+  }
+
+  .login-content h1 {
+    text-align: center;
+  }
+
+  .go-to-register .m-0{
+    display: none;
+  }
 }
