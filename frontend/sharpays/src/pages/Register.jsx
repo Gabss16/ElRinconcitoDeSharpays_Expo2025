@@ -88,7 +88,7 @@ const Register = () => {
 
                         <CustomSelect
                         name={"Departamento"}
-                        departmens={Departments}
+                        options={Departments}
                         />
                         <div style={{width: '300px', marginTop: '5px'}}>
                         <LinkText

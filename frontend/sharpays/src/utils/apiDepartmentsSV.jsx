@@ -11,8 +11,8 @@ const apiDeparmentsSV = () => {
       .then((data) => {
         // Extraer y mapear Departments
         const dptos = data.map((dpto) => ({
-          value: dpto.codigo,
-          label: dpto.nombre
+          codigo: dpto.codigo,
+          nombre: dpto.nombre
         }));
         setDepartments(dptos);
       })
