@@ -1,4 +1,4 @@
-import "../styles/uploadimage.css";
+import "../styles/UploadimageUsers.css";
 
 function SubirImagen() {
   return (
