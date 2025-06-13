@@ -2,11 +2,18 @@ import "../styles/Login.css"
 import { useNavigate } from "react-router-dom";
 import GlassBox from "../components/GlassBox.jsx";
 
+//Componentes utilizados en el login-container
 import LogoLogin from "../components/LogoLogin.jsx";
 import CustomTitle from "../components/CustomTitle.jsx";
 import CustomInput from "../components/CustomInput.jsx"
 import LinkText from "../components/LinkText.jsx";
 import CustomButton from "../components/CustomButton.jsx";
+
+//Imágenes
+import huella from "../assets/huella.png";
+import cactus from "../assets/cactus.png";
+import vela from "../assets/vela.png";
+import paleta from "../assets/paleta.png";
 
 const Login = () => {
 
@@ -15,6 +22,11 @@ const Login = () => {
     return (
       <>
       <div className="login-container d-flex">
+        <img src={huella} className="float huella"/>
+        <img src={paleta} className="float paleta"/>
+        <img src={vela} className="float vela"/>
+        <img src={cactus} className="float cactus"/>
+
         <GlassBox>
         {
           <>
