@@ -100,7 +100,7 @@ const Register = () => {
                         type={"textarea"}
                         />
 
-                      <div style={{width: '300px', marginTop: '5px'}}>
+                      <div style={{width: '300px', marginTop: '30px'}}>
                       <CustomButton
                         text={"Registrarme"}
                         action={(e) => navigate("/Inicio")}
@@ -111,7 +111,7 @@ const Register = () => {
                         />
                       </div>
 
-                      <div className="go-to-register text-center mt-5 d-flex">
+                      <div className="go-to-register text-center mt-5 pt-4 d-flex">
                         <LinkText
                         text={"Iniciar sesión"}
                         action={"/Login"}

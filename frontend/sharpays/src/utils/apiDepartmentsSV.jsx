@@ -14,7 +14,6 @@ const apiDeparmentsSV = () => {
           value: dpto.idMDepa,
           label: dpto.nombre
         }));
-        console.log(dptos)
         setDepartments(dptos);
       })
       .catch((err) => console.error("Error al cargar datos:", err));

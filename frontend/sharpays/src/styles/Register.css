@@ -15,9 +15,6 @@
   overflow: hidden;
 }
 
-.register-container .link-light {
-  text-align: start !important;
-}
 
 .light {
   position: absolute;
@@ -33,6 +30,32 @@
   height: 800px !important;
 }
 
-.register-content .custom-btn{
-    margin-top: 30px !important;
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .register-container .glass-box {
+    width: 360px;
+  }
+
+  .register-container img{
+    margin-left: 30px !important;
+  }
+}
+
+@media (max-width: 320px) {
+  .register-container .glass-box {
+    width: 300px;
+  }
+
+  .register-content *{
+    width: 250px !important;
+  }
+
+  .register-content h1 {
+    text-align: center;
+  }
+
+  .go-to-register p{
+    display: none;
+  }
+  
 }
