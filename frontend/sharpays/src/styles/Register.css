@@ -32,3 +32,7 @@
 .register-container .glass-box {
   height: 800px !important;
 }
+
+.register-content .custom-btn{
+    margin-top: 30px !important;
+}

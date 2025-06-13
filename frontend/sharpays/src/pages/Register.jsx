@@ -97,11 +97,7 @@ const Register = () => {
                         label={"Dirección"}
                         placeholder={"Dirección del lugar de entrega"}
                         name={"direccion"}
-                        />
-
-                        <LinkText
-                        text={"Olvidé mi contraseña"}
-                        action={"/Login"}
+                        type={"textarea"}
                         />
 
                       <div style={{width: '300px', marginTop: '5px'}}>
@@ -114,6 +110,14 @@ const Register = () => {
                         height={"50px"}
                         />
                       </div>
+
+                      <div className="go-to-register text-center mt-5 d-flex">
+                        <LinkText
+                        text={"Iniciar sesión"}
+                        action={"/Login"}
+                        />
+                      </div>
+
                       
                     </div>
           </>
