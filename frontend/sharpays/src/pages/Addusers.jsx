@@ -1,7 +1,7 @@
 import React from 'react';
 import Titulo from "../components/CustomTitle";
-import UserForm from "./registerUsers.jsx";
-import UsersTable from "./usersTable";
+import UserForm from "../hooks/Users/registerUsers.jsx";
+import UsersTable from "../hooks/Users/usersTable.jsx";
 import "../styles/Users.css";
 
 const UsersPage = () => {

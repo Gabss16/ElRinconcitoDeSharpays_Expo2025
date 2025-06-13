@@ -1,9 +1,8 @@
 import React from 'react';
-import InputText from "../../components/CustomInput";
-import Button from "../../components/CustomButton";
-import UploadImage from "../../components/UploadimageUsers";
-import "../../styles/Users.css";
-
+import InputText from "../components/CustomInput";
+import Button from "../components/CustomButton";
+import UploadImage from "../components/UploadImage";
+import "../styles/Users.css";
 
 const UserForm = () => {
   return (
@@ -17,7 +16,14 @@ const UserForm = () => {
         />
       </div>
 
-     
+      <div className="form-group">
+        <label className="form-label">Contraseña</label>
+        <InputText
+          type="password"
+          placeholder="Contraseña"
+          className="form-input"
+        />
+      </div>
 
       <div className="form-group">
         <label className="form-label">Correo</label>
@@ -28,18 +34,12 @@ const UserForm = () => {
         />
       </div>
 
+      <div className="divider-line"></div>
 
       <div className="form-group">
-        <label className="form-label">Contraseña</label>
-        <InputText
-          type="password"
-          placeholder="Contraseña"
-          className="form-input"
-        />
-      </div>
-
-
-      <div className="upload-actions">
+        <label className="section-label">Subir Imagen</label>
+        <UploadImage className="upload-image" />
+        <div className="upload-actions">
           <Button
             text="Agregar"
             background="#FD0053"
@@ -49,13 +49,6 @@ const UserForm = () => {
             className="upload-action-button"
           />
         </div>
-
-      <div className="divider-line"></div>
-
-      <div className="form-group">
-        <label className="section-label">Subir Imagen</label>
-        <UploadImage className="upload-image" />
-
       </div>
     </div>
   );
