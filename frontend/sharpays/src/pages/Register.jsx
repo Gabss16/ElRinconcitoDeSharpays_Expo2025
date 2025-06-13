@@ -1,4 +1,4 @@
-import "../styles/Login.css"
+import "../styles/Register.css"
 import { useNavigate } from "react-router-dom";
 import GlassBox from "../components/GlassBox.jsx";
 
@@ -20,11 +20,14 @@ import CustomSelect from "../components/CustomSelect.jsx";
 
 //Departementos API
 import Departments from "../utils/apiDepartmentsSV.jsx"
+
 const NUM_LIGHTS = 50;
 
 const randomPosition = () => Math.random() * 100 + "%";
 
 const Register = () => {
+
+  const depa = Departments();
 
   const navigate = useNavigate();
 
@@ -40,7 +43,7 @@ const Register = () => {
 
     return (
       <>
-      <div className="login-container d-flex">
+      <div className="register-container d-flex">
         <div className="lights-background">
         <img src={huella} className="float huella"/>
         <img src={paleta} className="float paleta"/>
@@ -88,22 +91,30 @@ const Register = () => {
 
                         <CustomSelect
                         name={"Departamento"}
-                        departmens={Departments}
+                        departmens={depa}
                         />
-                        <div style={{width: '300px', marginTop: '5px'}}>
+                        <CustomInput
+                        label={"Dirección"}
+                        placeholder={"Dirección del lugar de entrega"}
+                        name={"direccion"}
+                        />
+
                         <LinkText
                         text={"Olvidé mi contraseña"}
                         action={"/Login"}
                         />
-                        <CustomButton
-                        text={"Iniciar sesión"}
+
+                      <div style={{width: '300px', marginTop: '5px'}}>
+                      <CustomButton
+                        text={"Registrarme"}
                         action={(e) => navigate("/Inicio")}
                         background={"black"}
                         color={"white"}
                         width={"100%"}
                         height={"50px"}
                         />
-                        </div>
+                      </div>
+                      
                     </div>
           </>
         }

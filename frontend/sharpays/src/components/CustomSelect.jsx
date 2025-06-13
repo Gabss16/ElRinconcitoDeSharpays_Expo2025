@@ -7,7 +7,7 @@ const CustomSelect = ({ name, departmens }) => {
       <div className="mt-2">
         <select id={name} className="custom-input p-0" required>
           <option value="">Seleccione una opción</option>
-          {departmens.map((dep) => (
+          {departmens?.map((dep) => (
             <option key={dep.value} value={dep.value}>
               {dep.label}
             </option>

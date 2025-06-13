@@ -100,7 +100,7 @@ const Login = () => {
                         <p className="m-0 ps-3 pe-1 text-white">¿No tienes cuenta?</p>
                         <LinkText 
                           text={"Registrarme"}
-                          action={"/Registro"}/>
+                          action={"/Register"}/>
                         </div>
                         </div>
                     </div>
