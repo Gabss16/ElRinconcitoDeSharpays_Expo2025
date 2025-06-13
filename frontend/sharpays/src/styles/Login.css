@@ -17,32 +17,33 @@
   text-align: start !important;
 }
 
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-  .huella {
-    width: 400px;
-    top: 20px;
-    left: 40px;
-  }
+.light {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ff6daa 0%, transparent 70%);
+  opacity: 0.5;
+  animation-name: floatLights;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
 
-  .paleta {
-    width: 300px;
-    bottom: 180px;
-    right: 60px;
+/* Animación  de las luces */
+@keyframes floatLights {
+  0%, 100% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.5;
   }
-
-  .vela {
-    width: 300px;
-    top: 60px;
-    right: 60px;
-  }
-
-  .cactus {
-    width: 300px;
-    bottom: 130px;
-    left: 60px;
+  50% {
+    transform: translateY(-15px) translateX(10px) scale(1.1);
+    opacity: 0.8;
   }
 }
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .huella , .cactus , .vela , .paleta {
+    display: none;
+  }
 
 @media (max-width: 768px) {
   
