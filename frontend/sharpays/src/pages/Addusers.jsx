@@ -1,7 +1,7 @@
 import Titulo from "../components/CustomTitle";
 import InputText from "../components/CustomInput";
 import Button from "../components/CustomButton";
-
+import "../styles/Users.css"
 const usersData = [
   {
     id: "10-02-23",
@@ -12,7 +12,7 @@ const usersData = [
 ];
 
 const UsersTable = () => (
-  <div className="bg-white rounded-2xl shadow-lg p-8">
+  <div className="users-table-container">
     <div className="mb-4">
       <InputText
         type="text"
@@ -39,14 +39,21 @@ const UsersTable = () => (
             <td className="py-3 px-4">{user.correo}</td>
             <td className="py-3 px-4">
               <Button
-                text="Editar"
-                className="bg-pink-500 hover:bg-pink-600 text-white font-semibold rounded-lg px-6 py-2 shadow transition"
+                text={"Editar"}
+                background={"#FD0053"}
+                color={"white"}
+                height={"40px"}
+                width={"120px"}
               />
             </td>
             <td className="py-3 px-4">
               <Button
-                text="Eliminar"
-                className="border border-pink-500 text-pink-500 bg-white font-semibold rounded-lg px-6 py-2 shadow transition hover:bg-pink-50"
+                text={"Eliminar"}
+                border={"1px solid #FD0053"}
+                color={"black"}
+                background={"white"}
+                height={"40px"}
+                width={"120px"}
               />
             </td>
           </tr>
