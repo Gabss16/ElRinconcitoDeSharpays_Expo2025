@@ -9,6 +9,10 @@ import Uploadimage from "./pages/Addusers.jsx"
 function App() {
 return (
 <Router>
+<div className="app-layout" style={{ display: 'flex' }}/>
+<Sidebar />
+<div className="content" style={{ flex: 1, padding: '1rem' }}></div>
+
 <Routes>
     <Route path="/Login" element={<Login/>} />
      <Route path="/Users" element={<Uploadimage/>} />
