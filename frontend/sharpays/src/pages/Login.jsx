@@ -2,7 +2,7 @@ import "../styles/Login.css"
 import { useNavigate } from "react-router-dom";
 import GlassBox from "../components/GlassBox.jsx";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 
 //Componentes utilizados en el login-container
 import LogoLogin from "../components/LogoLogin.jsx";

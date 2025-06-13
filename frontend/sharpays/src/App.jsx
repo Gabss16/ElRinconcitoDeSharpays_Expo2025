@@ -10,7 +10,6 @@ import Uploadimage from "./pages/Addusers.jsx"
 function App() {
 return (
 <Router>
-<Sidebar />
 
 <Routes>
     <Route path="/Login" element={<Login/>} />
