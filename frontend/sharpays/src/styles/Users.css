@@ -1,0 +1,79 @@
+/* Separación del menú lateral */
+.users-table-container {
+    margin-left: 260px; /* Ajusta este valor según el ancho de tu menú lateral */
+    margin-top: 40px;
+    padding-right: 40px;
+  }
+  
+  /* Estilo para el contenedor de la tabla */
+  .bg-white.rounded-2xl.shadow-lg.p-8 {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08), 0 1.5px 6px rgba(0,0,0,0.03);
+    border-radius: 18px;
+    background: #fff;
+    padding: 2rem;
+  }
+  
+  /* Tabla */
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #fff;
+  }
+  
+  th, td {
+    padding: 14px 18px;
+    text-align: left;
+  }
+  
+  th {
+    color: #555;
+    font-weight: 600;
+    background: #fafafb;
+    border-bottom: 2px solid #f0f0f0;
+  }
+  
+  tr {
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  tr:last-child {
+    border-bottom: none;
+  }
+  
+  td {
+    color: #333;
+  }
+  
+  /* Botones */
+  button{
+
+    margin-right: -140px;
+  }
+  .custom-button-class { /* Ajusta si tienes una clase específica para tu CustomButton */
+    margin-right: 6px;
+    min-width: 90px;
+    font-size: 15px;
+    transition: background 0.2s, color 0.2s;
+    
+  }
+  
+  /* Input de búsqueda */
+  input[type="text"] {
+    border: 1px solid #e5e7eb;
+    background: #f7f7fa;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 15px;
+    margin-bottom: 18px;
+    width: 100%;
+  }
+  
+  /* Responsive: ajusta la separación en pantallas pequeñas */
+  @media (max-width: 900px) {
+    .users-table-container {
+      margin-left: 0;
+      padding: 10px;
+    }
+  }
+  
