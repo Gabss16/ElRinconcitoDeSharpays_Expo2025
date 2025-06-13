@@ -7,12 +7,10 @@ import "../styles/Users.css";
 const UsersPage = () => {
   return (
     <div className="users-main-container">
-      <div className="users-header">
-        <Titulo text="Usuarios" className="main-title" />
-      </div>
-
-      <div className="users-content-container">
+      <div className="users-content-wrapper">
         <UserForm />
+      </div>
+      <div className="users-table-wrapper">
         <UsersTable />
       </div>
     </div>
