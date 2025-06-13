@@ -18,6 +18,8 @@ import vela from "../assets/vela.png";
 import paleta from "../assets/paleta.png";
 import CustomSelect from "../components/CustomSelect.jsx";
 
+//Departementos API
+import Departments from "../utils/apiDepartmentsSV.jsx"
 const NUM_LIGHTS = 50;
 
 const randomPosition = () => Math.random() * 100 + "%";
@@ -86,6 +88,7 @@ const Register = () => {
 
                         <CustomSelect
                         name={"Departamento"}
+                        departmens={Departments}
                         />
                         <div style={{width: '300px', marginTop: '5px'}}>
                         <LinkText
