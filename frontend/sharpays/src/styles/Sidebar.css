@@ -19,6 +19,21 @@
     color: #c43a7d;
     font-weight: bold;
     }
+
+    .nav-item svg {
+        margin-right: 10px;
+        font-size: 1.2rem;
+        }
+        
+        .nav-item span {
+        font-size: 1rem;
+        }
+        
+        .nav-item.active,
+        .nav-item:hover {
+        color: #c43a7d;
+        transform: translateY(-3px);
+        }
     
     .nav-item {
     display: flex;
@@ -27,22 +42,8 @@
     color: #666;
     text-decoration: none;
     font-size: 1rem;
-    transition: 0.2s;
-    }
-    
-    .nav-item svg {
-    margin-right: 10px;
-    font-size: 1.2rem;
-    }
-    
-    .nav-item span {
-    font-size: 1rem;
-    }
-    
-    .nav-item.active,
-    .nav-item:hover {
-    color: #c43a7d;
-    font-weight: 500;
+    transition: all .3s;
+    position: relative;
     }
     
     .section-title {
@@ -63,11 +64,19 @@
     display: flex;
     align-items: center;
     padding: 1rem 0;
+
+    transition: all .3s;
     }
     
     .logout-button svg {
     margin-right: 10px;
     font-size: 1.2rem;
+    }
+
+    .logout-button svg:hover
+    ,.logout-button:hover{
+        color: #bbb;
+        transform: translateX(3px);
     }
     
     /* Botón hamburguesa */
