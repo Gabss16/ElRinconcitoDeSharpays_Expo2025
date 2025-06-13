@@ -1,12 +1,11 @@
-import "./GlassBox.css"
-import LogoLogin from "../components/LogoLogin.jsx";
+import "../styles/GlassBox.css"
 
-const GlassBox = () => {
+const GlassBox = ({children}) => {
     return (
         <>
-        <div className="glass-box position-absolute top-50 start-50 translate-middle">  
-        <LogoLogin/>
-        </div>
+            <div className="glass-box position-absolute top-50 start-50 translate-middle">
+                {children}
+            </div>
         </>
     );
 }
