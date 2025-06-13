@@ -38,7 +38,8 @@ const ProductSchema = new Schema({
     required: [true, "La subcategoría es obligatoria"]
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  strict: false,
 });
 
 export default model("product", ProductSchema);

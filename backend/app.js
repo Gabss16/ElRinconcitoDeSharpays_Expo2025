@@ -35,7 +35,7 @@ app.use("/api/costumer", CostumersRoutes)
 app.use("/api/registerCostumer", costumerRegisterRoutes)
 
 app.use('/api/subCategory', subCategoryRoutes);
-app.use('/api/product', productRoutes);
+app.use('/api/Products', productRoutes);
 app.use("/api/orderDetail", orderDetailRoutes);
 app.use("/api/orders", orders)
 
