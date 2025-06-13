@@ -29,7 +29,7 @@ const Login = () => {
     Array.from({ length: NUM_LIGHTS }, () => ({
       top: randomPosition(),
       left: randomPosition(),
-      size: 8 + Math.random() * 12,
+      size: 10 + Math.random() * 12,
       duration: 8 + Math.random() * 7,
       delay: Math.random() * 5,
     })), []
