@@ -87,7 +87,7 @@ const Login = () => {
                   <div style={{ width: "300px", marginTop: "5px" }}>
                     <LinkText
                       text={"Olvidé mi contraseña"}
-                      action={"/RecuperacionContrasena"}
+                      action={"/RecoveryPassword"}
                     />
                   
                     <CustomButton
