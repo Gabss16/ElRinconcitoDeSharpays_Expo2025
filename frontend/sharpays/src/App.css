@@ -99,3 +99,41 @@
     opacity: 0.8;
   }
 }
+
+ /* ANIMACIONES PARA LAS FIGURAS */
+  .shape {
+    position: absolute;
+    opacity: 0.15;
+    filter: drop-shadow(0 0 4px rgba(29, 3, 53, 0.616));
+    animation-name: slowRotate;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  
+ 
+  .shape.circle {
+    border-radius: 50%;
+    background: #ff5ea1;
+  }
+  
+  .shape.triangle {
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 60px solid #ff5ea1;
+    background: transparent;
+    filter: drop-shadow(0 0 4px #4d2636);
+    animation-name: slowRotateTriangle;
+  }
+  
+  
+  @keyframes slowRotate {
+    from { transform: rotate(0deg) translateY(0); }
+    to { transform: rotate(360deg) translateY(0); }
+  }
+  
+  
+  @keyframes slowRotateTriangle {
+    0% { transform: rotate(0deg) translateY(0); }
+    50% { transform: rotate(180deg) translateY(5px); }
+    100% { transform: rotate(360deg) translateY(0); }
+  }

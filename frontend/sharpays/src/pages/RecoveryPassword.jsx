@@ -12,23 +12,42 @@ import CustomButton from "../components/CustomButton.jsx";
 import React, { useMemo } from "react";
 
 const NUM_LIGHTS = 80;
+const NUM_SHAPES = 10;
+
 const randomPosition = () => Math.random() * 100 + "%";
 
 const RecoveryPassword = () => {
 
-    const lightsPositions = useMemo(
-        () =>
-          Array.from({ length: NUM_LIGHTS }, () => ({
-            top: randomPosition(),
-            left: randomPosition(),
-            size: 10 + Math.random() * 12,
-            duration: 8 + Math.random() * 7,
-            delay: Math.random() * 5,
-          })),
-        []
-      );
+  const lightsPositions = useMemo(
+    () =>
+      Array.from({ length: NUM_LIGHTS }, () => ({
+        top: randomPosition(),
+        left: randomPosition(),
+        size: 10 + Math.random() * 12,
+        duration: 8 + Math.random() * 7,
+        delay: Math.random() * 5,
+      })),
+    []
+  );
 
-      {lightsPositions.map((light, i) => (
+  const shapes = useMemo(() =>
+    Array.from({ length: NUM_SHAPES }, () => ({
+      top: randomPosition(),
+      left: randomPosition(),
+      size: 30 + Math.random() * 60,
+      duration: 20 + Math.random() * 15,
+      delay: Math.random() * 10,
+      type: Math.random() > 0.5 ? "circle" : "triangle",
+      direction: Math.random() > 0.5 ? "normal" : "reverse",
+    })), []
+  );
+
+  return (
+    <>
+      <div className="recovery-password-container d-flex">
+        <div className="lights-background">
+
+          {lightsPositions.map((light, i) => (
             <div
               key={`light-${i}`}
               className="light"
@@ -43,27 +62,25 @@ const RecoveryPassword = () => {
             />
           ))}
 
-    return (
-        <>
-        <div className="recovery-password-container d-flex">
-          <div className="lights-background">
+           {
+    shapes.map((shape, i) => (
+      <div
+        key={`shape-${i}`}
+        className={`shape ${shape.type}`}
+        style={{
+          top: shape.top,
+          left: shape.left,
+          width: shape.size + "px",
+          height: shape.size + "px",
+          animationDuration: shape.duration + "s",
+          animationDelay: shape.delay + "s",
+          animationDirection: shape.direction,
+        }}
+      />
+    ))
+  }
 
-            {lightsPositions.map((light, i) => (
-            <div
-              key={`light-${i}`}
-              className="light"
-              style={{
-                top: light.top,
-                left: light.left,
-                width: light.size + "px",
-                height: light.size + "px",
-                animationDuration: light.duration + "s",
-                animationDelay: light.delay + "s",
-              }}
-            />
-          ))}
-
-        <GlassBox>
+          <GlassBox>
             {
               <>
                 <LogoLogin textStyle={"text-white fw-bold fs-5 pt-2 w-50"} />
@@ -89,7 +106,7 @@ const RecoveryPassword = () => {
                     name={"verificationCode"}
                     disable={true}
                   />
-                  <div style={{ width: "300px", marginTop: "5px" }}>                  
+                  <div style={{ width: "300px", marginTop: "5px" }}>
                     <CustomButton
                       text={"Enviar código"}
                       action={(e) => navigate("/Inicio")}
@@ -109,10 +126,10 @@ const RecoveryPassword = () => {
               </>
             }
           </GlassBox>
-          </div>
         </div>
-        </>
-    );
+      </div>
+    </>
+  );
 };
 
 export default RecoveryPassword;
