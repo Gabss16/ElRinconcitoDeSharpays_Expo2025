@@ -135,10 +135,12 @@
     display: flex;
     gap: 10px;
     justify-content: flex-end;
+    border-radius: 40px;
   }
   
 .search-container .custom-input {
   width: 100%;
+  border-radius: 30px;
 }
 
 .form-row {
