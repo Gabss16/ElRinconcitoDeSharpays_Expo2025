@@ -2,7 +2,8 @@ import "../styles/Register.css"
 import { useNavigate } from "react-router-dom";
 import GlassBox from "../components/GlassBox.jsx";
 
-import React, { useMemo } from "react";
+//Animaciones
+import LightsAnimation from "../components/LightsAnimation.jsx"
 
 //Componentes utilizados en el login-container
 import LogoLogin from "../components/LogoLogin.jsx";
@@ -21,25 +22,11 @@ import CustomSelect from "../components/CustomSelect.jsx";
 //Departementos API
 import Departments from "../utils/apiDepartmentsSV.jsx"
 
-const NUM_LIGHTS = 50;
-
-const randomPosition = () => Math.random() * 100 + "%";
-
 const Register = () => {
 
   const depa = Departments();
 
   const navigate = useNavigate();
-
-  const lightsPositions = useMemo(() =>
-    Array.from({ length: NUM_LIGHTS }, () => ({
-      top: randomPosition(),
-      left: randomPosition(),
-      size: 10 + Math.random() * 12,
-      duration: 8 + Math.random() * 7,
-      delay: Math.random() * 5,
-    })), []
-  );
 
     return (
       <>
@@ -50,20 +37,9 @@ const Register = () => {
         <img src={vela} className="float vela"/>
         <img src={cactus} className="float cactus"/>
 
-        {lightsPositions.map((light, i) => (
-          <div
-            key={`light-${i}`}
-            className="light"
-            style={{
-              top: light.top,
-              left: light.left,
-              width: light.size + "px",
-              height: light.size + "px",
-              animationDuration: light.duration + "s",
-              animationDelay: light.delay + "s",
-            }}
+        <LightsAnimation
+          NUM_LIGHTS={80}
           />
-        ))}
 
         <GlassBox>
         {

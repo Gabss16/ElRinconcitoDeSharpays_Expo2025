@@ -1,6 +1,10 @@
 import "../styles/RecoveryPassword.css";
 import { useNavigate } from "react-router-dom";
 
+//Animaciones
+import LightsAnimation from "../components/LightsAnimation.jsx"
+import ShapesAnimation from "../components/ShapesAnimation.jsx";
+
 //Componentes
 import GlassBox from "../components/GlassBox.jsx";
 import LogoLogin from "../components/LogoLogin.jsx";
@@ -9,79 +13,21 @@ import CustomInput from "../components/CustomInput.jsx";
 import LinkText from "../components/LinkText.jsx";
 import CustomButton from "../components/CustomButton.jsx";
 
-
-import React, { useMemo } from "react";
-
-const NUM_LIGHTS = 80;
-const NUM_SHAPES = 10;
-
-const randomPosition = () => Math.random() * 100 + "%";
-
 const RecoveryPassword = () => {
 
     const navigate = useNavigate();
-
-  const lightsPositions = useMemo(
-    () =>
-      Array.from({ length: NUM_LIGHTS }, () => ({
-        top: randomPosition(),
-        left: randomPosition(),
-        size: 10 + Math.random() * 12,
-        duration: 8 + Math.random() * 7,
-        delay: Math.random() * 5,
-      })),
-    []
-  );
-
-  const shapes = useMemo(() =>
-    Array.from({ length: NUM_SHAPES }, () => ({
-      top: randomPosition(),
-      left: randomPosition(),
-      size: 30 + Math.random() * 60,
-      duration: 20 + Math.random() * 15,
-      delay: Math.random() * 10,
-      type: Math.random() > 0.5 ? "circle" : "triangle",
-      direction: Math.random() > 0.5 ? "normal" : "reverse",
-    })), []
-  );
 
   return (
     <>
       <div className="recovery-password-container d-flex">
         <div className="lights-background">
 
-          {lightsPositions.map((light, i) => (
-            <div
-              key={`light-${i}`}
-              className="light"
-              style={{
-                top: light.top,
-                left: light.left,
-                width: light.size + "px",
-                height: light.size + "px",
-                animationDuration: light.duration + "s",
-                animationDelay: light.delay + "s",
-              }}
-            />
-          ))}
+          <LightsAnimation
+          NUM_LIGHTS={80}
+          />
 
-           {
-    shapes.map((shape, i) => (
-      <div
-        key={`shape-${i}`}
-        className={`shape ${shape.type}`}
-        style={{
-          top: shape.top,
-          left: shape.left,
-          width: shape.size + "px",
-          height: shape.size + "px",
-          animationDuration: shape.duration + "s",
-          animationDelay: shape.delay + "s",
-          animationDirection: shape.direction,
-        }}
-      />
-    ))
-  }
+           <ShapesAnimation
+           NUM_SHAPES={10}/>
 
           <GlassBox>
             {
