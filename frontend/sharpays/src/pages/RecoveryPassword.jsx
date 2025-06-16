@@ -1,4 +1,5 @@
 import "../styles/RecoveryPassword.css";
+import { useNavigate } from "react-router-dom";
 
 //Componentes
 import GlassBox from "../components/GlassBox.jsx";
@@ -17,6 +18,8 @@ const NUM_SHAPES = 10;
 const randomPosition = () => Math.random() * 100 + "%";
 
 const RecoveryPassword = () => {
+
+    const navigate = useNavigate();
 
   const lightsPositions = useMemo(
     () =>
@@ -109,7 +112,7 @@ const RecoveryPassword = () => {
                   <div style={{ width: "300px", marginTop: "5px" }}>
                     <CustomButton
                       text={"Enviar código"}
-                      action={(e) => navigate("/Inicio")}
+                      action={(e) => navigate("/ResetPassword")}
                       background={"black"}
                       color={"white"}
                       width={"100%"}

@@ -5,6 +5,7 @@ import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Uploadimage from "./pages/Addusers.jsx";
 import RecoveryPassword from "./pages/RecoveryPassword.jsx";
+import ResetPassword from "./pages/ResetPassword.jsx";
 
 
 
@@ -17,6 +18,7 @@ return (
     <Route path="/Register" element={<Register/>} />
     <Route path="/Users" element={<Uploadimage/>} />
     <Route path="/RecoveryPassword" element={<RecoveryPassword/>} />
+    <Route path="/ResetPassword" element={<ResetPassword/>} />
 </Routes>
 </Router>
 );
