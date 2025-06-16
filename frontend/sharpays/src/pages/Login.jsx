@@ -22,7 +22,6 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-
   return (
     <>
       <div className="login-container d-flex">
