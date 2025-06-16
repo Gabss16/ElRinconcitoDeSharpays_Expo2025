@@ -25,8 +25,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/login',login);
-app.use('api/logOut', logOut);
-app.use('api/recoveryPassword', recoveryPassword);
+app.use('/api/logOut', logOut);
+app.use('/api/recoveryPassword', recoveryPassword);
 
 app.use('/api/employees', employeeRoutes);
 app.use('/api/categories', categoryRoutes);
