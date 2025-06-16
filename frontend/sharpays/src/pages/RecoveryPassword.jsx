@@ -85,7 +85,7 @@ const RecoveryPassword = () => {
               <>
                 <LogoLogin textStyle={"text-white fw-bold fs-5 pt-2 w-50"} />
 
-                <div className="register-content d-flex justify-content-center align-items-center flex-column mt-4 w-100">
+                <div className="recovery-password-content d-flex justify-content-center align-items-center flex-column mt-4 w-100">
                   <CustomTitle
                     style={"text-white fw-bold fs-3 mb-5"}
                     text={"Recuperación de contraseña"}
