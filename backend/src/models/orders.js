@@ -1,9 +1,9 @@
 import { Schema, model } from "mongoose";
 
-const orderDetailSchema = new Schema({
+const itemSchema = new Schema({
   productId: {
     type: Schema.Types.ObjectId,
-    ref: "Product",
+    ref: "products", 
     required: true,
   },
   productName: {
@@ -45,8 +45,16 @@ const orderSchema = new Schema(
   {
     customerId: {
       type: Schema.Types.ObjectId,
-      ref: "Costumer",
+      ref: "costomer", 
       required: true,
+    },
+    orderDetails: {
+      type: [itemSchema],
+      required: true,
+      validate: {
+        validator: (arr) => arr.length > 0,
+        message: "Debe haber al menos un producto en la orden",
+      },
     },
     total: {
       type: Number,
@@ -58,19 +66,12 @@ const orderSchema = new Schema(
       enum: ["pending", "paid", "shipped", "completed", "cancelled"],
       default: "pending",
     },
-    orderDetails: {
-      type: [orderDetailSchema],
-      required: true,
-      validate: [arr => arr.length > 0, "Debe haber al menos un detalle de orden"],
-    },
     shippingAddress: {
       type: shippingAddressSchema,
       required: true,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
-export default model("Order", orderSchema);
+export default model("order", orderSchema);
