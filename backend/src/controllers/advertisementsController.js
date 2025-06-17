@@ -1,4 +1,4 @@
-import Advertisement from "../models/Advertisements.js";
+import Advertisement from "../models/advertisements.js";
 
 const advertisementsController = {};
 

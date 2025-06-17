@@ -22,7 +22,6 @@ const AdvertisementsSchema = new Schema({
 }, {
   timestamps: true,
   strict: false,
-  collection: "Advertisements"
 });
 
 export default model("Advertisements", AdvertisementsSchema);
