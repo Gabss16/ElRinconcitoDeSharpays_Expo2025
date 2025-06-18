@@ -1,15 +1,5 @@
 import Costumer from '../models/costumer.js';
 
-// Crear un nuevo cliente
-export const createCostumer = async (req, res) => {
-  try {
-    const costumer = new Costumer(req.body);
-    await costumer.save();
-    res.status(201).json(costumer);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
 
 // Obtener todos los clientes
 export const getCostumers = async (req, res) => {
