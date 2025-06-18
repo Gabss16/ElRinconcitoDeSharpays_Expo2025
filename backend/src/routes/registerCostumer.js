@@ -7,7 +7,7 @@ const router = express.Router();
 router.post("/register", registerCostumerController.register);
 
 
-// router.post("/register-verify", registerCostumerController.registerWithVerification);
-// router.post("/verify-email", registerCostumerController.verifyCostumerEmail);
+ //router.post("/register-verify", registerCostumerController.registerWithVerification);
+ //router.post("/verify-email", registerCostumerController.verifyCostumerEmail);
 
 export default router;

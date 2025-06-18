@@ -10,16 +10,16 @@ registerCostumerController.register = async (req, res) => {
   const { name, email, password, department, address } = req.body;
 
   try {
-    // Verificar si ya existe
+    
     const existingCostumer = await Costumer.findOne({ email });
     if (existingCostumer) {
       return res.status(400).json({ message: "El cliente ya existe" });
     }
 
-    // Encriptar contraseña
+  
     const passwordHash = await bcryptjs.hash(password, 10);
 
-    // Crear cliente
+  
     const newCostumer = new Costumer({
       name,
       email,
@@ -30,7 +30,7 @@ registerCostumerController.register = async (req, res) => {
 
     await newCostumer.save();
 
-    // Generar token
+   
     jsonwebtoken.sign(
       { id: newCostumer._id },
       config.JWT.secret,
