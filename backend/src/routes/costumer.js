@@ -6,9 +6,7 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(costumerController.getCostumers)        
-  .post(costumerController.createCostumer);    
-
+  .get(costumerController.getCostumers);         
 router
   .route("/:id")
   .get(costumerController.getCostumerById)     

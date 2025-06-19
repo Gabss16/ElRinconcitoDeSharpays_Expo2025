@@ -14,6 +14,8 @@ import costumerRegisterRoutes from "./src/routes/registerCostumer.js";
 import subCategoryRoutes from './src/routes/subCategory.js';
 import productRoutes from './src/routes/products.js';
 import orderDetailRoutes from "./src/routes/orderDetails.js";
+import advertisementsRoutes from "./src/routes/advertisements.js"
+import ratingsRoutes from "./src/routes/ratings.js"
 import orders from "./src/routes/order.js"
 
 const app = express();
@@ -25,11 +27,13 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use('/api/login',login);
-app.use('api/logOut', logOut);
-app.use('api/recoveryPassword', recoveryPassword);
+app.use('/api/logOut', logOut);
+app.use('/api/recoveryPassword', recoveryPassword);
 
 app.use('/api/employees', employeeRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use("/api/registeremployee", registerEmployeeRoutes);
+app.use("/api/customer", CostumersRoutes)
 app.use("/api/registerEmployee", registerEmployeeRoutes);
 app.use("/api/costumer", CostumersRoutes)
 app.use("/api/registerCostumer", costumerRegisterRoutes)
@@ -37,6 +41,8 @@ app.use("/api/registerCostumer", costumerRegisterRoutes)
 app.use('/api/subCategory', subCategoryRoutes);
 app.use('/api/Products', productRoutes);
 app.use("/api/orderDetail", orderDetailRoutes);
+app.use("/api/Advertisements", advertisementsRoutes)
+app.use("/api/ratings", ratingsRoutes)
 app.use("/api/orders", orders)
 
 export default app;
