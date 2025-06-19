@@ -46,7 +46,7 @@ return (
 </NavLink>
 
 <div className="section-title">TIENDAS</div>
-<NavLink to="/store/sharpays" className="nav-item" onClick={toggleSidebar}>
+<NavLink to="/sharpays" className="nav-item" onClick={toggleSidebar}>
 <FaPaw /> <span>Sharpay’s Boutique</span>
 </NavLink>
 <NavLink to="/store/bougies" className="nav-item" onClick={toggleSidebar}>

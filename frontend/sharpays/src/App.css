@@ -139,3 +139,15 @@
     50% { transform: rotate(180deg) translateY(5px); }
     100% { transform: rotate(360deg) translateY(0); }
   }
+
+  .app-container {
+    display: flex;
+    height: 100vh; /* que ocupe toda la altura de la pantalla */
+  }
+  
+  .page-container {
+    flex: 1; /* ocupa todo el espacio restante del sidebar */
+    padding: 20px;
+    overflow-y: auto;
+  }
+  
