@@ -31,9 +31,7 @@ const Login = () => {
           <img src={vela} className="float vela" />
           <img src={cactus} className="float cactus" />
 
-          <LightsAnimation
-          NUM_LIGHTS={50}
-          />
+          <LightsAnimation NUM_LIGHTS={50} />
 
           <GlassBox>
             {
@@ -64,10 +62,10 @@ const Login = () => {
                       text={"Olvidé mi contraseña"}
                       action={"/RecoveryPassword"}
                     />
-                  
+
                     <CustomButton
                       text={"Iniciar Sesión"}
-                      action={(e) => navigate("/Inicio")}
+                      action={(e) => navigate("/Dashboard")}
                       background={"black"}
                       color={"white"}
                       width={"100%"}

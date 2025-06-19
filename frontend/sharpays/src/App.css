@@ -139,3 +139,52 @@
     50% { transform: rotate(180deg) translateY(5px); }
     100% { transform: rotate(360deg) translateY(0); }
   }
+
+  /* SWEETALERT STYLES - Estilos para las alertas de todo el proyecto*/
+  * {
+    --swal2-cancel-button-background-color: #4d2636 !important;
+    --swal2-confirm-button-background-color: #ff5ea1 !important;
+}
+
+div:where(.swal2-icon).swal2-warning {
+    color: #4d2636 !important;
+    border-color: #4d2636 !important;
+}
+
+div:where(.swal2-icon).swal2-question{
+  color: #ff5ea1 !important;
+  border-color: #ff5ea1 !important;
+}
+
+.swal2-success-line-tip{
+    background-color: #ff5ea1 !important;
+}
+
+.swal2-success-line-long {
+    background-color: #ff5ea1 !important;
+}
+
+.swal2-success-ring {
+    border-color: #ff5ea1 !important;
+}
+
+.swal2-timer-progress-bar {
+    background-color: #805c6c;
+}
+
+/*
+#swal2-title{
+    font-family: 'Poppins',sans-serif !important;
+}
+
+.swal2-cancel{
+    font-family: 'Poppins',sans-serif !important;
+}
+
+.swal2-input {
+    font-family: 'Poppins',sans-serif;   
+}
+
+#swal2-html-container{
+    font-family: 'Poppins',sans-serif; 
+}*/

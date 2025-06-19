@@ -5,14 +5,15 @@ const MySwal = withReactContent(Swal);
 
 //Completar la pregunta, no hay necesidad de poner el signo de interrogación al final.
 
-const QuestionAlert = ({title}) => {
+const QuestionAlert = (title) => {
   return MySwal.fire({
-    title: {title},
-    icon: "warning",
+    title: title,
+    icon: "question",
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes",
+    confirmButtonColor: "#ff5ea1",
+    confirmButtonText: "Sí",
+    cancelButtonColor: "#4d2636",
+    cancelButtonText: "No",
   });
 };
 
