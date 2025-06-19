@@ -8,11 +8,14 @@ import RecoveryPassword from "./pages/RecoveryPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import Orders from "./pages/Orders.jsx"
 
+import { AuthProvider } from "./context/AuthContext";
+
+
 
 function App() {
 return (
 <Router>
-
+    <AuthProvider>
 <Routes>
     <Route path="/Login" element={<Login/>} />
     <Route path="/Register" element={<Register/>} />
@@ -23,6 +26,7 @@ return (
 
 
 </Routes>
+    </AuthProvider>
 </Router>
 );
 }

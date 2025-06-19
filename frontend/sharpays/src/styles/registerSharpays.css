@@ -1,0 +1,52 @@
+.main-container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente el conjunto */
+    align-items: flex-start; /* Alinea los componentes al inicio vertical */
+    gap: 20px; /* Espacio entre los dos componentes */
+    padding: 20px;
+  }
+  
+  .upload-box {
+    flex: 2; /* Ocupa más espacio */
+    padding: 10px;
+    border-radius: 8px;
+  }
+  
+  form {
+    margin-top: 32px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    padding: 32px;
+  }
+  
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    
+  }
+  
+  .input-titulo {
+    min-width: 200px;
+    
+  }
+  
+  .input-precio,
+  .input-stock {
+    min-width: 100px;
+   
+    
+
+  }
+  
+  .input-tallas {
+    min-width: 180px;
+    
+  }
+  
+  .input-descripcion {
+    margin-top: 1.5rem;
+    padding-bottom: 8%;
+  }
+  

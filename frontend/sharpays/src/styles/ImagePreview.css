@@ -1,0 +1,63 @@
+/* src/components/ImagePreview.css */
+
+.image-preview-container {
+    width: 220px;
+    height: 220px;
+    background-color: #f2f2f2;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+  }
+  
+  .preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .hover-glass {
+    position: absolute;
+    inset: 0;
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 16px;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 0.4s ease;
+    pointer-events: none;
+    border-radius: 12px;
+  }
+  
+  .hover-glass.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+  }
+  
+  .glass-text {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    background-color: rgba(0, 0, 0, 0.068);
+    padding: 6px 14px;
+    border-radius: 8px;
+    align-items: center;
+    backdrop-filter: blur(4px);
+  }
+  
