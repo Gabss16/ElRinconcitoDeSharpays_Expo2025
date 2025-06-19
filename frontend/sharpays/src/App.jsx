@@ -7,12 +7,14 @@ import Uploadimage from "./pages/Addusers.jsx";
 import RecoveryPassword from "./pages/RecoveryPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 
+import { AuthProvider } from "./context/AuthContext";
+
 
 
 function App() {
 return (
 <Router>
-
+    <AuthProvider>
 <Routes>
     <Route path="/Login" element={<Login/>} />
     <Route path="/Register" element={<Register/>} />
@@ -20,6 +22,7 @@ return (
     <Route path="/RecoveryPassword" element={<RecoveryPassword/>} />
     <Route path="/ResetPassword" element={<ResetPassword/>} />
 </Routes>
+    </AuthProvider>
 </Router>
 );
 }
