@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "../styles/Orders.css";
 import Sidebar from "../components/Sidebar";
 import CustomTitle from "../components/CustomTitle";
-import OrderCard from "../components/OrderCard";
+import OrderCard from "../hooks/Orders/ordersCard";
 import useOrders from "../hooks/Orders/hook/useOrders";
 
 const Orders = () => {

@@ -1,6 +1,6 @@
 import React from "react";
-import CustomButton from "./CustomButton";
-import "../styles/OrderCard.css";
+import CustomButton from "../../components/CustomButton";
+
 
 const OrderCard = ({ order }) => {
   const { orderDetails, total, status, customerId } = order;
