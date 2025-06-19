@@ -1,5 +1,6 @@
 import "../styles/Login.css";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import GlassBox from "../components/GlassBox.jsx";
 
 //Animaciones
@@ -18,9 +19,39 @@ import cactus from "../assets/cactus.png";
 import vela from "../assets/vela.png";
 import paleta from "../assets/paleta.png";
 
-const Login = () => {
+//AuthContext
+import { useAuth } from "../context/AuthContext.jsx";
 
+//Alertas
+import ErrorAlert from "../components/ErrorAlert.jsx";
+
+const Login = () => {
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login } = useAuth();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!email || !password) {
+      ErrorAlert("Por favor, completa todos los campos.");
+      return;
+    }
+
+    const success = await login(email, password);
+    if (!success) {
+      ErrorAlert("Credenciales incorrectas.");
+      return;
+    }
+    navigate("/Dashboard");
+  };
+
+  useEffect(() => {
+    const miCookie = localStorage.getItem("authToken");
+    console.log(miCookie, "cookie desde el login useEffect");
+  }, []);
 
   return (
     <>
@@ -39,45 +70,46 @@ const Login = () => {
                 <LogoLogin textStyle={"text-white fw-bold fs-5 pt-2 w-50"} />
 
                 <div className="login-content d-flex justify-content-center align-items-center flex-column mt-4 w-100">
-                  <CustomTitle
-                    style={"text-white fw-bold fs-2 mb-5"}
-                    text={"Login"}
-                  />
-
-                  <CustomInput
-                    label={"Correo electrónico"}
-                    placeholder={"Ejemplo@gmail.com"}
-                    type={"email"}
-                    name={"email"}
-                  />
-
-                  <CustomInput
-                    label={"Contraseña"}
-                    placeholder={"********"}
-                    type={"password"}
-                    name={"password"}
-                  />
-                  <div style={{ width: "300px", marginTop: "5px" }}>
-                    <LinkText
-                      text={"Olvidé mi contraseña"}
-                      action={"/RecoveryPassword"}
+                  <form className="form" onSubmit={handleSubmit}>
+                    <CustomTitle
+                      style={"text-white fw-bold fs-2 mb-5"}
+                      text={"Login"}
                     />
 
-                    <CustomButton
-                      text={"Iniciar Sesión"}
-                      action={(e) => navigate("/Dashboard")}
-                      background={"black"}
-                      color={"white"}
-                      width={"100%"}
-                      height={"50px"}
+                    <CustomInput
+                      label={"Correo electrónico"}
+                      placeholder={"Ejemplo@gmail.com"}
+                      type={"email"}
+                      name={"email"}
                     />
-                    <div className="go-to-register text-center mt-5 d-flex">
-                      <p className="m-0 ps-3 pe-1 text-white">
-                        ¿No tienes cuenta?
-                      </p>
-                      <LinkText text={"Registrarme"} action={"/Register"} />
+
+                    <CustomInput
+                      label={"Contraseña"}
+                      placeholder={"********"}
+                      type={"password"}
+                      name={"password"}
+                    />
+                    <div style={{ width: "300px", marginTop: "5px" }}>
+                      <LinkText
+                        text={"Olvidé mi contraseña"}
+                        action={"/RecoveryPassword"}
+                      />
+
+                      <CustomButton
+                        text={"Iniciar Sesión"}
+                        background={"black"}
+                        color={"white"}
+                        width={"100%"}
+                        height={"50px"}
+                      />
+                      <div className="go-to-register text-center mt-5 d-flex">
+                        <p className="m-0 ps-3 pe-1 text-white">
+                          ¿No tienes cuenta?
+                        </p>
+                        <LinkText text={"Registrarme"} action={"/Register"} />
+                      </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
               </>
             }
