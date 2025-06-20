@@ -75,6 +75,10 @@ const EmployeeSchema = new Schema(
           message: 'La contraseña no puede contener espacios'
         }
       ]
+    },
+    image: {
+      type: String,
+      default: ""
     }
   },
   {

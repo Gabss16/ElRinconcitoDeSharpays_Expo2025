@@ -1,14 +1,14 @@
 import React from 'react';
 import InputText from "../CustomInput";
 import Button from "../CustomButton";
-import useDataUsers from "../Users/hook/useDataUsers"
-import "../../styles/Users.css";
+import useDataEmployee from "../employee/hook/useDataEmployee";
+import "../../styles/Employee.css";
 
-const UsersTable = () => {
-  const { users, deleteUser, updateUser } = useDataUsers();
+const empsTable = () => {
+  const { Employees, deleteEmployee, updateEmployee } = useDataEmployee();
 
   return (
-    <div className="users-table-section">
+    <div className="emps-table-section">
       <div className="table-card">
         <div className="search-container">
           <InputText
@@ -28,11 +28,11 @@ const UsersTable = () => {
         </div>
 
         <div className="table-content">
-          {users.map((user) => (
-            <div key={user._id} className="table-row">
-              <span>{user._id}</span>
-              <span>{user.name}</span>
-              <span>{user.email}</span>
+          {Employees?.map((emp) => (
+            <div key={emp._id} className="table-row">
+              <span>{emp._id}</span>
+              <span>{emp.name}</span>
+              <span>{emp.email}</span>
               <div className="action-buttons">
                 <Button
                   text="Editar"
@@ -41,7 +41,7 @@ const UsersTable = () => {
                   height="32px"
                   width="80px"
                   className="action-button"
-                  onClick={() => updateUser(user)}
+                  onClick={() => updateemp(emp)}
                 />
                 <Button
                   text="Eliminar"
@@ -51,7 +51,7 @@ const UsersTable = () => {
                   height="32px"
                   width="80px"
                   className="action-button"
-                  onClick={() => deleteUser(user._id)}
+                  onClick={() => deleteemp(emp._id)}
                 />
               </div>
             </div>
@@ -62,4 +62,4 @@ const UsersTable = () => {
   );
 };
 
-export default UsersTable;
+export default empsTable;

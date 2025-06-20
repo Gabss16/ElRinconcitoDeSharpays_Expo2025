@@ -18,7 +18,16 @@ import advertisementsRoutes from "./src/routes/advertisements.js"
 import ratingsRoutes from "./src/routes/ratings.js"
 import orders from "./src/routes/order.js"
 
+import cors from "cors";
+
 const app = express();
+
+app.use(
+    cors({
+      origin: "http://localhost:5173", // Dominio del cliente
+      credentials: true, // Permitir envío de cookies y credenciales
+    })
+  );
 
 
 app.use(express.json());

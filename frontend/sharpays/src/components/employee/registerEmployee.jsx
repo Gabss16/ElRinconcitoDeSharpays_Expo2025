@@ -2,7 +2,7 @@ import React from 'react';
 import InputText from "../CustomInput";
 import Button from "../CustomButton";
 import UploadImage from "../UploadimageUsers";
-import useDataUsers from "../Users/hook/useDataUsers";
+import useDataEmployee from "../employee/hook/useDataEmployee";
 
 const UserForm = () => {
   const {
@@ -17,7 +17,7 @@ const UserForm = () => {
     saveUser,
     handleEdit,
     id
-  } = useDataUsers();
+  } = useDataEmployee();
 
   return (
     <form onSubmit={id ? handleEdit : saveUser}>
