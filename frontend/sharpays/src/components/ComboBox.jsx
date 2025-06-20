@@ -1,20 +1,42 @@
-import React from 'react';
+// src/components/SubCategoryComboBox.jsx
+import React, { useEffect, useState } from "react";
 
-const ComboBox = ({ options = [], value, onChange, placeholder = "Seleccione una opción" }) => {
+const SubCategoryComboBox = ({ value, onChange }) => {
+  const [subcategories, setSubcategories] = useState([]);
+
+  useEffect(() => {
+    const fetchSubcategories = async () => {
+      try {
+        const res = await fetch("http://localhost:4000/api/subCategory");
+        const data = await res.json();
+        setSubcategories(data);
+      } catch (error) {
+        console.error("Error al obtener subcategorías:", error);
+      }
+    };
+
+    fetchSubcategories();
+  }, []);
+
   return (
-    <select
-      value={value}
-      onChange={onChange}
-      className="bg-white border border-gray-400 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-gray-500"
-    >
-      <option value="" disabled>{placeholder}</option>
-      {options.map((opt, index) => (
-        <option key={index} value={opt.value}>
-          {opt.label}
-        </option>
-      ))}
-    </select>
+    <div className="mb-4">
+      <label className="block text-sm font-semibold mb-1">
+        
+      </label>
+      <select
+        className="w-full p-2 border border-gray-300 rounded"
+        value={value}
+        onChange={onChange}
+      >
+        <option value="">Selecciona una subcategoría</option>
+        {subcategories.map((sub) => (
+          <option key={sub._id} value={sub._id}>
+            {sub.name}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 };
 
-export default ComboBox;
+export default SubCategoryComboBox;

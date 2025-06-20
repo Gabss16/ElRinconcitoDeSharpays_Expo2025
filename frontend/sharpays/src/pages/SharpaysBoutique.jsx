@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import FormSharpays from "../hooks/products/sharpaysBoutique/registerSharpays";
-import TableSharpays from "../hooks/products/sharpaysBoutique/sharpaysTable";
+import FormSharpays from "../components/products/sharpaysBoutique/registerSharpays";
+import TableSharpays from "../components/products/sharpaysBoutique/sharpaysTable";
 import { Title } from "../components/Typography";
 import "../styles/SharpayPage.css"; // Asegúrate de importar el CSS
 
