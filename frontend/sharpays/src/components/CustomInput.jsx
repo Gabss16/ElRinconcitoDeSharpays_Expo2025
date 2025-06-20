@@ -11,7 +11,6 @@ const CustomInput = ({label,placeholder,type,name,disable, hidden}) => {
           placeholder={placeholder}
           type={type}
           className="custom-input"
-          required
           disabled={disable}
           hidden={hidden}
         />
