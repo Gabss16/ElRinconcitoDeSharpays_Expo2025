@@ -21,7 +21,6 @@ const empsTable = () => {
         </div>
 
         <div className="table-header">
-          <span>id</span>
           <span>nombre</span>
           <span>Correo</span>
           <span>Acciones</span>
@@ -30,7 +29,6 @@ const empsTable = () => {
         <div className="table-content">
           {Employees?.map((emp) => (
             <div key={emp._id} className="table-row">
-              <span>{emp._id}</span>
               <span>{emp.name}</span>
               <span>{emp.email}</span>
               <div className="action-buttons">
