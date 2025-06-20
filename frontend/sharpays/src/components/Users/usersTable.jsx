@@ -1,7 +1,7 @@
 import React from 'react';
 import InputText from "../CustomInput";
 import Button from "../CustomButton";
-import useDataUsers from "./useDataUsers";
+import useDataUsers from "../Users/hook/useDataUsers"
 import "../../styles/Users.css";
 
 const UsersTable = () => {
