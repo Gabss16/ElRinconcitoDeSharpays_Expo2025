@@ -70,10 +70,7 @@ const ImageUploadPage = () => {
   }, [titulo, precio, stockValue, descripcionValue, tipoObjeto, selectedSizes, imageUrl]);
 
   // 👉 Enviar datos
-  const handleAgregar = (e) => {
-    e.preventDefault();
-    handleSubmit(e); // LLAMA AL MÉTODO DEL HOOK
-  };
+  
 
   return (
     <div>
@@ -97,7 +94,7 @@ const ImageUploadPage = () => {
       {/* Formulario */}
       <form
         className="w-full max-w-6xl mx-auto mt-8 bg-white rounded-lg shadow-md p-8"
-        onSubmit={handleAgregar}
+        
       >
         <Subtitle>Selecciona la subcategoría</Subtitle>
 <ComboBox
@@ -114,8 +111,8 @@ const ImageUploadPage = () => {
                 placeholder="Título"
                 type="text"
                 name="titulo"
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="input-precio">
@@ -124,8 +121,8 @@ const ImageUploadPage = () => {
                 placeholder="Precio"
                 type="number"
                 name="precio"
-                value={precio}
-                onChange={(e) => setPrecio(e.target.value)}
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
               />
             </div>
             <div className="input-stock">
@@ -134,8 +131,8 @@ const ImageUploadPage = () => {
                 placeholder="Stock"
                 type="number"
                 name="stock"
-                value={stockValue}
-                onChange={(e) => setStockValue(e.target.value)}
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
               />
             </div>
             <div className="input-tallas">
@@ -155,8 +152,8 @@ const ImageUploadPage = () => {
               placeholder="Descripción"
               type="text"
               name="descripcion"
-              value={descripcionValue}
-              onChange={(e) => setDescripcionValue(e.target.value)}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
         </div>
@@ -169,7 +166,7 @@ const ImageUploadPage = () => {
             width="180px"
             height="50px"
             border="none"
-            action={handleAgregar}
+            action={handleSubmit}
           />
         </div>
       </form>

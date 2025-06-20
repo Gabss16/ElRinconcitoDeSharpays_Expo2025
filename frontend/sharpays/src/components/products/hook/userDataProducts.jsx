@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 
 const useUserDataProducts = () => {
-  const ApiProducts = "https://tu-api/products";
+  const ApiProducts = "http://localhost:4000/api/Products";
 
   // Campos comunes
   const [id, setId] = useState("");
@@ -57,12 +57,14 @@ const useUserDataProducts = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+ /*
     if (!name || !description || !stock || !price || !categoryId || !subCategoryId) {
+      alert("debes de llenar todos los campos")
       setError("Todos los campos obligatorios deben llenarse");
       toast.error("Completa todos los campos obligatorios");
       return;
     }
-
+ */
     try {
       setLoading(true);
       const newProduct = {
@@ -76,6 +78,8 @@ const useUserDataProducts = () => {
         ...otherFields,  // Aquí incluimos los campos dinámicos
       };
 
+      console.log(newProduct)
+
       const response = await fetch(ApiProducts, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -88,12 +92,14 @@ const useUserDataProducts = () => {
       setSuccess("Producto creado correctamente");
       cleanData();
       fetchData();
+      alert("despues de crear producto")
     } catch (error) {
       console.error("Error crear producto:", error);
       toast.error("Error al crear producto");
       setError(error.message);
     } finally {
       setLoading(false);
+      alert("Se ejecuto la funcion finally")
     }
   };
 
