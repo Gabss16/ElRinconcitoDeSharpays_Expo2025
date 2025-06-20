@@ -18,7 +18,6 @@ const Orders = () => {
   return (
     <div className="orders-page">
       <Sidebar />
-
       <div className="orders-content">
         <CustomTitle text="Pedidos" style="page-title" />
 

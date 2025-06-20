@@ -9,10 +9,11 @@
 }
 
 .orders-title {
-  font-size: 28px;
+  font-size: 2rem;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
 }
+
 
 .store-filters {
   display: flex;
