@@ -1,12 +1,26 @@
-.orders-container {
+.orders-page {
   display: flex;
-  font-family: sans-serif;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.orders-wrapper {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
 }
 
 .orders-content {
-  flex: 1;
-  padding: 20px;
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 1200px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
+
 
 .orders-title {
   font-size: 2rem;

@@ -16,8 +16,10 @@ const Orders = () => {
     : orders.filter((order) => order.storeName === activeStore);
 
   return (
-    <div className="orders-page">
-      <Sidebar />
+  <div className="orders-page">
+    <Sidebar />
+
+    <div className="orders-wrapper">
       <div className="orders-content">
         <CustomTitle text="Pedidos" style="page-title" />
 
@@ -41,11 +43,15 @@ const Orders = () => {
           ) : filteredOrders.length === 0 ? (
             <p>No hay pedidos para esta tienda.</p>
           ) : (
-            filteredOrders.map((order) => <OrderCard key={order._id} order={order} />)
+            filteredOrders.map((order) => (
+              <OrderCard key={order._id} order={order} />
+            ))
           )}
         </div>
       </div>
     </div>
+  </div>
+
   );
 };
 
