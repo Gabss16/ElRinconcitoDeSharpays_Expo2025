@@ -69,8 +69,7 @@ const Login = () => {
               <>
                 <LogoLogin textStyle={"text-white fw-bold fs-5 pt-2 w-50"} />
 
-                <div className="login-content d-flex justify-content-center align-items-center flex-column mt-4 w-100">
-                  <form className="form" onSubmit={handleSubmit}>
+                  <form className="login-content d-flex justify-content-center align-items-center flex-column mt-4 w-100" onSubmit={handleSubmit}>
                     <CustomTitle
                       style={"text-white fw-bold fs-2 mb-5"}
                       text={"Login"}
@@ -110,7 +109,6 @@ const Login = () => {
                       </div>
                     </div>
                   </form>
-                </div>
               </>
             }
           </GlassBox>
