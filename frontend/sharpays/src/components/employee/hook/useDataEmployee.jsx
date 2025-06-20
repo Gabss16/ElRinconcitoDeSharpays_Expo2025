@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 
 
-const useDataUsers = () => {
-  const API = "http://localhost:4000/api/users";
+const useDataEmployee = () => {
+  const API = "http://localhost:4000/api/employee";
   const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/<tu_cloud_name>/image/upload";
   const UPLOAD_PRESET = "<tu_upload_preset>";
 
-  const [users, setUsers] = useState([]);
+  const [Employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("list");
 
@@ -17,12 +17,12 @@ const useDataUsers = () => {
   const [imageFile, setImageFile] = useState(null); // archivo de imagen
   const [imageUrl, setImageUrl] = useState(""); // URL en Cloudinary
 
-  const fetchUsers = async () => {
+  const fetchEmployees = async () => {
     try {
       const response = await fetch(API);
       if (!response.ok) throw new Error("Error al obtener los usuarios");
       const data = await response.json();
-      setUsers(data);
+      setEmployees(data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -31,7 +31,7 @@ const useDataUsers = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
+    fetchEmployees();
   }, []);
 
   const uploadImageToCloudinary = async (file) => {
@@ -50,7 +50,7 @@ const useDataUsers = () => {
     return data.secure_url;
   };
 
-  const saveUser = async (e) => {
+  const saveEmployee = async (e) => {
     e.preventDefault();
 
     try {
@@ -60,7 +60,7 @@ const useDataUsers = () => {
         uploadedImageUrl = await uploadImageToCloudinary(imageFile);
       }
 
-      const newUser = {
+      const newEmployee = {
         name,
         email,
         password,
@@ -72,7 +72,7 @@ const useDataUsers = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newUser),
+        body: JSON.stringify(newEmployee),
       });
 
       if (!response.ok) throw new Error("Error al registrar el usuario");
@@ -82,14 +82,14 @@ const useDataUsers = () => {
       setPassword("");
       setImageFile(null);
       setImageUrl("");
-      fetchUsers();
+      fetchEmployees();
     } catch (error) {
     
       console.error(error);
     }
   };
 
-  const deleteUser = async (id) => {
+  const deleteEmployee = async (id) => {
     try {
       const response = await fetch(`${API}/${id}`, {
         method: "DELETE",
@@ -98,19 +98,19 @@ const useDataUsers = () => {
       if (!response.ok) throw new Error("Error al eliminar el usuario");
 
    
-      fetchUsers();
+      fetchEmployees();
     } catch (error) {
       
       console.error(error);
     }
   };
 
-  const updateUser = (user) => {
-    setId(user._id);
-    setName(user.name);
-    setEmail(user.email);
+  const updateEmployee = (Employee) => {
+    setId(Employee._id);
+    setName(Employee.name);
+    setEmail(Employee.email);
     setPassword("");
-    setImageUrl(user.image || "");
+    setImageUrl(Employee.image || "");
     setImageFile(null);
     setActiveTab("form");
   };
@@ -125,7 +125,7 @@ const useDataUsers = () => {
         uploadedImageUrl = await uploadImageToCloudinary(imageFile);
       }
 
-      const updatedUser = {
+      const updatedEmployee = {
         name,
         email,
         password,
@@ -137,7 +137,7 @@ const useDataUsers = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedUser),
+        body: JSON.stringify(updatedEmployee),
       });
 
       if (!response.ok) throw new Error("Error al actualizar el usuario");
@@ -150,7 +150,7 @@ const useDataUsers = () => {
       setImageFile(null);
       setImageUrl("");
       setActiveTab("list");
-      fetchUsers();
+      fetchEmployees();
     } catch (error) {
      
       console.error(error);
@@ -167,11 +167,11 @@ const useDataUsers = () => {
     setEmail,
     password,
     setPassword,
-    users,
+    Employees,
     loading,
-    saveUser,
-    deleteUser,
-    updateUser,
+    saveEmployee,
+    deleteEmployee,
+    updateEmployee,
     handleEdit,
     imageFile,
     setImageFile,
@@ -180,4 +180,4 @@ const useDataUsers = () => {
   };
 };
 
-export default useDataUsers;
+export default useDataEmployee;
