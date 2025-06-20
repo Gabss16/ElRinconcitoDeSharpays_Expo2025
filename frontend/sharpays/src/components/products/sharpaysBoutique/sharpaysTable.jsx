@@ -1,7 +1,7 @@
 import React from 'react';
 import InputText from "../../CustomInput";
 import Button from "../../CustomButton";
-import "../../../styles/Users.css";
+import "../../../styles/Employee.css";
 
 const usersData = [
   {
