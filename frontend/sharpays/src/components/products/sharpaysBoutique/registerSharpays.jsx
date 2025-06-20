@@ -1,12 +1,12 @@
 // src/pages/ImageUploadPage.jsx
 import React, { useState, useRef } from "react";
-import UploadImage from "../../../components/UploadImage";
-import ImagePreview from "../../../components/ImagePreview";
-import ComboBox from "../../../components/ComboBox";
-import CustomInput from "../../../components/CustomInput";
-import SizeSelector from "../../../components/SizeSelector";
-import { Title, Subtitle } from "../../../components/Typography";
-import CustomButton from "../../../components/CustomButton";
+import UploadImage from "../../UploadImage";
+import ImagePreview from "../../ImagePreview";
+import ComboBox from "../../ComboBox";
+import CustomInput from "../../CustomInput";
+import SizeSelector from "../../SizeSelector";
+import { Title, Subtitle } from "../../Typography";
+import CustomButton from "../../CustomButton";
 import "../../../styles/registerSharpays.css";
 
 // Opciones para el ComboBox
