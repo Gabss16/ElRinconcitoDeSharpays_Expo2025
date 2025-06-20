@@ -25,15 +25,12 @@ import { useAuth } from "../context/AuthContext.jsx";
 //Alertas
 import ErrorAlert from "../components/ErrorAlert.jsx";
 
-import useForm from "react-hook-form";
-
 const Login = () => {
 
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const methods = useForm();
   const { login } = useAuth();
 
   const handleSubmit = async (e) => {

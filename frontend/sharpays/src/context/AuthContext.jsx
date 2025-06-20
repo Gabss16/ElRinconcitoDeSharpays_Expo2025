@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setAuthCokie(null);
   };
-  
+
   // Definir la función logout como useCallback para evitar recreaciones
   const logout = useCallback(() => {
     const logoutUser = async () => {
