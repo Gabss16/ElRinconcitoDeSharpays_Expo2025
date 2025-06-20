@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "../styles/Orders.css";
 import Sidebar from "../components/Sidebar";
 import CustomTitle from "../components/CustomTitle";
-import OrderCard from "../hooks/Orders/ordersCard";
-import useOrders from "../hooks/Orders/hook/useOrders";
+import OrderCard from "../components/Orders/ordersCard";
+import useOrders from "../components/Orders/hook/useOrders";
 
 const Orders = () => {
   const { orders, loading, error } = useOrders();

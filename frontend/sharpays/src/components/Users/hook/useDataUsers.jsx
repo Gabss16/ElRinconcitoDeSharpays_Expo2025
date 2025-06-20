@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { toast } from "react-hot-toast";
+
 
 const useDataUsers = () => {
   const API = "http://localhost:4000/api/users";
@@ -77,7 +77,6 @@ const useDataUsers = () => {
 
       if (!response.ok) throw new Error("Error al registrar el usuario");
 
-      toast.success("Usuario registrado");
       setName("");
       setEmail("");
       setPassword("");
@@ -85,7 +84,7 @@ const useDataUsers = () => {
       setImageUrl("");
       fetchUsers();
     } catch (error) {
-      toast.error("Fallo al registrar el usuario");
+    
       console.error(error);
     }
   };
@@ -98,10 +97,10 @@ const useDataUsers = () => {
 
       if (!response.ok) throw new Error("Error al eliminar el usuario");
 
-      toast.success("Usuario eliminado");
+   
       fetchUsers();
     } catch (error) {
-      toast.error("Fallo al eliminar usuario");
+      
       console.error(error);
     }
   };
@@ -143,7 +142,7 @@ const useDataUsers = () => {
 
       if (!response.ok) throw new Error("Error al actualizar el usuario");
 
-      toast.success("Usuario actualizado");
+   
       setId("");
       setName("");
       setEmail("");
@@ -153,7 +152,7 @@ const useDataUsers = () => {
       setActiveTab("list");
       fetchUsers();
     } catch (error) {
-      toast.error("Error al editar usuario");
+     
       console.error(error);
     }
   };
