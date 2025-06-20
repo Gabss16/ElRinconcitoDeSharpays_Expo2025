@@ -24,16 +24,17 @@ const Orders = () => {
         <CustomTitle text="Pedidos" style="page-title" />
 
         <div className="store-tabs">
-          {stores.map((store) => (
-            <button
-              key={store}
-              className={`store-tab ${activeStore === store ? "active" : ""}`}
-              onClick={() => setActiveStore(store)}
-            >
-              {store}
-            </button>
-          ))}
-        </div>
+  {stores.map((store) => (
+    <button
+      key={store}
+      className={`store-tab ${activeStore === store ? "active" : ""}`}
+      onClick={() => setActiveStore(store)}
+    >
+      {store}
+    </button>
+  ))}
+</div>
+
 
         <div className="orders-grid">
           {loading ? (

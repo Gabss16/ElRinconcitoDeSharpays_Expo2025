@@ -1,3 +1,7 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
 .orders-page {
   display: flex;
   height: 100vh;
@@ -17,7 +21,7 @@
   padding: 30px;
   border-radius: 16px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1350px !important;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -25,30 +29,46 @@
 .orders-title {
   font-size: 2rem;
   font-weight: bold;
+  font-family: "Inter";
   margin-bottom: 1rem;
 }
 
 
-.store-filters {
+.store-tabs {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 30px;
   flex-wrap: wrap;
 }
 
-.store-filter-btn {
-  padding: 8px 16px;
-  border: none;
-  background: #f0f0f0;
-  border-radius: 20px;
+.store-tab {
+  padding: 10px 18px;
+  border: 1.5px solid white;
+  border-radius: 8px;
+  background-color: white;
+  color: black;
+  font-weight: 500;
+  font-size: 0.95rem;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
 }
 
-.store-filter-btn.active {
-  background: #ff4ba8;
-  color: white;
-  font-weight: bold;
+.store-tab:hover {
+  background-color: #FE3F8D;
+  color: #ffffff;
+  text-shadow: 0 0 6px #ffffff, 0 0 10px #ffffff;
+  transform: scale(1.01);
 }
+
+.store-tab.active {
+  background-color: #FE3F8D;
+  color: white;
+  font-weight: 300;
+  border-color: #FE3F8D;
+  text-shadow: 0 0 6px #ffffff, 0 0 10px #ffffff;
+}
+
 
 .orders-grid {
   display: grid;
