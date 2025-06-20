@@ -1,5 +1,5 @@
 // src/pages/ImageUploadPage.jsx
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import UploadImage from "../../UploadImage";
 import ImagePreview from "../../ImagePreview";
 import ComboBox from "../../ComboBox";
@@ -9,27 +9,38 @@ import { Title, Subtitle } from "../../Typography";
 import CustomButton from "../../CustomButton";
 import "../../../styles/registerSharpays.css";
 
+// 👉 IMPORTAMOS EL HOOK CON LA LÓGICA DE PRODUCTOS
+import useUserDataProducts from "../hook/userDataProducts";
+
 // Opciones para el ComboBox
-const objectTypes = [
-  { label: "Camisa", value: "camisa" },
-  { label: "Pantalón", value: "pantalon" },
-  { label: "Zapatos", value: "zapatos" },
-];
+
 
 const ImageUploadPage = () => {
-  // Estados para la imagen
+  // 👉 Hook de productos
+  const {
+    name, setName,
+    description, setDescription,
+    stock, setStock,
+    price, setPrice,
+    categoryId, setCategoryId,
+    subCategoryId, setSubCategoryId,
+    image, setImage,
+    otherFields, setOtherFields,
+    handleSubmit,
+  } = useUserDataProducts();
+
+  // 👉 Estados locales para controlar inputs personalizados
   const [imageUrl, setImageUrl] = useState(null);
   const fileInputRef = useRef(null);
 
-  // Estados para el formulario
   const [tipoObjeto, setTipoObjeto] = useState("");
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [titulo, setTitulo] = useState("");
   const [precio, setPrecio] = useState("");
-  const [stock, setStock] = useState("");
-  const [descripcion, setDescripcion] = useState("");
+  const [stockValue, setStockValue] = useState("");
+  const [descripcionValue, setDescripcionValue] = useState("");
 
-  // Handlers imagen
+  // 👉 Handler de carga de imagen
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };
@@ -44,16 +55,28 @@ const ImageUploadPage = () => {
     }
   };
 
-  // Handler formulario (puedes ajustarlo según tu lógica)
+  // 👉 SINCRONIZAMOS LOS CAMPOS CON EL HOOK GLOBAL
+  useEffect(() => {
+    setName(titulo);
+    setPrice(precio);
+    setStock(stockValue);
+    setDescription(descripcionValue);
+    setCategoryId("sharpaysBoutique"); // ← TIENDA FIJA PARA ESTA PÁGINA
+    setSubCategoryId(tipoObjeto);
+    setImage(imageUrl);
+    setOtherFields({
+      size: selectedSizes, // 👈🏽 DEFINICIÓN DEL OTHER FIELD "TALLA"
+    });
+  }, [titulo, precio, stockValue, descripcionValue, tipoObjeto, selectedSizes, imageUrl]);
+
+  // 👉 Enviar datos
   const handleAgregar = (e) => {
     e.preventDefault();
-    // Aquí va la lógica para manejar el envío del formulario
-    alert("¡Objeto agregado!");
+    handleSubmit(e); // LLAMA AL MÉTODO DEL HOOK
   };
 
   return (
     <div>
-        
       {/* Sección de carga y previsualización de imagen */}
       <div className="main-container d-flex">
         <input
@@ -63,33 +86,27 @@ const ImageUploadPage = () => {
           style={{ display: "none" }}
           onChange={handleFileChange}
         />
-
         <div className="upload-box">
           <UploadImage onClick={handleUploadClick} />
         </div>
-
         <div className="preview-box">
           <ImagePreview imageUrl={imageUrl} />
         </div>
       </div>
 
-      {/* Nuevo formulario debajo */}
+      {/* Formulario */}
       <form
         className="w-full max-w-6xl mx-auto mt-8 bg-white rounded-lg shadow-md p-8"
         onSubmit={handleAgregar}
       >
-        <Subtitle>Selecciona el tipo de objeto</Subtitle>
-        <ComboBox
-          options={objectTypes}
-          value={tipoObjeto}
-          onChange={(e) => setTipoObjeto(e.target.value)}
-          placeholder="Selecciona el tipo de objeto"
-        />
+        <Subtitle>Selecciona la subcategoría</Subtitle>
+<ComboBox
+  value={tipoObjeto}
+  onChange={(e) => setTipoObjeto(e.target.value)}
+/>
 
         <div className="mt-6">
           <Subtitle>Detalles</Subtitle>
-
-          {/* Fila horizontal de inputs */}
           <div className="form-row">
             <div className="input-titulo">
               <CustomInput
@@ -101,7 +118,6 @@ const ImageUploadPage = () => {
                 onChange={(e) => setTitulo(e.target.value)}
               />
             </div>
-
             <div className="input-precio">
               <CustomInput
                 label="Precio"
@@ -112,18 +128,16 @@ const ImageUploadPage = () => {
                 onChange={(e) => setPrecio(e.target.value)}
               />
             </div>
-
             <div className="input-stock">
               <CustomInput
                 label="Stock"
                 placeholder="Stock"
                 type="number"
                 name="stock"
-                value={stock}
-                onChange={(e) => setStock(e.target.value)}
+                value={stockValue}
+                onChange={(e) => setStockValue(e.target.value)}
               />
             </div>
-
             <div className="input-tallas">
               <label className="text-sm font-semibold mb-1 block">
                 Tallas disponibles
@@ -135,15 +149,14 @@ const ImageUploadPage = () => {
             </div>
           </div>
 
-          {/* Descripción ocupa todo el ancho */}
           <div className="input-descripcion">
             <CustomInput
               label="Descripción"
               placeholder="Descripción"
               type="text"
               name="descripcion"
-              value={descripcion}
-              onChange={(e) => setDescripcion(e.target.value)}
+              value={descripcionValue}
+              onChange={(e) => setDescripcionValue(e.target.value)}
             />
           </div>
         </div>

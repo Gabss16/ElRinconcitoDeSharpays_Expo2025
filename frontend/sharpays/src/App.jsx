@@ -7,6 +7,7 @@ import Employee from "./pages/Employee.jsx";
 import RecoveryPassword from "./pages/RecoveryPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
 import Orders from "./pages/Orders.jsx"
+import Sharpays from "./pages/SharpaysBoutique.jsx"
 
 import { AuthProvider } from "./context/AuthContext";
 
@@ -22,7 +23,8 @@ return (
     <Route path="/Employee" element={<Employee/>} />
     <Route path="/RecoveryPassword" element={<RecoveryPassword/>} />
     <Route path="/ResetPassword" element={<ResetPassword/>} />
-     <Route path="/Orders" element={<Orders/>} />
+    <Route path="/Orders" element={<Orders/>} />
+    <Route path="/Sharpays" element={<Sharpays/>} />
 
 
 </Routes>
