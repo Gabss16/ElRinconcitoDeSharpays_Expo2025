@@ -1,36 +1,30 @@
-import { createContext, useContext, useState, useEffect } from "react";
-const API = "http://localhost:4000/api";
-const AuthContext = createContext();
+import React, { createContext, useState, useEffect, useCallback, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+
+// Creamos el contexto
+const AuthContext = createContext(null);
+
+// Exportamos el contexto para que pueda ser importado por useAuth.js
+export { AuthContext };
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [authCokie, setAuthCokie] = useState(null);
+  const API_URL = "http://localhost:4000/api";
+  
+  const navigate = useNavigate();
 
-  const Login = async (email, password) => {
-    try {
-      const response = await fetch(`${API}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Authentication error");
-      }
-
-      const data = await response.json();
-      localStorage.setItem("authToken", data.token);
-      localStorage.setItem("user", JSON.stringify({ email }));
-      setAuthCokie(data.token);
-      setUser({ email });
-
-      return { success: true, message: data.message };
-    } catch (error) {
-      return { success: false, message: error.message };
-    }
+  // Función para limpiar sesión - función interna que no causa dependencias cíclicas
+  const clearSession = () => {
+    localStorage.removeItem("token");
+    // Eliminar la cookie con el nombre correcto (authToken)
+    Cookies.remove("authToken", { path: '/' }); // Añadir path para asegurar que se elimina correctamente
+    setUser(null);
+    setAuthCokie(null);
   };
-
+  
+  // Definir la función logout como useCallback para evitar recreaciones
   const logout = useCallback(() => {
     const logoutUser = async () => {
       try {
@@ -40,28 +34,108 @@ export const AuthProvider = ({ children }) => {
         });
       } catch (error) {
         console.error("Error during logout:", error);
+      } finally {
+        clearSession();
+        navigate("/");
       }
     };
-
+    
     logoutUser();
   }, [API_URL, navigate]);
 
-  // En useEffect
-  useEffect(() => {
-    const token = localStorage.getItem("authToken");
-    const savedUser = localStorage.getItem("user");
-    if (token) {
-      setAuthCokie(token);
-      if (savedUser) {
-        setUser(JSON.parse(savedUser));
+  // Función para iniciar sesión
+  const login = async (email, password) => {
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+        credentials: "include",
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem("token", data.token);
+        setAuthCokie(data.token);
+        setUser(data.user);
+        navigate("/welcome");
+        return true;
+      } else {
+        return false;
       }
+    } catch (error) {
+      console.error("Error during login:", error);
+      return false;
     }
-  }, []);
+  };
+
+  /*
+  // Verificar sesión al cargar la aplicación
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const cookieToken = Cookies.get("authToken"); // Usar el mismo nombre que usa el backend (authToken)
+
+        if (token || cookieToken) {
+          // Como no hay un endpoint específico para verificar tokens, vamos a usar
+          // una ruta protegida simple para ver si el token es válido
+          const response = await fetch(`${API_URL}/productsAdmin`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              // Usar el token que tenemos (del localStorage o de la cookie)
+              Authorization: `Bearer ${token || cookieToken}`,
+            },
+            credentials: "include",
+          });
+
+          if (response.ok) {
+            // Si la respuesta es exitosa, significa que el token es válido
+            // Decodificar el token para obtener información del usuario
+            try {
+              // Una manera simple de extraer la info del usuario del token
+              const tokenParts = (token || cookieToken).split('.');
+              if (tokenParts.length === 3) {
+                const payload = JSON.parse(atob(tokenParts[1]));
+                setUser({
+                  id: payload.id,
+                  userType: payload.userType
+                });
+                setAuthCokie(token || cookieToken);
+              }
+            } catch (e) {
+              console.error("Error decoding token:", e);
+            }
+          } else {
+            // Token inválido
+            clearSession();
+          }
+        } else {
+          clearSession();
+        }
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+        clearSession();
+      }
+    };
+
+    checkAuth();
+  }, [API_URL]); // Sólo depende de API_URL
+*/
+  // Objeto de valores del contexto
+  const contextValue = {
+    user,
+    authCokie,
+    login,
+    logout
+  }; 
 
   return (
-    <AuthContext.Provider
-      value={{ user, Login, logout, authCokie, setAuthCokie, API }}
-    >
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );

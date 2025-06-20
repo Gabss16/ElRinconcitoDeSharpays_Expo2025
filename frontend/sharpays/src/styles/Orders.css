@@ -1,0 +1,138 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.orders-page {
+  display: flex;
+  height: 100vh;
+  background-color: #f4f4f4;
+}
+
+.orders-wrapper {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.orders-content {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 1350px !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+
+.orders-title {
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: "Inter";
+  margin-bottom: 1rem;
+}
+
+
+.store-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.store-tab {
+  padding: 10px 18px;
+  border: 1.5px solid white;
+  border-radius: 8px;
+  background-color: white;
+  color: black;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.store-tab:hover {
+  background-color: #FE3F8D;
+  color: #ffffff;
+  text-shadow: 0 0 6px #ffffff, 0 0 10px #ffffff;
+  transform: scale(1.01);
+}
+
+.store-tab.active {
+  background-color: #FE3F8D;
+  color: white;
+  font-weight: 300;
+  border-color: #FE3F8D;
+  text-shadow: 0 0 6px #ffffff, 0 0 10px #ffffff;
+}
+
+
+.orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.order-card {
+  background: white;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.order-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.avatar {
+  background: #ff4ba8;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  background: #e0e0e0;
+}
+
+.status-badge.completed {
+  background: #d4f7d4;
+  color: #2e7d32;
+}
+
+.order-items {
+  width: 100%;
+  margin-bottom: 10px;
+  font-size: 14px;
+  border-collapse: collapse;
+}
+
+.order-items td, .order-items th {
+  padding: 4px 8px;
+}
+
+.order-total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.order-actions {
+  display: flex;
+  gap: 10px;
+}
