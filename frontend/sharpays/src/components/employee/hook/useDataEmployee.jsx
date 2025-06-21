@@ -4,6 +4,9 @@ const useDataEmployee = () => {
   const API = "http://localhost:4000/api/employees";
   const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/devkosnau/image/upload";
   const UPLOAD_PRESET = "ml_default";
+  const API = "http://localhost:4000/api/employees";
+  const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/<tu_cloud_name>/image/upload";
+  const UPLOAD_PRESET = "<tu_upload_preset>";
 
   const [Employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);

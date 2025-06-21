@@ -30,7 +30,6 @@ const EmpsTable = () => {
         <div className="table-content">
           {Employees?.map((emp) => (
             <div key={emp._id} className="table-row">
-              <span>{emp._id}</span>
               <span>{emp.name}</span>
               <span>{emp.email}</span>
               <span>
