@@ -1,22 +1,39 @@
-// components/UploadImage.js
-import React from 'react';
-import '../styles/UploadImage.css';
-import { FaFolderOpen } from 'react-icons/fa'; 
+import React from "react";
+import "../styles/UploadimageUsers.css";
+import CustomButton from "./CustomButton";
 
-const UploadImage = ({
-  buttonText = "Cargar imagen",
-  onClick,
-  className = "",
-  iconClassName = "",
-}) => {
+function SubirImagen({ onChange }) {
+  // Referencia para el input file oculto
+  const inputFileRef = React.useRef(null);
+
+  // Al hacer clic en el botón, dispara el click en el input file
+  const handleButtonClick = () => {
+    inputFileRef.current.click();
+  };
+
   return (
-    <div className={`upload-container ${className}`}>
-      <FaFolderOpen className={`upload-icon ${iconClassName}`} />
-      <button className="upload-button" onClick={onClick}>
-        {buttonText}
-      </button>
+    <div className="upload-container">
+      {/* Input file oculto */}
+      <input
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        ref={inputFileRef}
+        onChange={onChange}
+      />
+
+      {/* Botón que dispara el input */}
+      <CustomButton
+        text={"Subir imagen"}
+        background={"black"}
+        color={"white"}
+        height="40px"
+        width="140px"
+        onClick={handleButtonClick}
+        className="upload-button"
+      />
     </div>
   );
-};
+}
 
-export default UploadImage;
+export default SubirImagen;

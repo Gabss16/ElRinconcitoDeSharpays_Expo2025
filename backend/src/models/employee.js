@@ -78,7 +78,7 @@ const EmployeeSchema = new Schema(
     },
     image: {
       type: String,
-      default: ""
+      
     }
   },
   {

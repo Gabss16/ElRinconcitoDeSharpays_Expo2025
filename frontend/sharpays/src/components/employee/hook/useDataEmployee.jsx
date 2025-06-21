@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
 
-
 const useDataEmployee = () => {
-  const API = "http://localhost:4000/api/employee";
-  const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/<tu_cloud_name>/image/upload";
-  const UPLOAD_PRESET = "<tu_upload_preset>";
+  const API = "http://localhost:4000/api/employees";
+  const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/devkosnau/image/upload";
+  const UPLOAD_PRESET = "ml_default";
 
   const [Employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,17 +13,16 @@ const useDataEmployee = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [imageFile, setImageFile] = useState(null); // archivo de imagen
-  const [imageUrl, setImageUrl] = useState(""); // URL en Cloudinary
+  const [imageFile, setImageFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
 
   const fetchEmployees = async () => {
     try {
       const response = await fetch(API);
-      if (!response.ok) throw new Error("Error al obtener los usuarios");
       const data = await response.json();
       setEmployees(data);
     } catch (error) {
-      console.error(error);
+      console.error("Error al obtener los empleados", error);
     } finally {
       setLoading(false);
     }
@@ -44,73 +42,65 @@ const useDataEmployee = () => {
       body: formData,
     });
 
-    if (!response.ok) throw new Error("Error al subir la imagen a Cloudinary");
+    if (!response.ok) throw new Error("Error al subir imagen");
 
     const data = await response.json();
     return data.secure_url;
   };
 
-  const saveEmployee = async (e) => {
+  const saveUser = async (e) => {
     e.preventDefault();
 
     try {
-      let uploadedImageUrl = imageUrl;
+      let finalImageUrl = imageUrl;
 
       if (imageFile) {
-        uploadedImageUrl = await uploadImageToCloudinary(imageFile);
+        finalImageUrl = await uploadImageToCloudinary(imageFile);
       }
 
       const newEmployee = {
-        name,
-        email,
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
         password,
-        image: uploadedImageUrl,
+        image: finalImageUrl || "", // Garantizar que siempre haya una key
       };
 
       const response = await fetch(API, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newEmployee),
       });
 
-      if (!response.ok) throw new Error("Error al registrar el usuario");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Error al crear empleado");
+      }
 
-      setName("");
-      setEmail("");
-      setPassword("");
-      setImageFile(null);
-      setImageUrl("");
+      resetForm();
       fetchEmployees();
-    } catch (error) {
-    
-      console.error(error);
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
     }
   };
 
   const deleteEmployee = async (id) => {
     try {
-      const response = await fetch(`${API}/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(`${API}/${id}`, { method: "DELETE" });
+      if (!response.ok) throw new Error("Error al eliminar empleado");
 
-      if (!response.ok) throw new Error("Error al eliminar el usuario");
-
-   
       fetchEmployees();
-    } catch (error) {
-      
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     }
   };
 
-  const updateEmployee = (Employee) => {
-    setId(Employee._id);
-    setName(Employee.name);
-    setEmail(Employee.email);
+  const updateEmployee = (emp) => {
+    setId(emp._id);
+    setName(emp.name);
+    setEmail(emp.email);
     setPassword("");
-    setImageUrl(Employee.image || "");
+    setImageUrl(emp.image || "");
     setImageFile(null);
     setActiveTab("form");
   };
@@ -119,42 +109,46 @@ const useDataEmployee = () => {
     e.preventDefault();
 
     try {
-      let uploadedImageUrl = imageUrl;
+      let finalImageUrl = imageUrl;
 
       if (imageFile) {
-        uploadedImageUrl = await uploadImageToCloudinary(imageFile);
+        finalImageUrl = await uploadImageToCloudinary(imageFile);
       }
 
       const updatedEmployee = {
-        name,
-        email,
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
         password,
-        image: uploadedImageUrl,
+        image: finalImageUrl || "",
       };
 
       const response = await fetch(`${API}/${id}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedEmployee),
       });
 
-      if (!response.ok) throw new Error("Error al actualizar el usuario");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Error al actualizar");
+      }
 
-   
-      setId("");
-      setName("");
-      setEmail("");
-      setPassword("");
-      setImageFile(null);
-      setImageUrl("");
-      setActiveTab("list");
+      resetForm();
       fetchEmployees();
-    } catch (error) {
-     
-      console.error(error);
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
     }
+  };
+
+  const resetForm = () => {
+    setId("");
+    setName("");
+    setEmail("");
+    setPassword("");
+    setImageFile(null);
+    setImageUrl("");
+    setActiveTab("list");
   };
 
   return {
@@ -169,7 +163,7 @@ const useDataEmployee = () => {
     setPassword,
     Employees,
     loading,
-    saveEmployee,
+    saveUser,
     deleteEmployee,
     updateEmployee,
     handleEdit,

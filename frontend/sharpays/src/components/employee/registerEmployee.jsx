@@ -49,7 +49,7 @@ const UserForm = () => {
           <div className="form-group">
             <label className="form-label">Correo</label>
             <InputText
-              type="text"
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder=""

@@ -4,7 +4,7 @@ import Button from "../CustomButton";
 import useDataEmployee from "../employee/hook/useDataEmployee";
 import "../../styles/Employee.css";
 
-const empsTable = () => {
+const EmpsTable = () => {
   const { Employees, deleteEmployee, updateEmployee } = useDataEmployee();
 
   return (
@@ -21,9 +21,9 @@ const empsTable = () => {
         </div>
 
         <div className="table-header">
-          <span>id</span>
-          <span>nombre</span>
+          <span>Nombre</span>
           <span>Correo</span>
+          <span>Imagen</span>
           <span>Acciones</span>
         </div>
 
@@ -33,6 +33,32 @@ const empsTable = () => {
               <span>{emp._id}</span>
               <span>{emp.name}</span>
               <span>{emp.email}</span>
+              <span>
+                {emp.image ? (
+                  <img
+                    src={emp.image}
+                    alt="Perfil"
+                    style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "8px" }}
+                  />
+                ) : (
+                  <div
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      borderRadius: "8px",
+                      backgroundColor: "#ddd",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "12px",
+                      color: "#555",
+                      userSelect: "none"
+                    }}
+                  >
+                    Sin imagen
+                  </div>
+                )}
+              </span>
               <div className="action-buttons">
                 <Button
                   text="Editar"
@@ -41,7 +67,7 @@ const empsTable = () => {
                   height="32px"
                   width="80px"
                   className="action-button"
-                  onClick={() => updateemp(emp)}
+                  onClick={() => updateEmployee(emp)}
                 />
                 <Button
                   text="Eliminar"
@@ -51,7 +77,7 @@ const empsTable = () => {
                   height="32px"
                   width="80px"
                   className="action-button"
-                  onClick={() => deleteemp(emp._id)}
+                  onClick={() => deleteEmployee(emp._id)}
                 />
               </div>
             </div>
@@ -62,4 +88,4 @@ const empsTable = () => {
   );
 };
 
-export default empsTable;
+export default EmpsTable;
