@@ -15,11 +15,31 @@ const EmployeeForm = ({
   setImageFile,
   imageUrl,
   setImageUrl,
-  saveUser,
+  saveEmployee,
   handleEdit,
+  Employees 
 }) => {
+  imageUrl = "url";
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const employeeData = {
+      name,
+      email,
+      password,
+      imageUrl
+    };
+
+    if (!Employees) {
+      employeeData.id = Employees._id;
+      handleEdit(employeeData);
+    } else {
+      saveEmployee(employeeData);
+    }
+  };
+
   return (
-    <form onSubmit={id ? handleEdit : saveUser}>
+    <form onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="section-label">Subir Imagen</label>
         <UploadImage
@@ -70,13 +90,12 @@ const EmployeeForm = ({
 
         <div className="upload-actions">
           <Button
-            text={id ? "Actualizar" : "Agregar"}
+            text={"Guardar"}
             background="#FD0053"
             color="white"
             height="32px"
             width="100px"
             className="upload-action-button"
-            type="submit"
           />
         </div>
       </div>

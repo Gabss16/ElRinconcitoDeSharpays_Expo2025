@@ -13,29 +13,31 @@ const EmployeeSchema = new Schema(
     name: {
       type: String,
       required: [true, 'El nombre es obligatorio'],
-      trim: true,
       minlength: [2, 'El nombre debe tener al menos 2 caracteres'],
       maxlength: [50, 'El nombre no puede exceder 50 caracteres'],
+     /* trim: true,
       match: [/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/, 'El nombre solo puede contener letras y espacios'],
       validate: {
         validator: function(value) {
           return value.split(' ').length >= 2;
         },
         message: 'Debe proporcionar nombre y apellido'
-      }
+      }*/
     },
 
     email: {
       type: String,
       required: [true, 'El correo electrónico es obligatorio'],
       unique: true,
+      match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/],
+      /*
       lowercase: true,
       trim: true,
       match: [
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         'Por favor ingrese un correo electrónico válido'
       ],
-      maxlength: [100, 'El correo no puede exceder 100 caracteres']
+      maxlength: [100, 'El correo no puede exceder 100 caracteres']*/
     },
 
     password: {
@@ -43,7 +45,7 @@ const EmployeeSchema = new Schema(
       required: [true, 'La contraseña es obligatoria'],
       minlength: [8, 'La contraseña debe tener al menos 8 caractxeres'],
       maxlength: [128, 'La contraseña no puede exceder 128 caracteres'],
-      validate: [
+      /*validate: [
         {
           validator: function(password) {
             return /[a-z]/.test(password);
@@ -74,7 +76,7 @@ const EmployeeSchema = new Schema(
           },
           message: 'La contraseña no puede contener espacios'
         }
-      ]
+      ]*/
     },
     image: {
       type: String,
