@@ -2,25 +2,53 @@ import React from 'react';
 import InputText from "../CustomInput";
 import Button from "../CustomButton";
 import UploadImage from "../UploadimageUsers";
-import useDataEmployee from "../employee/hook/useDataEmployee";
 
-const UserForm = () => {
-  const {
-    name,
-    setName,
-    email,
-    setEmail,
-    password,
-    setPassword,
-    imageFile,
-    setImageFile,
-    saveUser,
-    handleEdit,
-    id
-  } = useDataEmployee();
+const UserForm = ({
+  name,
+  setName,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  imageFile,
+  setImageFile,
+  imageUrl,
+  uploadImageToCloudinary,
+  resetForm,
+  fetchEmployees,
+  id,
+  handleEdit,
+  saveUser,
+}) => {
+  const handleSubmit = (e) => {
+    if (id) {
+      handleEdit(e, {
+        name,
+        email,
+        password,
+        imageFile,
+        imageUrl,
+        uploadImageToCloudinary,
+        resetForm,
+        fetchEmployees,
+        id
+      });
+    } else {
+      saveUser(e, {
+        name,
+        email,
+        password,
+        imageFile,
+        imageUrl,
+        uploadImageToCloudinary,
+        resetForm,
+        fetchEmployees
+      });
+    }
+  };
 
   return (
-    <form onSubmit={id ? handleEdit : saveUser}>
+    <form onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="section-label">Subir Imagen</label>
         <UploadImage
@@ -64,7 +92,7 @@ const UserForm = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder=""  
+            placeholder=""
             className="form-input"
           />
         </div>

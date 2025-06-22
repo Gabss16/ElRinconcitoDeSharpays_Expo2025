@@ -49,41 +49,45 @@ const UPLOAD_PRESET = "ml_default";
     return data.secure_url;
   };
 
-  const saveUser = async (e) => {
-    e.preventDefault();
+const saveUser = async (
+  e,
+  { name, email, password, imageFile, imageUrl, uploadImageToCloudinary, resetForm, fetchEmployees }
+) => {
+  e.preventDefault();
 
-    try {
-      let finalImageUrl = imageUrl;
+  try {
+    let finalImageUrl = imageUrl;
 
-      if (imageFile) {
-        finalImageUrl = await uploadImageToCloudinary(imageFile);
-      }
-
-      const newEmployee = {
-        name: name.trim(),
-        email: email.trim().toLowerCase(),
-        password,
-        image: finalImageUrl || "", // Garantizar que siempre haya una key
-      };
-
-      const response = await fetch(API, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newEmployee),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Error al crear empleado");
-      }
-
-      resetForm();
-      fetchEmployees();
-    } catch (err) {
-      console.error(err);
-      alert(err.message);
+    if (imageFile) {
+      finalImageUrl = await uploadImageToCloudinary(imageFile);
     }
-  };
+
+    const newEmployee = {
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      password,
+      image: finalImageUrl || "",
+    };
+
+    const response = await fetch("http://localhost:4000/api/employees", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newEmployee),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Error al crear empleado");
+    }
+
+    resetForm();
+    fetchEmployees();
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+};
+
 
   const deleteEmployee = async (id) => {
     try {
