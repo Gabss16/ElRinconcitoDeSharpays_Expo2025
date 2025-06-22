@@ -3,7 +3,8 @@ import InputText from "../CustomInput";
 import Button from "../CustomButton";
 import UploadImage from "../UploadimageUsers";
 
-const UserForm = ({
+const EmployeeForm = ({
+  id,
   name,
   setName,
   email,
@@ -13,42 +14,12 @@ const UserForm = ({
   imageFile,
   setImageFile,
   imageUrl,
-  uploadImageToCloudinary,
-  resetForm,
-  fetchEmployees,
-  id,
-  handleEdit,
+  setImageUrl,
   saveUser,
+  handleEdit,
 }) => {
-  const handleSubmit = (e) => {
-    if (id) {
-      handleEdit(e, {
-        name,
-        email,
-        password,
-        imageFile,
-        imageUrl,
-        uploadImageToCloudinary,
-        resetForm,
-        fetchEmployees,
-        id
-      });
-    } else {
-      saveUser(e, {
-        name,
-        email,
-        password,
-        imageFile,
-        imageUrl,
-        uploadImageToCloudinary,
-        resetForm,
-        fetchEmployees
-      });
-    }
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={id ? handleEdit : saveUser}>
       <div className="form-group">
         <label className="section-label">Subir Imagen</label>
         <UploadImage
@@ -113,4 +84,5 @@ const UserForm = ({
   );
 };
 
-export default UserForm;
+export default  EmployeeForm ;
+

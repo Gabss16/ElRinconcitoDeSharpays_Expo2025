@@ -1,12 +1,9 @@
-import React from 'react';
+import React from "react";
 import InputText from "../CustomInput";
 import Button from "../CustomButton";
-import useDataEmployee from "../employee/hook/useDataEmployee";
 import "../../styles/Employee.css";
 
-const EmpsTable = () => {
-  const { Employees, deleteEmployee, updateEmployee } = useDataEmployee();
-
+const EmpsTable = ({ Employees, deleteEmployee, updateEmployee, loading }) => {
   return (
     <div className="emps-table-section">
       <div className="table-card">
@@ -16,7 +13,7 @@ const EmpsTable = () => {
             name="buscar"
             placeholder="Buscar"
             className="search-input"
-            // Puedes agregar lógica de búsqueda si deseas
+            // Aquí puedes agregar lógica para búsqueda si quieres
           />
         </div>
 
@@ -28,59 +25,70 @@ const EmpsTable = () => {
         </div>
 
         <div className="table-content">
-          {Employees?.map((emp) => (
-            <div key={emp._id} className="table-row">
-              <span>{emp.name}</span>
-              <span>{emp.email}</span>
-              <span>
-                {emp.image ? (
-                  <img
-                    src={emp.image}
-                    alt="Perfil"
-                    style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "8px" }}
+          {loading ? (
+            <div>Cargando empleados...</div>
+          ) : Employees?.length === 0 ? (
+            <div>No hay empleados para mostrar</div>
+          ) : (
+            Employees.map((emp) => (
+              <div key={emp._id} className="table-row">
+                <span>{emp.name}</span>
+                <span>{emp.email}</span>
+                <span>
+                  {emp.image ? (
+                    <img
+                      src={emp.image}
+                      alt="Perfil"
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                      }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "8px",
+                        backgroundColor: "#ddd",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "12px",
+                        color: "#555",
+                        userSelect: "none",
+                      }}
+                    >
+                      Sin imagen
+                    </div>
+                  )}
+                </span>
+                <div className="action-buttons">
+                  <Button
+                    text="Editar"
+                    background="#FD0053"
+                    color="white"
+                    height="32px"
+                    width="80px"
+                    className="action-button"
+                    onClick={() => updateEmployee(emp)}
                   />
-                ) : (
-                  <div
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      borderRadius: "8px",
-                      backgroundColor: "#ddd",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "12px",
-                      color: "#555",
-                      userSelect: "none"
-                    }}
-                  >
-                    Sin imagen
-                  </div>
-                )}
-              </span>
-              <div className="action-buttons">
-                <Button
-                  text="Editar"
-                  background="#FD0053"
-                  color="white"
-                  height="32px"
-                  width="80px"
-                  className="action-button"
-                  onClick={() => updateEmployee(emp)}
-                />
-                <Button
-                  text="Eliminar"
-                  border="1px solid #FD0053"
-                  color="#FD0053"
-                  background="white"
-                  height="32px"
-                  width="80px"
-                  className="action-button"
-                  onClick={() => deleteEmployee(emp._id)}
-                />
+                  <Button
+                    text="Eliminar"
+                    border="1px solid #FD0053"
+                    color="#FD0053"
+                    background="white"
+                    height="32px"
+                    width="80px"
+                    className="action-button"
+                    onClick={() => deleteEmployee(emp._id)}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>
