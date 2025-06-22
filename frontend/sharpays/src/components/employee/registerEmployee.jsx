@@ -11,27 +11,24 @@ const EmployeeForm = ({
   setEmail,
   password,
   setPassword,
-  imageFile,
-  setImageFile,
   imageUrl,
   setImageUrl,
   saveEmployee,
   handleEdit,
-  Employees 
 }) => {
-  imageUrl = "url";
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const employeeData = {
+      id,
       name,
       email,
       password,
       imageUrl
     };
 
-    if (!Employees) {
-      employeeData.id = Employees._id;
+    if (id) {
       handleEdit(employeeData);
     } else {
       saveEmployee(employeeData);
@@ -42,14 +39,14 @@ const EmployeeForm = ({
     <form onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="section-label">Subir Imagen</label>
-        <UploadImage
-          onChange={(e) => {
-            const file = e.target.files[0];
-            if (file) {
-              setImageFile(file);
-            }
-          }}
-        />
+        <UploadImage onUpload={(url) => setImageUrl(url)} />
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt="Preview"
+            style={{ width: "150px", height: "150px", objectFit: "cover", marginTop: "10px" }}
+          />
+        )}
       </div>
 
       <div className="users-form-section">
@@ -62,6 +59,7 @@ const EmployeeForm = ({
               onChange={(e) => setName(e.target.value)}
               placeholder=""
               className="form-input"
+              required
             />
           </div>
 
@@ -73,6 +71,7 @@ const EmployeeForm = ({
               onChange={(e) => setEmail(e.target.value)}
               placeholder=""
               className="form-input"
+              required
             />
           </div>
         </div>
@@ -85,11 +84,13 @@ const EmployeeForm = ({
             onChange={(e) => setPassword(e.target.value)}
             placeholder=""
             className="form-input"
+            required={!id} // obligatorio solo si es creación
           />
         </div>
 
         <div className="upload-actions">
           <Button
+            type="submit"
             text={"Guardar"}
             background="#FD0053"
             color="white"
@@ -103,5 +104,4 @@ const EmployeeForm = ({
   );
 };
 
-export default  EmployeeForm ;
-
+export default EmployeeForm;

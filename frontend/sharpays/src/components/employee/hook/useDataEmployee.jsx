@@ -103,14 +103,14 @@ const useDataEmployee = () => {
     }
   };
 
-  const updateEmployee = (emp) => {
-    setId(emp._id);
-    setName(emp.name);
-    setEmail(emp.email);
-    setPassword(""); // por seguridad no mostrarla
-    setImageUrl(emp.image || "");
-    setActiveTab("form");
-  };
+const updateEmployee = (employee) => {
+  setId(employee._id);
+  setName(employee.name);
+  setEmail(employee.email);
+  setPassword(""); // Por seguridad no mostrarla
+  setImageUrl(employee.image || "");
+  setActiveTab("form"); // Cambiar a la pestaña o mostrar formulario
+};
 
   return {
     activeTab,

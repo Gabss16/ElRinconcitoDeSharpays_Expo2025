@@ -3,6 +3,8 @@ import InputText from "../CustomInput";
 import Button from "../CustomButton";
 import "../../styles/Employee.css";
 
+
+
 const EmpsTable = ({ Employees, deleteEmployee, updateEmployee, loading }) => {
   return (
     <div className="emps-table-section">
@@ -16,6 +18,7 @@ const EmpsTable = ({ Employees, deleteEmployee, updateEmployee, loading }) => {
             // Aquí puedes agregar lógica para búsqueda si quieres
           />
         </div>
+        
 
         <div className="table-header">
           <span>Nombre</span>

@@ -1,39 +1,41 @@
 import React from "react";
-import "../styles/UploadimageUsers.css";
-import CustomButton from "./CustomButton";
 
-function SubirImagen({ onChange }) {
-  // Referencia para el input file oculto
-  const inputFileRef = React.useRef(null);
+const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/devkosnau/image/upload";
+const UPLOAD_PRESET = "ml_default";
 
-  // Al hacer clic en el botón, dispara el click en el input file
-  const handleButtonClick = () => {
-    inputFileRef.current.click();
+const UploadImage = ({ onUpload }) => {
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", UPLOAD_PRESET);
+
+    try {
+      const res = await fetch(CLOUDINARY_URL, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (data.secure_url) {
+        onUpload(data.secure_url); // Devuelve la URL al padre
+      } else {
+        alert("Error al subir la imagen");
+      }
+    } catch (error) {
+      console.error("Error al subir imagen:", error);
+      alert("Error al subir imagen");
+    }
   };
 
   return (
-    <div className="upload-container">
-      {/* Input file oculto */}
-      <input
-        type="file"
-        accept="image/*"
-        style={{ display: "none" }}
-        ref={inputFileRef}
-        onChange={onChange}
-      />
-
-      {/* Botón que dispara el input */}
-      <CustomButton
-        text={"Subir imagen"}
-        background={"black"}
-        color={"white"}
-        height="40px"
-        width="140px"
-        onClick={handleButtonClick}
-        className="upload-button"
-      />
-    </div>
+    <input
+      type="file"
+      accept="image/*"
+      onChange={handleFileChange}
+    />
   );
-}
+};
 
-export default SubirImagen;
+export default UploadImage;
