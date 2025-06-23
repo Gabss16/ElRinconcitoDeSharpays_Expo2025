@@ -1,5 +1,14 @@
-const CustomInput = ({label,placeholder,type,name,disable, hidden, onChange}) => {
-    return (
+const CustomInput = ({
+  label,
+  placeholder,
+  type,
+  name,
+  disable,
+  hidden,
+  onChange,
+  value,
+}) => {
+  return (
     <div className="m-2">
       <label htmlFor={name} className="text-white" hidden={hidden}>
         {label}
@@ -13,6 +22,7 @@ const CustomInput = ({label,placeholder,type,name,disable, hidden, onChange}) =>
           disabled={disable}
           hidden={hidden}
           onChange={onChange}
+          value={value} // Agregado para controlar el input
         />
       </div>
     </div>

@@ -9,9 +9,12 @@ const EmployeePage = () => {
 
   return (
     <div className="users-main-container">
-      <div className="users-content-wrapper">
+      <h2 className="main-title">Usuarios</h2>
+
+      <div className="form-and-fields">
         <EmpsForm {...data} />
       </div>
+
       <div className="users-table-wrapper">
         <EmpsTable {...data} />
       </div>

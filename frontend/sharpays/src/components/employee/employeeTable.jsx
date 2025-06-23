@@ -1,11 +1,10 @@
+// EmpsTable.jsx
 import React from "react";
 import InputText from "../CustomInput";
 import Button from "../CustomButton";
 import "../../styles/Employee.css";
 
-
-
-const EmpsTable = ({ Employees, deleteEmployee, updateEmployee, loading }) => {
+const EmpsTable = ({ employees, deleteEmployee, updateEmployee, loading }) => {
   return (
     <div className="emps-table-section">
       <div className="table-card">
@@ -15,10 +14,9 @@ const EmpsTable = ({ Employees, deleteEmployee, updateEmployee, loading }) => {
             name="buscar"
             placeholder="Buscar"
             className="search-input"
-            // Aquí puedes agregar lógica para búsqueda si quieres
+            // Puedes agregar lógica para búsqueda aquí
           />
         </div>
-        
 
         <div className="table-header">
           <span>Nombre</span>
@@ -30,10 +28,10 @@ const EmpsTable = ({ Employees, deleteEmployee, updateEmployee, loading }) => {
         <div className="table-content">
           {loading ? (
             <div>Cargando empleados...</div>
-          ) : Employees?.length === 0 ? (
+          ) : employees.length === 0 ? (
             <div>No hay empleados para mostrar</div>
           ) : (
-            Employees.map((emp) => (
+            employees.map((emp) => (
               <div key={emp._id} className="table-row">
                 <span>{emp.name}</span>
                 <span>{emp.email}</span>

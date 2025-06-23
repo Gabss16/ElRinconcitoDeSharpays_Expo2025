@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import InputText from "../CustomInput";
 import Button from "../CustomButton";
 import UploadImage from "../UploadimageUsers";
@@ -16,50 +16,39 @@ const EmployeeForm = ({
   saveEmployee,
   handleEdit,
 }) => {
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const employeeData = {
-      id,
-      name,
-      email,
-      password,
-      imageUrl
-    };
-
-    if (id) {
-      handleEdit(employeeData);
-    } else {
-      saveEmployee(employeeData);
+    if (!name || !email || (!id && !password)) {
+      alert("Todos los campos son obligatorios");
+      return;
     }
+
+    const employeeData = { id, name, email, password, imageUrl };
+
+    if (id) handleEdit(employeeData);
+    else saveEmployee(employeeData);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label className="section-label">Subir Imagen</label>
-        <UploadImage onUpload={(url) => setImageUrl(url)} />
-        {imageUrl && (
-          <img
-            src={imageUrl}
-            alt="Preview"
-            style={{ width: "150px", height: "150px", objectFit: "cover", marginTop: "10px" }}
-          />
-        )}
-      </div>
+    <form onSubmit={handleSubmit} className="employee-form">
+      <div className="form-row-wrapper">
+        {/* Columna de imagen */}
+        <div className="image-upload-section">
+          <UploadImage onUpload={(url) => setImageUrl(url)} />
+     
+        </div>
 
-      <div className="users-form-section">
-        <div className="form-row">
+        {/* Inputs alineados a la derecha */}
+        <div className="fields-section">
           <div className="form-group">
             <label className="form-label">Nombre</label>
             <InputText
               type="text"
+              placeholder="Nombre"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder=""
               className="form-input"
-              required
             />
           </div>
 
@@ -67,37 +56,34 @@ const EmployeeForm = ({
             <label className="form-label">Correo</label>
             <InputText
               type="email"
+              placeholder="Correo"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder=""
               className="form-input"
-              required
             />
           </div>
-        </div>
 
-        <div className="form-group">
-          <label className="form-label">Contraseña</label>
-          <InputText
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder=""
-            className="form-input"
-            required={!id} // obligatorio solo si es creación
-          />
-        </div>
+          <div className="form-group">
+            <label className="form-label">Contraseña</label>
+            <InputText
+              type="password"
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="form-input"
+            />
+          </div>
 
-        <div className="upload-actions">
-          <Button
-            type="submit"
-            text={"Guardar"}
-            background="#FD0053"
-            color="white"
-            height="32px"
-            width="100px"
-            className="upload-action-button"
-          />
+          <div className="submit-btn-container">
+            <Button
+              type="submit"
+              text={id ? "Actualizar" : "Agregar"}
+              background="#FD0053"
+              color="white"
+              height="36px"
+              width="100px"
+            />
+          </div>
         </div>
       </div>
     </form>
