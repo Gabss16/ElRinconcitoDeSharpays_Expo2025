@@ -1,15 +1,11 @@
-import React, { useState } from "react";
-
-const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/devkosnau/image/upload";
-const UPLOAD_PRESET = "ml_default";
+import React, { useState, useEffect, useRef } from "react";
 
 const UploadImage = ({ onUpload, defaultImage }) => {
   const [preview, setPreview] = useState(defaultImage || null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
-    if (defaultImage) {
-      setPreview(defaultImage);
-    }
+    setPreview(defaultImage || null);
   }, [defaultImage]);
 
   const handleFileChange = async (e) => {
@@ -17,17 +13,15 @@ const UploadImage = ({ onUpload, defaultImage }) => {
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreview(reader.result);
-    };
+    reader.onloadend = () => setPreview(reader.result);
     reader.readAsDataURL(file);
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", UPLOAD_PRESET);
+    formData.append("upload_preset", "ml_default");
 
     try {
-      const res = await fetch(CLOUDINARY_URL, {
+      const res = await fetch("https://api.cloudinary.com/v1_1/devkosnau/image/upload", {
         method: "POST",
         body: formData,
       });
@@ -43,55 +37,64 @@ const UploadImage = ({ onUpload, defaultImage }) => {
     }
   };
 
+  const handleButtonClick = (e) => {
+    e.preventDefault();
+    fileInputRef.current.click();
+  };
+
   return (
-    <div style={{ textAlign: "center" }}>
+    <div style={{ textAlign: "center", marginLeft: "40px" }}>
       <div
         style={{
-          width: "150px",
-          height: "150px",
+          width: "300px",
+          height: "300px",
           backgroundColor: "#eee",
-          borderRadius: "8px",
+          borderRadius: "8px 8px 0 0",
           margin: "0 auto",
-          objectFit: "cover",
           overflow: "hidden",
         }}
       >
-        <img
-          src={preview}
-          alt="Preview"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            display: preview ? "block" : "none",
-          }}
-        />
+        {preview && (
+          <img
+            src={preview}
+            alt="Preview"
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        )}
       </div>
 
-      <label
-        htmlFor="imageUpload"
+      <button
+        type="button"
+        onClick={handleButtonClick}
         style={{
-          marginTop: "10px",
-          display: "inline-block",
+          marginTop: "0px",
           backgroundColor: "#000",
           color: "#fff",
-          padding: "6px 12px",
-          borderRadius: "4px",
+          padding: "16px 24px",
+          borderRadius: "0 0 8px 8px",
           cursor: "pointer",
+          fontWeight: "bold",
+          border: "none",
+          width: "300px",
+          display: "block",
+          marginLeft: "auto",
+          marginRight: "auto",
+          outline: "none",
+          fontSize: "16px",
         }}
       >
         Subir imagen
-      </label>
+      </button>
 
-    <input
-  id="imageUpload"
-  type="file"
-  accept="image/*"
-  style={{ display: "none" }}
-  onClick={(e) => e.stopPropagation()} // <-- evita que active el submit
-  onChange={handleFileChange}
-/>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={handleFileChange}
+      />
     </div>
   );
 };
+
 export default UploadImage;

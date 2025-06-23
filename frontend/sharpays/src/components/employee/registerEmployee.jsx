@@ -1,7 +1,7 @@
 import React from "react";
 import InputText from "../CustomInput";
 import Button from "../CustomButton";
-import UploadImage from "../UploadimageUsers";
+import UploadImage from "../UploadImage";
 
 const EmployeeForm = ({
   id,
@@ -15,6 +15,7 @@ const EmployeeForm = ({
   setImageUrl,
   saveEmployee,
   handleEdit,
+  resetForm,
 }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,8 +27,13 @@ const EmployeeForm = ({
 
     const employeeData = { id, name, email, password, imageUrl };
 
-    if (id) handleEdit(employeeData);
-    else saveEmployee(employeeData);
+    if (id) {
+      handleEdit(employeeData);
+    } else {
+      saveEmployee(employeeData);
+    }
+
+    resetForm();
   };
 
   return (
@@ -35,11 +41,10 @@ const EmployeeForm = ({
       <div className="form-row-wrapper">
         {/* Columna de imagen */}
         <div className="image-upload-section">
-          <UploadImage onUpload={(url) => setImageUrl(url)} />
-     
+          <UploadImage onUpload={setImageUrl} defaultImage={imageUrl} />
         </div>
 
-        {/* Inputs alineados a la derecha */}
+        {/* Sección de campos con layout en grid */}
         <div className="fields-section">
           <div className="form-group">
             <label className="form-label">Nombre</label>
@@ -63,7 +68,7 @@ const EmployeeForm = ({
             />
           </div>
 
-          <div className="form-group">
+          <div className="form-group" style={{ gridColumn: "span 2" }}>
             <label className="form-label">Contraseña</label>
             <InputText
               type="password"
@@ -74,15 +79,17 @@ const EmployeeForm = ({
             />
           </div>
 
-          <div className="submit-btn-container">
+          <div className="submit-btn-container" style={{ gridColumn: "span 2" }}>
             <Button
-              type="submit"
-              text={id ? "Actualizar" : "Agregar"}
-              background="#FD0053"
-              color="white"
-              height="36px"
-              width="100px"
-            />
+  type="submit"
+  text={id ? "Actualizar" : "Agregar"}
+  background="#FD0053"
+  color="white"
+  height="48px"
+  width="160px"
+  fontSize="16px" // solo si tu componente Button acepta fontSize
+/>
+            
           </div>
         </div>
       </div>
