@@ -17,6 +17,7 @@ import orderDetailRoutes from "./src/routes/orderDetails.js";
 import advertisementsRoutes from "./src/routes/advertisements.js"
 import ratingsRoutes from "./src/routes/ratings.js"
 import orders from "./src/routes/order.js"
+import discountsRoutes from "./src/routes/discounts.js"
 
 import cors from "cors";
 
@@ -31,7 +32,6 @@ app.use(
 
 
 app.use(express.json());
-
 
 app.use(cookieParser());
 
@@ -53,5 +53,6 @@ app.use("/api/orderDetail", orderDetailRoutes);
 app.use("/api/Advertisements", advertisementsRoutes)
 app.use("/api/ratings", ratingsRoutes)
 app.use("/api/orders", orders)
+app.use("/api/discounts", discountsRoutes)
 
 export default app;

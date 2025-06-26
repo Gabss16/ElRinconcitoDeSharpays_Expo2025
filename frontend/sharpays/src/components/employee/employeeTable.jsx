@@ -1,12 +1,10 @@
-import React from 'react';
+// EmpsTable.jsx
+import React from "react";
 import InputText from "../CustomInput";
 import Button from "../CustomButton";
-import useDataEmployee from "../employee/hook/useDataEmployee";
 import "../../styles/Employee.css";
 
-const empsTable = () => {
-  const { Employees, deleteEmployee, updateEmployee } = useDataEmployee();
-
+const EmpsTable = ({ employees, deleteEmployee, updateEmployee, loading }) => {
   return (
     <div className="emps-table-section">
       <div className="table-card">
@@ -16,50 +14,86 @@ const empsTable = () => {
             name="buscar"
             placeholder="Buscar"
             className="search-input"
-            // Puedes agregar lógica de búsqueda si deseas
+            // Puedes agregar lógica para búsqueda aquí
           />
         </div>
 
         <div className="table-header">
-          <span>id</span>
-          <span>nombre</span>
+          <span>Nombre</span>
           <span>Correo</span>
+          <span>Imagen</span>
           <span>Acciones</span>
         </div>
 
         <div className="table-content">
-          {Employees?.map((emp) => (
-            <div key={emp._id} className="table-row">
-              <span>{emp._id}</span>
-              <span>{emp.name}</span>
-              <span>{emp.email}</span>
-              <div className="action-buttons">
-                <Button
-                  text="Editar"
-                  background="#FD0053"
-                  color="white"
-                  height="32px"
-                  width="80px"
-                  className="action-button"
-                  onClick={() => updateemp(emp)}
-                />
-                <Button
-                  text="Eliminar"
-                  border="1px solid #FD0053"
-                  color="#FD0053"
-                  background="white"
-                  height="32px"
-                  width="80px"
-                  className="action-button"
-                  onClick={() => deleteemp(emp._id)}
-                />
+          {loading ? (
+            <div>Cargando empleados...</div>
+          ) : employees.length === 0 ? (
+            <div>No hay empleados para mostrar</div>
+          ) : (
+            employees.map((emp) => (
+              <div key={emp._id} className="table-row">
+                <span>{emp.name}</span>
+                <span>{emp.email}</span>
+                <span>
+                  {emp.image ? (
+                    <img
+                      src={emp.image}
+                      alt="Perfil"
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                      }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "8px",
+                        backgroundColor: "#ddd",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "12px",
+                        color: "#555",
+                        userSelect: "none",
+                      }}
+                    >
+                      Sin imagen
+                    </div>
+                  )}
+                </span>
+                <div className="action-buttons">
+                  <Button
+                    text="Editar"
+                    background="#FD0053"
+                    color="white"
+                    height="32px"
+                    width="80px"
+                    className="action-button"
+                    onClick={() => updateEmployee(emp)}
+                  />
+                  <Button
+                    text="Eliminar"
+                    border="1px solid #FD0053"
+                    color="#FD0053"
+                    background="white"
+                    height="32px"
+                    width="80px"
+                    className="action-button"
+                    onClick={() => deleteEmployee(emp._id)}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default empsTable;
+export default EmpsTable;

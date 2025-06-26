@@ -12,14 +12,6 @@
     border-radius: 8px;
   }
   
-  form {
-    margin-top: 32px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    padding: 32px;
-  }
-  
   .form-row {
     display: flex;
     flex-wrap: wrap;

@@ -1,6 +1,6 @@
 // src/pages/ImageUploadPage.jsx
 import React, { useState, useRef, useEffect } from "react";
-import UploadImage from "../../UploadImage";
+import UploadImage from "../../ProductsImage";
 import ImagePreview from "../../ImagePreview";
 import ComboBox from "../../ComboBox";
 import CustomInput from "../../CustomInput";
@@ -84,7 +84,10 @@ const ImageUploadPage = () => {
           onChange={handleFileChange}
         />
         <div className="upload-box">
-          <UploadImage onClick={handleUploadClick} />
+        <UploadImage onUpload={(file) => {
+  const url = URL.createObjectURL(file);
+  setImageUrl(url);
+}} />
         </div>
         <div className="preview-box">
           <ImagePreview imageUrl={imageUrl} />

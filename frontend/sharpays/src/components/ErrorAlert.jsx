@@ -1,11 +1,8 @@
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-
-const MySwal = withReactContent(Swal);
 
 const ErrorAlert = (title) => {
 
-    return MySwal.fire({
+    return Swal.fire({
     icon: "error",
     title: title,
     toast: true,

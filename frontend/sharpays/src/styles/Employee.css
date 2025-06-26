@@ -1,254 +1,180 @@
-/* Main container styles */
+/* Container principal */
 .users-main-container {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .users-header {
-    margin-bottom: 30px;
-  }
-  
-  .main-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #2d3748;
-  }
-  
-  /* Content container */
-  .users-content-container {
-    display: flex;
-    gap: 40px;
-  }
-  
-  /* Form section styles */
-  .users-form-section {
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .form-group .m-2 , .form-group .mt-2{
-    margin: 0 !important;
-  }
-  
-  .form-label, .section-label {
-    font-weight: 600;
-    font-size: 14px;
-    color: #4a5568;
-  }
-  
-  .section-label {
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-  
-  .form-input {
-    padding: 10px 12px;
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    background-color: #f8fafc;
-    font-size: 14px;
-  }
-  
-  .divider-line {
-    height: 1px;
-    background-color: #e2e8f0;
-    margin: 15px 0;
-  }
-  
-  .upload-image {
-    border: 1px dashed #cbd5e0;
-    padding: 20px;
-    border-radius: 6px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f8fafc;
-    cursor: pointer;
-    height: 120px;
-    margin-bottom: 15px;
-  }
-  
-  .upload-actions {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .upload-action-button, .action-button {
-    font-size: 13px;
-    border-radius: 4px;
-  }
-  
-  /* Table section styles */
-  .users-table-section {
-    flex: 1;
-    width: 100%;
-  }
-  
-  .search-container {
-    margin-bottom: 20px;
-  }
-  
-  .search-input {
-    width: 100%;
-    padding: 10px 15px;
-    border: 1px solid #e2e8f0;
-    border-radius: 30px;
-    background-color: #f8fafc;
-  }
-  
-  .table-header {
-    display: grid;
-    grid-template-columns: 120px 1fr 1fr 180px;
-    padding: 12px 15px;
-    background-color: #f8fafc;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-  
-  .table-content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .table-row {
-    display: grid;
-    grid-template-columns: 120px 1fr 1fr 180px;
-    align-items: center;
-    padding: 12px 15px;
-    background-color: white;
-    border-radius: 6px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    font-size: 14px;
-  }
-  
-  .action-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    border-radius: 40px;
-  }
-  
-.search-container .custom-input {
-  width: 100%;
-  border-radius: 30px;
+  padding: 20px;
 }
 
-.form-row {
+/* Título de la página */
+.main-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Contenedor general de formulario y tabla */
+.form-and-fields {
   display: flex;
-gap: 20px;
-  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-.form-row .form-group {
+/* Sección de imagen */
+.image-upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  flex-shrink: 0;
+}
+
+/* Formulario */
+.employee-form {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Contenedor de imagen e inputs */
+.form-row-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 100px;
+  flex-wrap: nowrap;
+}
+
+/* Sección de los campos */
+.fields-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
   flex: 1;
 }
 
-.users-content-wrapper {
+/* Grupo de campos */
+.form-group {
   display: flex;
-  gap: 40px;
-  margin-bottom: 40px; /* espacio entre formulario y tabla */
+  flex-direction: column;
+  gap: 6px;
 }
 
-.users-table-wrapper {
-  margin-top: auto;
+.form-label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.form-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
   width: 100%;
 }
 
-.table-card {
-  background-color: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+/* Botón de enviar */
+.submit-btn-container {
+  grid-column: span 2;
+  margin-top: 10px;
 }
 
+/* Botón subir imagen (si lo usas como clase) */
+.upload-button {
+  background-color: #000;
+  color: #fff;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
-/* ----------------------------- */
-/* Responsive Layout Adjustments */
-/* ----------------------------- */
+/* Buscar input */
+#buscar.custom-input {
+  width: 100%;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 30px;
+  background-color: #f1f1f1;
+  outline: none;
+  font-size: 14px;
+}
 
-/* Tablets (<= 992px) */
-@media (max-width: 992px) {
-  .users-content-wrapper {
+/* Tabla */
+.table-header,
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 120px 180px;
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #ffffff;
+  font-size: 14px;
+  align-items: center;
+  border-bottom: 0.5px solid #afafaf;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  cursor: default;
+}
+
+.table-row:hover {
+  background-color: #f5f5f5;
+  transform: scale(1.01);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.table-header {
+  background-color: #f8f8f8;
+  font-weight: bold;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.action-button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ------------------ RESPONSIVE ------------------ */
+@media (max-width: 768px) {
+  .form-row-wrapper {
     flex-direction: column;
     gap: 30px;
+    align-items: center;
   }
 
-  .users-form-section {
+  .image-upload-section {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .fields-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     width: 100%;
   }
 
-  .form-row {
-    flex-direction: column;
-    gap: 15px;
+  .submit-btn-container {
+    grid-column: auto;
   }
 
   .table-header,
   .table-row {
-    grid-template-columns: 1fr 1fr 1fr auto; /* más flexible */
+    grid-template-columns: 1fr 1fr 100px;
+    font-size: 13px;
   }
 }
 
-/* Smartphones (<= 600px) */
-@media (max-width: 600px) {
-  .users-main-container {
-    padding: 15px;
+@media (max-width: 480px) {
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr 1fr;
+    font-size: 12px;
   }
 
-  .form-label,
-  .section-label,
-  .form-input,
-  .search-input {
+  .form-label {
     font-size: 13px;
   }
 
-  .upload-image {
-    height: 100px;
-    padding: 15px;
-  }
-
-  .table-header,
-  .table-row {
-    grid-template-columns: 1fr;
-    grid-row-gap: 10px;
-    text-align: left;
-  }
-
-  .table-header span,
-  .table-row span {
-    display: block;
-    width: 100%;
-  }
-
-  .action-buttons {
-    justify-content: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .action-button {
-    width: 100%;
-    margin-bottom: 8px;
-  }
-
-  .search-input {
-    font-size: 14px;
-    padding: 8px 12px;
-  }
-
-  .table-card {
-    padding: 15px;
+  .form-input {
+    padding: 8px;
   }
 }

@@ -1,5 +1,14 @@
-const CustomInput = ({label,placeholder,type,name,disable, hidden}) => {
-    return (
+const CustomInput = ({
+  label,
+  placeholder,
+  type,
+  name,
+  disable,
+  hidden,
+  onChange,
+  value,
+}) => {
+  return (
     <div className="m-2">
       <label htmlFor={name} className="text-white" hidden={hidden}>
         {label}
@@ -7,12 +16,13 @@ const CustomInput = ({label,placeholder,type,name,disable, hidden}) => {
       <div className="mt-2">
         <input
           id={name}
-          //{...login(name, `${label} es obligatorio!`)}
           placeholder={placeholder}
           type={type}
           className="custom-input"
           disabled={disable}
           hidden={hidden}
+          onChange={onChange}
+          value={value} // Agregado para controlar el input
         />
       </div>
     </div>
