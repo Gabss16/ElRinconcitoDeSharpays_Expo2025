@@ -13,6 +13,8 @@ const useUserDataProducts = () => {
   const [categoryId, setCategoryId] = useState("");     // Mini tienda
   const [subCategoryId, setSubCategoryId] = useState(""); // Categoría producto
   const [image, setImage] = useState("");
+  const [tipoObjeto, setTipoObjeto] = useState("");
+  const [selectedSizes, setSelectedSizes] = useState([]);
 
   // Campos dinámicos (otherFields)
   const [otherFields, setOtherFields] = useState({}); 
@@ -55,17 +57,11 @@ const useUserDataProducts = () => {
 
   // Crear nuevo producto
   const handleSubmit = async (e) => {
+    alert("antes de enviar el form")
     e.preventDefault();
 
- /*
-    if (!name || !description || !stock || !price || !categoryId || !subCategoryId) {
-      alert("debes de llenar todos los campos")
-      setError("Todos los campos obligatorios deben llenarse");
-      toast.error("Completa todos los campos obligatorios");
-      return;
-    }
- */
     try {
+      alert("ejecutando funcion para guardar productos")
       setLoading(true);
       const newProduct = {
         name,
@@ -208,6 +204,10 @@ const useUserDataProducts = () => {
     deleteProduct,
     updateProduct,
     handleUpdate,
+    selectedSizes, 
+    setSelectedSizes,
+    tipoObjeto,
+    setTipoObjeto
   };
 };
 

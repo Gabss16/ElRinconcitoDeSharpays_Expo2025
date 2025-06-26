@@ -9,56 +9,51 @@ import { Title, Subtitle } from "../../Typography";
 import CustomButton from "../../CustomButton";
 import "../../../styles/registerSharpays.css";
 
-// 👉 IMPORTAMOS EL HOOK CON LA LÓGICA DE PRODUCTOS
-import useUserDataProducts from "../hook/userDataProducts";
 
-// Opciones para el ComboBox
-
-
-const ImageUploadPage = () => {
+const ImageUploadPage = ({ name, setName,
+     description, setDescription,
+     stock, setStock,
+     price, setPrice,
+     categoryId, setCategoryId,
+     subCategoryId, setSubCategoryId,
+     image, setImage,
+     otherFields, setOtherFields,
+     handleSubmit,     selectedSizes, 
+    setSelectedSizes,
+    tipoObjeto,
+    setTipoObjeto}) => {
   // 👉 Hook de productos
-  const {
-    name, setName,
-    description, setDescription,
-    stock, setStock,
-    price, setPrice,
-    categoryId, setCategoryId,
-    subCategoryId, setSubCategoryId,
-    image, setImage,
-    otherFields, setOtherFields,
-    handleSubmit,
-  } = useUserDataProducts();
+
 
   // 👉 Estados locales para controlar inputs personalizados
   const [imageUrl, setImageUrl] = useState(null);
-  const fileInputRef = useRef(null);
-
-  const [tipoObjeto, setTipoObjeto] = useState("");
-  const [selectedSizes, setSelectedSizes] = useState([]);
+  
+/*
+  
   const [titulo, setTitulo] = useState("");
   const [precio, setPrecio] = useState("");
   const [stockValue, setStockValue] = useState("");
-  const [descripcionValue, setDescripcionValue] = useState("");
+  const [descripcionValue, setDescripcionValue] = useState("");*/
 
   // 👉 Handler de carga de imagen
   const handleUploadClick = () => {
     fileInputRef.current.click();
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith("image/")) {
-      const url = URL.createObjectURL(file);
-      setImageUrl(url);
-    } else {
-      alert("Por favor selecciona un archivo de imagen válido.");
-    }
-  };
+  useEffect(() => {
+  setCategoryId("6855bf0c8bda3da90eca92c4"); // ← Pon aquí el ID real de tu tienda si es necesario
+  setSubCategoryId(tipoObjeto);      // ← Lo que eliges en ComboBox
+  setImage(imageUrl);                // ← URL de Cloudinary
+  setOtherFields({
+    size: selectedSizes,             // ← Tamaño de prendas u otros
+  });
+}, [tipoObjeto, selectedSizes, imageUrl]);
 
+  
+/*
   // 👉 SINCRONIZAMOS LOS CAMPOS CON EL HOOK GLOBAL
   useEffect(() => {
-    setName(titulo);
-    setPrice(precio);
+    setPrice(price);
     setStock(stockValue);
     setDescription(descripcionValue);
     setCategoryId("sharpaysBoutique"); // ← TIENDA FIJA PARA ESTA PÁGINA
@@ -67,10 +62,10 @@ const ImageUploadPage = () => {
     setOtherFields({
       size: selectedSizes, // 👈🏽 DEFINICIÓN DEL OTHER FIELD "TALLA"
     });
-  }, [titulo, precio, stockValue, descripcionValue, tipoObjeto, selectedSizes, imageUrl]);
+  }, [price, stockValue, descripcionValue, tipoObjeto, selectedSizes, imageUrl]);
 
   // 👉 Enviar datos
-  
+  */
 
   return (
     <div>
@@ -79,15 +74,15 @@ const ImageUploadPage = () => {
         <input
           type="file"
           accept="image/*"
-          ref={fileInputRef}
           style={{ display: "none" }}
-          onChange={handleFileChange}
+          
         />
         <div className="upload-box">
-        <UploadImage onUpload={(file) => {
-  const url = URL.createObjectURL(file);
-  setImageUrl(url);
+        <UploadImage onUpload={(url) => {
+  setImageUrl(url);  // para la vista previa
+  setImage(url);     // para enviar al backend
 }} />
+
         </div>
         <div className="preview-box">
           <ImagePreview imageUrl={imageUrl} />
@@ -97,6 +92,7 @@ const ImageUploadPage = () => {
       {/* Formulario */}
       <form
         className="w-full max-w-6xl mx-auto mt-8 bg-white rounded-lg shadow-md p-8"
+        onSubmit={handleSubmit}
         
       >
         <Subtitle>Selecciona la subcategoría</Subtitle>
@@ -169,7 +165,6 @@ const ImageUploadPage = () => {
             width="180px"
             height="50px"
             border="none"
-            action={handleSubmit}
           />
         </div>
       </form>

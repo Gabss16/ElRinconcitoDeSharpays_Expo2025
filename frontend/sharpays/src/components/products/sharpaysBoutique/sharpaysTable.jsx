@@ -1,65 +1,102 @@
-import React from 'react';
+import React from "react";
 import InputText from "../../CustomInput";
 import Button from "../../CustomButton";
-import "../../../styles/Employee.css";
+import "../../../styles/Employee.css"; // Puedes cambiarle el nombre al archivo CSS si lo deseas
 
-const usersData = [
-  {
-    id: "10-02-23",
-    nombre: "Bougles",
-    correo: "martha Lopez"
-  }
-];
-
-const UsersTable = () => {
+const ProductsTable = ({ products, deleteProduct, updateProduct, loading }) => {
   return (
-    <div className="users-table-section">
-      <div className="search-container">
-        <InputText
-          type="text"
-          name="buscar"
-          placeholder="Buscar"
-          className="search-input"
-        />
-      </div>
+    <div className="emps-table-section">
+      <div className="table-card">
+        <div className="search-container">
+          <InputText
+            type="text"
+            name="buscar"
+            placeholder="Buscar productos"
+            className="search-input"
+            // Agrega lógica de búsqueda si lo necesitas
+          />
+        </div>
 
-      <div className="table-header">
-        <span>id</span>
-        <span>nombre</span>
-        <span>Correo</span>
-        <span>Acciones</span>
-      </div>
+        <div className="table-header">
+          <span>Nombre</span>
+          <span>Descripción</span>
+          <span>Precio</span>
+          <span>Stock</span>
+          <span>Imagen</span>
+          <span>Acciones</span>
+        </div>
 
-      <div className="table-content">
-        {usersData.map((user) => (
-          <div key={user.id} className="table-row">
-            <span>{user.id}</span>
-            <span>{user.nombre}</span>
-            <span>{user.correo}</span>
-            <div className="action-buttons">
-              <Button
-                text="Editar"
-                background="#FD0053"
-                color="white"
-                height="32px"
-                width="80px"
-                className="action-button"
-              />
-              <Button
-                text="Eliminar"
-                border="1px solid #FD0053"
-                color="#FD0053"
-                background="white"
-                height="32px"
-                width="80px"
-                className="action-button"
-              />
-            </div>
-          </div>
-        ))}
+        <div className="table-content">
+          {loading ? (
+            <div>Cargando productos...</div>
+          ) : products.length === 0 ? (
+            <div>No hay productos para mostrar</div>
+          ) : (
+            products.map((prod) => (
+              <div key={prod._id} className="table-row">
+                <span>{prod.name}</span>
+                <span>{prod.description}</span>
+                <span>${prod.price}</span>
+                <span>{prod.stock}</span>
+                <span>
+                  {prod.image ? (
+                    <img
+                      src={prod.image}
+                      alt="Producto"
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        objectFit: "cover",
+                        borderRadius: "8px",
+                      }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "8px",
+                        backgroundColor: "#ddd",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "12px",
+                        color: "#555",
+                        userSelect: "none",
+                      }}
+                    >
+                      Sin imagen
+                    </div>
+                  )}
+                </span>
+                <div className="action-buttons">
+                  <Button
+                    text="Editar"
+                    background="#FD0053"
+                    color="white"
+                    height="32px"
+                    width="80px"
+                    className="action-button"
+                    onClick={() => updateProduct(prod)}
+                  />
+                  <Button
+                    text="Eliminar"
+                    border="1px solid #FD0053"
+                    color="#FD0053"
+                    background="white"
+                    height="32px"
+                    width="80px"
+                    className="action-button"
+                    onClick={() => deleteProduct(prod._id)}
+                  />
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
     </div>
   );
 };
 
-export default UsersTable;
+export default ProductsTable;
