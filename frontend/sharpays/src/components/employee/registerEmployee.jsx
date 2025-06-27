@@ -25,6 +25,7 @@ const EmployeeForm = ({
       return;
     }
 
+    // El estado imageUrl puede ser un File (nuevo) o un string (URL existente)
     const employeeData = { id, name, email, password, imageUrl };
 
     if (id) {
@@ -32,8 +33,7 @@ const EmployeeForm = ({
     } else {
       saveEmployee(employeeData);
     }
-
-    resetForm();
+    // No llames resetForm aquí, ya lo haces en el hook después de guardar/editar
   };
 
   return (
@@ -41,7 +41,10 @@ const EmployeeForm = ({
       <div className="form-row-wrapper">
         {/* Columna de imagen */}
         <div className="image-upload-section">
-          <UploadImage onUpload={setImageUrl} defaultImage={imageUrl} />
+          <UploadImage
+            onUpload={setImageUrl}
+            defaultImage={typeof imageUrl === "string" ? imageUrl : undefined}
+          />
         </div>
 
         {/* Sección de campos con layout en grid */}
@@ -79,17 +82,26 @@ const EmployeeForm = ({
             />
           </div>
 
-          <div className="submit-btn-container" style={{ gridColumn: "span 2" }}>
+          <div className="submit-btn-container" style={{ gridColumn: "span 2", display: "flex", gap: "16px" }}>
             <Button
-  type="submit"
-  text={id ? "Actualizar" : "Agregar"}
-  background="#FD0053"
-  color="white"
-  height="48px"
-  width="160px"
-  fontSize="16px" // solo si tu componente Button acepta fontSize
-/>
-            
+              type="submit"
+              text={id ? "Actualizar" : "Agregar"}
+              background="#FD0053"
+              color="white"
+              height="48px"
+              width="160px"
+              fontSize="16px"
+            />
+            <Button
+              type="button"
+              text="Cancelar"
+              background="#ccc"
+              color="#333"
+              height="48px"
+              width="160px"
+              fontSize="16px"
+              onClick={resetForm}
+            />
           </div>
         </div>
       </div>
