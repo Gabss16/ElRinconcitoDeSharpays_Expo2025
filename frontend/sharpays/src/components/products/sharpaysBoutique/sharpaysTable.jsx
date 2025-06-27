@@ -1,39 +1,39 @@
 import React from "react";
 import InputText from "../../CustomInput";
 import Button from "../../CustomButton";
-import "../../../styles/Employee.css"; // Puedes cambiarle el nombre al archivo CSS si lo deseas
+import "../../../styles/ProductsTable.css";
 
 const ProductsTable = ({ products, deleteProduct, updateProduct, loading }) => {
   return (
-    <div className="emps-table-section">
-      <div className="table-card">
-        <div className="search-container">
+    <div className="products-table-container">
+      <div className="card-table">
+        <div className="search-box">
           <InputText
             type="text"
             name="buscar"
             placeholder="Buscar productos"
-            className="search-input"
-            // Agrega lógica de búsqueda si lo necesitas
+            className="search-input-field"
           />
         </div>
 
-        <div className="table-header">
+        <div className="table-header-row">
           <span>Nombre</span>
           <span>Descripción</span>
           <span>Precio</span>
           <span>Stock</span>
           <span>Imagen</span>
+          <span>Tallas</span> {/* Nueva columna */}
           <span>Acciones</span>
         </div>
 
-        <div className="table-content">
+        <div className="table-body">
           {loading ? (
             <div>Cargando productos...</div>
           ) : products.length === 0 ? (
             <div>No hay productos para mostrar</div>
           ) : (
             products.map((prod) => (
-              <div key={prod._id} className="table-row">
+              <div key={prod._id} className="table-item">
                 <span>{prod.name}</span>
                 <span>{prod.description}</span>
                 <span>${prod.price}</span>
@@ -69,14 +69,22 @@ const ProductsTable = ({ products, deleteProduct, updateProduct, loading }) => {
                     </div>
                   )}
                 </span>
-                <div className="action-buttons">
+
+                {/* Mostrar tallas si existen */}
+                <span>
+                  {Array.isArray(prod.size) && prod.size.length > 0
+                    ? prod.size.join(", ")
+                    : "—"}
+                </span>
+
+                <div className="action-buttons-container">
                   <Button
                     text="Editar"
                     background="#FD0053"
                     color="white"
                     height="32px"
                     width="80px"
-                    className="action-button"
+                    className="action-button-edit"
                     onClick={() => updateProduct(prod)}
                   />
                   <Button
@@ -86,7 +94,7 @@ const ProductsTable = ({ products, deleteProduct, updateProduct, loading }) => {
                     background="white"
                     height="32px"
                     width="80px"
-                    className="action-button"
+                    className="action-button-delete"
                     onClick={() => deleteProduct(prod._id)}
                   />
                 </div>

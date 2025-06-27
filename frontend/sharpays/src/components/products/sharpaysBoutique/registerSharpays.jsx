@@ -1,5 +1,5 @@
 // src/pages/ImageUploadPage.jsx
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import UploadImage from "../../ProductsImage";
 import ImagePreview from "../../ImagePreview";
 import ComboBox from "../../ComboBox";
@@ -9,94 +9,63 @@ import { Title, Subtitle } from "../../Typography";
 import CustomButton from "../../CustomButton";
 import "../../../styles/registerSharpays.css";
 
+const ImageUploadPage = ({
+  name, setName,
+  description, setDescription,
+  stock, setStock,
+  price, setPrice,
+  categoryId, setCategoryId,
+  subCategoryId, setSubCategoryId,
+  image, setImage,
+  otherFields, setOtherFields,
+  handleSubmit,
+  selectedSizes, setSelectedSizes,
+  tipoObjeto, setTipoObjeto,
+  isEditing,
+  handleUpdate
+}) => {
 
-const ImageUploadPage = ({ name, setName,
-     description, setDescription,
-     stock, setStock,
-     price, setPrice,
-     categoryId, setCategoryId,
-     subCategoryId, setSubCategoryId,
-     image, setImage,
-     otherFields, setOtherFields,
-     handleSubmit,     selectedSizes, 
-    setSelectedSizes,
-    tipoObjeto,
-    setTipoObjeto}) => {
-  // 👉 Hook de productos
-
-
-  // 👉 Estados locales para controlar inputs personalizados
   const [imageUrl, setImageUrl] = useState(null);
-  
-/*
-  
-  const [titulo, setTitulo] = useState("");
-  const [precio, setPrecio] = useState("");
-  const [stockValue, setStockValue] = useState("");
-  const [descripcionValue, setDescripcionValue] = useState("");*/
 
-  // 👉 Handler de carga de imagen
-  const handleUploadClick = () => {
-    fileInputRef.current.click();
-  };
-
+  // Sincronizar imagen existente con preview
   useEffect(() => {
-  setCategoryId("6855bf0c8bda3da90eca92c4"); // ← Pon aquí el ID real de tu tienda si es necesario
-  setSubCategoryId(tipoObjeto);      // ← Lo que eliges en ComboBox
-  setImage(imageUrl);                // ← URL de Cloudinary
-  setOtherFields({
-    size: selectedSizes,             // ← Tamaño de prendas u otros
-  });
-}, [tipoObjeto, selectedSizes, imageUrl]);
+    if (image) {
+      setImageUrl(image);
+    }
+  }, [image]);
 
-  
-/*
-  // 👉 SINCRONIZAMOS LOS CAMPOS CON EL HOOK GLOBAL
+  // Sincronizar valores del formulario al cambiar
   useEffect(() => {
-    setPrice(price);
-    setStock(stockValue);
-    setDescription(descripcionValue);
-    setCategoryId("sharpaysBoutique"); // ← TIENDA FIJA PARA ESTA PÁGINA
+    setCategoryId("6855bf0c8bda3da90eca92c4"); // ← ID de la tienda
     setSubCategoryId(tipoObjeto);
     setImage(imageUrl);
     setOtherFields({
-      size: selectedSizes, // 👈🏽 DEFINICIÓN DEL OTHER FIELD "TALLA"
+      size: selectedSizes,
     });
-  }, [price, stockValue, descripcionValue, tipoObjeto, selectedSizes, imageUrl]);
-
-  // 👉 Enviar datos
-  */
+  }, [tipoObjeto, selectedSizes, imageUrl]);
 
   return (
     <div>
-      {/* Sección de carga y previsualización de imagen */}
       <div className="main-container d-flex">
-        <input
-          type="file"
-          accept="image/*"
-          style={{ display: "none" }}
-          
-        />
         <div className="upload-box">
-        <UploadImage onUpload={(url) => {
-  setImageUrl(url);  // para la vista previa
-  setImage(url);     // para enviar al backend
-}} />
-
+          <UploadImage
+            onUpload={(url) => {
+              setImageUrl(url);
+              setImage(url);
+            }}
+          />
         </div>
         <div className="preview-box">
           <ImagePreview imageUrl={imageUrl} />
         </div>
       </div>
 
-      {/* Formulario */}
       <form
         className="w-full max-w-6xl mx-auto mt-8 bg-white rounded-lg shadow-md p-8"
-        onSubmit={handleSubmit}
-        
+        onSubmit={isEditing ? handleUpdate : handleSubmit}
       >
         <Subtitle>Selecciona la subcategoría</Subtitle>
-<ComboBox
+        <ComboBox
   value={tipoObjeto}
   onChange={(e) => setTipoObjeto(e.target.value)}
 />
@@ -159,12 +128,12 @@ const ImageUploadPage = ({ name, setName,
 
         <div className="mt-6 flex justify-start">
           <CustomButton
-            text="Agregar"
-            background="black"
+            text={isEditing ? "Actualizar" : "Agregar"}
+            background={isEditing ? "#FD0053" : "black"}
             color="white"
             width="180px"
             height="50px"
-            border="none"
+            border={isEditing ? "none" : "none"}
           />
         </div>
       </form>
