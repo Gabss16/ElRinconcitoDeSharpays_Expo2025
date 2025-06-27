@@ -1,5 +1,5 @@
 // src/pages/ImageUploadPage.jsx
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import UploadImage from "../../ProductsImage";
 import ImagePreview from "../../ImagePreview";
 import ComboBox from "../../ComboBox";
@@ -9,101 +9,63 @@ import { Title, Subtitle } from "../../Typography";
 import CustomButton from "../../CustomButton";
 import "../../../styles/registerSharpays.css";
 
-// 👉 IMPORTAMOS EL HOOK CON LA LÓGICA DE PRODUCTOS
-import useUserDataProducts from "../hook/userDataProducts";
+const ImageUploadPage = ({
+  name, setName,
+  description, setDescription,
+  stock, setStock,
+  price, setPrice,
+  categoryId, setCategoryId,
+  subCategoryId, setSubCategoryId,
+  image, setImage,
+  otherFields, setOtherFields,
+  handleSubmit,
+  selectedSizes, setSelectedSizes,
+  tipoObjeto, setTipoObjeto,
+  isEditing,
+  handleUpdate
+}) => {
 
-// Opciones para el ComboBox
-
-
-const ImageUploadPage = () => {
-  // 👉 Hook de productos
-  const {
-    name, setName,
-    description, setDescription,
-    stock, setStock,
-    price, setPrice,
-    categoryId, setCategoryId,
-    subCategoryId, setSubCategoryId,
-    image, setImage,
-    otherFields, setOtherFields,
-    handleSubmit,
-  } = useUserDataProducts();
-
-  // 👉 Estados locales para controlar inputs personalizados
   const [imageUrl, setImageUrl] = useState(null);
-  const fileInputRef = useRef(null);
 
-  const [tipoObjeto, setTipoObjeto] = useState("");
-  const [selectedSizes, setSelectedSizes] = useState([]);
-  const [titulo, setTitulo] = useState("");
-  const [precio, setPrecio] = useState("");
-  const [stockValue, setStockValue] = useState("");
-  const [descripcionValue, setDescripcionValue] = useState("");
-
-  // 👉 Handler de carga de imagen
-  const handleUploadClick = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith("image/")) {
-      const url = URL.createObjectURL(file);
-      setImageUrl(url);
-    } else {
-      alert("Por favor selecciona un archivo de imagen válido.");
-    }
-  };
-
-  // 👉 SINCRONIZAMOS LOS CAMPOS CON EL HOOK GLOBAL
+  // Sincronizar imagen existente con preview
   useEffect(() => {
-    setName(titulo);
-    setPrice(precio);
-    setStock(stockValue);
-    setDescription(descripcionValue);
-    setCategoryId("sharpaysBoutique"); // ← TIENDA FIJA PARA ESTA PÁGINA
+    if (image) {
+      setImageUrl(image);
+    }
+  }, [image]);
+
+  // Sincronizar valores del formulario al cambiar
+  useEffect(() => {
+    setCategoryId("6855bf0c8bda3da90eca92c4"); // ← ID de la tienda
     setSubCategoryId(tipoObjeto);
     setImage(imageUrl);
     setOtherFields({
-      size: selectedSizes, // 👈🏽 DEFINICIÓN DEL OTHER FIELD "TALLA"
+      size: selectedSizes,
     });
-  }, [titulo, precio, stockValue, descripcionValue, tipoObjeto, selectedSizes, imageUrl]);
-
-  // 👉 Enviar datos
-  const handleAgregar = (e) => {
-    e.preventDefault();
-    handleSubmit(e); // LLAMA AL MÉTODO DEL HOOK
-  };
+  }, [tipoObjeto, selectedSizes, imageUrl]);
 
   return (
     <div>
-      {/* Sección de carga y previsualización de imagen */}
       <div className="main-container d-flex">
-        <input
-          type="file"
-          accept="image/*"
-          ref={fileInputRef}
-          style={{ display: "none" }}
-          onChange={handleFileChange}
-        />
         <div className="upload-box">
-        <UploadImage onUpload={(file) => {
-  const url = URL.createObjectURL(file);
-  setImageUrl(url);
-}} />
+          <UploadImage
+            onUpload={(url) => {
+              setImageUrl(url);
+              setImage(url);
+            }}
+          />
         </div>
         <div className="preview-box">
           <ImagePreview imageUrl={imageUrl} />
         </div>
       </div>
 
-      {/* Formulario */}
       <form
         className="w-full max-w-6xl mx-auto mt-8 bg-white rounded-lg shadow-md p-8"
-        onSubmit={handleAgregar}
+        onSubmit={isEditing ? handleUpdate : handleSubmit}
       >
         <Subtitle>Selecciona la subcategoría</Subtitle>
-<ComboBox
+        <ComboBox
   value={tipoObjeto}
   onChange={(e) => setTipoObjeto(e.target.value)}
 />
@@ -117,8 +79,8 @@ const ImageUploadPage = () => {
                 placeholder="Título"
                 type="text"
                 name="titulo"
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="input-precio">
@@ -127,8 +89,8 @@ const ImageUploadPage = () => {
                 placeholder="Precio"
                 type="number"
                 name="precio"
-                value={precio}
-                onChange={(e) => setPrecio(e.target.value)}
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
               />
             </div>
             <div className="input-stock">
@@ -137,8 +99,8 @@ const ImageUploadPage = () => {
                 placeholder="Stock"
                 type="number"
                 name="stock"
-                value={stockValue}
-                onChange={(e) => setStockValue(e.target.value)}
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
               />
             </div>
             <div className="input-tallas">
@@ -158,21 +120,20 @@ const ImageUploadPage = () => {
               placeholder="Descripción"
               type="text"
               name="descripcion"
-              value={descripcionValue}
-              onChange={(e) => setDescripcionValue(e.target.value)}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
         </div>
 
         <div className="mt-6 flex justify-start">
           <CustomButton
-            text="Agregar"
-            background="black"
+            text={isEditing ? "Actualizar" : "Agregar"}
+            background={isEditing ? "#FD0053" : "black"}
             color="white"
             width="180px"
             height="50px"
-            border="none"
-            action={handleAgregar}
+            border={isEditing ? "none" : "none"}
           />
         </div>
       </form>

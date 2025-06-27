@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import SuccessAlert from "../../SuccessAlert.jsx";
+import ErrorAlert from "../../ErrorAlert.jsx";
 
 const useUserDataProducts = () => {
-  const ApiProducts = "https://tu-api/products";
+  const ApiProducts = "http://localhost:4000/api/Products";
 
   // Campos comunes
   const [id, setId] = useState("");
@@ -13,6 +15,8 @@ const useUserDataProducts = () => {
   const [categoryId, setCategoryId] = useState("");     // Mini tienda
   const [subCategoryId, setSubCategoryId] = useState(""); // Categoría producto
   const [image, setImage] = useState("");
+  const [tipoObjeto, setTipoObjeto] = useState("");
+  const [selectedSizes, setSelectedSizes] = useState([]);
 
   // Campos dinámicos (otherFields)
   const [otherFields, setOtherFields] = useState({}); 
@@ -56,15 +60,11 @@ const useUserDataProducts = () => {
   // Crear nuevo producto
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!name || !description || !stock || !price || !categoryId || !subCategoryId) {
-      setError("Todos los campos obligatorios deben llenarse");
-      toast.error("Completa todos los campos obligatorios");
-      return;
-    }
-
+  
     try {
       setLoading(true);
+  
+      // Crear el objeto nuevo producto
       const newProduct = {
         name,
         description,
@@ -73,29 +73,33 @@ const useUserDataProducts = () => {
         categoryId,
         subCategoryId,
         image,
-        ...otherFields,  // Aquí incluimos los campos dinámicos
+        ...otherFields,  // Incluir los campos dinámicos
       };
-
+  
       const response = await fetch(ApiProducts, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newProduct),
       });
-
+  
       if (!response.ok) throw new Error("Error al crear producto");
-
-      toast.success("Producto creado");
+  
+      // Si la inserción es exitosa
+      SuccessAlert("Producto creado correctamente");
       setSuccess("Producto creado correctamente");
       cleanData();
       fetchData();
+  
     } catch (error) {
+      // Si ocurre un error
+      ErrorAlert("Error al crear producto: " + error.message);
       console.error("Error crear producto:", error);
-      toast.error("Error al crear producto");
       setError(error.message);
     } finally {
       setLoading(false);
     }
   };
+  
 
   // Eliminar producto
   const deleteProduct = async (id) => {
@@ -106,6 +110,7 @@ const useUserDataProducts = () => {
       if (!response.ok) throw new Error("Error al eliminar producto");
 
       toast.success("Producto eliminado");
+      SuccessAlert("Producto eliminado correctamente");
       fetchData();
     } catch (error) {
       console.error("Error eliminar producto:", error);
@@ -127,6 +132,10 @@ const useUserDataProducts = () => {
     // Cargar otros campos dinámicos quitando los campos comunes
     const { name, description, stock, price, categoryId, subCategoryId, image, _id, __v, ...rest } = product;
     setOtherFields(rest);
+
+    setTipoObjeto(product?.subCategoryId?._id || "");
+    console.log("este es el valor"+ product.subCategoryId)
+  setSelectedSizes(product.size || rest.size || []);
 
     setError(null);
     setSuccess(null);
@@ -158,6 +167,7 @@ const useUserDataProducts = () => {
       if (!response.ok) throw new Error("Error al actualizar producto");
 
       toast.success("Producto actualizado");
+      SuccessAlert("Producto actualizado correctamente");
       setSuccess("Producto actualizado correctamente");
       cleanData();
       fetchData();
@@ -202,6 +212,10 @@ const useUserDataProducts = () => {
     deleteProduct,
     updateProduct,
     handleUpdate,
+    selectedSizes, 
+    setSelectedSizes,
+    tipoObjeto,
+    setTipoObjeto
   };
 };
 
