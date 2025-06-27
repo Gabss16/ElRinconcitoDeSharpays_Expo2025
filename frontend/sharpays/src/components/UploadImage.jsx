@@ -2,21 +2,19 @@ import React, { useState, useEffect, useRef } from "react";
 
 const UploadImage = ({ onUpload, defaultImage }) => {
   const [preview, setPreview] = useState(defaultImage || null);
-  const [localFile, setLocalFile] = useState(null);
   const fileInputRef = useRef(null);
 
+  // Limpia el preview y el input file cuando defaultImage cambia a vacío
   useEffect(() => {
-    // Solo actualiza el preview si no hay un archivo seleccionado manualmente
-    if (!localFile) {
-      setPreview(defaultImage || null);
+    setPreview(defaultImage || null);
+    if (!defaultImage && fileInputRef.current) {
+      fileInputRef.current.value = ""; // Limpia el input file
     }
-    // eslint-disable-next-line
   }, [defaultImage]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    setLocalFile(file);
     setPreview(URL.createObjectURL(file));
     onUpload(file); // Pasa el archivo al padre
   };

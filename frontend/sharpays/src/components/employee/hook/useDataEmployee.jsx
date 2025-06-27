@@ -40,29 +40,30 @@ const useDataEmployee = () => {
     setActiveTab("list");
   };
 
-  const saveEmployee = async (employee) => {
+   const saveEmployee = async (employee) => {
     try {
       const formData = new FormData();
       formData.append("name", employee.name);
       formData.append("email", employee.email);
-      formData.append("password", employee.password);
+      if (employee.password) formData.append("password", employee.password);
       if (employee.imageUrl && typeof employee.imageUrl !== "string") {
         formData.append("image", employee.imageUrl);
       }
 
-      const res = await fetch(API, {
+      const response = await fetch( API , {
         method: "POST",
         body: formData,
       });
 
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.error || data.message || "Bad Request");
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || data.message || "Error al insertar");
+      }
 
       fetchEmployees(); // Actualiza la lista
-      resetForm();      // Limpia el formulario después de guardar
+      resetForm();      // Limpia el formulario después de editar
     } catch (err) {
-      console.error("Error en saveEmployee:", err);
+      console.error(err);
       alert(err.message);
     }
   };

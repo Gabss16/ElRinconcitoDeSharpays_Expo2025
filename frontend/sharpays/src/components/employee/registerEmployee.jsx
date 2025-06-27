@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import InputText from "../CustomInput";
 import Button from "../CustomButton";
 import UploadImage from "../UploadImage";
+import SuccessAlert from "../SuccessAlert";
+import ErrorAlert from "../ErrorAlert";
 
 const EmployeeForm = ({
   id,
@@ -17,27 +19,34 @@ const EmployeeForm = ({
   handleEdit,
   resetForm,
 }) => {
-  const handleSubmit = (e) => {
+ 
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!name || !email || (!id && !password)) {
-      alert("Todos los campos son obligatorios");
+      ErrorAlert("Todos los campos son obligatorios");
       return;
     }
 
-    // El estado imageUrl puede ser un File (nuevo) o un string (URL existente)
     const employeeData = { id, name, email, password, imageUrl };
 
-    if (id) {
-      handleEdit(employeeData);
-    } else {
-      saveEmployee(employeeData);
+    try {
+      if (id) {
+        await handleEdit(employeeData);
+        SuccessAlert("Usuario actualizado exitosamente");
+      } else {
+        await saveEmployee(employeeData);
+        SuccessAlert("Usuario registrado exitosamente");
+      }
+    } catch (err) {
+      ErrorAlert("Ocurrió un error inesperado");
     }
-    // No llames resetForm aquí, ya lo haces en el hook después de guardar/editar
   };
 
   return (
     <form onSubmit={handleSubmit} className="employee-form">
+
+
       <div className="form-row-wrapper">
         {/* Columna de imagen */}
         <div className="image-upload-section">
@@ -91,16 +100,6 @@ const EmployeeForm = ({
               height="48px"
               width="160px"
               fontSize="16px"
-            />
-            <Button
-              type="button"
-              text="Cancelar"
-              background="#ccc"
-              color="#333"
-              height="48px"
-              width="160px"
-              fontSize="16px"
-              onClick={resetForm}
             />
           </div>
         </div>
