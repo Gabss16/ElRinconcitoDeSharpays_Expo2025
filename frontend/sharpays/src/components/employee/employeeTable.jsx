@@ -4,6 +4,11 @@ import InputText from "../CustomInput";
 import Button from "../CustomButton";
 import "../../styles/Employee.css";
 
+const isValidImageUrl = (url) => {
+  // Acepta solo si es string, no vacío y empieza con http
+  return typeof url === "string" && url.startsWith("http");
+};
+
 const EmpsTable = ({ employees, deleteEmployee, updateEmployee, loading }) => {
   return (
     <div className="emps-table-section">
@@ -36,7 +41,7 @@ const EmpsTable = ({ employees, deleteEmployee, updateEmployee, loading }) => {
                 <span>{emp.name}</span>
                 <span>{emp.email}</span>
                 <span>
-                  {emp.image ? (
+                  {isValidImageUrl(emp.image) ? (
                     <img
                       src={emp.image}
                       alt="Perfil"
@@ -45,6 +50,8 @@ const EmpsTable = ({ employees, deleteEmployee, updateEmployee, loading }) => {
                         height: "50px",
                         objectFit: "cover",
                         borderRadius: "8px",
+                        border: "1px solid #eee",
+                        background: "#fff",
                       }}
                     />
                   ) : (

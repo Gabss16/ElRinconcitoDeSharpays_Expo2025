@@ -2,39 +2,23 @@ import React, { useState, useEffect, useRef } from "react";
 
 const UploadImage = ({ onUpload, defaultImage }) => {
   const [preview, setPreview] = useState(defaultImage || null);
+  const [localFile, setLocalFile] = useState(null);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    setPreview(defaultImage || null);
+    // Solo actualiza el preview si no hay un archivo seleccionado manualmente
+    if (!localFile) {
+      setPreview(defaultImage || null);
+    }
+    // eslint-disable-next-line
   }, [defaultImage]);
 
-  const handleFileChange = async (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => setPreview(reader.result);
-    reader.readAsDataURL(file);
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "ml_default");
-
-    try {
-      const res = await fetch("https://api.cloudinary.com/v1_1/devkosnau/image/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      if (data.secure_url) {
-        onUpload(data.secure_url);
-      } else {
-        alert("Error al subir la imagen");
-      }
-    } catch (error) {
-      console.error("Error al subir imagen:", error);
-      alert("Error al subir imagen");
-    }
+    setLocalFile(file);
+    setPreview(URL.createObjectURL(file));
+    onUpload(file); // Pasa el archivo al padre
   };
 
   const handleButtonClick = (e) => {
