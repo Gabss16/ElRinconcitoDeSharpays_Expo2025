@@ -1,4 +1,3 @@
-// useDataEmployee.js
 import { useState, useEffect } from "react";
 
 const useDataEmployee = () => {
@@ -31,6 +30,7 @@ const useDataEmployee = () => {
     fetchEmployees();
   }, []);
 
+  // Limpia todos los campos y regresa a la lista
   const resetForm = () => {
     setId("");
     setName("");
@@ -40,52 +40,47 @@ const useDataEmployee = () => {
     setActiveTab("list");
   };
 
-  const saveEmployee = async (employee) => {
+   const saveEmployee = async (employee) => {
     try {
-      const res = await fetch(API, {
+      const formData = new FormData();
+      formData.append("name", employee.name);
+      formData.append("email", employee.email);
+      if (employee.password) formData.append("password", employee.password);
+      if (employee.imageUrl && typeof employee.imageUrl !== "string") {
+        formData.append("image", employee.imageUrl);
+      }
+
+      const response = await fetch( API , {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: employee.name,
-          email: employee.email,
-          password: employee.password,
-          image: employee.imageUrl,
-        }),
+        body: formData,
       });
 
-      const data = await res.json();
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || data.message || "Error al insertar");
+      }
 
-      if (!res.ok) throw new Error(data.error || data.message || "Bad Request");
-
-      fetchEmployees();
-      resetForm();
+      fetchEmployees(); // Actualiza la lista
+      resetForm();      // Limpia el formulario después de editar
     } catch (err) {
-      console.error("Error en saveEmployee:", err);
+      console.error(err);
       alert(err.message);
     }
   };
 
   const handleEdit = async (employee) => {
     try {
-      if (!employee.name || !employee.email) {
-        alert("Nombre y correo son obligatorios");
-        return;
-      }
-
-      // Si password está vacío, no lo envíes para no cambiarlo
-      const bodyData = {
-        name: employee.name,
-        email: employee.email,
-        image: employee.imageUrl,
-      };
-      if (employee.password) {
-        bodyData.password = employee.password;
+      const formData = new FormData();
+      formData.append("name", employee.name);
+      formData.append("email", employee.email);
+      if (employee.password) formData.append("password", employee.password);
+      if (employee.imageUrl && typeof employee.imageUrl !== "string") {
+        formData.append("image", employee.imageUrl);
       }
 
       const response = await fetch(`${API}/${employee.id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(bodyData),
+        body: formData,
       });
 
       if (!response.ok) {
@@ -93,8 +88,8 @@ const useDataEmployee = () => {
         throw new Error(data.error || data.message || "Error al actualizar");
       }
 
-      fetchEmployees();
-      resetForm();
+      fetchEmployees(); // Actualiza la lista
+      resetForm();      // Limpia el formulario después de editar
     } catch (err) {
       console.error(err);
       alert(err.message);
@@ -113,6 +108,7 @@ const useDataEmployee = () => {
     }
   };
 
+  // Para editar: carga los datos en el formulario
   const updateEmployee = (employee) => {
     setId(employee._id);
     setName(employee.name);
@@ -143,8 +139,6 @@ const useDataEmployee = () => {
     handleEdit,
     resetForm,
   };
-
-
 };
 
 export default useDataEmployee;
