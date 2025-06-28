@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "./App.css"
 import Sidebar from './components/Sidebar';
-import Login from "./pages/Login.jsx";
+import Login from "./pages/private/Login.jsx";
 import Register from "./pages/Register.jsx";
 import Employee from "./pages/Employee.jsx";
 import RecoveryPassword from "./pages/RecoveryPassword.jsx";
@@ -25,8 +25,6 @@ return (
     <Route path="/ResetPassword" element={<ResetPassword/>} />
     <Route path="/Orders" element={<Orders/>} />
     <Route path="/Sharpays" element={<Sharpays/>} />
-
-
 </Routes>
     </AuthProvider>
 </Router>

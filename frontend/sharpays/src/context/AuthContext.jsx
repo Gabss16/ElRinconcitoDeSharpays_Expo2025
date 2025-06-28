@@ -10,18 +10,19 @@ export { AuthContext };
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [authCokie, setAuthCokie] = useState(null);
+  const [authCookie, setauthCookie] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const API_URL = "http://localhost:4000/api";
-  
+
   const navigate = useNavigate();
 
   // Función para limpiar sesión - función interna que no causa dependencias cíclicas
   const clearSession = () => {
     localStorage.removeItem("token");
-    // Eliminar la cookie con el nombre correcto (authToken)
-    Cookies.remove("authToken", { path: '/' }); // Añadir path para asegurar que se elimina correctamente
+    Cookies.remove("authToken", { path: '/' });
     setUser(null);
-    setAuthCokie(null);
+    setauthCookie(null);
+    setIsLoggedIn(false);
   };
 
   // Definir la función logout como useCallback para evitar recreaciones
@@ -36,10 +37,10 @@ export const AuthProvider = ({ children }) => {
         console.error("Error during logout:", error);
       } finally {
         clearSession();
-        navigate("/");
+        navigate("/Login");
       }
     };
-    
+
     logoutUser();
   }, [API_URL, navigate]);
 
@@ -59,9 +60,9 @@ export const AuthProvider = ({ children }) => {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
-        setAuthCokie(data.token);
+        setauthCookie(data.token);
         setUser(data.user);
-        navigate("/welcome");
+        setIsLoggedIn(true);
         return true;
       } else {
         return false;
@@ -72,46 +73,41 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  /*
-  // Verificar sesión al cargar la aplicación
+
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const token = localStorage.getItem("token");
-        const cookieToken = Cookies.get("authToken"); // Usar el mismo nombre que usa el backend (authToken)
+        const cookieToken = Cookies.get("authToken");
 
         if (token || cookieToken) {
-          // Como no hay un endpoint específico para verificar tokens, vamos a usar
-          // una ruta protegida simple para ver si el token es válido
-          const response = await fetch(`${API_URL}/productsAdmin`, {
+          const response = await fetch(`${API_URL}/Products`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              // Usar el token que tenemos (del localStorage o de la cookie)
               Authorization: `Bearer ${token || cookieToken}`,
             },
             credentials: "include",
           });
 
           if (response.ok) {
-            // Si la respuesta es exitosa, significa que el token es válido
-            // Decodificar el token para obtener información del usuario
             try {
-              // Una manera simple de extraer la info del usuario del token
-              const tokenParts = (token || cookieToken).split('.');
+              const tokenParts = (token || cookieToken).split(".");
               if (tokenParts.length === 3) {
                 const payload = JSON.parse(atob(tokenParts[1]));
                 setUser({
                   id: payload.id,
-                  userType: payload.userType
+                  userType: payload.userType,
+                  name: payload.name
                 });
-                setAuthCokie(token || cookieToken);
+                setauthCookie(token || cookieToken);
+                setIsLoggedIn(true);
               }
             } catch (e) {
               console.error("Error decoding token:", e);
+              clearSession();
             }
           } else {
-            // Token inválido
             clearSession();
           }
         } else {
@@ -124,18 +120,17 @@ export const AuthProvider = ({ children }) => {
     };
 
     checkAuth();
-  }, [API_URL]); // Sólo depende de API_URL
-*/
-  // Objeto de valores del contexto
-  const contextValue = {
-    user,
-    authCokie,
-    login,
-    logout
-  }; 
+  }, []);
 
   return (
-    <AuthContext.Provider value={contextValue}>
+    <AuthContext.Provider value={{
+      user,
+      authCookie,
+      login,
+      logout,
+      isLoggedIn,
+      API: API_URL
+    }}>
       {children}
     </AuthContext.Provider>
   );

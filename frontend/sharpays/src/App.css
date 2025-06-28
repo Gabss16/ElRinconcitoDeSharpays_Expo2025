@@ -115,13 +115,13 @@
  
   .shape.circle {
     border-radius: 50%;
-    background: #ff5ea1;
+    background: #ffffff;
   }
   
   .shape.triangle {
     border-left: 30px solid transparent;
     border-right: 30px solid transparent;
-    border-bottom: 60px solid #ff5ea1;
+    border-bottom: 60px solid #ffffff;
     background: transparent;
     filter: drop-shadow(0 0 4px #4d2636);
     animation-name: slowRotateTriangle;
@@ -154,7 +154,7 @@
   /* SWEETALERT STYLES - Estilos para las alertas de todo el proyecto*/
   * {
     --swal2-cancel-button-background-color: #4d2636 !important;
-    --swal2-confirm-button-background-color: #ff5ea1 !important;
+    --swal2-confirm-button-background-color: #ffffff !important;
 }
 
 div:where(.swal2-icon).swal2-warning {
@@ -163,20 +163,20 @@ div:where(.swal2-icon).swal2-warning {
 }
 
 div:where(.swal2-icon).swal2-question{
-  color: #ff5ea1 !important;
-  border-color: #ff5ea1 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
 }
 
 .swal2-success-line-tip{
-    background-color: #ff5ea1 !important;
+    background-color: #ffffff !important;
 }
 
 .swal2-success-line-long {
-    background-color: #ff5ea1 !important;
+    background-color: #ffffff !important;
 }
 
 .swal2-success-ring {
-    border-color: #ff5ea1 !important;
+    border-color: #ffffff !important;
 }
 
 .swal2-timer-progress-bar {
@@ -199,3 +199,82 @@ div:where(.swal2-icon).swal2-question{
 #swal2-html-container{
     font-family: 'Poppins',sans-serif; 
 }*/
+
+
+/* FOOTER */
+.footer 
+{
+  background-color: black;
+  color: white;   
+  text-align: center;
+  height: 200px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.footer a {
+  color: white;
+}
+
+.footer img {
+  margin: 0 !important;
+}
+
+.footer button {
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+    border-radius: 6px;
+    background-color: #000000d3;
+    border-top: 1px #ffffffd3;
+    border-right: 1px #ffffffd3;
+    border-left: 1px #ffffffd3;
+    border-bottom: 1px #ffffffd3;
+    backdrop-filter: blur(10px);
+    transition-duration: 0.6s;
+    overflow: hidden;
+}
+
+.footer button i {
+  margin: 0;
+  color: #ffffff;
+}
+
+.footer button:hover
+{
+  transition-duration: 0.6s;
+    transform: translateY(-6px);
+    box-shadow: 0 2px 2px 1px #ffffff;
+}
+
+.footer button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 100%;
+    background: #bebebe;
+    transform: skew(50deg) translateX(200px);
+    transition-duration: .8s;
+}
+
+.footer button:hover::before {
+    transform: skewX(45deg) translateX(-150px);
+}
+
+/* RESPONSIVE - FOOTER */
+@media (max-width: 480px) {
+  .footer {
+    font-size: smaller;
+  }
+}
+
+@media (max-width: 320px) {
+  .footer {
+    font-size: 12px;
+    padding: 20px 10px 0 10px !important;
+  }
+}
