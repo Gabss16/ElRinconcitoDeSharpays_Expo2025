@@ -1,30 +1,30 @@
-import "../../styles/Login.css";
+import "../styles/Login.css";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import GlassBox from "../../components/GlassBox.jsx";
+import GlassBox from "../components/GlassBox.jsx";
 
 //Animaciones
-import LightsAnimation from "../../components/lightsAnimation.jsx";
+import LightsAnimation from "../components/lightsAnimation.jsx";
 
 //Componentes utilizados en el login-container
-import LogoLogin from "../../components/LogoLogin.jsx";
-import CustomTitle from "../../components/CustomTitle.jsx";
-import CustomInput from "../../components/CustomInput.jsx";
-import LinkText from "../../components/LinkText.jsx";
-import CustomButton from "../../components/CustomButton.jsx";
+import LogoLogin from "../components/LogoLogin.jsx";
+import CustomTitle from "../components/CustomTitle.jsx";
+import CustomInput from "../components/CustomInput.jsx";
+import LinkText from "../components/LinkText.jsx";
+import CustomButton from "../components/CustomButton.jsx";
 
 //Imágenes
-import huella from "../../assets/huella.png";
-import cactus from "../../assets/cactus.png";
-import vela from "../../assets/vela.png";
-import paleta from "../../assets/paleta.png";
+import huella from "../assets/huella.png";
+import cactus from "../assets/cactus.png";
+import vela from "../assets/vela.png";
+import paleta from "../assets/paleta.png";
 
 //AuthContext
-import { useAuth } from "../../context/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 
 //Alertas
-import ErrorAlert from "../../components/ErrorAlert.jsx";
-import SuccessAlert from "../../components/SuccessAlert.jsx";
+import ErrorAlert from "../components/ErrorAlert.jsx";
+import SuccessAlert from "../components/SuccessAlert.jsx";
 
 const Login = () => {
 
