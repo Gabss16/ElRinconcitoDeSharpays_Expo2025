@@ -168,15 +168,15 @@ div:where(.swal2-icon).swal2-question{
 }
 
 .swal2-success-line-tip{
-    background-color: #ffffff !important;
+    background-color: #ff6daa !important;
 }
 
 .swal2-success-line-long {
-    background-color: #ffffff !important;
+    background-color: #ff6daa !important;
 }
 
 .swal2-success-ring {
-    border-color: #ffffff !important;
+    border-color: #ff6daa !important;
 }
 
 .swal2-timer-progress-bar {
