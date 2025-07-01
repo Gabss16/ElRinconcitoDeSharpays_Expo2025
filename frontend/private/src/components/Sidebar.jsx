@@ -40,8 +40,8 @@ return (
 </NavLink>
 
 <div className="section-title">CONFIGURACIONES</div>
-<NavLink to="/users" className="nav-item" onClick={toggleSidebar}>
-<FaUsers /> <span>Usuarios</span>
+<NavLink to="/employee" className="nav-item" onClick={toggleSidebar}>
+<FaUsers /> <span>Empleados</span>
 </NavLink>
 <NavLink to="/discounts" className="nav-item" onClick={toggleSidebar}>
 <FaTags /> <span>Descuentos</span>
