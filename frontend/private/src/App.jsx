@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import "./App.css"
 import Sidebar from './components/Sidebar';
 import Login from "./pages/Login.jsx";
@@ -17,10 +17,19 @@ import { AuthProvider } from "./context/AuthContext";
 
 
 function App() {
+
+function SideBarSelector() {
+    const { pathname } = useLocation();
+    const noNavbarPaths = ["/Login", "/Register", "/RecoveryPassword"];
+    
+    if (noNavbarPaths.includes(pathname)) return null;
+    return <SideBar/>;
+}
+
 return (
 <Router>
     <AuthProvider>
-    <SideBar/>
+    <SideBarSelector/>
 <Routes>
     <Route path="/Login" element={<Login/>} />
     <Route path="/Dashboard" element={<Dashboard/>} />
