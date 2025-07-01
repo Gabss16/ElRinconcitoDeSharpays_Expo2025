@@ -2,6 +2,8 @@ import { useAuth } from "../context/AuthContext.jsx";
 import Sidebar from "../components/Sidebar.jsx";
 import TotalBalance from "../components/TotalBalance.jsx";
 
+import { NavLink } from 'react-router-dom';
+
 import "../styles/Dashboard.css";
 
 //Gráficas
@@ -19,11 +21,20 @@ const Dashboard = () => {
                         <Sidebar />
                     </div>
                     <div className="col-10">
+                        <div className="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h1 className="fw-bold fs-1 mt-5">Bienvenido/a</h1>
+                                <span className="fs-3">{user?.name}</span>
+                            </div>
 
-                        <div>
-                            <h1 className="fw-bold fs-1 mt-5">Bienvenido/a</h1>
-                            <span className="fs-3">{user?.name}</span>
+                            <div className="pf-cover">
+                                <NavLink to={"/profile"}>
+                                <img src={user?.image} className="rounded-circle me-5"/>
+                                </NavLink>
+                            </div>
                         </div>
+
+                        <hr />
 
                         <div className="grahpics d-flex">
                             <div>
