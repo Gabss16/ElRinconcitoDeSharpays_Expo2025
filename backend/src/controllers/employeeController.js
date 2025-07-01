@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import { config } from "../config.js";
 import Employee from "../models/employee.js";
+import bcrypt from "bcrypt"; // ✅ Agregado
 
 // Configura Cloudinary
 cloudinary.config({
@@ -22,8 +23,16 @@ export const createEmployee = async (req, res) => {
       imageUrl = result.secure_url;
     }
 
+    // 🔒 Hashea la contraseña si existe
+    let hashedPassword = req.body.password;
+    if (req.body.password) {
+      const salt = await bcrypt.genSalt(10);
+      hashedPassword = await bcrypt.hash(req.body.password, salt);
+    }
+
     const employee = new Employee({
       ...req.body,
+      password: hashedPassword,
       image: imageUrl,
     });
     await employee.save();
@@ -67,22 +76,23 @@ export const updateEmployee = async (req, res) => {
     let imageUrl = employee.image;
     // Si hay nueva imagen, súbela a Cloudinary
     if (req.file) {
-      // Si quieres eliminar la imagen anterior de Cloudinary, debes guardar el public_id en tu modelo
-      // if (employee.imagePublicID) {
-      //   await cloudinary.uploader.destroy(employee.imagePublicID);
-      // }
       const result = await cloudinary.uploader.upload(req.file.path, {
         folder: "employees",
         allowed_formats: ["jpg", "jpeg", "png"],
       });
       imageUrl = result.secure_url;
-      // Puedes guardar el public_id si lo necesitas: result.public_id
     }
 
     // Actualiza los campos
     employee.name = req.body.name || employee.name;
     employee.email = req.body.email || employee.email;
-    if (req.body.password) employee.password = req.body.password;
+
+    // 🔒 Si hay nueva contraseña, hashearla
+    if (req.body.password) {
+      const salt = await bcrypt.genSalt(10);
+      employee.password = await bcrypt.hash(req.body.password, salt);
+    }
+
     employee.image = imageUrl;
 
     await employee.save();
