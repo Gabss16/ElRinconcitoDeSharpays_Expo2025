@@ -10,6 +10,8 @@ import Orders from "./pages/Orders.jsx"
 import Sharpays from "./pages/SharpaysBoutique.jsx"
 import Dashboard from "./pages/Dashboard.jsx";
 
+import SideBar from "./components/Sidebar.jsx";
+
 import { AuthProvider } from "./context/AuthContext";
 
 
@@ -18,6 +20,7 @@ function App() {
 return (
 <Router>
     <AuthProvider>
+    <SideBar/>
 <Routes>
     <Route path="/Login" element={<Login/>} />
     <Route path="/Dashboard" element={<Dashboard/>} />

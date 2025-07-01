@@ -1,4 +1,5 @@
 import { useAuth } from "../context/AuthContext.jsx";
+import React, {useEffect } from "react";
 import Sidebar from "../components/Sidebar.jsx";
 import TotalBalance from "../components/TotalBalance.jsx";
 
@@ -6,30 +7,39 @@ import { NavLink } from 'react-router-dom';
 
 import "../styles/Dashboard.css";
 
+import ProductsTable from "../components/products/sharpaysBoutique/sharpaysTable.jsx";
+import useUserDataProducts from "../components/products/hook/userDataProducts";
+
 //Gráficas
 import BarChart from "../utils/barGraphic.jsx"
+import Doughnut from "../utils/doughnut.jsx";
 
 const Dashboard = () => {
 
     const { user } = useAuth();
+    const {products, deleteProduct, updateProduct, loading, fetchData} = useUserDataProducts();
+
+     useEffect(() => {
+        fetchData();
+      }, []);
 
     return (
         <>
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-2">
-                        <Sidebar />
+                        {/*Espacio para que el navbar se muestre*/}
                     </div>
                     <div className="col-10">
                         <div className="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h1 className="fw-bold fs-1 mt-5">Bienvenido/a</h1>
-                                <span className="fs-3">{user?.name}</span>
+                            <div className="mt-3">
+                                <h1 className="fw-bold fs-2">Bienvenido/a</h1>
+                                <span className="fs-4">{user?.name}</span>
                             </div>
 
                             <div className="pf-cover">
                                 <NavLink to={"/profile"}>
-                                <img src={user?.image} className="rounded-circle me-5"/>
+                                    <img src={user?.image} className="rounded-circle me-5" />
                                 </NavLink>
                             </div>
                         </div>
@@ -41,12 +51,6 @@ const Dashboard = () => {
                                 <h4>Productos más vendidos</h4>
                                 <BarChart />
                             </div>
-
-                            <div>
-                                <h4>Productos más vendidos</h4>
-                                <BarChart />
-                            </div>
-
                         </div>
 
                         <div className="d-flex total-balance-section">
@@ -72,6 +76,23 @@ const Dashboard = () => {
                                 image={"https://static.vecteezy.com/system/resources/thumbnails/025/138/515/small_2x/monarch-butterfly-flying-png.png"}
                                 total={401}
                             />
+                        </div>
+
+                        <div className="d-flex justify-content-between align-items-center">
+                            <div className="w-100">
+                                <h4>Lista de productos</h4>
+                                <ProductsTable
+                                    products={products}
+                                    deleteProduct={deleteProduct}
+                                    updateProduct={updateProduct}
+                                    loading={loading}
+                                    isEditable={false}
+                                />
+                            </div>
+                            <div>
+                                <h4>Ventas por negocio</h4>
+                                <Doughnut />
+                            </div>
                         </div>
 
                     </div>

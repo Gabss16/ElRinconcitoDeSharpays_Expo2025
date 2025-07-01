@@ -30,6 +30,11 @@
     font-weight: bold;
     color: #333;
   }
+
+  .table-header-row.no-actions,
+.table-item.no-actions {
+  grid-template-columns: 1.2fr 2fr 1fr 1fr 1fr 1fr ; /* Sin acciones */
+}
   
   .table-body .table-item:nth-child(even) {
     background-color: #fcfcfc;

@@ -8,15 +8,25 @@ const EmployeePage = () => {
   const data = useDataEmployee();
 
   return (
-    <div className="users-main-container">
-      <h1 className="main-title">Usuarios</h1>
-      <div className="form-and-fields">
-        <EmployeeForm {...data} resetForm={data.resetForm} />
+    <>
+      <div className="container-fluid">
+
+        <div className="row">
+          <div className="col-2"></div>
+          <div className="col-10">
+            <div className="users-main-container">
+              <h1 className="main-title">Usuarios</h1>
+              <div className="form-and-fields">
+                <EmployeeForm {...data} resetForm={data.resetForm} />
+              </div>
+              <div className="users-table-wrapper">
+                <EmpsTable {...data} />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="users-table-wrapper">
-        <EmpsTable {...data} />
-      </div>
-    </div>
+    </>
   );
 };
 

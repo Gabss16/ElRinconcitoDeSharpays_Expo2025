@@ -41,6 +41,11 @@ const SharpaysPage = () => {
   };
 
   return (
+    <>
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col-2"></div>
+        <div className="col-10">
     <div className="sharpay-page">
       <Title>Sharpay's Boutique</Title>
 
@@ -88,6 +93,10 @@ const SharpaysPage = () => {
         />
       )}
     </div>
+        </div>
+      </div>
+    </div>
+    </>
   );
 };
 
