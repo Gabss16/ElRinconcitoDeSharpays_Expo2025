@@ -15,10 +15,15 @@ FaSignOutAlt,
 FaBars
 } from 'react-icons/fa';
 
+import { useAuth } from '../context/AuthContext';
+import SuccessAlert from './SuccessAlert';
+
 
 const Sidebar = () => {
+
 const [isOpen, setIsOpen] = useState(false);
 const toggleSidebar = () => setIsOpen(!isOpen);
+const { logout } = useAuth();
 
 return (
 <>
@@ -65,7 +70,7 @@ return (
 </NavLink>
 </nav>
 
-<button className="logout-button" onClick={() => alert('Sesión cerrada')}>
+<button className="logout-button" onClick={(e) => {e.preventDefault(); logout(); SuccessAlert("Sesión cerrada con éxito")}}>
 <FaSignOutAlt /> <span>Logout</span>
 </button>
 </aside>
