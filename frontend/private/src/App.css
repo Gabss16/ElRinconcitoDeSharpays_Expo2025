@@ -278,3 +278,19 @@ div:where(.swal2-icon).swal2-question{
     padding: 20px 10px 0 10px !important;
   }
 }
+
+/* COMPONENTE: TOTAL BALANCE - ADMIN*/
+.total-balance {
+  width: 300px;
+  height: 130px;
+  padding: 40px;
+  margin: 10px;
+  border-radius: 25px;
+  box-shadow: 0px 6px 0px 2px rgba(0, 0, 0, 0.144);
+  transition: all .6s;
+}
+
+.total-balance:hover {
+  box-shadow: 0px 12px 0px 1px rgba(0, 0, 0, 0.212);
+  transform: translateY(-6px);
+}

@@ -1,0 +1,11 @@
+.total-balance-section {
+    overflow-y: auto;
+}
+
+.grahpics{
+    height: 300px;
+}
+.barGraphic { /*BarChart*/
+    width: 500px;
+    margin: 10px;
+}

@@ -35,7 +35,7 @@ return (
 <div className="logo"></div>
 
 <nav>
-<NavLink to="/" className="nav-item" onClick={toggleSidebar}>
+<NavLink to="/Dashboard" className="nav-item" onClick={toggleSidebar}>
 <FaHome /> <span>Home</span>
 </NavLink>
 
