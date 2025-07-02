@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import "./App.css"
 import Sidebar from './components/Sidebar';
 import Login from "./pages/Login.jsx";
@@ -11,6 +11,7 @@ import Sharpays from "./pages/SharpaysBoutique.jsx"
 import Dashboard from "./pages/Dashboard.jsx";
 
 import SideBar from "./components/Sidebar.jsx";
+import Footer from "./components/Footer.jsx";
 
 import { AuthProvider } from "./context/AuthContext";
 
@@ -26,11 +27,20 @@ function SideBarSelector() {
     return <SideBar/>;
 }
 
+function FooterSelector() {
+    const { pathname } = useLocation();
+    const footerPaths = ["/Login", "/Register", "/RecoveryPassword"];
+    
+    if (footerPaths.includes(pathname)) return <Footer/>;
+    return null;
+}
+
 return (
 <Router>
     <AuthProvider>
     <SideBarSelector/>
 <Routes>
+    <Route path="/" element={<Navigate to="/Login" replace />} />
     <Route path="/Login" element={<Login/>} />
     <Route path="/Dashboard" element={<Dashboard/>} />
     <Route path="/Register" element={<Register/>} />
@@ -40,6 +50,7 @@ return (
     <Route path="/Orders" element={<Orders/>} />
     <Route path="/Sharpays" element={<Sharpays/>} />
 </Routes>
+    <FooterSelector/>
     </AuthProvider>
 </Router>
 );
