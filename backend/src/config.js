@@ -12,7 +12,7 @@ export const config = {
     secret: process.env.JWT_SECRET,
     expiresIn: process.env.JWT_EXPIRES,
   },
-  ADMIN:{
+  ADMIN: {
     emailAdmin: process.env.ADMIN_EMAIL,
     password: process.env.ADMIN_PASSWORD
   },
@@ -21,13 +21,13 @@ export const config = {
     pass: process.env.USER_PASS
   },
   cloudinary: {
-cloudinary_name: process.env.CLAUDINARY_NAME,
-cloudinary_api_key: process.env.CLAUDINARY_API_KEY,
-cloudinary_api_secret: process.env.CLAUDINARY_API_SECRET
+    cloudinary_name: process.env.CLAUDINARY_NAME,
+    cloudinary_api_key: process.env.CLAUDINARY_API_KEY,
+    cloudinary_api_secret: process.env.CLAUDINARY_API_SECRET
 
 
 
-}
+  }
 
 
 }
