@@ -91,7 +91,7 @@ const Dashboard = () => {
                         </div>
 
                         <div className="d-flex justify-content-between align-items-center mt-3">
-                            <div className="w-100">
+                            <div className="product-list-dashboard w-100">
                                 <h4>Lista de productos</h4>
                                 <ProductsTable
                                     products={products}
