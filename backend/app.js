@@ -50,7 +50,7 @@ app.use("/api/registerCostumer", costumerRegisterRoutes)
 app.use('/api/subCategory', subCategoryRoutes);
 app.use('/api/Products', productRoutes);
 app.use("/api/orderDetail", orderDetailRoutes);
-app.use("/api/Advertisements", advertisementsRoutes)
+app.use("/api/advertisements", advertisementsRoutes)
 app.use("/api/ratings", ratingsRoutes)
 app.use("/api/orders", orders)
 app.use("/api/discounts", discountsRoutes)

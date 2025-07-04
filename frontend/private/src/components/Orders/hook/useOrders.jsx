@@ -11,7 +11,7 @@ const useDataOrders = () => {
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/orders`);
+      const res = await fetch(`${API_URL}`);
       const data = await res.json();
       setOrders(data);
     } catch (error) {
@@ -30,7 +30,7 @@ const useDataOrders = () => {
     setLoading(true);
     setMessage("");
     try {
-      const res = await fetch(`${API_URL}/orders`, {
+      const res = await fetch(`${API_URL}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(order),
@@ -53,7 +53,7 @@ const useDataOrders = () => {
     setLoading(true);
     setMessage("");
     try {
-      const res = await fetch(`${API_URL}/orders/${id}`, {
+      const res = await fetch(`${API_URL}/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedOrder),
@@ -76,7 +76,7 @@ const useDataOrders = () => {
     setLoading(true);
     setMessage("");
     try {
-      const res = await fetch(`${API_URL}/orders/${id}`, {
+      const res = await fetch(`${API_URL}/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {

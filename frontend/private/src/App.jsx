@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Category from "./pages/Category.jsx"
 import SideBar from "./components/Sidebar.jsx";
 import Footer from "./components/Footer.jsx";
+import Events from "./pages/Events.jsx"
 
 import { AuthProvider } from "./context/AuthContext";
 
@@ -50,6 +51,7 @@ return (
     <Route path="/Orders" element={<Orders/>} />
     <Route path="/Sharpays" element={<Sharpays/>} />
      <Route path="/Category" element={<Category/>} />
+    <Route path="/Events" element={<Events/>} />
 </Routes>
     <FooterSelector/>
     </AuthProvider>
