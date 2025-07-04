@@ -86,6 +86,8 @@ orderController.updateOrder = async (req, res) => {
   }
 };
 
+
+//no se por que no sirve
 orderController.deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;
