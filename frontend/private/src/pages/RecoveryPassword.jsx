@@ -95,8 +95,9 @@ const RecoveryPassword = () => {
                 <CustomInput
                   label="Código de verificación"
                   placeholder="000000"
-                  type="text"
+                  type="number"
                   name="code"
+                  maxLength={5}
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
                 />
