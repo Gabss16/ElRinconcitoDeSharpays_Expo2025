@@ -1,6 +1,5 @@
 import "../styles/RecoveryPassword.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 // Animaciones
 import LightsAnimation from "../components/LightsAnimation.jsx";
@@ -16,8 +15,6 @@ import CustomButton from "../components/CustomButton.jsx";
 import useRecoveryPassword from "../hook/useRecoveryPassword.jsx";
 
 const RecoveryPassword = () => {
-
-  const navigate = useNavigate();
 
   const {
     sendCode,
