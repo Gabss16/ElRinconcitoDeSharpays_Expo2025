@@ -5,7 +5,7 @@
 .orders-page {
   display: flex;
   height: 100vh;
-  background-color: #f4f4f4;
+  background-color: #f4f4f4 !important;
 }
 
 .orders-wrapper {
@@ -136,3 +136,6 @@
   display: flex;
   gap: 10px;
 }
+
+
+

@@ -28,3 +28,11 @@
     height: 500px;
     margin: 10px;
 }
+
+.product-list-dashboard {
+  overflow-y: scroll !important;
+}
+
+.product-list-dashboard .products-table-container {
+  max-height: 500px !important; 
+}

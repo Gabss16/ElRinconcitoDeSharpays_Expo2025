@@ -13,7 +13,7 @@ import Bougies from "./pages/Bougies.jsx"
 import Paraiso from "./pages/Paraiso.jsx"
 
 import Dashboard from "./pages/Dashboard.jsx";
-
+import Category from "./pages/Category.jsx"
 import SideBar from "./components/Sidebar.jsx";
 import Footer from "./components/Footer.jsx";
 
@@ -53,9 +53,13 @@ return (
     <Route path="/ResetPassword" element={<ResetPassword/>} />
     <Route path="/Orders" element={<Orders/>} />
     <Route path="/Sharpays" element={<Sharpays/>} />
+
+     <Route path="/Category" element={<Category/>} />
+
     <Route path="/bougies" element={<Bougies/>} />
     <Route path="/frostybites" element={<FrostyBites/>} />
     <Route path="/paradise" element={<Paraiso/>} />
+
 </Routes>
     <FooterSelector/>
     </AuthProvider>

@@ -1,7 +1,5 @@
 import { useAuth } from "../context/AuthContext.jsx";
 import React, {useEffect } from "react";
-import Sidebar from "../components/Sidebar.jsx";
-import TotalBalance from "../components/TotalBalance.jsx";
 
 import { NavLink } from 'react-router-dom';
 
@@ -13,6 +11,10 @@ import useUserDataProducts from "../components/products/hook/userDataProducts";
 //Gráficas
 import BarChart from "../utils/barGraphic.jsx"
 import Doughnut from "../utils/doughnut.jsx";
+
+import TotalSales from "../components/TotalSales.jsx";
+import TotalBalance from "../components/TotalBalance.jsx";
+import PendingOrders from "../components/PendingOrders.jsx";
 
 const Dashboard = () => {
 
@@ -46,14 +48,24 @@ const Dashboard = () => {
 
                         <hr />
 
-                        <div className="grahpics d-flex">
+                        <div className="grahpics d-flex justify-content-around">
                             <div>
                                 <h4>Productos más vendidos</h4>
                                 <BarChart />
                             </div>
+
+                            <div>
+                                <h4>Ventas por mes</h4>
+                                <TotalSales/>
+                            </div>
+
+                            <div>
+                                <h4>Lista de Pedidos</h4>
+                                <PendingOrders/>
+                            </div>
                         </div>
 
-                        <div className="d-flex total-balance-section">
+                        <div className="d-flex justify-content-around total-balance-section">
                             <TotalBalance
                                 image={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR73broZuXihBx0tLGP7_gE5FvPHdCoK8OMSg&s"}
                                 total={20}
@@ -78,8 +90,8 @@ const Dashboard = () => {
                             />
                         </div>
 
-                        <div className="d-flex justify-content-between align-items-center">
-                            <div className="w-100">
+                        <div className="d-flex justify-content-between align-items-center mt-3">
+                            <div className="product-list-dashboard w-100">
                                 <h4>Lista de productos</h4>
                                 <ProductsTable
                                     products={products}

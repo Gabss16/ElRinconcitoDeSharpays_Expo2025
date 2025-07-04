@@ -7,6 +7,7 @@ const CustomInput = ({
   hidden,
   onChange,
   value,
+  maxLength
 }) => {
   return (
     <div className="m-2">
@@ -23,6 +24,7 @@ const CustomInput = ({
           hidden={hidden}
           onChange={onChange}
           value={value} // Agregado para controlar el input
+          maxLength={maxLength}
         />
       </div>
     </div>

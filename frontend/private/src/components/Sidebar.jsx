@@ -46,7 +46,7 @@ return (
 <NavLink to="/discounts" className="nav-item" onClick={toggleSidebar}>
 <FaTags /> <span>Descuentos</span>
 </NavLink>
-<NavLink to="/stores-admin" className="nav-item" onClick={toggleSidebar}>
+<NavLink to="/category" className="nav-item" onClick={toggleSidebar}>
 <FaStore /> <span>Administración de tiendas</span>
 </NavLink>
 

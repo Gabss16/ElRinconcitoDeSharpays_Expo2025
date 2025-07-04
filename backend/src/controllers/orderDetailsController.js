@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import orderDetailModel from "../models/orderDatails.js";
 import productModel from "../models/products.js";
+import costumerModel from "../models/costumer.js"
 
 const orderDetailController = {};
 
