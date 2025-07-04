@@ -28,7 +28,7 @@ passwordRecoveryController.requestCode = async (req, res) => {
     }
 
     if (!userFound) {
-      res.status(400).json({ message: "User not found" });
+      res.status(400).json({ message: "Usuario no encontrado" });
     }
 
     const code = Math.floor(10000 + Math.random() * 90000).toString();
@@ -46,12 +46,12 @@ passwordRecoveryController.requestCode = async (req, res) => {
 
     await sendEmail(
       email,
-      "You verification code", 
-      "Hello! Remember dont forget your pass", 
+      "Código de verificación", 
+      "Te saludamos de parte del equipo de El Rinconcito de Sharpays", 
       HTMLRecoveryEmail(code) 
     );
 
-    res.json({ message: "correo enviado" });
+    res.json({ message: "Correo enviado" });
   } catch (error) {
     console.log("error" + error);
   }
@@ -91,7 +91,7 @@ passwordRecoveryController.newPassword = async (req, res) => {
 
     //Comprobar si el codigo fue verificado
     if (!decoded.verified) {
-      return res.json({ message: "Code not verified" });
+      return res.json({ message: "Código no verificado" });
     }
 
     //Extraer el email y el userType del token
@@ -120,7 +120,7 @@ passwordRecoveryController.newPassword = async (req, res) => {
     //Quitamos el token
     res.clearCookie("tokenRecoveryCode");
 
-    res.status(200).json({ message: "Password updated" });
+    res.status(200).json({ message: "Contraseña actualizada" });
     
   } catch (error) {
     console.log("error" + error);
