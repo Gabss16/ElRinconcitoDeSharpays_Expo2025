@@ -1,9 +1,11 @@
+// src/components/tables/ProductsTableCandles.jsx
 import React from "react";
 import InputText from "../../CustomInput";
 import Button from "../../CustomButton";
 import "../../../styles/ProductsTable.css";
 
-const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEditable=true }) => {
+const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEditable = true }) => {
+  // FILTRAMOS LOS PRODUCTOS PARA MOSTRAR SOLO LOS DE LA CATEGORÍA "68670dadd4a3c856571b7fb0"
   const filteredProducts = products.filter((prod) => {
   const cat =
     typeof prod.categoryId === "string"
@@ -11,8 +13,9 @@ const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEdit
       : typeof prod.categoryId === "object"
       ? prod.categoryId.$oid || prod.categoryId._id
       : null;
-  return cat === "6855bf0c8bda3da90eca92c4";
+  return cat === "68670dadd4a3c856571b7fb0";
 });
+
   return (
     <div className="products-table-container">
       <div className="card-table">
@@ -31,14 +34,13 @@ const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEdit
           <span>Precio</span>
           <span>Stock</span>
           <span>Imagen</span>
-          <span>Tallas</span> {/* Nueva columna */}
           {isEditable && <span>Acciones</span>}
         </div>
 
         <div className="table-body">
           {loading ? (
             <div>Cargando productos...</div>
-          ) : products.length === 0 ? (
+          ) : filteredProducts.length === 0 ? (
             <div className="text-center pt-5">No hay productos para mostrar</div>
           ) : (
             filteredProducts.map((prod) => (
@@ -79,12 +81,6 @@ const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEdit
                   )}
                 </span>
 
-                <span>
-                  {Array.isArray(prod.size) && prod.size.length > 0
-                    ? prod.size.join(", ")
-                    : "—"}
-                </span>
-
                 {isEditable && (
                   <div className="action-buttons-container">
                     <Button
@@ -112,8 +108,6 @@ const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEdit
             ))
           )}
         </div>
-
-
       </div>
     </div>
   );

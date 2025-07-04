@@ -1,7 +1,7 @@
 // src/components/SubCategoryComboBox.jsx
 import React, { useEffect, useState } from "react";
 
-const SubCategoryComboBox = ({ value, onChange }) => {
+const SubCategoryComboBox = ({ value, onChange, categoryFilter }) => {
   const [subcategories, setSubcategories] = useState([]);
 
   useEffect(() => {
@@ -18,10 +18,21 @@ const SubCategoryComboBox = ({ value, onChange }) => {
     fetchSubcategories();
   }, []);
 
+  // FILTRAMOS LAS SUBCATEGORÍAS SEGÚN categoryFilter (si viene)
+  const filteredSubcategories = subcategories.filter((sub) => {
+    const cat =
+      typeof sub.categoryId === "string"
+        ? sub.categoryId
+        : typeof sub.categoryId === "object"
+        ? sub.categoryId.$oid || sub.categoryId._id
+        : null;
+    return categoryFilter ? cat === categoryFilter : true;
+  });
+
   return (
     <div className="mb-4">
       <label className="block text-sm font-semibold mb-1">
-        
+        Subcategoría
       </label>
       <select
         className="w-full p-2 border border-gray-300 rounded"
@@ -29,7 +40,7 @@ const SubCategoryComboBox = ({ value, onChange }) => {
         onChange={onChange}
       >
         <option value="">Selecciona una subcategoría</option>
-        {subcategories.map((sub) => (
+        {filteredSubcategories.map((sub) => (
           <option key={sub._id} value={sub._id}>
             {sub.name}
           </option>

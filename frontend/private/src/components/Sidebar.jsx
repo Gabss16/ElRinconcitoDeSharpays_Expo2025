@@ -54,13 +54,13 @@ return (
 <NavLink to="/sharpays" className="nav-item" onClick={toggleSidebar}>
 <FaPaw /> <span>Sharpay’s Boutique</span>
 </NavLink>
-<NavLink to="/store/bougies" className="nav-item" onClick={toggleSidebar}>
+<NavLink to="/bougies" className="nav-item" onClick={toggleSidebar}>
 <FaLightbulb /> <span>Bougies</span>
 </NavLink>
-<NavLink to="/store/frostybites" className="nav-item" onClick={toggleSidebar}>
+<NavLink to="/frostybites" className="nav-item" onClick={toggleSidebar}>
 <FaIceCream /> <span>FrostyBites</span>
 </NavLink>
-<NavLink to="/store/paradise" className="nav-item" onClick={toggleSidebar}>
+<NavLink to="/paradise" className="nav-item" onClick={toggleSidebar}>
 <FaLeaf /> <span>El paraíso de Dios</span>
 </NavLink>
 
