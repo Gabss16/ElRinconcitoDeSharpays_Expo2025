@@ -46,7 +46,7 @@ const useRecoveryPassword = () => {
 
   const verifyCode = async (e) => {
     e.preventDefault();
-    if (!code) return ErrorAlert("Ingrese el código");
+    if (!code) { ErrorAlert("Ingrese el código"); return false};
 
     try {
       const res = await fetch(`${API}/verifyCode`, {
@@ -60,15 +60,19 @@ const useRecoveryPassword = () => {
       if(res.ok)
       {
         SuccessAlert("Se verificó el código");
+        return true;
       }
       else
       {
-        ErrorAlert("Hubo un error");
         console.log(data.message)
+        ErrorAlert("El código no es válido");
+        return false;
       }
+    
     } catch (err) {
       console.error(err);
       ErrorAlert("Error al verificar el código");
+      return false;
     }
   };
 
