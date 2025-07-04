@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../styles/Orders.css";
-import Sidebar from "../components/Sidebar";
 import CustomTitle from "../components/CustomTitle";
 import OrderCard from "../components/Orders/ordersCard";
 import useOrders from "../components/Orders/hook/useOrders";
@@ -23,9 +22,13 @@ const Orders = () => {
       : orders.filter((order) => order.storeName === activeStore);
 
   return (
-    <div className="orders-page">
-      <Sidebar />
-
+  <div className="orders-page">
+    {loading ? (
+      <div className="loading-screen">
+        <div className="spinner" />
+        <p>Cargando pedidos...</p>
+      </div>
+    ) : (
       <div className="orders-wrapper">
         <div className="orders-content">
           <CustomTitle text="Pedidos" style="page-title" />
@@ -43,9 +46,7 @@ const Orders = () => {
           </div>
 
           <div className="orders-grid">
-            {loading ? (
-              <p>Cargando pedidos...</p>
-            ) : error ? (
+            {error ? (
               <p>Error al cargar pedidos</p>
             ) : filteredOrders.length === 0 ? (
               <p>No hay pedidos para esta tienda.</p>
@@ -57,8 +58,10 @@ const Orders = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    )}
+  </div>
+);
+
 };
 
 export default Orders;
