@@ -1,6 +1,6 @@
 /* Ajuste para no taparse con el sidebar */
-.users-main-container {
-  margin-left: 40px; /* Ajusta al ancho real de tu sidebar */
+.category-main-container {
+  margin-left: 400px; /* Ajusta al ancho real de tu sidebar */
   padding: 20px;
 }
 
@@ -13,19 +13,6 @@
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
-}
-
-.image-upload-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 300px;
-  flex-shrink: 0;
-}
-
-.employee-form {
-  width: 100%;
-  max-width: 600px;
 }
 
 .form-row-wrapper {
@@ -65,16 +52,6 @@
   margin-top: 10px;
 }
 
-.upload-button {
-  background-color: #000;
-  color: #fff;
-  padding: 10px;
-  width: 100%;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
 #buscar.custom-input {
   width: 100%;
   padding: 10px 16px;
@@ -88,7 +65,7 @@
 .table-header,
 .table-row {
   display: grid;
-  grid-template-columns: 1fr 1fr 120px 180px;
+  grid-template-columns: 1fr 1fr 1fr 80px 180px; /* desc, cat, det, activo, acciones */
   padding: 10px;
   border-radius: 6px;
   background-color: #ffffff;
@@ -127,11 +104,6 @@
     flex-direction: column;
     gap: 30px;
     align-items: center;
-  }
-
-  .image-upload-section {
-    width: 100%;
-    max-width: 300px;
   }
 
   .fields-section {

@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 const itemSchema = new Schema({
   productId: {
     type: Schema.Types.ObjectId,
-    ref: "products", 
+    ref: "product", 
     required: true,
   },
   productName: {
@@ -45,7 +45,7 @@ const orderSchema = new Schema(
   {
     customerId: {
       type: Schema.Types.ObjectId,
-      ref: "costomer", 
+      ref: "customer", 
       required: true,
     },
     orderDetails: {

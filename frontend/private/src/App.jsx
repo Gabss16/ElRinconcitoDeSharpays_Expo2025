@@ -9,7 +9,7 @@ import ResetPassword from "./pages/ResetPassword.jsx";
 import Orders from "./pages/Orders.jsx"
 import Sharpays from "./pages/SharpaysBoutique.jsx"
 import Dashboard from "./pages/Dashboard.jsx";
-
+import Category from "./pages/Category.jsx"
 import SideBar from "./components/Sidebar.jsx";
 import Footer from "./components/Footer.jsx";
 
@@ -49,6 +49,7 @@ return (
     <Route path="/ResetPassword" element={<ResetPassword/>} />
     <Route path="/Orders" element={<Orders/>} />
     <Route path="/Sharpays" element={<Sharpays/>} />
+     <Route path="/Category" element={<Category/>} />
 </Routes>
     <FooterSelector/>
     </AuthProvider>
