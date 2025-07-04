@@ -1,9 +1,10 @@
+// src/pages/ProductsTable.jsx
 import React from "react";
 import InputText from "../../CustomInput";
 import Button from "../../CustomButton";
 import "../../../styles/ProductsTable.css";
 
-const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEditable=true }) => {
+const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEditable = true }) => {
   const filteredProducts = products.filter((prod) => {
   const cat =
     typeof prod.categoryId === "string"
@@ -11,7 +12,7 @@ const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEdit
       : typeof prod.categoryId === "object"
       ? prod.categoryId.$oid || prod.categoryId._id
       : null;
-  return cat === "6855bf0c8bda3da90eca92c4";
+  return cat === "68670de0d4a3c856571b7fb1";
 });
   return (
     <div className="products-table-container">
@@ -31,7 +32,7 @@ const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEdit
           <span>Precio</span>
           <span>Stock</span>
           <span>Imagen</span>
-          <span>Tallas</span> {/* Nueva columna */}
+          <span>Sabores</span> {/* Cambié "Tallas" a "Sabores" */}
           {isEditable && <span>Acciones</span>}
         </div>
 
@@ -80,8 +81,8 @@ const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEdit
                 </span>
 
                 <span>
-                  {Array.isArray(prod.size) && prod.size.length > 0
-                    ? prod.size.join(", ")
+                  {prod.flavor && prod.flavor.length > 0 // Verifica si flavor existe y tiene longitud
+                    ? prod.flavor
                     : "—"}
                 </span>
 
@@ -112,8 +113,6 @@ const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEdit
             ))
           )}
         </div>
-
-
       </div>
     </div>
   );

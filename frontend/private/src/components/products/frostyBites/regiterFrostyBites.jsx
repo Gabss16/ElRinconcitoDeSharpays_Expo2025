@@ -4,12 +4,11 @@ import UploadImage from "../../ProductsImage";
 import ImagePreview from "../../ImagePreview";
 import ComboBox from "../../ComboBox";
 import CustomInput from "../../CustomInput";
-import SizeSelector from "../../SizeSelector";
 import { Title, Subtitle } from "../../Typography";
 import CustomButton from "../../CustomButton";
 import "../../../styles/registerSharpays.css";
 
-const ImageUploadPage = ({
+const FlavorUploadPage = ({
   name, setName,
   description, setDescription,
   stock, setStock,
@@ -19,7 +18,6 @@ const ImageUploadPage = ({
   image, setImage,
   otherFields, setOtherFields,
   handleSubmit,
-  selectedSizes, setSelectedSizes,
   tipoObjeto, setTipoObjeto,
   isEditing,
   handleUpdate
@@ -37,34 +35,34 @@ const ImageUploadPage = ({
 
   // Sincronizar valores del formulario al cambiar
   useEffect(() => {
-    setCategoryId("6855bf0c8bda3da90eca92c4"); // ← ID de la tienda
+    setCategoryId("68670de0d4a3c856571b7fb1"); // ID de la tienda
     setSubCategoryId(tipoObjeto);
     setImage(imageUrl);
     setOtherFields({
-      size: selectedSizes,
+      flavor: "", // Inicializar el sabor como string vacío
     });
-  }, [tipoObjeto, selectedSizes, imageUrl]);
+  }, [tipoObjeto, imageUrl]);
 
   const validateForm = () => {
     const newErrors = {};
     if (!name) newErrors.name = "El título es requerido.";
     if (!price) newErrors.price = "El precio es requerido.";
     if (!stock) newErrors.stock = "El stock es requerido.";
-    if (selectedSizes.length === 0) newErrors.sizes = "Debes seleccionar al menos una talla.";
+    if (!otherFields.flavor) newErrors.flavor = "El sabor es requerido."; // Validación para el sabor
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Retorna true si no hay errores
   };
 
   const handleFormSubmit = (e) => {
-  e.preventDefault();
-  if (validateForm()) {
-    if (isEditing) {
-      handleUpdate(); // Sin pasar el evento
-    } else {
-      handleSubmit(); // Sin pasar el evento
+    e.preventDefault();
+    if (validateForm()) {
+      if (isEditing) {
+        handleUpdate(); // Sin pasar el evento
+      } else {
+        handleSubmit(); // Sin pasar el evento
+      }
     }
-  }
-};
+  };
 
   return (
     <div>
@@ -84,13 +82,13 @@ const ImageUploadPage = ({
 
       <form
         className="w-full max-w-6xl mx-auto mt-8 bg-white rounded-lg shadow-md p-8"
-        onSubmit={handleFormSubmit} // Cambia aquí
+        onSubmit={handleFormSubmit}
       >
         <Subtitle>Selecciona la subcategoría</Subtitle>
         <ComboBox
           value={tipoObjeto}
           onChange={(e) => setTipoObjeto(e.target.value)}
-          categoryFilter="6855bf0c8bda3da90eca92c4"
+          categoryFilter="68670de0d4a3c856571b7fb1"
         />
 
         <div className="mt-6">
@@ -129,15 +127,16 @@ const ImageUploadPage = ({
               />
               {errors.stock && <p style={{ color: 'pink' }}>{errors.stock}</p>} {/* Mensaje de error */}
             </div>
-            <div className="input-tallas">
-              <label className="text-sm font-semibold mb-1 block">
-                Tallas disponibles
-              </label>
-              <SizeSelector
-                selectedSizes={selectedSizes}
-                setSelectedSizes={setSelectedSizes}
+            <div className="input-sabor"> {/* Cambié el nombre de la clase */}
+              <CustomInput
+                label="Sabor"
+                placeholder="Sabor"
+                type="text"
+                name="sabor"
+                value={otherFields.flavor} // Usar el valor de sabor
+                onChange={(e) => setOtherFields({ ...otherFields, flavor: e.target.value })} // Actualizar el sabor
               />
-              {errors.sizes && <p style={{ color: 'pink' }}>{errors.sizes}</p>} {/* Mensaje de error */}
+              {errors.flavor && <p style={{ color: 'pink' }}>{errors.flavor}</p>} {/* Mensaje de error */}
             </div>
           </div>
 
@@ -168,4 +167,4 @@ const ImageUploadPage = ({
   );
 };
 
-export default ImageUploadPage;
+export default FlavorUploadPage; // Cambié el nombre del componente exportado
