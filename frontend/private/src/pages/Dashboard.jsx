@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 import "../styles/Dashboard.css";
 
-import ProductsTable from "../components/products/sharpaysBoutique/sharpaysTable.jsx";
+import ProductsTable from "../components/products/dashboardTable.jsx";
 import useUserDataProducts from "../components/products/hook/userDataProducts";
 
 //Gráficas
