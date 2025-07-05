@@ -4,12 +4,11 @@ import UploadImage from "../../ProductsImage";
 import ImagePreview from "../../ImagePreview";
 import ComboBox from "../../ComboBox";
 import CustomInput from "../../CustomInput";
-import SizeSelector from "../../SizeSelector";
 import { Title, Subtitle } from "../../Typography";
 import CustomButton from "../../CustomButton";
 import "../../../styles/registerSharpays.css";
 
-const ImageUploadPage = ({
+const Paraiso = ({
   name, setName,
   description, setDescription,
   stock, setStock,
@@ -17,11 +16,9 @@ const ImageUploadPage = ({
   categoryId, setCategoryId,
   subCategoryId, setSubCategoryId,
   image, setImage,
-  otherFields, setOtherFields,
-  handleSubmit,
-  selectedSizes, setSelectedSizes,
   tipoObjeto, setTipoObjeto,
   isEditing,
+  handleSubmit,
   handleUpdate
 }) => {
 
@@ -37,34 +34,30 @@ const ImageUploadPage = ({
 
   // Sincronizar valores del formulario al cambiar
   useEffect(() => {
-    setCategoryId("6855bf0c8bda3da90eca92c4"); // ← ID de la tienda
+    setCategoryId("68670dfcd4a3c856571b7fb2"); // ← ID de la tienda
     setSubCategoryId(tipoObjeto);
     setImage(imageUrl);
-    setOtherFields({
-      size: selectedSizes,
-    });
-  }, [tipoObjeto, selectedSizes, imageUrl]);
+  }, [tipoObjeto, imageUrl]);
 
   const validateForm = () => {
     const newErrors = {};
     if (!name) newErrors.name = "El título es requerido.";
     if (!price) newErrors.price = "El precio es requerido.";
     if (!stock) newErrors.stock = "El stock es requerido.";
-    if (selectedSizes.length === 0) newErrors.sizes = "Debes seleccionar al menos una talla.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Retorna true si no hay errores
   };
 
   const handleFormSubmit = (e) => {
-  e.preventDefault();
-  if (validateForm()) {
-    if (isEditing) {
-      handleUpdate(); // Sin pasar el evento
-    } else {
-      handleSubmit(); // Sin pasar el evento
+    e.preventDefault();
+    if (validateForm()) {
+      if (isEditing) {
+        handleUpdate();
+      } else {
+        handleSubmit();
+      }
     }
-  }
-};
+  };
 
   return (
     <div>
@@ -84,13 +77,13 @@ const ImageUploadPage = ({
 
       <form
         className="w-full max-w-6xl mx-auto mt-8 bg-white rounded-lg shadow-md p-8"
-        onSubmit={handleFormSubmit} // Cambia aquí
+        onSubmit={handleFormSubmit}
       >
         <Subtitle>Selecciona la subcategoría</Subtitle>
         <ComboBox
           value={tipoObjeto}
           onChange={(e) => setTipoObjeto(e.target.value)}
-          categoryFilter="6855bf0c8bda3da90eca92c4"
+          categoryFilter="68670dfcd4a3c856571b7fb2"
         />
 
         <div className="mt-6">
@@ -105,7 +98,7 @@ const ImageUploadPage = ({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
-              {errors.name && <p style={{ color: 'pink' }}>{errors.name}</p>} {/* Mensaje de error */}
+              {errors.name && <p style={{ color: 'pink' }}>{errors.name}</p>}
             </div>
             <div className="input-precio">
               <CustomInput
@@ -116,7 +109,7 @@ const ImageUploadPage = ({
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
-              {errors.price && <p style={{ color: 'pink' }}>{errors.price}</p>} {/* Mensaje de error */}
+              {errors.price && <p style={{ color: 'pink' }}>{errors.price}</p>}
             </div>
             <div className="input-stock">
               <CustomInput
@@ -127,17 +120,7 @@ const ImageUploadPage = ({
                 value={stock}
                 onChange={(e) => setStock(e.target.value)}
               />
-              {errors.stock && <p style={{ color: 'pink' }}>{errors.stock}</p>} {/* Mensaje de error */}
-            </div>
-            <div className="input-tallas">
-              <label className="text-sm font-semibold mb-1 block">
-                Tallas disponibles
-              </label>
-              <SizeSelector
-                selectedSizes={selectedSizes}
-                setSelectedSizes={setSelectedSizes}
-              />
-              {errors.sizes && <p style={{ color: 'pink' }}>{errors.sizes}</p>} {/* Mensaje de error */}
+              {errors.stock && <p style={{ color: 'pink' }}>{errors.stock}</p>}
             </div>
           </div>
 
@@ -160,7 +143,7 @@ const ImageUploadPage = ({
             color="white"
             width="180px"
             height="50px"
-            border={isEditing ? "none" : "none"}
+            border="none"
           />
         </div>
       </form>
@@ -168,4 +151,4 @@ const ImageUploadPage = ({
   );
 };
 
-export default ImageUploadPage;
+export default Paraiso;

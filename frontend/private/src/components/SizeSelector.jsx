@@ -1,6 +1,6 @@
 import React from 'react';
 
-const sizesList = ["XS", "S", "M", "L", "XL", "XXL"];
+const sizesList = ["-","XS", "S", "M", "L", "XL", "XXL"];
 
 const SizeSelector = ({ selectedSizes, setSelectedSizes }) => {
   const toggleSize = (size) => {

@@ -59,7 +59,9 @@ const useUserDataProducts = () => {
 
   // Crear nuevo producto
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  if (e && e.preventDefault) {
+    e.preventDefault(); // Solo si recibimos el evento
+  }
   
     try {
       setLoading(true);
@@ -143,7 +145,9 @@ const useUserDataProducts = () => {
 
   // Guardar cambios edición
   const handleUpdate = async (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) {
+    e.preventDefault(); // Solo si recibimos el evento
+  }
 
     try {
       setLoading(true);
