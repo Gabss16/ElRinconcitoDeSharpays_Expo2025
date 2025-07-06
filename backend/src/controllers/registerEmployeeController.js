@@ -12,7 +12,7 @@ registerEmployeeController.register = async (req, res) => {
     // 1. Verificar si el empleado ya existe por email
     const existingEmployee = await Employee.findOne({ email });
     if (existingEmployee) {
-      return res.status(400).json({ message: "Employee already exists" });
+      return res.status(400).json({ message: "Esta cuenta ya existe" });
     }
 
     // 2. Encriptar la contraseña
@@ -35,7 +35,7 @@ registerEmployeeController.register = async (req, res) => {
       (error, token) => {
         if (error) {
           console.error("Error generating token:", error);
-          return res.status(500).json({ message: "Error generating token" });
+          return res.status(500).json({ message: "Error al generar el token" });
         }
 
         // 5. Enviar token en cookie y respuesta
@@ -45,7 +45,7 @@ registerEmployeeController.register = async (req, res) => {
           maxAge: 1000 * 60 * 60 * 24, // 1 día
         });
 
-        res.status(201).json({ message: "Employee registered successfully" });
+        res.status(201).json({ message: "Cuenta registrada con éxito" });
       }
     );
   } catch (error) {

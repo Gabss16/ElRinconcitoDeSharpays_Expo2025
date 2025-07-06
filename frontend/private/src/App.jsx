@@ -17,54 +17,58 @@ import Category from "./pages/Category.jsx"
 import SideBar from "./components/Sidebar.jsx";
 import Footer from "./components/Footer.jsx";
 
+import LoadingAnimation from "./components/LoadingAnimation.jsx"
+
 import { AuthProvider } from "./context/AuthContext";
 
 
 
 function App() {
 
-function SideBarSelector() {
-    const { pathname } = useLocation();
-    const noNavbarPaths = ["/Login", "/Register", "/RecoveryPassword"];
-    
-    if (noNavbarPaths.includes(pathname)) return null;
-    return <SideBar/>;
-}
+    function SideBarSelector() {
+        const { pathname } = useLocation();
+        const noNavbarPaths = ["/Login", "/Register", "/RecoveryPassword"];
 
-function FooterSelector() {
-    const { pathname } = useLocation();
-    const footerPaths = ["/Login", "/Register", "/RecoveryPassword"];
-    
-    if (footerPaths.includes(pathname)) return <Footer/>;
-    return null;
-}
+        if (noNavbarPaths.includes(pathname)) return null;
+        return <SideBar />;
+    }
 
-return (
-<Router>
-    <AuthProvider>
-    <SideBarSelector/>
-<Routes>
-    <Route path="/" element={<Navigate to="/Login" replace />} />
-    <Route path="/Login" element={<Login/>} />
-    <Route path="/Dashboard" element={<Dashboard/>} />
-    <Route path="/Register" element={<Register/>} />
-    <Route path="/Employee" element={<Employee/>} />
-    <Route path="/RecoveryPassword" element={<RecoveryPassword/>} />
-    <Route path="/ResetPassword" element={<ResetPassword/>} />
-    <Route path="/Orders" element={<Orders/>} />
-    <Route path="/Sharpays" element={<Sharpays/>} />
+    function FooterSelector() {
+        const { pathname } = useLocation();
+        const footerPaths = ["/Login", "/Register", "/RecoveryPassword"];
 
-     <Route path="/Category" element={<Category/>} />
+        if (footerPaths.includes(pathname)) return <Footer />;
+        return null;
+    }
 
-    <Route path="/bougies" element={<Bougies/>} />
-    <Route path="/frostybites" element={<FrostyBites/>} />
-    <Route path="/paradise" element={<Paraiso/>} />
+    return (
+        <Router>
+            <AuthProvider>
+                <SideBarSelector />
+                <LoadingAnimation>
+                <Routes>
+                    <Route path="/" element={<Navigate to="/Login" replace />} />
+                    <Route path="/Login" element={<Login />} />
+                    <Route path="/Dashboard" element={<Dashboard />} />
+                    <Route path="/Register" element={<Register />} />
+                    <Route path="/Employee" element={<Employee />} />
+                    <Route path="/RecoveryPassword" element={<RecoveryPassword />} />
+                    <Route path="/ResetPassword" element={<ResetPassword />} />
+                    <Route path="/Orders" element={<Orders />} />
+                    <Route path="/Sharpays" element={<Sharpays />} />
 
-</Routes>
-    <FooterSelector/>
-    </AuthProvider>
-</Router>
-);
+                    <Route path="/Category" element={<Category />} />
+
+                    <Route path="/bougies" element={<Bougies />} />
+                    <Route path="/frostybites" element={<FrostyBites />} />
+                    <Route path="/paradise" element={<Paraiso />} />
+
+                </Routes>
+                <FooterSelector />
+                </LoadingAnimation>
+            </AuthProvider>
+        </Router>
+    );
 }
 
 export default App;

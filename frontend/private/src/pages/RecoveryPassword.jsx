@@ -41,7 +41,7 @@ const RecoveryPassword = () => {
         <GlassBox>
           <LogoLogin textStyle="text-white fw-bold fs-5 pt-2 w-50" />
 
-          <div className="recovery-password-content d-flex justify-content-center align-items-center flex-column mt-5 w-100">
+          <div className="recovery-password-content d-flex justify-content-center align-items-center flex-column mt-5 pt-3 w-100">
             <CustomTitle
               style="text-white fw-bold fs-3 mb-5"
               text="Recuperación de contraseña"
@@ -74,10 +74,7 @@ const RecoveryPassword = () => {
                 />
 
                 <div className="go-to-register text-center mt-5 pt-5 d-flex">
-                  <p className="m-0 ps-1 pe-1 text-white">
-                    ¿No recibiste el código?
-                  </p>
-                  <LinkText text="Reenviar" action="reenviar codigo" />
+                  <LinkText text="Iniciar Sesión" action="/Login" />
                 </div>
               </>
             )}
@@ -102,9 +99,12 @@ const RecoveryPassword = () => {
                 <CustomButton
                   text="Verificar código"
                   onClick={async (e) => {
-                    await verifyCode(e);
-                    setStep(3);
-                  }}
+                    const success = await verifyCode(e);
+                    if (success) {
+                      setStep(3);
+                    }
+                  }
+                  }
                   background="black"
                   color="white"
                   width="300px"
