@@ -1,0 +1,38 @@
+.card-orders {
+  width: 439px;
+  height: 473px;
+  top: 239px;
+  left: 1260px;
+  border-radius: 12px; /* radio más marcado */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* sombra suave */
+  overflow: hidden;
+  background-color: #fff;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.card-orders__header {
+  height: 50px;
+  background-color: #ff3399; /* rosa fuerte */
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.card-orders__body {
+  padding: 40px 20px 30px; /* más espacio arriba para centrar */
+}
+
+.card-orders__image {
+  width: 320px; /* un poco más grande para que se vea mejor */
+  height: 320px;
+  margin: 0 auto 20px; /* centrado horizontal y espacio abajo */
+  object-fit: contain;
+  display: block; /* para que margin auto funcione */
+}
+
+.card-orders__text {
+  color: #999999; /* gris claro */
+  font-size: 25px;
+  margin: 0;
+  font-weight: 500;
+}
