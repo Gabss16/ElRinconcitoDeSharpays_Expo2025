@@ -1,0 +1,48 @@
+.quantity-selector label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: #555;
+}
+
+.qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 140px;
+}
+
+.qty-controls button {
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.qty-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.qty-controls button:hover:not(:disabled) {
+  background-color: #e91e63;
+  color: white;
+}
+
+.qty-controls input {
+  width: 50px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  padding: 6px 8px;
+}
+
+.quantity-selector small {
+  font-size: 0.8rem;
+  color: #999;
+  margin-top: 4px;
+}

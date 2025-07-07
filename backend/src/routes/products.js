@@ -10,6 +10,7 @@ router.route("/")
   .post(upload.single("image"), productController.createProduct);
 
 router.route("/:id")
+   .get(productController.getProductById)
   .put(upload.single("image"), productController.updateProduct)
   .delete(productController.deleteProduct);
 

@@ -25,6 +25,27 @@ productController.getProducts = async (req, res) => {
   }
 };
 
+// GET product by ID
+productController.getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const product = await Product.findById(id)
+      .populate("categoryId")
+      .populate("subCategoryId");
+
+    if (!product) {
+      return res.status(404).json({ message: "Producto no encontrado" });
+    }
+
+    res.json(product);
+  } catch (error) {
+    console.error("Error al obtener producto por ID:", error);
+    res.status(500).json({ message: "Error interno al buscar producto", error });
+  }
+};
+
+
 // CREATE product
 productController.createProduct = async (req, res) => {
   try {
