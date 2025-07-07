@@ -61,7 +61,7 @@ const AdvertisementsUpload = ({
           <div className="input-descripcion">
             <CustomInput
               label="Detalles del evento"
-              placeholder="Descripción del anuncio"
+              placeholder="Descripción del evento"
               type="text"
               name="description"
               value={description}

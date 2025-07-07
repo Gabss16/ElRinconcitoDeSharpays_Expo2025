@@ -185,7 +185,7 @@ const EventsPage = () => {
     setImage("");
     setIsEditing(false);
     setEditingId(null);
-    clearError(); // Limpiar errores del hook
+    clearError(); 
   };
 
   // Manejar cambio de tab
@@ -206,7 +206,6 @@ const EventsPage = () => {
             <div className="sharpay-page">
               <Title>Gestión de Eventos</Title>
 
-              {/* Mostrar errores si existen */}
               {error && (
                 <div className="alert alert-danger" role="alert">
                   {error}
