@@ -1,32 +1,32 @@
 const CustomInput = ({
   label,
   placeholder,
-  type,
+  type = "text",
   name,
   disable,
   hidden,
   onChange,
   value,
-  maxLength
+  maxLength,
+  className = "",
 }) => {
   return (
-    <div className="m-2">
-      <label htmlFor={name} className="text-white" hidden={hidden}>
-        {label}
-      </label>
-      <div className="mt-2">
-        <input
-          id={name}
-          placeholder={placeholder}
-          type={type}
-          className="custom-input"
-          disabled={disable}
-          hidden={hidden}
-          onChange={onChange}
-          value={value} // Agregado para controlar el input
-          maxLength={maxLength}
-        />
-      </div>
+    <div className={`custom-input-container ${className}`} hidden={hidden}>
+      {label && (
+        <label htmlFor={name} className="custom-input-label">
+          {label}
+        </label>
+      )}
+      <input
+        id={name}
+        placeholder={placeholder}
+        type={type}
+        className="custom-input"
+        disabled={disable}
+        onChange={onChange}
+        value={value ?? ""}
+        maxLength={maxLength}
+      />
     </div>
   );
 };
