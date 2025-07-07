@@ -1,14 +1,6 @@
-.personal-info-card {
-  background: #fff;
-  padding: 32px 24px 16px 24px;
-  border-radius: 8px;
-  border: 1px solid #efefef;
-  max-width: 900px;
-  margin: 0 auto;
-}
 
 .personal-info-header {
-  margin-bottom: 12px;
+  margin-bottom: 1px; /* menos espacio abajo */
 }
 
 .personal-info-title {
@@ -56,12 +48,14 @@
   transition: background-color 0.3s ease;
 }
 
-.edit-btn:hover,
-.password-btn:hover {
-  background-color:#FE3F8D; /* rosa más oscuro al pasar el cursor */
+.edit-btn {
+  margin-left: 32px; /* separación extra */
 }
 
-
+.edit-btn:hover,
+.password-btn:hover {
+  background-color:#ff63a4; /* rosa más oscuro al pasar el cursor */
+}
 .password-btn {
   background:#FE3F8D;
   color: #fff;
@@ -76,5 +70,5 @@
 }
 
 .password-btn:hover {
-  background: #FE3F8D;
+  background: #ff63a4;
 }
