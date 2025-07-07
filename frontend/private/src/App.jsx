@@ -16,6 +16,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Category from "./pages/Category.jsx"
 import SideBar from "./components/Sidebar.jsx";
 import Footer from "./components/Footer.jsx";
+import Events from "./pages/Events.jsx"
 
 import LoadingAnimation from "./components/LoadingAnimation.jsx"
 
@@ -62,6 +63,7 @@ function App() {
                     <Route path="/bougies" element={<Bougies />} />
                     <Route path="/frostybites" element={<FrostyBites />} />
                     <Route path="/paradise" element={<Paraiso />} />
+                    <Route path="/Events" element={<Events/>} />
 
                 </Routes>
                 <FooterSelector />
