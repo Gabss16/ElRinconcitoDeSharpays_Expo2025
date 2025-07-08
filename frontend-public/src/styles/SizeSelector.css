@@ -1,29 +1,44 @@
-.size-selector label {
-  font-weight: 600;
-  margin-bottom: 6px;
-  display: block;
-  color: #555;
+.size-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 🔥 Esto alinea el label a la izquierda */
+  width: 100%;
+  gap: 8px;
 }
+
+.size-selector label {
+  width: 100%;              /* 🔥 Asegura que el label use todo el ancho */
+  text-align: left;         /* 🔥 Alineación del texto */
+}
+
 
 .size-options {
   display: flex;
-  gap: 10px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .size-btn {
-  background-color: #f0f0f0;
-  border: 2px solid transparent;
-  padding: 8px 16px;
-  border-radius: 10px;
+  background-color: #fafafa;
+  border: 1.5px solid #ddd;
+  padding: 6px 20px;
+  border-radius: 20px;
   cursor: pointer;
-  font-weight: 600;
-  transition: border-color 0.3s ease, background-color 0.3s ease;
-  color: #666;
+  font-weight: 500;
+  font-size: 14px;
+  color: #444;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
-.size-btn.selected,
 .size-btn:hover {
+  background-color: #fce4ec;
   border-color: #e91e63;
-  background-color: #ffe3ec;
+  color: #e91e63;
+}
+
+.size-btn.selected {
+  background-color: #fce4ec;
+  border-color: #e91e63;
   color: #e91e63;
 }

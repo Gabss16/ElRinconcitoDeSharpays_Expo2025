@@ -1,67 +1,156 @@
 .camisa-detail-wrapper {
   display: flex;
+  flex-wrap: wrap;
   gap: 40px;
-  max-width: 900px;
+  padding: 48px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(233, 30, 99, 0.08); /* rosa muy suave */
+  max-width: 1200px;
   margin: 40px auto;
-  padding: 0 20px;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
+  align-items: flex-start;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
 
 .camisa-image-container {
   flex: 1;
-  border-radius: 16px;
+  max-width: 440px;
+  height: 440px;
+  background-color: #fff6f8;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;  /* oculta lo que se salga */
+  box-sizing: border-box;
+  padding: 0; /* quito padding para que no se vea el rosado */
+  position: relative;
+}
+
+/* Si quieres un "padding" interno con fondo blanco para la imagen, usa un div interno */
+
+.camisa-image-wrapper {
+  width: 100%;
+  height: 100%;
+  padding: 32px;
+  background-color: white;
+  box-sizing: border-box;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
-  box-shadow: 0 8px 20px rgb(0 0 0 / 0.08);
 }
 
 .camisa-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  border-radius: 12px;
 }
 
+
+
 .camisa-info-container {
+  padding-top: 3%;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  gap: 20px;
+  justify-content: left; /* si quieres puedes cambiar a flex-start, pero no es obligatorio */
+  text-align: left; /* <- aquí */
+}
+
+.camisa-category {
+  font-size: 13px;
+  color: #999;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .camisa-name {
-  font-weight: 700;
-  font-size: 2rem;
-  margin-bottom: 8px;
-  color: #222;
+  font-size: 28px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
 }
 
-.camisa-description {
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #555;
+.camisa-stock {
+  background-color: #f9e7ee;
+  color: #b71c5b;
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  width: fit-content;
+  font-weight: 500;
+}
+
+.camisa-rating {
+  font-size: 13px;
+  color: #ffc107;
+  font-weight: 400;
 }
 
 .camisa-price {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #e91e63;
+  font-size: 24px;
+  font-weight: 600;
+  color: #d81b60;
 }
 
+.camisa-old-price {
+  font-size: 16px;
+  color: #aaa;
+  text-decoration: line-through;
+  margin-left: 10px;
+}
+
+.camisa-description {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  margin-top: 12px;
+}
+
+.selector-group {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+
+
+/* Add to cart */
 .add-cart-btn {
-  margin-top: auto;
-  padding: 14px;
-  background-color: #e91e63;
-  border: none;
-  border-radius: 12px;
+  margin-top: 24px;
+  padding: 12px 28px;
+  background-color: #d81b60;
   color: white;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 500;
+  border: none;
+  border-radius: 30px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background 0.3s ease;
+  align-self: flex-start;
 }
 
 .add-cart-btn:hover {
-  background-color: #c2185b;
+  background-color: #b6184f;
+}
+
+.zoom-container {
+  overflow: hidden;
+  position: relative;
+  cursor: zoom-in;
+}
+
+.camisa-image {
+  transition: transform 0.3s ease;
+  transform-origin: center center;
+}
+
+/* Cuando el contenedor tiene clase active, hacemos zoom */
+.zoom-container.active .camisa-image {
+  transform: scale(2); /* Zoom 2x */
+  cursor: zoom-out;
 }
