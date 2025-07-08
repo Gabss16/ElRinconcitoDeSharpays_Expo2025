@@ -56,6 +56,17 @@ const useUserDataProducts = () => {
       setLoading(false);
     }
   };
+  const fetchDatabyId = async (id) => {
+  try {
+    const response = await fetch(`${ApiProducts}/${id}`);
+    if (!response.ok) throw new Error("Producto no encontrado");
+    return await response.json();
+  } catch (error) {
+    console.error("Error al obtener producto por ID:", error);
+    throw error;
+  }
+};
+
 
   // Crear nuevo producto
   const handleSubmit = async (e) => {
@@ -212,6 +223,7 @@ const useUserDataProducts = () => {
     setProducts,
     cleanData,
     fetchData,
+     fetchDatabyId,
     handleSubmit,
     deleteProduct,
     updateProduct,
