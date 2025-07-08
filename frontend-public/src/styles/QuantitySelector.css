@@ -1,48 +1,57 @@
-.quantity-selector label {
-  font-weight: 600;
-  margin-bottom: 6px;
-  display: block;
-  color: #555;
+.quantity-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* 🔥 Esto alinea el label a la izquierda */
+  gap: 8px;
+  width: 100%;
 }
 
+.quantity-selector label {
+  font-weight: 500;
+  color: #333;
+  font-size: 15px;
+  text-align: left;
+  width: 100%; /* 🔥 Asegura que el label ocupe todo el ancho para alinearse a la izquierda */
+}
+
+
 .qty-controls {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 10px;
-  max-width: 140px;
+  border: 1.5px solid #ddd;
+  border-radius: 999px;
+  overflow: hidden;
+  background-color: #fafafa;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .qty-controls button {
-  background-color: #f0f0f0;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-size: 1.2rem;
+  all: unset;
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #444;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.qty-controls button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
+.qty-controls button:hover:not(:disabled) {
+  background-color: #fce4ec;
+  color: #e91e63;
 }
 
-.qty-controls button:hover:not(:disabled) {
-  background-color: #e91e63;
-  color: white;
+.qty-controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .qty-controls input {
-  width: 50px;
+  width: 40px;
   text-align: center;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 1rem;
-  padding: 6px 8px;
-}
-
-.quantity-selector small {
-  font-size: 0.8rem;
-  color: #999;
-  margin-top: 4px;
+  border: none;
+  font-size: 15px;
+  background-color: transparent;
+  color: #444;
+  outline: none;
+  pointer-events: none; /* Solo editable por los botones */
 }
