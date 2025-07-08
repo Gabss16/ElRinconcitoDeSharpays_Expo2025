@@ -1,14 +1,15 @@
 .card-orders {
   width: 439px;
   height: 473px;
-  top: 239px;
-  left: 1260px;
-  border-radius: 12px; /* radio más marcado */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* sombra suave */
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   background-color: #fff;
   text-align: center;
   font-family: Arial, sans-serif;
+
+  margin-left: 0;       /* pegado a la izquierda */
+  margin-right: 40px;   /* espacio a la derecha */
 }
 
 .card-orders__header {
@@ -16,11 +17,15 @@
   background-color: #ff3399; /* rosa fuerte */
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
+  
 }
 
 .card-orders__body {
-  padding: 40px 20px 30px; /* más espacio arriba para centrar */
+    margin-right: 0px; 
+   margin-left: 0;    
+  padding: 40px 20px 30px; 
 }
+
 
 .card-orders__image {
   width: 320px; /* un poco más grande para que se vea mejor */
@@ -28,6 +33,7 @@
   margin: 0 auto 20px; /* centrado horizontal y espacio abajo */
   object-fit: contain;
   display: block; /* para que margin auto funcione */
+  
 }
 
 .card-orders__text {
