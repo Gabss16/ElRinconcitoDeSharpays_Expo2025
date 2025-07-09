@@ -1,5 +1,5 @@
 import { useAuth } from "../context/AuthContext.jsx";
-import React, {useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { NavLink } from 'react-router-dom';
 
@@ -19,11 +19,11 @@ import PendingOrders from "../components/PendingOrders.jsx";
 const Dashboard = () => {
 
     const { user } = useAuth();
-    const {products, deleteProduct, updateProduct, loading, fetchData} = useUserDataProducts();
+    const { products, deleteProduct, updateProduct, loading, fetchData } = useUserDataProducts();
 
-     useEffect(() => {
+    useEffect(() => {
         fetchData();
-      }, []);
+    }, []);
 
     return (
         <>
@@ -56,12 +56,12 @@ const Dashboard = () => {
 
                             <div>
                                 <h4>Ventas por mes</h4>
-                                <TotalSales/>
+                                <TotalSales />
                             </div>
 
                             <div>
                                 <h4>Lista de Pedidos</h4>
-                                <PendingOrders/>
+                                <PendingOrders />
                             </div>
                         </div>
 

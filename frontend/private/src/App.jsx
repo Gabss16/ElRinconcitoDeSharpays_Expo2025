@@ -17,6 +17,7 @@ import Category from "./pages/Category.jsx"
 import SideBar from "./components/Sidebar.jsx";
 import Footer from "./components/Footer.jsx";
 import Events from "./pages/Events.jsx"
+import Profile from "./pages/Profile.jsx";
 
 import LoadingAnimation from "./components/LoadingAnimation.jsx"
 
@@ -51,6 +52,7 @@ function App() {
                     <Route path="/" element={<Navigate to="/Login" replace />} />
                     <Route path="/Login" element={<Login />} />
                     <Route path="/Dashboard" element={<Dashboard />} />
+                    <Route path="/Profile" element={<Profile />} />
                     <Route path="/Register" element={<Register />} />
                     <Route path="/Employee" element={<Employee />} />
                     <Route path="/RecoveryPassword" element={<RecoveryPassword />} />
