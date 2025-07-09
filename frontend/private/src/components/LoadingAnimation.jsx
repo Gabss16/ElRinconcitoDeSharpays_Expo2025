@@ -4,13 +4,8 @@ import { useLocation } from "react-router-dom";
 //Rutas a las cuales en las cuales se mostrará la animación.
 const animatedRoutes = [
   "/Dashboard",
-  "/orders",
-  "/employee",
-  "/category",
-  "/sharpays",
-  "/bougies",
-  "/frostybites",
-  "/paradise"
+  "/Login",
+  "/profile"
 ];
 
 const loadingAnimation = ({ children }) => {
