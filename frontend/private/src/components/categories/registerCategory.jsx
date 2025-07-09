@@ -79,16 +79,17 @@ const RegisterCategories = ({
 
 
           <div className="form-group">
-            <label className="form-label">Activo</label>
-            <select
-              value={isActive ? "true" : "false"}
-              onChange={(e) => setIsActive(e.target.value === "true")}
-              className="form-input"
-            >
-              <option value="true">Sí</option>
-              <option value="false">No</option>
-            </select>
-          </div>
+  <label className="form-label">Activo</label>
+  <select
+    value={isActive ? "true" : "false"}
+    onChange={(e) => setIsActive(e.target.value === "true")} // Asegúrate de convertirlo a booleano
+    className="form-input"
+  >
+    <option value="true">Sí</option>
+    <option value="false">No</option>
+  </select>
+</div>
+
 
           <div
             className="submit-btn-container"

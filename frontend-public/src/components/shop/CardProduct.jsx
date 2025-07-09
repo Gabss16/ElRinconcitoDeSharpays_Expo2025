@@ -9,9 +9,35 @@ const CardProduct = ({ producto }) => {
      
   const navigate = useNavigate();
 
+  const getCategoryPath = (categoryId) => {
+  switch (categoryId) {
+    case "6855bf0c8bda3da90eca92c4":
+      return "sharpays";
+    case "68670dadd4a3c856571b7fb0":
+      return "bougies"; 
+    case "68670de0d4a3c856571b7fb1":
+      return "frostyBites";
+    case "68670dfcd4a3c856571b7fb2":
+      return "paraiso";
+    default:
+      return "producto";
+  }
+};
+
+
+ 
+
+
   const handleProductInfo = () => {
-    navigate(`/sharpays/${producto._id.$oid || producto._id}`);
-  };
+  const id = producto._id.$oid || producto._id;
+  const categoryId = producto.categoryId?._id || producto.categoryId;
+  const path = getCategoryPath(categoryId);
+
+  console.log("🧭 Ruta final:", `/${path}/${id}`);
+  navigate(`/${path}/${id}`);
+};
+
+
 
   return (
     

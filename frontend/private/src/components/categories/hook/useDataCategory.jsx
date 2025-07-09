@@ -72,18 +72,18 @@ const useDataCategories = () => {
   };
 
   // Actualizar una categoría existente
-  const handleEdit = async (categoryData) => {
+  const handleEdit = async () => {
     try {
       const formData = new FormData();
-      formData.append("description", categoryData.description);
-      formData.append("category", categoryData.category);
-      formData.append("isActive", categoryData.isActive);
+      formData.append("description", description);
+      formData.append("category", category);
+      formData.append("isActive", isActive);
       
-      if (categoryData.imageUrl && typeof categoryData.imageUrl !== "string") {
-        formData.append("image", categoryData.imageUrl); // Subir imagen si existe
+      if (imageUrl && typeof imageUrl !== "string") {
+        formData.append("image", imageUrl); // Subir imagen si existe
       }
 
-      const response = await fetch(`${API}/${categoryData.id}`, {
+      const response = await fetch(`${API}/${id}`, {
         method: "PUT",
         body: formData,
       });
@@ -141,7 +141,7 @@ const useDataCategories = () => {
     saveCategory,
     deleteCategory,
     updateCategory,
-    handleEdit,
+    handleEdit,  // Asegúrate de pasar esta función a los componentes donde la necesites
     resetForm,
   };
 };
