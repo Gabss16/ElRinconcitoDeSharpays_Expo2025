@@ -1,3 +1,5 @@
+import RegisterEmployee from "../components/employee/registerEmployee.jsx";
+
 const Profile = () => {
     return (
         <>
@@ -7,13 +9,14 @@ const Profile = () => {
                     <div className="col-10">
 
                         <div
-                            className="position-absolute top-50 start-50"
+                            className="mt-5"
                             style={{
                                 borderRadius: 25,
                                 padding: '20px',
-                                boxShadow: '0px 6px 0px 2px rgba(0, 0, 0, 0.14)'
+                                height: '90vh',
+                                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
                             }}>
-                            <b>profile in progress</b>
+                            <RegisterEmployee/>
                         </div>
 
                     </div>
