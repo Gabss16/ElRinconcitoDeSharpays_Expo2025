@@ -13,12 +13,10 @@ const CategorySchema = new Schema({
     minlength: [3, "La categoría debe tener al menos 3 caracteres"],
     maxlength: [50, "La categoría no puede exceder 50 caracteres"]
   },
-  details: {
+  image: {
     type: String,
-    required: [true, "Los detalles son obligatorios"],
-    minlength: [10, "Los detalles deben tener al menos 10 caracteres"],
-    maxlength: [300, "Los detalles no pueden exceder 300 caracteres"]
-  },
+    
+  }, 
   isActive: {
     type: Boolean,
     required: [true, "El estado activo es obligatorio"]
