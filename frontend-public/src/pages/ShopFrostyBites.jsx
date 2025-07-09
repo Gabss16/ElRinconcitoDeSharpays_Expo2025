@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Sharpays.css"; 
 import ShopMenu from "../components/SubMenu";
 import bgImage from "../assets/frosty.jpeg";
@@ -6,20 +6,33 @@ import CardProduct from "../components/shop/CardProduct";
 import useUserDataProducts from "../../../frontend/private/src/components/products/hook/userDataProducts";
 
 const ShopPage = () => {
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
   const { products, fetchData } = useUserDataProducts();
-  const filteredProducts = products.filter((prod) => {
-  const cat =
-    typeof prod.categoryId === "string"
-      ? prod.categoryId
-      : typeof prod.categoryId === "object"
-      ? prod.categoryId.$oid || prod.categoryId._id
-      : null;
-  return cat === "68670de0d4a3c856571b7fb1";
-});
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  const filteredProducts = products.filter((prod) => {
+    const cat =
+      typeof prod.categoryId === "string"
+        ? prod.categoryId
+        : typeof prod.categoryId === "object"
+        ? prod.categoryId.$oid || prod.categoryId._id
+        : null;
+
+    const sub =
+      typeof prod.subCategoryId === "string"
+        ? prod.subCategoryId
+        : typeof prod.subCategoryId === "object"
+        ? prod.subCategoryId._id || prod.subCategoryId.$oid
+        : null;
+
+    const isSameCategory = cat === "68670de0d4a3c856571b7fb1";
+    const isSameSub = selectedSubcategory ? sub === selectedSubcategory : true;
+
+    return isSameCategory && isSameSub;
+  });
 
   return (
     <div className="page-wrapper">
@@ -29,7 +42,11 @@ const ShopPage = () => {
       </div>
 
       <div className="white-box">
-        <ShopMenu />
+        <ShopMenu
+          categoryId="68670de0d4a3c856571b7fb1"
+          selectedSubcategory={selectedSubcategory}
+          setSelectedSubcategory={setSelectedSubcategory}
+        />
 
         <div className="products-grid">
           {filteredProducts.map((product) => (

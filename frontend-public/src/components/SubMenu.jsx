@@ -1,19 +1,40 @@
 // src/components/SidebarMenu.jsx
 import React from 'react';
-import '../styles/SubMenu.css'; // asegúrate de tener este archivo de estilos
+import '../styles/SubMenu.css';
+import useUserDataSubcategories from './SubCategories/hook/userDataSubCategory';
 
-const SidebarMenu = () => {
+const SidebarMenu = ({ categoryId, selectedSubcategory, setSelectedSubcategory }) => {
+  const { subcategories } = useUserDataSubcategories();
+
+  const filteredSubs = subcategories.filter((sub) => {
+    const subCatId =
+      typeof sub.categoryId === "string"
+        ? sub.categoryId
+        : typeof sub.categoryId === "object"
+        ? sub.categoryId._id || sub.categoryId.$oid
+        : null;
+
+    return subCatId === categoryId;
+  });
+
   return (
     <aside className="sidebar-menu">
-      <button className="category-btn">All Category</button>
-      <button className="category-btn">Tops y sujetadores</button>
-      <button className="category-btn">Leggings y pantalones</button>
-      <button className="category-btn">Bags</button>
-      <button className="category-btn">Accesorios</button>
-      <button className="category-btn">Yoga Mats</button>
-      <button className="category-btn">Water Bottles</button>
-      <button className="category-btn">Hoodies</button>
-      <button className="category-btn">Joggers y Pants</button>
+      <button
+        className={`category-btn ${!selectedSubcategory ? 'active' : ''}`}
+        onClick={() => setSelectedSubcategory(null)}
+      >
+        Ver Todo
+      </button>
+
+      {filteredSubs.map((sub) => (
+        <button
+          key={sub._id}
+          className={`category-btn ${selectedSubcategory === sub._id ? 'active' : ''}`}
+          onClick={() => setSelectedSubcategory(sub._id)}
+        >
+          {sub.name}
+        </button>
+      ))}
     </aside>
   );
 };
