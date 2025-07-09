@@ -1,6 +1,10 @@
+import { useAuth } from "../context/AuthContext.jsx";
 import RegisterEmployee from "../components/employee/registerEmployee.jsx";
 
 const Profile = () => {
+
+    const { user } = useAuth();
+
     return (
         <>
             <div className="container-fluid">
@@ -16,7 +20,10 @@ const Profile = () => {
                                 height: '90vh',
                                 boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
                             }}>
-                            <RegisterEmployee/>
+                            <RegisterEmployee
+                            name={user?.name}
+                            email={user?.email}
+                            imageUrl={user?.image}/>
                         </div>
 
                     </div>
