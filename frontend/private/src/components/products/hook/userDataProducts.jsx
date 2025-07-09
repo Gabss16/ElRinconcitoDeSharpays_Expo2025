@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import toast from "react-hot-toast";
 import SuccessAlert from "../../SuccessAlert.jsx";
 import ErrorAlert from "../../ErrorAlert.jsx";
 
@@ -51,7 +50,6 @@ const useUserDataProducts = () => {
       setProducts(data);
     } catch (error) {
       console.error("Error fetching products:", error);
-      toast.error("Error al cargar productos");
     } finally {
       setLoading(false);
     }
@@ -122,12 +120,10 @@ const useUserDataProducts = () => {
       });
       if (!response.ok) throw new Error("Error al eliminar producto");
 
-      toast.success("Producto eliminado");
       SuccessAlert("Producto eliminado correctamente");
       fetchData();
     } catch (error) {
       console.error("Error eliminar producto:", error);
-      toast.error("Error al eliminar producto");
     }
   };
 
@@ -181,14 +177,12 @@ const useUserDataProducts = () => {
 
       if (!response.ok) throw new Error("Error al actualizar producto");
 
-      toast.success("Producto actualizado");
       SuccessAlert("Producto actualizado correctamente");
       setSuccess("Producto actualizado correctamente");
       cleanData();
       fetchData();
     } catch (error) {
       console.error("Error actualizar producto:", error);
-      toast.error("Error al actualizar producto");
       setError(error.message);
     } finally {
       setLoading(false);

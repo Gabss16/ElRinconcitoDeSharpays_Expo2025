@@ -7,6 +7,7 @@
 }
 
 .orders-wrapper {
+  background-color: white;
   flex: 1;
   padding: 30px;
   display: flex;

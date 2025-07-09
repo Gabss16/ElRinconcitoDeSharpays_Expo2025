@@ -163,8 +163,8 @@ div:where(.swal2-icon).swal2-warning {
 }
 
 div:where(.swal2-icon).swal2-question{
-  color: #ffffff !important;
-  border-color: #ffffff !important;
+  color: #ff6daa !important;
+  border-color: #ff6daa !important;
 }
 
 .swal2-success-line-tip{
