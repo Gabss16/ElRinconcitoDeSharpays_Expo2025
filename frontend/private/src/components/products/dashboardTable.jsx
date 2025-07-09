@@ -3,7 +3,7 @@ import InputText from "../CustomInput";
 import Button from "../CustomButton";
 import "../../styles/ProductsTable.css";
 
-const dashboardTable = ({ products, deleteProduct, updateProduct, loading, isEditable=true }) => {
+const dashboardTable = ({ products, loading}) => {
   return (
     <div className="products-table-container">
       <div className="card-table">
@@ -16,14 +16,13 @@ const dashboardTable = ({ products, deleteProduct, updateProduct, loading, isEdi
           />
         </div>
 
-        <div className={`table-header-row ${!isEditable ? "no-actions" : ""}`}>
+        <div className={`table-header-row`}>
           <span>Nombre</span>
           <span>Descripción</span>
           <span>Precio</span>
           <span>Stock</span>
           <span>Imagen</span>
-          <span>Tallas</span> {/* Nueva columna */}
-          {isEditable && <span>Acciones</span>}
+          <span>Tallas</span>
         </div>
 
         <div className="table-body">
@@ -33,7 +32,7 @@ const dashboardTable = ({ products, deleteProduct, updateProduct, loading, isEdi
             <div className="text-center pt-5">No hay productos para mostrar</div>
           ) : (
             products.map((prod) => (
-              <div key={prod._id} className={`table-item ${!isEditable ? "no-actions" : ""}`}>
+              <div key={prod._id} className={`table-item`}>
                 <span>{prod.name}</span>
                 <span>{prod.description}</span>
                 <span>${prod.price}</span>
@@ -75,30 +74,6 @@ const dashboardTable = ({ products, deleteProduct, updateProduct, loading, isEdi
                     ? prod.size.join(", ")
                     : "—"}
                 </span>
-
-                {isEditable && (
-                  <div className="action-buttons-container">
-                    <Button
-                      text="Editar"
-                      background="#FD0053"
-                      color="white"
-                      height="32px"
-                      width="80px"
-                      className="action-button-edit"
-                      onClick={() => updateProduct(prod)}
-                    />
-                    <Button
-                      text="Eliminar"
-                      border="1px solid #FD0053"
-                      color="#FD0053"
-                      background="white"
-                      height="32px"
-                      width="80px"
-                      className="action-button-delete"
-                      onClick={() => deleteProduct(prod._id)}
-                    />
-                  </div>
-                )}
               </div>
             ))
           )}
