@@ -1,9 +1,22 @@
+import { useEffect } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
+
+import useDataEmployee from "../components/employee/hook/useDataEmployee.jsx";
 import RegisterEmployee from "../components/employee/registerEmployee.jsx";
 
 const Profile = () => {
 
     const { user } = useAuth();
+    const data = useDataEmployee();
+
+    useEffect(() => {
+        if (user) {
+            data.setName(user.name ?? '');
+            data.setEmail(user.email ?? '');
+            data.setImageUrl(user.image ?? '');
+        }
+    }, [user?.id]);
+
 
     return (
         <>
@@ -21,9 +34,7 @@ const Profile = () => {
                                 boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
                             }}>
                             <RegisterEmployee
-                            name={user?.name}
-                            email={user?.email}
-                            imageUrl={user?.image}/>
+                                {...data} id={user?.id} />
                         </div>
 
                     </div>

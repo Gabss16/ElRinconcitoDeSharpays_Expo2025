@@ -11,7 +11,7 @@ const CustomInput = ({
 }) => {
   return (
     <div className="m-2">
-      <label htmlFor={name} className="text-white" hidden={hidden}>
+      <label htmlFor={name} className="form-label" hidden={hidden}>
         {label}
       </label>
       <div className="mt-2">
@@ -23,7 +23,7 @@ const CustomInput = ({
           disabled={disable}
           hidden={hidden}
           onChange={onChange}
-          value={value} // Agregado para controlar el input
+          value={value ?? ''} 
           maxLength={maxLength}
         />
       </div>

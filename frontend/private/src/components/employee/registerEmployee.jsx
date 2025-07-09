@@ -19,7 +19,7 @@ const EmployeeForm = ({
   handleEdit,
   resetForm,
 }) => {
- 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -59,35 +59,35 @@ const EmployeeForm = ({
         {/* Sección de campos con layout en grid */}
         <div className="fields-section">
           <div className="form-group">
-            <label className="form-label">Nombre</label>
             <InputText
+              label={"Nombre"}
               type="text"
               placeholder="Nombre"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="form-input"
+
             />
           </div>
 
           <div className="form-group">
-            <label className="form-label">Correo</label>
+
             <InputText
+              label={"Correo"}
               type="email"
               placeholder="Correo"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="form-input"
             />
           </div>
 
           <div className="form-group" style={{ gridColumn: "span 2" }}>
-            <label className="form-label">Contraseña</label>
             <InputText
+              label={"Contraseña"}
               type="password"
               placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="form-input"
+
             />
           </div>
 
