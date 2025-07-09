@@ -3,12 +3,17 @@ import mongoose from "mongoose";
 
 const orderController = {};
 
+// Crear una orden
 orderController.createOrder = async (req, res) => {
   try {
-    const { customerId, orderDetails, total, status, shippingAddress } = req.body;
+    const { customerId, categoryId, orderDetails, total, status, shippingAddress } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(customerId)) {
       return res.status(400).json({ message: "ID de cliente no válido" });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+      return res.status(400).json({ message: "ID de categoría (tienda) no válido" });
     }
 
     if (!orderDetails || orderDetails.length === 0) {
@@ -21,6 +26,7 @@ orderController.createOrder = async (req, res) => {
 
     const order = new Order({
       customerId,
+      categoryId,
       orderDetails,
       total,
       status: status || "pending",
@@ -35,10 +41,12 @@ orderController.createOrder = async (req, res) => {
   }
 };
 
+// Obtener todas las órdenes con info del cliente y tienda
 orderController.getOrders = async (req, res) => {
   try {
     const orders = await Order.find()
       .populate("customerId", "name email")
+      .populate("categoryId", "category") // <- Mostrar el nombre de la tienda
       .populate("orderDetails.productId", "name price");
 
     res.json(orders);
@@ -47,6 +55,7 @@ orderController.getOrders = async (req, res) => {
   }
 };
 
+// Obtener orden por ID
 orderController.getOrderById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -56,6 +65,7 @@ orderController.getOrderById = async (req, res) => {
 
     const order = await Order.findById(id)
       .populate("customerId", "name email")
+      .populate("categoryId", "category")
       .populate("orderDetails.productId", "name price");
 
     if (!order) return res.status(404).json({ message: "Orden no encontrada" });
@@ -66,6 +76,7 @@ orderController.getOrderById = async (req, res) => {
   }
 };
 
+// Actualizar orden
 orderController.updateOrder = async (req, res) => {
   try {
     const { id } = req.params;
@@ -86,8 +97,7 @@ orderController.updateOrder = async (req, res) => {
   }
 };
 
-
-//no se por que no sirve
+// Eliminar orden
 orderController.deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;
