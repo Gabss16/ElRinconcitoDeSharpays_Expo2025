@@ -41,3 +41,6 @@ const createOrderFromCart = async (req, res) => {
     res.status(500).json({ message: "Error creando la orden desde el carrito", error });
   }
 };
+
+
+export default createOrderFromCart;
