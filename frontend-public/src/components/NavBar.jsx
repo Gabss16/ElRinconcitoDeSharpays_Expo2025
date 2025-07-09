@@ -22,10 +22,10 @@ const Menu = () => {
         <div className="dropdown">
           <button>Tiendas</button>
           <div className="dropdown-content">
-            <Link to="/sharpays-boutique">Sharpay's Boutique</Link>
-            <Link to="/frostibites">Frostibites</Link>
+            <Link to="/sharpays">Sharpay's Boutique</Link>
+            <Link to="/frostyBites">Frostibites</Link>
             <Link to="/bougies">Bougies</Link>
-            <Link to="/el-paraiso-de-dios">El Paraíso de Dios</Link>
+            <Link to="/paraiso">El Paraíso de Dios</Link>
           </div>
         </div>
 

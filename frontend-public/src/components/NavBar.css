@@ -1,13 +1,19 @@
 .menu-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000; /* más alto que todo */
   background-color: white;
   padding: 16px 24px;
-  border-bottom-left-radius: 2rem;
-  border-bottom-right-radius: 2rem;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
+
 
 .menu-left {
   display: flex;
@@ -89,7 +95,7 @@
 .theme-btn {
   background-color: white;
   color: black;
-  padding: 6px 12px;
+  padding: 6px 15px;
   border: none;
   cursor: pointer;
   display: flex;

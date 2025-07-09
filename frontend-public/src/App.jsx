@@ -9,10 +9,12 @@ import FrostyBites from "./pages/ShopFrostyBites.jsx";
 import FrostyBitesDetailPage from "./pages/FrostyDetailPage.jsx";
 import Paraiso from "./pages/ShopParaiso.jsx";
 import ParaisoDetailPage from "./pages/ParaisoDetailPage.jsx";
-
+import NavBar from "./components/NavBar.jsx";
 function App() {
   return (
     <Router>
+      
+      <NavBar/>
       <Routes>
         {/* Redirige la raíz a /profile */}
         <Route path="/" element={<Navigate to="/profile" replace />} />
