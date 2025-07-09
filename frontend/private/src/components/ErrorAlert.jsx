@@ -10,7 +10,7 @@ const ErrorAlert = (title) => {
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
-  });
+  }); 
 
 };
 

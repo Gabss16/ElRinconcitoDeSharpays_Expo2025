@@ -10,9 +10,10 @@ const useDataCategories = () => {
   const [id, setId] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [details, setDetails] = useState("");
+  const [imageUrl, setImageUrl] = useState("");  // Cambié details por imageUrl
   const [isActive, setIsActive] = useState(true);
 
+  // Función para obtener las categorías desde la API
   const fetchCategories = async () => {
     setLoading(true);
     try {
@@ -30,57 +31,77 @@ const useDataCategories = () => {
     fetchCategories();
   }, []);
 
+  // Limpiar el formulario y regresar a la lista
   const resetForm = () => {
     setId("");
     setDescription("");
     setCategory("");
-    setDetails("");
+    setImageUrl("");  // Limpiar imagen
     setIsActive(true);
     setActiveTab("list");
   };
 
+  // Guardar nueva categoría
   const saveCategory = async (categoryData) => {
     try {
+      const formData = new FormData();
+      formData.append("description", categoryData.description);
+      formData.append("category", categoryData.category);
+      formData.append("isActive", categoryData.isActive);
+      
+      if (categoryData.imageUrl && typeof categoryData.imageUrl !== "string") {
+        formData.append("image", categoryData.imageUrl); // Subir imagen si existe
+      }
+
       const response = await fetch(API, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(categoryData),
+        body: formData,
       });
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || data.message || "Error al insertar");
+        throw new Error(data.error || data.message || "Error al insertar categoría");
       }
 
-      fetchCategories();
-      resetForm();
+      fetchCategories();  // Actualizar la lista
+      resetForm();        // Limpiar el formulario
     } catch (err) {
       console.error(err);
       alert(err.message);
     }
   };
 
+  // Actualizar una categoría existente
   const handleEdit = async (categoryData) => {
     try {
+      const formData = new FormData();
+      formData.append("description", categoryData.description);
+      formData.append("category", categoryData.category);
+      formData.append("isActive", categoryData.isActive);
+      
+      if (categoryData.imageUrl && typeof categoryData.imageUrl !== "string") {
+        formData.append("image", categoryData.imageUrl); // Subir imagen si existe
+      }
+
       const response = await fetch(`${API}/${categoryData.id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(categoryData),
+        body: formData,
       });
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || data.message || "Error al actualizar");
+        throw new Error(data.error || data.message || "Error al actualizar categoría");
       }
 
-      fetchCategories();
-      resetForm();
+      fetchCategories();  // Actualizar la lista
+      resetForm();        // Limpiar el formulario
     } catch (err) {
       console.error(err);
       alert(err.message);
     }
   };
 
+  // Eliminar una categoría
   const deleteCategory = async (id) => {
     try {
       const response = await fetch(`${API}/${id}`, { method: "DELETE" });
@@ -92,11 +113,12 @@ const useDataCategories = () => {
     }
   };
 
+  // Para editar: cargar los datos en el formulario
   const updateCategory = (cat) => {
     setId(cat._id);
     setDescription(cat.description);
     setCategory(cat.category);
-    setDetails(cat.details);
+    setImageUrl(cat.image || "");  // Asignar imagen
     setIsActive(cat.isActive);
     setActiveTab("form");
   };
@@ -105,12 +127,13 @@ const useDataCategories = () => {
     activeTab,
     setActiveTab,
     id,
+    setId,
     description,
     setDescription,
     category,
     setCategory,
-    details,
-    setDetails,
+    imageUrl,
+    setImageUrl,  // Manejo de la imagen
     isActive,
     setIsActive,
     categories,

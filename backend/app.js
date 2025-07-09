@@ -18,6 +18,7 @@ import advertisementsRoutes from "./src/routes/advertisements.js"
 import ratingsRoutes from "./src/routes/ratings.js"
 import orders from "./src/routes/order.js"
 import discountsRoutes from "./src/routes/discounts.js"
+import createOrderFromCart from "./src/routes/orderFromCart.js"
 
 import cors from "cors";
 
@@ -53,5 +54,6 @@ app.use("/api/advertisements", advertisementsRoutes)
 app.use("/api/ratings", ratingsRoutes)
 app.use("/api/orders", orders)
 app.use("/api/discounts", discountsRoutes)
+app.use("/api/createOrderFromCart", createOrderFromCart)
 
 export default app;

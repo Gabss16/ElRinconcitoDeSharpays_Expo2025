@@ -22,7 +22,11 @@ const Orders = () => {
       : orders.filter((order) => order.storeName === activeStore);
 
   return (
-    <div className="orders-page">
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col-1"></div>
+        <div className="col-11">
+        <div className="orders-page">
       <div className="orders-wrapper">
         <div className="orders-content">
           <CustomTitle text="Pedidos" style="page-title" />
@@ -43,7 +47,7 @@ const Orders = () => {
             {error ? (
               <p>Error al cargar pedidos</p>
             ) : filteredOrders.length === 0 ? (
-              <p>No hay pedidos para esta tienda.</p>
+              <p className="text-center position-absolute top-50 start-50 translate-middle"  >No hay pedidos para esta tienda.</p>
             ) : (
               filteredOrders.map((order) => (
                 <OrderCard key={order._id} order={order} updateOrder={updateOrder} />
@@ -53,6 +57,10 @@ const Orders = () => {
         </div>
       </div>
     </div>
+        </div>
+      </div>
+    </div>
+    
   );
 };
 
