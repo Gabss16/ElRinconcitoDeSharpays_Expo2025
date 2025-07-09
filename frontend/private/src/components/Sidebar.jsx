@@ -12,7 +12,8 @@ FaIceCream,
 FaLeaf,
 FaFileInvoice,
 FaSignOutAlt,
-FaBars
+FaBars,
+FaBell
 } from 'react-icons/fa';
 
 import { useAuth } from '../context/AuthContext';
@@ -65,6 +66,10 @@ return (
 </NavLink>
 
 <div className="section-title"></div>
+<NavLink to="/events" className="nav-item" onClick={toggleSidebar}>
+<FaBell /> <span>Eventos</span>
+</NavLink>
+
 <NavLink to="/orders" className="nav-item" onClick={toggleSidebar}>
 <FaFileInvoice /> <span>Pedidos</span>
 </NavLink>
