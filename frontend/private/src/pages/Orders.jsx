@@ -5,13 +5,13 @@ import useOrdersWithCategories from "../components/Orders/hook/useOrders.jsx";
 import "../styles/Orders.css";
 
 const Orders = () => {
-  const { orders, categories, loading, error } = useOrdersWithCategories();
+  const { orders, categories, loading, error, updateOrder } = useOrdersWithCategories();
   const [activeCategory, setActiveCategory] = useState("Todos");
   const [showHistory, setShowHistory] = useState(false);
 
   const storeNames = ["Todos", ...categories.map((c) => c.category)];
 
-  // Filtrar órdenes por categoría y estado pendiente o completado
+  // Órdenes filtradas según estado y categoría seleccionada
   const filteredOrders = orders.filter(
     (order) =>
       (activeCategory === "Todos" || order.categoryId?.category === activeCategory) &&
@@ -46,7 +46,11 @@ const Orders = () => {
                   ))}
                   <button
                     className={`store-tab ${showHistory ? "active" : ""}`}
-                    style={{ marginLeft: "auto", backgroundColor: showHistory ? "#FE3F8D" : "", color: showHistory ? "#fff" : "" }}
+                    style={{
+                      marginLeft: "auto",
+                      backgroundColor: showHistory ? "#FE3F8D" : "",
+                      color: showHistory ? "#fff" : "",
+                    }}
                     onClick={() => setShowHistory(!showHistory)}
                   >
                     {showHistory ? "Volver a pendientes" : "Historial de ventas"}
@@ -67,9 +71,7 @@ const Orders = () => {
                           <tr>
                             <th>No. de Orden</th>
                             <th>Cliente</th>
-
                             <th>Total ($)</th>
-                            
                           </tr>
                         </thead>
                         <tbody>
@@ -91,7 +93,7 @@ const Orders = () => {
                 ) : (
                   <div className="orders-grid">
                     {filteredOrders.map((order) => (
-                      <OrderCard key={order._id} order={order} updateOrder={() => {}} />
+                      <OrderCard key={order._id} order={order} updateOrder={updateOrder} />
                     ))}
                   </div>
                 )}

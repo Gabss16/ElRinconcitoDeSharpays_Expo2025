@@ -33,11 +33,36 @@ const useOrdersWithCategories = () => {
     }
   };
 
+  const updateOrder = async (orderId, updatedFields) => {
+    try {
+      const res = await fetch(`${API_ORDERS}/${orderId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedFields),
+      });
+
+      if (!res.ok) throw new Error("Error al actualizar orden");
+
+      const updatedOrder = await res.json();
+
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order._id === orderId ? { ...order, ...updatedOrder } : order
+        )
+      );
+
+      toast.success("Orden actualizada");
+    } catch (err) {
+      setError(err.message);
+      toast.error("Error al actualizar orden");
+    }
+  };
+
   useEffect(() => {
     fetchAll();
   }, []);
 
-  return { orders, categories, loading, error, refresh: fetchAll };
+  return { orders, categories, loading, error, refresh: fetchAll, updateOrder };
 };
 
 export default useOrdersWithCategories;
