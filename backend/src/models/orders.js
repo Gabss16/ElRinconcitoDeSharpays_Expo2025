@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 
+// Primero defines itemSchema
 const itemSchema = new Schema({
   productId: {
     type: Schema.Types.ObjectId,
@@ -36,16 +37,23 @@ const itemSchema = new Schema({
   },
 });
 
+// Luego defines shippingAddressSchema (si aplica)
 const shippingAddressSchema = new Schema({
   address: { type: String, required: true },
   city: { type: String, required: true },
 });
 
+// Ahora sí, defines orderSchema usando itemSchema
 const orderSchema = new Schema(
   {
     customerId: {
       type: Schema.Types.ObjectId,
       ref: "customer", 
+      required: true,
+    },
+    categoryId: {
+      type: Schema.Types.ObjectId,
+      ref: "category", 
       required: true,
     },
     orderDetails: {
