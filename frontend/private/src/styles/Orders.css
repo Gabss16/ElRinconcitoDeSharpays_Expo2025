@@ -185,12 +185,7 @@
   border: none;
 }
 
-.order-actions button:first-child,
-.order-actions .custom-button:first-child {
-  background-color: #ffffff;
-  color: #000000;
-  border: 1px solid #ccc;
-}
+
 
 .order-actions button:first-child:hover,
 .order-actions .custom-button:first-child:hover {

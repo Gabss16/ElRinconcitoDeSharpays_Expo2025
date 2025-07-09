@@ -48,12 +48,7 @@ const OrderCard = ({ order, updateOrder }) => {
       </div>
 
       <div className="order-actions">
-        <CustomButton
-          text="Ver detalles"
-          background="#fff"
-          color="#000"
-          border="1px solid #ccc"
-        />
+       
         <CustomButton
           text="Marcar como entregado"
           background="#000"
