@@ -58,6 +58,7 @@ export const getcategoriaById = async (req, res) => {
   }
 };
 
+
 // Actualizar categoria
 export const updatecategoria = async (req, res) => {
   try {
@@ -77,9 +78,10 @@ export const updatecategoria = async (req, res) => {
       imageUrl = result.secure_url; // Actualiza la URL de la imagen
     }
 
-    // Actualiza los campos de la categoría, incluyendo la imagen
-    categoriaActualizada.name = req.body.name || categoriaActualizada.name;
+    // Actualiza los campos de la categoría, incluyendo la imagen y el estado activo
+    categoriaActualizada.category = req.body.category || categoriaActualizada.category;
     categoriaActualizada.description = req.body.description || categoriaActualizada.description;
+    categoriaActualizada.isActive = req.body.isActive;  // Asegúrate de que isActive sea parte de req.body
     categoriaActualizada.image = imageUrl; // Actualiza la imagen
 
     await categoriaActualizada.save();
@@ -88,6 +90,7 @@ export const updatecategoria = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
 
 // Eliminar categoria
 export const deletecategoria = async (req, res) => {
