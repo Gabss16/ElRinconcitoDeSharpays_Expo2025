@@ -26,6 +26,23 @@ const useDataEmployee = () => {
     }
   };
 
+  const fetchEmployeesById = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${API}/${id}`);
+      const data = await response.json();
+      setName(data.name);
+      setEmail(data.email);
+      setImageUrl(data.image)
+      console.log(data.name)
+      return;
+    } catch (error) {
+      console.error("Error al obtener los empleados", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -40,7 +57,7 @@ const useDataEmployee = () => {
     setActiveTab("list");
   };
 
-   const saveEmployee = async (employee) => {
+  const saveEmployee = async (employee) => {
     try {
       const formData = new FormData();
       formData.append("name", employee.name);
@@ -50,7 +67,7 @@ const useDataEmployee = () => {
         formData.append("image", employee.imageUrl);
       }
 
-      const response = await fetch( API , {
+      const response = await fetch(API, {
         method: "POST",
         body: formData,
       });
@@ -61,7 +78,7 @@ const useDataEmployee = () => {
       }
 
       fetchEmployees(); // Actualiza la lista
-      resetForm();      // Limpia el formulario después de editar
+      resetForm(); // Limpia el formulario después de editar
     } catch (err) {
       console.error(err);
       alert(err.message);
@@ -89,7 +106,7 @@ const useDataEmployee = () => {
       }
 
       fetchEmployees(); // Actualiza la lista
-      resetForm();      // Limpia el formulario después de editar
+      resetForm(); // Limpia el formulario después de editar
     } catch (err) {
       console.error(err);
       alert(err.message);
@@ -138,6 +155,7 @@ const useDataEmployee = () => {
     updateEmployee,
     handleEdit,
     resetForm,
+    fetchEmployeesById,
   };
 };
 
