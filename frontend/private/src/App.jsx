@@ -19,8 +19,6 @@ import Footer from "./components/Footer.jsx";
 import Events from "./pages/Events.jsx"
 import Profile from "./pages/Profile.jsx";
 
-import LoadingAnimation from "./components/LoadingAnimation.jsx"
-
 import { AuthProvider } from "./context/AuthContext";
 
 
@@ -47,7 +45,6 @@ function App() {
         <Router>
             <AuthProvider>
                 <SideBarSelector />
-                <LoadingAnimation>
                 <Routes>
                     <Route path="/" element={<Navigate to="/Login" replace />} />
                     <Route path="/Login" element={<Login />} />
@@ -69,7 +66,6 @@ function App() {
 
                 </Routes>
                 <FooterSelector />
-                </LoadingAnimation>
             </AuthProvider>
         </Router>
     );

@@ -10,11 +10,13 @@ import FrostyBitesDetailPage from "./pages/FrostyDetailPage.jsx";
 import Paraiso from "./pages/ShopParaiso.jsx";
 import ParaisoDetailPage from "./pages/ParaisoDetailPage.jsx";
 
+//Animación de carga para las páginas
+import LoadingAnimation from "./components/LoadingAnimation.jsx";
 function App() {
   return (
     <Router>
+        <LoadingAnimation>
       <Routes>
-        {/* Redirige la raíz a /profile */}
         <Route path="/" element={<Navigate to="/profile" replace />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/sharpays" element={<Sharpays />} />
@@ -26,6 +28,7 @@ function App() {
         <Route path="/frostyBites/:id" element={<FrostyBitesDetailPage />} />
         <Route path="/paraiso/:id" element={<ParaisoDetailPage />} />
       </Routes>
+        </LoadingAnimation>
     </Router>
   );
 }

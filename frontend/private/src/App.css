@@ -17,6 +17,10 @@
   color: #505050;
 }
 
+.custom-input:disabled {
+  background-color: #dbdbdb86;
+}
+
 .custom-input::placeholder {
   color: #BCBEC0;
 }

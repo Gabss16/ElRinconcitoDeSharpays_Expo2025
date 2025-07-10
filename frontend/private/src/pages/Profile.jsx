@@ -34,7 +34,7 @@ const Profile = () => {
                                 boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
                             }}>
                             <RegisterEmployee
-                                {...data} id={user?.id} />
+                                {...data} id={user?.id} fromProfile={true}/>
                         </div>
 
                     </div>
