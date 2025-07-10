@@ -5,6 +5,8 @@ import { Title } from "../components/Typography";
 import useDataAdvertisement from "../components/events/hook/useDataAdvertisement";
 import SuccessAlert from "../components/SuccessAlert";
 import ErrorAlert from "../components/ErrorAlert";
+import QuestionAlert from "../components/QuestionAlert.jsx";
+
 import Swal from "sweetalert2";
 import "../styles/Events.css";
 
@@ -113,19 +115,7 @@ const EventsPage = () => {
 
   // Manejar eliminación
   const handleDelete = async (id) => {
-    const result = await Swal.fire({
-      title: "¿Estás seguro?",
-      text: "Esta acción no se puede deshacer",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Sí, eliminar",
-      cancelButtonText: "Cancelar",
-      customClass: {
-        confirmButton: 'swal-confirm-button',
-        cancelButton: 'swal-cancel-button'
-      },
-      buttonsStyling: false
-    });
+    const result = await QuestionAlert("¿Estás seguro de eliminar este evento?")
 
     if (result.isConfirmed) {
       try {
