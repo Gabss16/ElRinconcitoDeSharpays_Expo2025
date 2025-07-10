@@ -3,6 +3,7 @@ import CardOrders from "../components/CardOrders.jsx";
 import CardPersonalInformation from "../components/CardPersonalInformation.jsx";
 import CardUbication from "../components/CardUbication.jsx";
 import CardImage from "../components/CardImageProfile.jsx";
+import "../styles/Profile.css"
 const Profile = () => {
   return (
     <div className="profile-container d-flex flex-column min-vh-100">

@@ -1,15 +1,15 @@
 .personal-info-card {
-  border: 1px solid #efefef;
-  border-radius: 12px;
-  max-width: 500px;
-  padding: 8px 12px;
-  margin: 40px 310px 310px 310px; /* pegado a la izquierda, menos margen arriba */
+
+  max-width: 1000px;
+  padding: 108px 12px;
+  margin: 60px 10px 310px 310px; /* pegado a la izquierda, menos margen arriba */
   background: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
   display: flex;
   flex-direction: column;
-  gap: 16px; /* menos espacio entre filas */
+  gap: 32px; /* menos espacio entre filas */
    max-height: 300px;  
+
 }
 
 .personal-info-header {
@@ -37,7 +37,7 @@
 
 .personal-info-inputs {
   display: flex;
-  gap: 24px;
+  gap: 34px;
   flex: 1;
 }
 
@@ -50,8 +50,8 @@
   padding: 0;
   font-size: 16px;
   background: transparent;
-  color: #444;
-  width: 220px;
+;
+  width: 350px;
 }
 
 .edit-btn,
@@ -78,4 +78,22 @@
 
 .password-btn {
   margin-top: 0;
+}
+/* Para los inputs cuando no están editables (color gris) */
+.info-input[readonly] {
+  background-color: #f0f0f0; /* Color gris claro */
+  cursor: not-allowed;
+  height: 40px; /* Cambia el cursor para mostrar que no se puede escribir */
+}
+
+/* Para los inputs cuando son editables (color original) */
+.info-input {
+  background-color: transparent; /* Color transparente cuando son editables */
+}
+
+.info-input input {
+  color: #111; /* Color de texto cuando es editable */
+  font-size: 16px;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 8px;
 }
