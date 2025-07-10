@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const UploadImage = ({ onUpload, defaultImage }) => {
+const UploadImage = ({ onUpload, defaultImage, fromProfile = false}) => {
   const [preview, setPreview] = useState(defaultImage || null);
   const fileInputRef = useRef(null);
 
@@ -44,8 +44,9 @@ const UploadImage = ({ onUpload, defaultImage }) => {
           />
         )}
       </div>
-
-      <button
+      {
+        !fromProfile ? (
+          <button
         type="button"
         onClick={handleButtonClick}
         style={{
@@ -67,6 +68,8 @@ const UploadImage = ({ onUpload, defaultImage }) => {
       >
         Subir imagen
       </button>
+        ) : null
+      }
 
       <input
         ref={fileInputRef}

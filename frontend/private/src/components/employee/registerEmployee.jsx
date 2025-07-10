@@ -84,6 +84,7 @@ const EmployeeForm = ({
           <UploadImage
             onUpload={setImageUrl}
             defaultImage={typeof imageUrl === "string" ? imageUrl : undefined}
+            fromProfile={enableInput}
           />
         </div>
 
