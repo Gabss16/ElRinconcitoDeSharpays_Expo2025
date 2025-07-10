@@ -1,3 +1,17 @@
+.personal-info-card {
+  border: 1px solid #efefef;
+  border-radius: 12px;
+  max-width: 700px; /* ancho de la card */
+  padding: 42px 24px 24px;
+  margin: 15px auto; /* centrada */
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+   height: 201px; 
+    top: 450px;  
+   
+}
 
 .personal-info-header {
   margin-bottom: 1px; /* menos espacio abajo */
@@ -37,8 +51,8 @@
 
 .edit-btn,
 .password-btn {
-  background-color:#FE3F8D; /* rosa vibrante */
-  color: #fff; /* texto blanco */
+  background-color: #FE3F8D; /* rosa vibrante */
+  color: #fff;
   border: none;
   border-radius: 6px;
   font-weight: 500;
@@ -49,15 +63,16 @@
 }
 
 .edit-btn {
-  margin-left: 32px; /* separación extra */
+  margin-left: 32px; /* separación a la derecha de inputs */
 }
 
 .edit-btn:hover,
 .password-btn:hover {
-  background-color:#ff63a4; /* rosa más oscuro al pasar el cursor */
+  background-color: #ff63a4; /* rosa más oscuro al pasar */
 }
+
 .password-btn {
-  background:#FE3F8D;
+  background: #FE3F8D;
   color: #fff;
   border: none;
   border-radius: 6px;

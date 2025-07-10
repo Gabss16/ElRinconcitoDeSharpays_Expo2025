@@ -1,0 +1,48 @@
+.card-ubication {
+  position: absolute;      /* Para usar top/left exactos */
+  top: 415px;              /* Posición vertical */
+  left: 30px;              /* Posición horizontal */
+  width: 770px;           /* Ancho exacto */
+  height: 201px;           /* Alto exacto */
+  border: 1px solid #efefef;
+  border-radius: 35px;     /* Radio exacto */
+  padding: 16px 24px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente contenido */
+  gap: 12px;
+}
+
+
+
+.card-ubication__label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #111;
+  margin: 0;
+}
+
+.card-ubication__input-container {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-ubication__input {
+  flex: 1;
+  height: 40px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 9999px;
+  background-color: #f8f6f6;
+  outline: none;
+  font-size: 14px;
+  color: #333;
+}
+
+.card-ubication__input:disabled {
+  background-color: #f8f6f6;
+  color: #999;
+}
