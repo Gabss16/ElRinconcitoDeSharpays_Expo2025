@@ -1,5 +1,7 @@
 .store-card-section {
     overflow-y: auto;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
 .grahpics {
