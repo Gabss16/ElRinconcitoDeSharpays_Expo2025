@@ -185,12 +185,7 @@
   border: none;
 }
 
-.order-actions button:first-child,
-.order-actions .custom-button:first-child {
-  background-color: #ffffff;
-  color: #000000;
-  border: 1px solid #ccc;
-}
+
 
 .order-actions button:first-child:hover,
 .order-actions .custom-button:first-child:hover {
@@ -207,3 +202,38 @@
 .order-actions .custom-button:last-child:hover {
   background-color: #333333;
 }
+
+.history-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 700px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  font-family: "Inter", sans-serif;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.history-table thead th {
+  text-align: left;
+  border-bottom: 2px solid #FE3F8D;
+  padding-bottom: 12px;
+  color: #FE3F8D;
+  font-weight: 700;
+}
+
+.history-table tbody td {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+
+.history-table tbody tr:hover {
+  background-color: #fef1f8;
+}
+

@@ -1,4 +1,23 @@
+import { useEffect } from "react";
+import { useAuth } from "../context/AuthContext.jsx";
+
+import useDataEmployee from "../components/employee/hook/useDataEmployee.jsx";
+import RegisterEmployee from "../components/employee/registerEmployee.jsx";
+
 const Profile = () => {
+
+    const { user } = useAuth();
+    const data = useDataEmployee();
+
+    useEffect(() => {
+        if (user) {
+            data.setName(user.name ?? '');
+            data.setEmail(user.email ?? '');
+            data.setImageUrl(user.image ?? '');
+        }
+    }, [user?.id]);
+
+
     return (
         <>
             <div className="container-fluid">
@@ -7,14 +26,30 @@ const Profile = () => {
                     <div className="col-10">
 
                         <div
-                            className="position-absolute top-50 start-50"
+                            className="mt-4"
                             style={{
                                 borderRadius: 25,
                                 padding: '20px',
-                                boxShadow: '0px 6px 0px 2px rgba(0, 0, 0, 0.14)'
+                                height: '95vh',
+                                width: '90%',
+                                boxShadow: '0 1px 8px 10px rgba(0, 0, 0, 0.1)'
                             }}>
-                            <b>profile in progress</b>
+                            <h1 className="fw-bold p-2">Perfil</h1>
+                            <RegisterEmployee
+                                {...data} id={user?.id} fromProfile={true} />
+                            <div className="footer-gif-container" style={{
+                                marginTop: '20px',
+                                textAlign: 'center',
+                                backgroundColor: '#fff'
+                            }}>
+                                <img
+                                    src="https://cdn.dribbble.com/userupload/5509318/file/original-9fcb4efd061af4c6eb3c0b056bda48d1.gif"
+                                    style={{ width: '40%', opacity: 0.9 }}
+                                />
+                            </div>
+
                         </div>
+
 
                     </div>
                 </div>

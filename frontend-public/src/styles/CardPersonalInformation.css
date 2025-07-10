@@ -1,6 +1,19 @@
+.personal-info-card {
+  border: 1px solid #efefef;
+  border-radius: 12px;
+  max-width: 500px;
+  padding: 8px 12px;
+  margin: 40px 310px 310px 310px; /* pegado a la izquierda, menos margen arriba */
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* menos espacio entre filas */
+   max-height: 300px;  
+}
 
 .personal-info-header {
-  margin-bottom: 1px; /* menos espacio abajo */
+  margin-bottom: 0;
 }
 
 .personal-info-title {
@@ -9,10 +22,17 @@
   color: #111;
 }
 
+.divider {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 16px 0;
+}
+
 .personal-info-row {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
+  justify-content: space-between;
+  gap: 18px;
 }
 
 .personal-info-inputs {
@@ -32,13 +52,12 @@
   background: transparent;
   color: #444;
   width: 220px;
-  margin-right: 0;
 }
 
 .edit-btn,
 .password-btn {
-  background-color:#FE3F8D; /* rosa vibrante */
-  color: #fff; /* texto blanco */
+  background-color: #FE3F8D;
+  color: #fff;
   border: none;
   border-radius: 6px;
   font-weight: 500;
@@ -49,26 +68,14 @@
 }
 
 .edit-btn {
-  margin-left: 32px; /* separación extra */
+  margin-left: 32px;
 }
 
 .edit-btn:hover,
 .password-btn:hover {
-  background-color:#ff63a4; /* rosa más oscuro al pasar el cursor */
-}
-.password-btn {
-  background:#FE3F8D;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  padding: 10px 24px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 0;
-  transition: background 0.2s;
+  background-color: #ff63a4;
 }
 
-.password-btn:hover {
-  background: #ff63a4;
+.password-btn {
+  margin-top: 0;
 }

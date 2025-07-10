@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import InputText from "../components/CustomInput";
 import Button from "../components/CustomButton";
 import '../styles/CardPersonalInformation.css';
-import { useState } from "react";
-
 
 const CardPersonalInformation = () => {
   const [name, setName] = useState("German Gonzalez");
@@ -14,6 +12,7 @@ const CardPersonalInformation = () => {
       <div className="personal-info-header">
         <span className="personal-info-title">Información Personal</span>
       </div>
+      <hr className="divider" />
       <div className="personal-info-row">
         <div className="personal-info-inputs">
           <InputText
@@ -29,6 +28,7 @@ const CardPersonalInformation = () => {
         </div>
         <Button text="Editar" className="edit-btn" />
       </div>
+      <hr className="divider" />
       <div className="personal-info-row">
         <Button text="Cambiar contraseña" className="password-btn" />
       </div>

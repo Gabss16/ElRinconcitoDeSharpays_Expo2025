@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputText from "../CustomInput";
 import Button from "../CustomButton";
 import UploadImage from "../UploadImage";
 import SuccessAlert from "../SuccessAlert";
 import ErrorAlert from "../ErrorAlert";
+import QuestionAlert from "../QuestionAlert";
+import { useNavigate } from "react-router-dom";
 
 const EmployeeForm = ({
   id,
@@ -17,31 +19,60 @@ const EmployeeForm = ({
   setImageUrl,
   saveEmployee,
   handleEdit,
-  resetForm,
+  fromProfile = false, //Checks if the user is updating their own data
 }) => {
- 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
+  const [enableInput, setEnableInput] = useState(fromProfile);
+  const navigate = useNavigate();
+
+  const handleData = async()  =>
+  {
     if (!name || !email || (!id && !password)) {
-      ErrorAlert("Todos los campos son obligatorios");
+        ErrorAlert("Todos los campos son obligatorios");
+        return;
+      }
+      const employeeData = { id, name, email, password, imageUrl };
+  
+      try {
+        if(id && fromProfile){
+          await handleEdit(employeeData);
+          SuccessAlert("Perfil actualizado exitosamente");
+          navigate("/Dashboard");
+        }
+        else if (id) {
+          await handleEdit(employeeData);
+          SuccessAlert("Usuario actualizado exitosamente");
+        } 
+        else {
+          await saveEmployee(employeeData);
+          SuccessAlert("Usuario registrado exitosamente");
+        }
+      } catch (err) {
+        ErrorAlert("Ocurrió un error inesperado");
+      }
+
+  }
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (fromProfile) {
+    if (enableInput) {
+      const result = await QuestionAlert("¿Deseas editar tu perfil?");
+      if (result.isConfirmed) {
+        SuccessAlert("Ahora puedes editar tus datos");
+        setEnableInput(false); 
+      }
       return;
     }
 
-    const employeeData = { id, name, email, password, imageUrl };
+    await handleData();
+    setEnableInput(true);
+  } else {
+    await handleData();
+  }
+};
 
-    try {
-      if (id) {
-        await handleEdit(employeeData);
-        SuccessAlert("Usuario actualizado exitosamente");
-      } else {
-        await saveEmployee(employeeData);
-        SuccessAlert("Usuario registrado exitosamente");
-      }
-    } catch (err) {
-      ErrorAlert("Ocurrió un error inesperado");
-    }
-  };
 
   return (
     <form onSubmit={handleSubmit} className="employee-form">
@@ -53,41 +84,44 @@ const EmployeeForm = ({
           <UploadImage
             onUpload={setImageUrl}
             defaultImage={typeof imageUrl === "string" ? imageUrl : undefined}
+            fromProfile={enableInput}
           />
         </div>
 
         {/* Sección de campos con layout en grid */}
         <div className="fields-section">
           <div className="form-group">
-            <label className="form-label">Nombre</label>
             <InputText
+              label={"Nombre"}
               type="text"
               placeholder="Nombre"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="form-input"
+              disable={enableInput}
+
             />
           </div>
 
           <div className="form-group">
-            <label className="form-label">Correo</label>
+
             <InputText
+              label={"Correo"}
               type="email"
               placeholder="Correo"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="form-input"
+              disable={enableInput}
             />
           </div>
 
           <div className="form-group" style={{ gridColumn: "span 2" }}>
-            <label className="form-label">Contraseña</label>
             <InputText
+              label={"Contraseña"}
               type="password"
               placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="form-input"
+              disable={enableInput}
             />
           </div>
 

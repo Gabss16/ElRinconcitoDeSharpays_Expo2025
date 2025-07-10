@@ -1,4 +1,4 @@
-.total-balance-section {
+.store-card-section {
     overflow-y: auto;
 }
 
@@ -13,15 +13,15 @@
 
 .rounded-circle {
     width: 70px;
+    height: 70px;
     transition: all .5s;
-    box-shadow: 1px 5px 12px 2px rgba(0, 0, 0, 0.164) inset;
-    padding: 5px;
+    box-shadow: 1px 3px 4px 3px rgba(0, 0, 0, 0.164);
     transition: all .5s;
 }
 
 .rounded-circle:hover {
     transform: translateY(-5px);
-    box-shadow: none;
+    box-shadow: 1px 3px 4px 3px rgba(0, 0, 0, 0.445);
 }
 
 .doughnutGraphic {

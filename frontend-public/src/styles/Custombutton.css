@@ -1,0 +1,16 @@
+/* CustomButton.css */
+.button-pink {
+  background-color: #ff4081; /* rosa */
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 9999px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+}
+
+.button-pink:hover {
+  background-color: #e73370; /* rosa más oscuro */
+}

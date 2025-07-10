@@ -51,7 +51,7 @@ loginController.login = async (req, res) => {
     //Para validar que inició sesión
     jsonwebtoken.sign(
       //1-Que voy a guardar
-      { id: userFound._id, userType, name: userFound.name, image: userFound.image},
+      { id: userFound._id, userType, name: userFound.name, image: userFound.image, email: userFound.email},
       //2-Secreto
       config.JWT.secret,
       //3-Cuando expira
@@ -70,7 +70,7 @@ loginController.login = async (req, res) => {
           path: '/', // Cookie disponible en toda la aplicación
           sameSite: 'lax', // Protección contra CSRF
         });
-        res.status(200).json({ message: `${userType} login successfull`, token, userId: userFound._id, name: userFound.name, image: userFound.image });
+        res.status(200).json({ message: `${userType} login successfull`, token, userId: userFound._id, name: userFound.name, image: userFound.image, email: userFound.email });
       }
     );
   } catch (error) {

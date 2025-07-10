@@ -8,7 +8,7 @@ const OrderCard = ({ order, updateOrder }) => {
   const markAsDelivered = async () => {
     const updatedStatus = "completado";
     setStatus(updatedStatus);
-    await updateOrder(_id, {  status: updatedStatus });
+    await updateOrder(_id, { status: updatedStatus });
   };
 
   return (
@@ -49,17 +49,11 @@ const OrderCard = ({ order, updateOrder }) => {
 
       <div className="order-actions">
         <CustomButton
-          text="Ver detalles"
-          background="#fff"
-          color="#000"
-          border="1px solid #ccc"
-        />
-        <CustomButton
           text="Marcar como entregado"
           background="#000"
           color="#fff"
           onClick={markAsDelivered}
-          disabled={status === "completed"}
+          disabled={status === "completado"}
         />
       </div>
     </div>
