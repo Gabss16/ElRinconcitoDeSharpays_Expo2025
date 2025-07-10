@@ -14,7 +14,6 @@ import Doughnut from "../utils/doughnut.jsx";
 
 import TotalSales from "../components/TotalSales.jsx";
 import StoreCard from "../components/StoreCard.jsx";
-import PendingOrders from "../components/PendingOrders.jsx";
 
 import useDataCategory from "../components/categories/hook/useDataCategory.jsx";
 
@@ -63,8 +62,16 @@ const Dashboard = () => {
                             </div>
 
                             <div>
-                                <h4>Lista de Pedidos</h4>
-                                <PendingOrders />
+                                <div className="footer-gif-container" style={{
+                                marginTop: '20px',
+                                textAlign: 'center',
+                                backgroundColor: '#fff'
+                            }}>
+                                <img
+                                    src="https://cdn.dribbble.com/userupload/5509318/file/original-9fcb4efd061af4c6eb3c0b056bda48d1.gif"
+                                    style={{ width: '420px', opacity: 0.9 }}
+                                />
+                            </div>
                             </div>
                         </div>
 
