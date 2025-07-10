@@ -26,7 +26,7 @@ const useDataEmployee = () => {
     }
   };
 
-  const fetchEmployeesById = async () => {
+  const fetchEmployeesById = async (id) => {
     setLoading(true);
     try {
       const response = await fetch(`${API}/${id}`);
