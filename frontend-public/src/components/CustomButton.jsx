@@ -1,3 +1,5 @@
+import "../styles/Custombutton.css";
+
 const CustomButton = ({ text, onClick, className }) => (
   <button type="button" className={className} onClick={onClick}>
     {text}
