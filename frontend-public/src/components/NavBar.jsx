@@ -1,47 +1,63 @@
-import React, { useState } from "react";
-import { FaMoon, FaSun, FaShoppingCart, FaUser } from "react-icons/fa";
-import "./Navbar.css"; // Estilos personalizados
 
-const Navbar = () => {
-  const [showDropdown, setShowDropdown] = useState(false);
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { FaMoon, FaSun, FaShoppingCart, FaUserCircle } from "react-icons/fa";
+import "./NavBar.css";
+import img from "../assets/sharpaysLogo.png"
+
+const Menu = () => {
+
+  const [theme, setTheme] = useState("light");
 
   return (
-    <nav className="navbar">
-      <div className="navbar-left">
-        <img src="/logoSharpay.png" alt="El Rinconcito de Sharpay" className="logo" />
+    <header className="menu-header">
+      <div className="menu-left">
+        <img src= {img} alt="Logo" className="menu-logo" />
+        <span className="menu-title">El Rinconcito de Sharpay</span>
       </div>
 
-      <ul className="navbar-links">
-        <li><a href="/">Inicio</a></li>
+      <nav className="menu-nav">
+        <Link to="/">Inicio</Link>
 
-        <li
-          className="dropdown"
-          onMouseEnter={() => setShowDropdown(true)}
-          onMouseLeave={() => setShowDropdown(false)}
-        >
-          <a href="#">Tiendas ▾</a>
-          {showDropdown && (
-            <div className="dropdown-menu">
-              <a href="#">sharpays</a>
-              <a href="#">bougies</a>
-              <a href="#">duas</a>
-              <a href="#">frostybite</a>
-              <a href="#">paraiso</a>
-            </div>
-          )}
-        </li>
+        <div className="dropdown">
+          <button>Tiendas</button>
+          <div className="dropdown-content">
+            <Link to="/sharpays">Sharpay's Boutique</Link>
+            <Link to="/frostyBites">Frostibites</Link>
+            <Link to="/bougies">Bougies</Link>
+            <Link to="/paraiso">El Paraíso de Dios</Link>
+          </div>
+        </div>
 
-        <li><a href="#">Sobre Nosotros</a></li>
-        <li><a href="#">Contactanos</a></li>
-      </ul>
+        <Link to="/sobre-nosotros">Sobre Nosotros</Link>
+      </nav>
 
-      <div className="navbar-icons">
-        <button className="icon-button"><FaMoon /></button>
-        <button className="icon-button"><FaShoppingCart /> Carrito</button>
-        <button className="icon-button"><FaUser /></button>
+      <div className="menu-right">
+      <div className="theme-toggle">
+          <button
+            className={`theme-btn ${theme === "dark" ? "active" : ""}`}
+            onClick={() => setTheme("dark")}
+          >
+            <FaMoon />
+          </button>
+          <button
+            className={`theme-btn ${theme === "light" ? "active" : ""}`}
+            onClick={() => setTheme("light")}
+          >
+            <FaSun />
+          </button>
+        </div>
+
+        <Link to="/carrito" className="menu-btn">
+          <FaShoppingCart /> Carrito
+        </Link>
+
+        <Link to="/perfil" className="menu-btn">
+          Perfil <FaUserCircle />
+        </Link>
       </div>
-    </nav>
+    </header>
   );
 };
 
-export default Navbar;
+export default Menu;
