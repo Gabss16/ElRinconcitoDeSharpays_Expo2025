@@ -2,6 +2,8 @@ import React from "react";
 import useDataShoppingCart from "../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import ProductCartItem from "../components/productCardItem.jsx";
 import { useAuth } from "../context/AuthContext";
+import CarouselCard from "../components/carouselCard.jsx";
+import "../styles/shoppingCart.css";
 
 const ShoppingCartPage = () => {
   const {
@@ -13,9 +15,7 @@ const ShoppingCartPage = () => {
   } = useDataShoppingCart();
 
   const { user, isLoggedIn } = useAuth();
-
-  // Usar el id del usuario logueado para el customerId
-  const customerId = user?._id || user?.id; 
+  const customerId = user?._id || user?.id;
 
   const handleCreateOrder = async () => {
     if (!isLoggedIn) {
@@ -33,29 +33,37 @@ const ShoppingCartPage = () => {
   };
 
   return (
-    <div className="cart-container">
-      <h2>Carrito de Compras</h2>
+    <div className="shopping-cart-page">
+      <div className="carousel-wrapper">
+        <CarouselCard />
+      </div>
 
-      {cartItems.length === 0 ? (
-        <p>El carrito está vacío.</p>
-      ) : (
-        <>
-          {cartItems.map((item) => (
-            <ProductCartItem key={item.product._id} product={item.product} />
-          ))}
+      <div className="cart-content">
+        <h2 className="cart-title">Carrito de Compras</h2>
 
-          <div className="cart-summary">
-            <h3>Total: ${total.toFixed(2)}</h3>
-            <button
-              className="create-order-button"
-              onClick={handleCreateOrder}
-              disabled={loading}
-            >
-              {loading ? "Procesando..." : "Crear Orden"}
-            </button>
-          </div>
-        </>
-      )}
+        {cartItems.length === 0 ? (
+          <p className="empty-cart">Tu carrito está vacío.</p>
+        ) : (
+          <>
+            <div className="cart-items">
+              {cartItems.map((item) => (
+                <ProductCartItem key={item.product._id} product={item.product} />
+              ))}
+            </div>
+
+            <div className="cart-summary">
+              <h3>Total: <span>${total.toFixed(2)}</span></h3>
+              <button
+                className="create-order-button"
+                onClick={handleCreateOrder}
+                disabled={loading}
+              >
+                {loading ? "Procesando..." : "Crear Orden"}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };

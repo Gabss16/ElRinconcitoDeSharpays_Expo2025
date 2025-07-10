@@ -11,31 +11,35 @@ import Paraiso from "./pages/ShopParaiso.jsx";
 import ParaisoDetailPage from "./pages/ParaisoDetailPage.jsx";
 import NavBar from "./components/NavBar.jsx";
 import ShoppingCart from "./pages/shoppingCart.jsx";
+import { AuthProvider } from "./context/AuthContext";
 
 // Importa CartProvider
 import { CartProvider } from "./context/CartContext";
 
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<Navigate to="/profile" replace />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/sharpays" element={<Sharpays />} />
-          <Route path="/bougies" element={<Bougies />} />
-          <Route path="/frostyBites" element={<FrostyBites />} />
-          <Route path="/paraiso" element={<Paraiso />} />
-          <Route path="/sharpays/:id" element={<SharpaysDetailPage />} />
-          <Route path="/bougies/:id" element={<BougiesDetailPage />} />
-          <Route path="/frostyBites/:id" element={<FrostyBitesDetailPage />} />
-          <Route path="/paraiso/:id" element={<ParaisoDetailPage />} />
-          <Route path="/carrito/:id" element={<ShoppingCart />} />
-        </Routes>
-      </Router>
-    </CartProvider>
+    <Router>
+      <AuthProvider>
+        <CartProvider>
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<Navigate to="/profile" replace />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/sharpays" element={<Sharpays />} />
+            <Route path="/bougies" element={<Bougies />} />
+            <Route path="/frostyBites" element={<FrostyBites />} />
+            <Route path="/paraiso" element={<Paraiso />} />
+            <Route path="/sharpays/:id" element={<SharpaysDetailPage />} />
+            <Route path="/bougies/:id" element={<BougiesDetailPage />} />
+            <Route path="/frostyBites/:id" element={<FrostyBitesDetailPage />} />
+            <Route path="/paraiso/:id" element={<ParaisoDetailPage />} />
+            <Route path="/carrito" element={<ShoppingCart />} />
+          </Routes>
+        </CartProvider>
+      </AuthProvider>
+    </Router>
   );
 }
+
 
 export default App;
