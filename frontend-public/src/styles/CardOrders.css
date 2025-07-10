@@ -1,9 +1,9 @@
 .card-orders {
   position: absolute;       /* Necesario para usar top y left exactos */
   top: 120px;               /* Posición vertical */
-  left: 840px;             /* Posición horizontal */
+  left: 1450px;             /* Posición horizontal */
   width: 420px;
-  height: 500px;
+  height: 550px;
   border-radius: 12px;      /* Radio general arriba */
   border-bottom-left-radius: 8px;   /* Solo esquinas inferiores ajustadas */
   border-bottom-right-radius: 8px;

@@ -52,7 +52,7 @@ const Menu = () => {
           <FaShoppingCart /> Carrito
         </Link>
 
-        <Link to="/perfil" className="menu-btn">
+        <Link to="/profile" className="menu-btn">
           Perfil <FaUserCircle />
         </Link>
       </div>
