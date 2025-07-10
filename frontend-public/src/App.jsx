@@ -14,7 +14,6 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Redirige la raíz a /profile */}
         <Route path="/" element={<Navigate to="/profile" replace />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/sharpays" element={<Sharpays />} />

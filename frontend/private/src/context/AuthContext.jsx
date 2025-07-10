@@ -99,7 +99,8 @@ export const AuthProvider = ({ children }) => {
                   id: payload.id,
                   userType: payload.userType,
                   name: payload.name,
-                  image: payload.image
+                  image: payload.image,
+                  email: payload.email
                 });
                 setauthCookie(token || cookieToken);
                 setIsLoggedIn(true);
