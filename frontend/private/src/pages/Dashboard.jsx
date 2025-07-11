@@ -41,13 +41,13 @@ const Dashboard = () => {
             <div className="d-flex justify-content-between align-items-center">
               <div className="mt-3">
                 <h1 className="fw-bold fs-2">Bienvenido/a</h1>
-                <span className="fs-4">{dataEmployees.name}</span>
+                <span className="fs-4">{dataEmployees?.name}</span>
               </div>
 
               <div className="pf-cover">
                 <NavLink to={"/profile"}>
                   <img
-                    src={dataEmployees.imageUrl}
+                    src={dataEmployees?.imageUrl}
                     className="rounded-circle me-5"
                   />
                 </NavLink>

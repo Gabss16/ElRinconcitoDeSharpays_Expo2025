@@ -1,6 +1,14 @@
-import React, { createContext, useState, useEffect, useCallback, useContext } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+
+import ErrorAlert from "../components/ErrorAlert";
 
 // Creamos el contexto
 const AuthContext = createContext(null);
@@ -19,7 +27,7 @@ export const AuthProvider = ({ children }) => {
   // Función para limpiar sesión - función interna que no causa dependencias cíclicas
   const clearSession = () => {
     localStorage.removeItem("token");
-    Cookies.remove("authToken", { path: '/' });
+    Cookies.remove("authToken", { path: "/" });
     setUser(null);
     setauthCookie(null);
     setIsLoggedIn(false);
@@ -62,7 +70,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", data.token);
         setauthCookie(data.token);
         setUser(data.user);
-        setIsLoggedIn(true);
+        if (user?.userType === "employee") return ErrorAlert("Acceso denegado");
+        else setIsLoggedIn(true);
         return true;
       } else {
         return false;
@@ -72,7 +81,6 @@ export const AuthProvider = ({ children }) => {
       return false;
     }
   };
-
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -100,7 +108,7 @@ export const AuthProvider = ({ children }) => {
                   userType: payload.userType,
                   name: payload.name,
                   image: payload.image,
-                  email: payload.email
+                  email: payload.email,
                 });
                 setauthCookie(token || cookieToken);
                 setIsLoggedIn(true);
@@ -125,14 +133,16 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{
-      user,
-      authCookie,
-      login,
-      logout,
-      isLoggedIn,
-      API: API_URL
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        authCookie,
+        login,
+        logout,
+        isLoggedIn,
+        API: API_URL,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
