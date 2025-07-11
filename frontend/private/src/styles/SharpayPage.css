@@ -1,40 +1,78 @@
 .sharpay-page {
-    padding: 50px;
+  padding: 0px;
+}
+
+/* Tabs container */
+.custom-tabs {
+  display: flex;
+  gap: 1.5rem;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap; /* 👉 importante para que no se desborde */
+}
+
+/* Individual tab */
+.tab {
+  position: relative;
+  padding-bottom: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: #000;
+}
+
+.tab.active {
+  color: #000;
+}
+
+.tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: #FD0053;
+  border-radius: 2px;
+}
+
+/* 🔻 Responsive: tablets y móviles */
+@media (max-width: 768px) {
+  .sharpay-page {
+    padding: 30px 20px;
   }
-  
+
   .custom-tabs {
-    display: flex;
-    gap: 1.5rem;
-    border-bottom: 1px solid #e5e5e5;
-    margin-bottom: 1.5rem;
+    gap: 1rem;
+    justify-content: center;
+    text-align: center;
   }
-  
+
   .tab {
-    position: relative;
-    padding-bottom: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    color: #6b7280;
-    cursor: pointer;
-    transition: color 0.3s ease;
+    font-size: 13px;
+    padding: 6px 8px;
   }
-  
-  .tab:hover {
-    color: #000;
+}
+
+/* 🔻 Responsive: móviles pequeños */
+@media (max-width: 480px) {
+  .sharpay-page {
+    padding: 20px 12px;
   }
-  
-  .tab.active {
-    color: #000;
+
+  .custom-tabs {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
   }
-  
-  .tab.active::after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background-color: #FD0053;
-    border-radius: 2px;
+
+  .tab {
+    font-size: 12.5px;
   }
-  
+}

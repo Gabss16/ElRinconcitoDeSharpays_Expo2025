@@ -17,6 +17,9 @@ const useUserDataProducts = () => {
   const [tipoObjeto, setTipoObjeto] = useState("");
   const [selectedSizes, setSelectedSizes] = useState([]);
 
+  // NUEVO: estado para sabor (flavor)
+  const [flavor, setFlavor] = useState("");
+
   // Campos dinámicos (otherFields)
   const [otherFields, setOtherFields] = useState({}); 
 
@@ -35,6 +38,7 @@ const useUserDataProducts = () => {
     setCategoryId("");
     setSubCategoryId("");
     setImage("");
+    setFlavor("");  // Limpiar sabor también
     setOtherFields({});
     setError(null);
     setSuccess(null);
@@ -54,27 +58,27 @@ const useUserDataProducts = () => {
       setLoading(false);
     }
   };
-  const fetchDatabyId = async (id) => {
-  try {
-    const response = await fetch(`${ApiProducts}/${id}`);
-    if (!response.ok) throw new Error("Producto no encontrado");
-    return await response.json();
-  } catch (error) {
-    console.error("Error al obtener producto por ID:", error);
-    throw error;
-  }
-};
 
+  const fetchDatabyId = async (id) => {
+    try {
+      const response = await fetch(`${ApiProducts}/${id}`);
+      if (!response.ok) throw new Error("Producto no encontrado");
+      return await response.json();
+    } catch (error) {
+      console.error("Error al obtener producto por ID:", error);
+      throw error;
+    }
+  };
 
   // Crear nuevo producto
   const handleSubmit = async (e) => {
-  if (e && e.preventDefault) {
-    e.preventDefault(); // Solo si recibimos el evento
-  }
-  
+    if (e && e.preventDefault) {
+      e.preventDefault(); // Solo si recibimos el evento
+    }
+    
     try {
       setLoading(true);
-  
+    
       // Crear el objeto nuevo producto
       const newProduct = {
         name,
@@ -84,25 +88,24 @@ const useUserDataProducts = () => {
         categoryId,
         subCategoryId,
         image,
-        ...otherFields,  // Incluir los campos dinámicos
+        ...otherFields,
+        sabor: flavor,  // Agregar sabor explícitamente si lo quieres en la API
       };
-  
+    
       const response = await fetch(ApiProducts, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newProduct),
       });
-  
+    
       if (!response.ok) throw new Error("Error al crear producto");
-  
-      // Si la inserción es exitosa
+    
       SuccessAlert("Producto creado correctamente");
       setSuccess("Producto creado correctamente");
       cleanData();
       fetchData();
-  
+    
     } catch (error) {
-      // Si ocurre un error
       ErrorAlert("Error al crear producto: " + error.message);
       console.error("Error crear producto:", error);
       setError(error.message);
@@ -110,7 +113,6 @@ const useUserDataProducts = () => {
       setLoading(false);
     }
   };
-  
 
   // Eliminar producto
   const deleteProduct = async (id) => {
@@ -119,7 +121,7 @@ const useUserDataProducts = () => {
         method: "DELETE",
       });
       if (!response.ok) throw new Error("Error al eliminar producto");
-
+  
       SuccessAlert("Producto eliminado correctamente");
       fetchData();
     } catch (error) {
@@ -129,33 +131,42 @@ const useUserDataProducts = () => {
 
   // Cargar datos en formulario para edición
   const updateProduct = (product) => {
-    setId(product._id);
-    setName(product.name);
-    setDescription(product.description);
-    setStock(product.stock);
-    setPrice(product.price);
-    setCategoryId(product.categoryId);
-    setSubCategoryId(product.subCategoryId);
-    setImage(product.image);
+  setId(product._id);
+  setName(product.name);
+  setDescription(product.description);
+  setStock(product.stock);
+  setPrice(product.price);
+  setCategoryId(product.categoryId);
+  setSubCategoryId(product.subCategoryId);
+  setImage(product.image);
 
-    // Cargar otros campos dinámicos quitando los campos comunes
-    const { name, description, stock, price, categoryId, subCategoryId, image, _id, __v, ...rest } = product;
-    setOtherFields(rest);
+  // Extraer sabor (flavor) de varias formas
+  const { name, description, stock, price, categoryId, subCategoryId, image, sabor, flavor: flavorAlt, _id, __v, ...rest } = product;
 
-    setTipoObjeto(product?.subCategoryId?._id || "");
-    console.log("este es el valor"+ product.subCategoryId)
+  setFlavor(sabor || flavorAlt || rest.sabor || ""); // Asegurarte de traerlo sí o sí
+  setOtherFields(rest);
+
+  // Cargar bien el tipoObjeto (subcategoría)
+  setTipoObjeto(
+    typeof product.subCategoryId === "object"
+      ? product.subCategoryId._id
+      : product.subCategoryId
+  );
+
+  // Tallas si las hay
   setSelectedSizes(product.size || rest.size || []);
 
-    setError(null);
-    setSuccess(null);
-  };
+  setError(null);
+  setSuccess(null);
+};
+
 
   // Guardar cambios edición
   const handleUpdate = async (e) => {
     if (e && e.preventDefault) {
-    e.preventDefault(); // Solo si recibimos el evento
-  }
-
+      e.preventDefault(); // Solo si recibimos el evento
+    }
+  
     try {
       setLoading(true);
       const updatedProduct = {
@@ -167,16 +178,17 @@ const useUserDataProducts = () => {
         subCategoryId,
         image,
         ...otherFields,
+        sabor: flavor,  // Asegurarte de incluir sabor también aquí
       };
-
+  
       const response = await fetch(`${ApiProducts}/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedProduct),
       });
-
+  
       if (!response.ok) throw new Error("Error al actualizar producto");
-
+  
       SuccessAlert("Producto actualizado correctamente");
       setSuccess("Producto actualizado correctamente");
       cleanData();
@@ -206,6 +218,8 @@ const useUserDataProducts = () => {
     setSubCategoryId,
     image,
     setImage,
+    flavor,     // <---- lo agregamos acá
+    setFlavor,  // <---- y acá también
     otherFields,
     setOtherFields,
     errorProduct,
@@ -217,7 +231,7 @@ const useUserDataProducts = () => {
     setProducts,
     cleanData,
     fetchData,
-     fetchDatabyId,
+    fetchDatabyId,
     handleSubmit,
     deleteProduct,
     updateProduct,
