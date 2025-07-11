@@ -1,32 +1,56 @@
 /* styles/SidebarMenu.css */
 .sidebar-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 1rem;
-    
-    border-radius: 10px;
-    width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 1rem;
+  border-radius: 10px;
+  width: 200px;
+}
+
+.category-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: rgba(211, 146, 167, 0.582);
+  color: #ffffff;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.category-btn:hover {
+  background-color: #4d4d4d;
+}
+
+.category-btn.active {
+  background-color: #f7dae4da; /* rosa */
+  color: white;
+  font-weight: bold;
+}
+
+/* ----------------- Responsive ------------------ */
+@media (max-width: 968px) {
+  .sidebar-menu {
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 8px;
+    justify-content: center;
+    padding: 0.5rem;
   }
-  
+
   .category-btn {
-    padding: 0.5rem 1rem;
-    border: none;
-    background-color: rgba(211, 146, 167, 0.582);
-    color: #ffffff;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: left;
+    flex: 1 1 auto;
+    text-align: center;
+    font-size: 14px;
+    padding: 0.4rem 0.8rem;
   }
-  
-  .category-btn:hover {
-    background-color: #4d4d4d;
+}
+
+@media (max-width: 880px) {
+  .category-btn {
+    font-size: 12px;
+    padding: 0.3rem 0.6rem;
   }
-  
-  .category-btn.active {
-    background-color: #f7dae4da; /* rosa */
-    color: white;
-    font-weight: bold;
-  }
-  
+}

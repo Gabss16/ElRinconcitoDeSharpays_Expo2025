@@ -155,3 +155,53 @@
   text-decoration: none;
   color: black;
 }
+
+/* Estilo base para el logo */
+.menu-logo {
+  height: 24px;
+  width: 24px;
+  cursor: default; /* Por defecto, no parece botón */
+}
+
+/* Logo como botón en móviles */
+@media (max-width: 768px) {
+  .menu-logo {
+    cursor: pointer;
+  }
+
+  .menu-nav {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background-color: white;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    display: none;
+    z-index: 999;
+  }
+
+  .menu-nav.open {
+    display: flex;
+  }
+
+  .menu-right {
+    display: none;
+  }
+
+  .dropdown-content {
+    position: static;
+    box-shadow: none;
+    background-color: transparent;
+    display: none;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .dropdown-content a {
+    padding: 8px 0;
+  }
+}

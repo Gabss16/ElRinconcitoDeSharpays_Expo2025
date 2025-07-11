@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SucessAlert from "../components/SuccessAlert.jsx";
 
-const LoadingAnimation = ({ children, navTo }) => {
+const LoadingAnimation = ({ children, navTo, alert}) => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -10,7 +10,10 @@ const LoadingAnimation = ({ children, navTo }) => {
     const timer = setTimeout(() => {
       setLoading(false);
       navigate(navTo || null)
-      SucessAlert("Debes iniciar sesión" || null);
+      if(alert)
+      {
+        SucessAlert(alert);
+      }
     }, 1100); // duración de la animación 1s
 
     return () => clearTimeout(timer); // limpiar el timeout al desmontar
