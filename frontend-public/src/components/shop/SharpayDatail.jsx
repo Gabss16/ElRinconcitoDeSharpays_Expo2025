@@ -1,37 +1,33 @@
 import React, { useState, useRef } from "react";
 import SizeSelector from "../Size";
 import QuantitySelector from "../QuantitySelector";
+import useDataShoppingCart from "../../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import "../../styles/CamisaDetail.css";
 
 const CamisaDetail = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState(product.size?.[0] || "");
   const [quantity, setQuantity] = useState(1);
-
   const zoomRef = useRef(null);
+
+  const { addToCart } = useDataShoppingCart();
 
   const handleSizeChange = (size) => setSelectedSize(size);
   const handleQuantityChange = (qty) => setQuantity(qty);
 
   const handleAddToCart = () => {
-    alert(
-      `Añadiste ${quantity} camisa(s) talla ${selectedSize} al carrito. (Aquí iría la lógica real)`
-    );
+    if (!selectedSize) return;
+    const productWithSize = { ...product, size: selectedSize };
+    addToCart(productWithSize, quantity);
   };
 
   const handleMouseMove = (e) => {
     const zoomContainer = zoomRef.current;
     const rect = zoomContainer.getBoundingClientRect();
-
-    const x = e.clientX - rect.left; // posición X del mouse dentro del contenedor
-    const y = e.clientY - rect.top;  // posición Y del mouse dentro del contenedor
-
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
     const xPercent = (x / rect.width) * 100;
     const yPercent = (y / rect.height) * 100;
-
-    // Activa la clase para zoom
     zoomContainer.classList.add("active");
-
-    // Ajusta el origen de la transformación para que el zoom siga el mouse
     zoomContainer.querySelector("img").style.transformOrigin = `${xPercent}% ${yPercent}%`;
   };
 
@@ -58,6 +54,7 @@ const CamisaDetail = ({ product }) => {
           />
         </div>
       </div>
+
       <div className="camisa-info-container">
         <h1 className="camisa-name">{product.name}</h1>
         <p className="camisa-description">{product.description}</p>

@@ -11,9 +11,7 @@ const Profile = () => {
 
     useEffect(() => {
         if (user) {
-            data.setName(user.name ?? '');
-            data.setEmail(user.email ?? '');
-            data.setImageUrl(user.image ?? '');
+            data.fetchEmployeesById(user?.id);
         }
     }, [user?.id]);
 
