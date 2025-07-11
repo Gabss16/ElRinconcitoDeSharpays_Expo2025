@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import SizeSelector from "../Size";
 import QuantitySelector from "../QuantitySelector";
 import useDataShoppingCart from "../../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import "../../styles/CamisaDetail.css";
@@ -6,34 +7,32 @@ import "../../styles/CamisaDetail.css";
 const CamisaDetail = ({ product }) => {
   const [selectedSize, setSelectedSize] = useState(product.size?.[0] || "");
   const [quantity, setQuantity] = useState(1);
-
   const zoomRef = useRef(null);
 
   const { addToCart } = useDataShoppingCart();
 
-  const handleSizeChange = (size) => setSelectedSize(size);
-  const handleQuantityChange = (qty) => setQuantity(qty);
+  const hasSize = Array.isArray(product.size) && product.size.length > 0;
 
   const handleAddToCart = () => {
-    if (!selectedSize) return; 
-    const productWithSize = { ...product, size: selectedSize };
-    addToCart(productWithSize, quantity);
+    const options = {};
+    if (hasSize) {
+      if (!selectedSize) return; // si necesita talla, pero no se seleccionó
+      options.size = selectedSize;
+    } else if (product.flavor) {
+      options.flavor = product.flavor;
+    }
+
+    addToCart(product, quantity, options);
   };
 
   const handleMouseMove = (e) => {
     const zoomContainer = zoomRef.current;
     const rect = zoomContainer.getBoundingClientRect();
-
-    const x = e.clientX - rect.left; 
-    const y = e.clientY - rect.top;  
-
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
     const xPercent = (x / rect.width) * 100;
     const yPercent = (y / rect.height) * 100;
-
-    // Activa la clase para zoom
     zoomContainer.classList.add("active");
-
-    // Ajusta el origen de la transformación para que el zoom siga el mouse
     zoomContainer.querySelector("img").style.transformOrigin = `${xPercent}% ${yPercent}%`;
   };
 
@@ -60,17 +59,24 @@ const CamisaDetail = ({ product }) => {
           />
         </div>
       </div>
+
       <div className="camisa-info-container">
         <h1 className="camisa-name">{product.name}</h1>
         <p className="camisa-description">{product.description}</p>
         <p className="camisa-price">${product.price.toFixed(2)}</p>
 
-        {/* No tienes un selector visible para talla aquí, por eso no llamo handleSizeChange */}
+        {hasSize && (
+          <SizeSelector
+            sizes={product.size}
+            selectedSize={selectedSize}
+            onChange={setSelectedSize}
+          />
+        )}
 
         <QuantitySelector
           max={product.stock}
           quantity={quantity}
-          onChange={handleQuantityChange}
+          onChange={setQuantity}
         />
 
         <button className="add-cart-btn" onClick={handleAddToCart}>

@@ -38,11 +38,6 @@ const ProductCartItem = ({ item }) => {
         )}
 
         <div className="cart-qty-price">
-          <div className="cart-qty-controls">
-            <button onClick={handleDecrement}>–</button>
-            <span>{quantity}</span>
-            <button onClick={handleIncrement}>+</button>
-          </div>
           <div className="cart-price">${(price * quantity).toFixed(2)}</div>
         </div>
       </div>

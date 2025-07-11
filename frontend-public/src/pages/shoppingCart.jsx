@@ -1,6 +1,7 @@
 import React from "react";
 import useDataShoppingCart from "../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import ProductCartItem from "../components/productCardItem.jsx";
+import PaymentMethod from "../components/PaymentMethod.jsx";
 import { useAuth } from "../context/AuthContext";
 import CarouselCard from "../components/carouselCard.jsx";
 import "../styles/shoppingCart.css";
@@ -17,7 +18,7 @@ const ShoppingCartPage = () => {
   const { user, isLoggedIn } = useAuth();
   const customerId = user?._id || user?.id;
 
-  const handleCreateOrder = async () => {
+  const handleCreateOrder = async (paymentMethod) => {
     if (!isLoggedIn) {
       alert("Debes iniciar sesión para crear una orden");
       return;
@@ -25,12 +26,20 @@ const ShoppingCartPage = () => {
     if (cartItems.length === 0) return;
 
     try {
+      // Aquí puedes agregar la lógica para el método de pago seleccionado
+      console.log("Método de pago seleccionado:", paymentMethod);
       await createOrderFromCart(customerId);
       clearCart();
     } catch (err) {
       console.error("Error al crear orden:", err);
     }
   };
+
+  
+  const subtotal = total;
+  const deliveryFee = 0; 
+  const discount = 0;
+  const finalTotal = subtotal + deliveryFee - discount;
 
   return (
     <div className="shopping-cart-page">
@@ -39,29 +48,31 @@ const ShoppingCartPage = () => {
       </div>
 
       <div className="cart-content">
-        <h2 className="cart-title">Carrito de Compras</h2>
+        <h2 className="cart-title-main">Carrito de Compras</h2>
 
         {cartItems.length === 0 ? (
           <p className="empty-cart">Tu carrito está vacío.</p>
         ) : (
-          <>
-            <div className="cart-items">
-              {cartItems.map((item) => (
-                <ProductCartItem key={item.product._id} item={item} />
-              ))}
+          <div className="cart-layout">
+            <div className="cart-items-section">
+              <div className="cart-items">
+                {cartItems.map((item) => (
+                  <ProductCartItem key={item.product._id} item={item} />
+                ))}
+              </div>
             </div>
 
-            <div className="cart-summary">
-              <h3>Total: <span>${total.toFixed(2)}</span></h3>
-              <button
-                className="create-order-button"
-                onClick={handleCreateOrder}
-                disabled={loading}
-              >
-                {loading ? "Procesando..." : "Crear Orden"}
-              </button>
+            <div className="payment-section">
+              <PaymentMethod
+                subtotal={subtotal}
+                deliveryFee={deliveryFee}
+                discount={discount}
+                total={finalTotal}
+                onCreateOrder={handleCreateOrder}
+                loading={loading}
+              />
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>
