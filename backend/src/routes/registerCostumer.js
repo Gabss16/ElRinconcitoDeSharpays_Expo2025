@@ -4,7 +4,7 @@ import registerCostumerController from "../controllers/registerCostumerControlle
 const router = express.Router();
 
 
-router.post("/register", registerCostumerController.register);
+router.post("/", registerCostumerController.register);
 
 
  //router.post("/register-verify", registerCostumerController.registerWithVerification);
