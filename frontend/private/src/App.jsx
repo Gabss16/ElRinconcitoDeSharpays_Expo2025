@@ -26,6 +26,7 @@ import Events from "./pages/Events.jsx";
 import Profile from "./pages/Profile.jsx";
 
 import NotFound from "./pages/NotFound.jsx";
+import LoadingAnimation from "./components/LoadingAnimation.jsx";
 
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute.jsx";
@@ -73,7 +74,7 @@ function App() {
             <Route path="/paradise" element={<Paraiso />} />
             <Route path="/Events" element={<Events />} />
           </Route>
-            <Route path="*" element={<Navigate to="/NotFound" replace />} />
+            <Route path="*" element={<LoadingAnimation navTo="/NotFound" replace />} />
         </Routes>
         <FooterSelector />
       </AuthProvider>
