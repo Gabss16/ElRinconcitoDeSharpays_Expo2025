@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import QuantitySelector from "../QuantitySelector";
+import useDataShoppingCart from "../../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import "../../styles/CamisaDetail.css";
 
 const CamisaDetail = ({ product }) => {
@@ -8,21 +9,23 @@ const CamisaDetail = ({ product }) => {
 
   const zoomRef = useRef(null);
 
+  const { addToCart } = useDataShoppingCart();
+
   const handleSizeChange = (size) => setSelectedSize(size);
   const handleQuantityChange = (qty) => setQuantity(qty);
 
   const handleAddToCart = () => {
-    alert(
-      `Añadiste ${quantity} camisa(s) talla ${selectedSize} al carrito. (Aquí iría la lógica real)`
-    );
+    if (!selectedSize) return; 
+    const productWithSize = { ...product, size: selectedSize };
+    addToCart(productWithSize, quantity);
   };
 
   const handleMouseMove = (e) => {
     const zoomContainer = zoomRef.current;
     const rect = zoomContainer.getBoundingClientRect();
 
-    const x = e.clientX - rect.left; // posición X del mouse dentro del contenedor
-    const y = e.clientY - rect.top;  // posición Y del mouse dentro del contenedor
+    const x = e.clientX - rect.left; 
+    const y = e.clientY - rect.top;  
 
     const xPercent = (x / rect.width) * 100;
     const yPercent = (y / rect.height) * 100;
@@ -62,6 +65,7 @@ const CamisaDetail = ({ product }) => {
         <p className="camisa-description">{product.description}</p>
         <p className="camisa-price">${product.price.toFixed(2)}</p>
 
+        {/* No tienes un selector visible para talla aquí, por eso no llamo handleSizeChange */}
 
         <QuantitySelector
           max={product.stock}

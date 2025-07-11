@@ -1,17 +1,20 @@
 import React, { useState, useRef } from "react";
 import QuantitySelector from "../QuantitySelector";
+import useDataShoppingCart from "../../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import "../../styles/CamisaDetail.css"; // reutilizamos estilos
 
 const PaletaDetail = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const zoomRef = useRef(null);
 
+  const { addToCart } = useDataShoppingCart();
+
   const handleQuantityChange = (qty) => setQuantity(qty);
 
   const handleAddToCart = () => {
-    alert(
-      `Añadiste ${quantity} paleta(s) de sabor ${product.flavor} al carrito.`
-    );
+    // Crear objeto con sabor para diferenciar en el carrito
+    const productWithFlavor = { ...product, flavor: product.flavor };
+    addToCart(productWithFlavor, quantity);
   };
 
   const handleMouseMove = (e) => {

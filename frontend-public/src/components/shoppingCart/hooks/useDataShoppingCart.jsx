@@ -7,6 +7,7 @@ const useDataShoppingCart = () => {
     const storedCart = localStorage.getItem("shoppingCart");
     return storedCart ? JSON.parse(storedCart) : [];
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -14,33 +15,43 @@ const useDataShoppingCart = () => {
     localStorage.setItem("shoppingCart", JSON.stringify(items));
   };
 
-  const addToCart = (product) => {
+  const addToCart = (product, quantity = 1, options = {}) => {
+    const key = `${product._id}_${options.size || ""}_${options.flavor || ""}`;
+
     setCartItems((prev) => {
-      const existing = prev.find((item) => item.product._id === product._id);
+      const existing = prev.find((item) => item.key === key);
       let updatedCart;
+
       if (existing) {
         updatedCart = prev.map((item) =>
-          item.product._id === product._id
-            ? { ...item, quantity: item.quantity + 1 }
+          item.key === key
+            ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       } else {
-        updatedCart = [...prev, { product, quantity: 1 }];
+        const newItem = {
+          key,
+          product,
+          quantity,
+          options
+        };
+        updatedCart = [...prev, newItem];
       }
+
       saveToLocalStorage(updatedCart);
       return updatedCart;
     });
   };
 
-  const removeFromCart = (productId) => {
-    const updatedCart = cartItems.filter((item) => item.product._id !== productId);
+  const removeFromCart = (key) => {
+    const updatedCart = cartItems.filter((item) => item.key !== key);
     setCartItems(updatedCart);
     saveToLocalStorage(updatedCart);
   };
 
-  const incrementQuantity = (productId) => {
+  const incrementQuantity = (key) => {
     const updatedCart = cartItems.map((item) =>
-      item.product._id === productId
+      item.key === key
         ? { ...item, quantity: item.quantity + 1 }
         : item
     );
@@ -48,10 +59,10 @@ const useDataShoppingCart = () => {
     saveToLocalStorage(updatedCart);
   };
 
-  const decrementQuantity = (productId) => {
+  const decrementQuantity = (key) => {
     const updatedCart = cartItems
       .map((item) =>
-        item.product._id === productId
+        item.key === key
           ? { ...item, quantity: Math.max(1, item.quantity - 1) }
           : item
       )

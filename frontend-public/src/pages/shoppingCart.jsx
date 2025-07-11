@@ -47,7 +47,7 @@ const ShoppingCartPage = () => {
           <>
             <div className="cart-items">
               {cartItems.map((item) => (
-                <ProductCartItem key={item.product._id} product={item.product} />
+                <ProductCartItem key={item.product._id} item={item} />
               ))}
             </div>
 
