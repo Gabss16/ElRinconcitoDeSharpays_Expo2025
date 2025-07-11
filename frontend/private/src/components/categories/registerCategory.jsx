@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import InputText from "../CustomInput";
 import Button from "../CustomButton";
 import SuccessAlert from "../SuccessAlert";
@@ -15,7 +15,7 @@ const RegisterCategories = ({
   setImageUrl,
   isActive,
   setIsActive,
-  saveCategory,
+  saveCategory, // ya no se usará
   handleEdit,
   resetForm,
 }) => {
@@ -34,8 +34,7 @@ const RegisterCategories = ({
         await handleEdit(categoryData);
         SuccessAlert("Categoría actualizada exitosamente");
       } else {
-        await saveCategory(categoryData);
-        SuccessAlert("Categoría registrada exitosamente");
+        ErrorAlert("Solo está permitido editar categorías existentes.");
       }
     } catch (err) {
       ErrorAlert("Ocurrió un error inesperado");
@@ -77,34 +76,34 @@ const RegisterCategories = ({
             />
           </div>
 
-
           <div className="form-group">
-  <label className="form-label">Activo</label>
-  <select
-    value={isActive ? "true" : "false"}
-    onChange={(e) => setIsActive(e.target.value === "true")} // Asegúrate de convertirlo a booleano
-    className="form-input"
-  >
-    <option value="true">Sí</option>
-    <option value="false">No</option>
-  </select>
-</div>
-
-
-          <div
-            className="submit-btn-container"
-            style={{ gridColumn: "span 2", display: "flex", gap: "16px" }}
-          >
-            <Button
-              type="submit"
-              text={id ? "Actualizar" : "Agregar"}
-              background="#FD0053"
-              color="white"
-              height="48px"
-              width="160px"
-              fontSize="16px"
-            />
+            <label className="form-label">Activo</label>
+            <select
+              value={isActive ? "true" : "false"}
+              onChange={(e) => setIsActive(e.target.value === "true")}
+              className="form-input"
+            >
+              <option value="true">Sí</option>
+              <option value="false">No</option>
+            </select>
           </div>
+
+          {id && (
+            <div
+              className="submit-btn-container"
+              style={{ gridColumn: "span 2", display: "flex", gap: "16px" }}
+            >
+              <Button
+                type="submit"
+                text="Actualizar"
+                background="#FD0053"
+                color="white"
+                height="48px"
+                width="160px"
+                fontSize="16px"
+              />
+            </div>
+          )}
         </div>
       </div>
     </form>
