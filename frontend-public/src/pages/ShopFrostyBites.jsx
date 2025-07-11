@@ -38,7 +38,7 @@ const ShopPage = () => {
     <div className="page-wrapper">
       <div className="hero" style={{ backgroundImage: `url(${bgImage})` }}>
         <h6 className="hero-subtitle"></h6>
-        <h1 className="hero-title">FROSTIBITES</h1>
+        <h1 className="hero-title3">FROSTIBITES</h1>
       </div>
 
       <div className="white-box">

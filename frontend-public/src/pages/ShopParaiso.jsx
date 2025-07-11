@@ -38,8 +38,8 @@ const ShopPage = () => {
   return (
     <div className="page-wrapper">
       <div className="hero" style={{ backgroundImage: `url(${bgImage})` }}>
-        <h6 className="hero-subtitle">El paraíso</h6>
-        <h1 className="hero-title">DE DIOS</h1>
+        <h6 className="hero-subtitle">El paraíso de</h6>
+        <h1 className="hero-title2">DIOS</h1>
       </div>
 
       <div className="white-box">
