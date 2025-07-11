@@ -25,16 +25,19 @@ import Footer from "./components/Footer.jsx";
 import Events from "./pages/Events.jsx";
 import Profile from "./pages/Profile.jsx";
 
+import NotFound from "./pages/NotFound.jsx";
+
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 
 function App() {
   function SideBarSelector() {
     const { pathname } = useLocation();
-    const noNavbarPaths = ["/Login", "/Register", "/RecoveryPassword"];
+    const noNavbarPaths = ["/Login", "/Register", "/RecoveryPassword", "/NotFound"]
 
-    if (noNavbarPaths.includes(pathname)) return null;
-    return <SideBar />;
+    if (noNavbarPaths.includes(pathname)) return null
+    else
+    return <SideBar/>;
   }
 
   function FooterSelector() {
@@ -55,6 +58,7 @@ function App() {
           <Route path="/RecoveryPassword" element={<RecoveryPassword />} />
           <Route path="/ResetPassword" element={<ResetPassword />} />
           <Route path="/Register" element={<Register />} />
+          <Route path="/NotFound" element={<NotFound/>}/>
           <Route element={<PrivateRoute />}>
             <Route path="/Dashboard" element={<Dashboard />} />
             <Route path="/Profile" element={<Profile />} />
@@ -69,6 +73,7 @@ function App() {
             <Route path="/paradise" element={<Paraiso />} />
             <Route path="/Events" element={<Events />} />
           </Route>
+            <Route path="*" element={<Navigate to="/NotFound" replace />} />
         </Routes>
         <FooterSelector />
       </AuthProvider>
