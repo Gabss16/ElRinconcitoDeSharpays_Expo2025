@@ -11,8 +11,14 @@ import Paraiso from "./pages/ShopParaiso.jsx";
 import ParaisoDetailPage from "./pages/ParaisoDetailPage.jsx";
 import NavBar from "./components/NavBar.jsx";
 import ShoppingCart from "./pages/shoppingCart.jsx";
+import CheckOut from "./pages/CheckOut.jsx"
 import { AuthProvider } from "./context/AuthContext";
 import Home from "./pages/Home.jsx"
+import Login from "./pages/Login.jsx"
+import Register from "./pages/Register.jsx";
+import RecoveryPassword from "./pages/RecoveryPassword.jsx";
+
+import Footer from "./components/Footer.jsx";
 
 // Importa CartProvider
 import { CartProvider } from "./context/CartContext";
@@ -24,8 +30,11 @@ function App() {
         <CartProvider>
           <NavBar />
           <Routes>
+            <Route path="/login" element={<Login />} />
             <Route path="/" element={<Navigate to="/Inicio" replace />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/recoveryPassword" element={<RecoveryPassword />} />
             <Route path="/sharpays" element={<Sharpays />} />
             <Route path="/bougies" element={<Bougies />} />
             <Route path="/frostyBites" element={<FrostyBites />} />
@@ -35,8 +44,10 @@ function App() {
             <Route path="/frostyBites/:id" element={<FrostyBitesDetailPage />} />
             <Route path="/paraiso/:id" element={<ParaisoDetailPage />} />
             <Route path="/carrito" element={<ShoppingCart />} />
+            <Route path="/checkOut" element={<CheckOut />} />
             <Route path="/Inicio" element={<Home />} />
           </Routes>
+          <Footer/>
         </CartProvider>
       </AuthProvider>
     </Router>

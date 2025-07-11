@@ -3,15 +3,27 @@
 
 .main-container-Inicio {
     min-height: 100vh;
-    background-color: #f8f9fa;
+    background-color: #ffffff;
     padding-bottom: 3rem;
   }
   
   .container-header-inicio {
     text-align: center;
-    padding: 2rem 1rem;
-    background-color: white;
-    
+    padding: 5rem 4rem;
+    background-color: transparent;
+    margin: black;
+  
+  }
+
+  .container-header-inicio::after {
+    content: "";
+    position: absolute;
+    bottom: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1000px; 
+    height: 2px;
+    background-color: #f3f0f0;
   }
   
   .container-header-inicio p {
@@ -35,10 +47,10 @@
   
   /* Filtros de categorías */
   .category-filters {
-    background-color: white;
+    background-color: transparent;
     padding: 2rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+    
     margin-bottom: 2rem;
   }
   
@@ -47,6 +59,7 @@
     color: #333;
     margin-bottom: 1.5rem;
     font-weight: 600;
+    padding-bottom: 30px;
   }
   
   .filter-buttons {
@@ -99,9 +112,9 @@
   
   /* Contenedor de productos */
   .products-container {
-    background-color: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background-color: transparent;
+ 
+   
     padding: 2rem;
   }
   
@@ -127,11 +140,11 @@
     font-size: 0.95rem;
   }
   
-  .products-grid {
+  .products-grid-home{
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
+  grid-template-columns: repeat(3, 1fr); /* ✅ 3 columnas fijas */
+  gap: 2rem;
+  margin-bottom: 2rem;
   }
   
   /* Estados de carga y error */
@@ -165,7 +178,7 @@
   
   /* Responsive Design */
   @media (max-width: 1024px) {
-    .products-grid {
+    .products-grid-home {
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 1.5rem;
     }
@@ -200,7 +213,7 @@
       font-size: 0.9rem;
     }
     
-    .products-grid {
+    .products-grid-home{
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 1rem;
     }
@@ -226,7 +239,7 @@
       justify-content: center;
     }
     
-    .products-grid {
+    .products-grid-home{
       grid-template-columns: 1fr;
     }
     

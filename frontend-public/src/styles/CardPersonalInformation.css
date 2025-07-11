@@ -41,19 +41,6 @@
   flex: 1;
 }
 
-.info-input input,
-.custom-input {
-  border: none;
-  border-bottom: 1px solid #e0e0e0;
-  border-radius: 0;
-  outline: none;
-  padding: 0;
-  font-size: 16px;
-  background: transparent;
-;
-  width: 350px;
-}
-
 .edit-btn,
 .password-btn {
   background-color: #FE3F8D;
