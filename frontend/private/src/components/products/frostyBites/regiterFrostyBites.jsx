@@ -8,7 +8,11 @@ import { Title, Subtitle } from "../../Typography";
 import CustomButton from "../../CustomButton";
 import "../../../styles/registerSharpays.css";
 
+
+
+
 const FlavorUploadPage = ({
+  
   name, setName,
   description, setDescription,
   stock, setStock,
@@ -17,14 +21,16 @@ const FlavorUploadPage = ({
   subCategoryId, setSubCategoryId,
   image, setImage,
   otherFields, setOtherFields,
+  flavor,setFlavor,
   handleSubmit,
   tipoObjeto, setTipoObjeto,
   isEditing,
   handleUpdate
 }) => {
-
+  
   const [imageUrl, setImageUrl] = useState(null);
   const [errors, setErrors] = useState({}); // Estado para manejar errores
+
 
   // Sincronizar imagen existente con preview
   useEffect(() => {
@@ -39,16 +45,16 @@ const FlavorUploadPage = ({
     setSubCategoryId(tipoObjeto);
     setImage(imageUrl);
     setOtherFields({
-      flavor: "", // Inicializar el sabor como string vacío
+      sabor: flavor,
     });
-  }, [tipoObjeto, imageUrl]);
+  }, [tipoObjeto, flavor, imageUrl]);
 
   const validateForm = () => {
     const newErrors = {};
     if (!name) newErrors.name = "El título es requerido.";
     if (!price) newErrors.price = "El precio es requerido.";
     if (!stock) newErrors.stock = "El stock es requerido.";
-    if (!otherFields.flavor) newErrors.flavor = "El sabor es requerido."; // Validación para el sabor
+    if (!flavor) newErrors.flavor = "El sabor es requerido."; // Validación para el sabor
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Retorna true si no hay errores
   };
@@ -133,8 +139,8 @@ const FlavorUploadPage = ({
                 placeholder="Sabor"
                 type="text"
                 name="sabor"
-                value={otherFields.flavor} // Usar el valor de sabor
-                onChange={(e) => setOtherFields({ ...otherFields, flavor: e.target.value })} // Actualizar el sabor
+                value={flavor} // Usar el valor de sabor
+                onChange={(e) => setFlavor(e.target.value)}
               />
               {errors.flavor && <p style={{ color: 'pink' }}>{errors.flavor}</p>} {/* Mensaje de error */}
             </div>

@@ -31,9 +31,7 @@ const SubCategoryComboBox = ({ value, onChange, categoryFilter }) => {
 
   return (
     <div className="mb-4">
-      <label className="block text-sm font-semibold mb-1">
-        Subcategoría
-      </label>
+      
       <select
         className="w-full p-2 border border-gray-300 rounded"
         value={value}

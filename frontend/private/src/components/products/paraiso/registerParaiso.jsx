@@ -44,6 +44,8 @@ const Paraiso = ({
     if (!name) newErrors.name = "El título es requerido.";
     if (!price) newErrors.price = "El precio es requerido.";
     if (!stock) newErrors.stock = "El stock es requerido.";
+    if (!description) newErrors.description = "La descripcion es requerida.";
+    if (!tipoObjeto) newErrors.tipoObjeto = "La categoria es requerida.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Retorna true si no hay errores
   };
@@ -79,12 +81,13 @@ const Paraiso = ({
         className="w-full max-w-6xl mx-auto mt-8 bg-white rounded-lg shadow-md p-8"
         onSubmit={handleFormSubmit}
       >
-        <Subtitle>Selecciona la subcategoría</Subtitle>
+        <Subtitle></Subtitle>
         <ComboBox
           value={tipoObjeto}
           onChange={(e) => setTipoObjeto(e.target.value)}
           categoryFilter="68670dfcd4a3c856571b7fb2"
         />
+        {errors.tipoObjeto && <p style={{ color: 'pink' }}>{errors.tipoObjeto}</p>}
 
         <div className="mt-6">
           <Subtitle>Detalles</Subtitle>
@@ -124,17 +127,37 @@ const Paraiso = ({
             </div>
           </div>
 
-          <div className="input-descripcion">
-            <CustomInput
-              label="Descripción"
-              placeholder="Descripción"
-              type="text"
-              name="descripcion"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          </div>
-        </div>
+         <div className="input-descripcion">
+  
+
+  <CustomInput
+    label="Descripción"
+    placeholder="Descripción"
+    type="text"
+    name="descripcion"
+    value={description}
+    onChange={(e) => setDescription(e.target.value)}
+  />
+  {/* Alerta si hay menos de 10 caracteres */}
+  {description.length > 0 && description.length < 10 && (
+    <div style={{ 
+      backgroundColor: '#ffe0e0', 
+      color: '#ffffff', 
+      padding: '8px', 
+      borderRadius: '6px', 
+      marginBottom: '8px', 
+      fontWeight: '500' 
+    }}>
+      La descripción debe tener al menos 10 caracteres.
+    </div>
+  )}
+
+  {errors.description && (
+    <p style={{ color: 'pink' }}>{errors.description}</p>
+  )}
+</div>
+</div>
+
 
         <div className="mt-6 flex justify-start">
           <CustomButton

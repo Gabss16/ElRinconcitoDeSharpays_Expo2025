@@ -9,7 +9,8 @@ import useUserDataProducts from "../components/products/hook/userDataProducts";
 const FrostyBites = () => {
   const [activeTab, setActiveTab] = useState("agregar");
   const [isEditing, setIsEditing] = useState(false);
-  const [tipoObjeto, setTipoObjeto] = useState(""); // Asegúrate de definir tipoObjeto
+  
+  
 
   const {
     name, setName,
@@ -20,6 +21,8 @@ const FrostyBites = () => {
     subCategoryId, setSubCategoryId,
     image, setImage,
     otherFields, setOtherFields,
+    flavor,setFlavor,
+    tipoObjeto, setTipoObjeto,
     handleSubmit,
     handleUpdate,
     products,
@@ -33,17 +36,12 @@ const FrostyBites = () => {
     fetchData();
   }, []);
 
-  const handleEdit = (prod) => {
-    setName(prod.name);
-    setDescription(prod.description);
-    setStock(prod.stock);
-    setPrice(prod.price);
-    setImage(prod.image);
-    setOtherFields({ flavor: prod.flavor }); // Cambié "size" a "flavor"
-    setTipoObjeto(prod.subCategoryId); // Asegúrate de establecer el tipo de objeto si es necesario
-    setIsEditing(true);
-    setActiveTab("agregar");
-  };
+ const handleEdit = (prod) => {
+  updateProduct(prod); // ¡Aquí sí se setea el ID!
+  setIsEditing(true);
+  setActiveTab("agregar");
+};
+
 
   return (
     <>
@@ -59,7 +57,8 @@ const FrostyBites = () => {
                   className={`tab ${activeTab === "agregar" ? "active" : ""}`}
                   onClick={() => {
                     setActiveTab("agregar");
-                    setIsEditing(false); // Reiniciar el modo edición al cambiar de tab
+                    setIsEditing(false); // reset editar al cambiar pestaña
+                    setFlavor(""); // reset flavor también al cambiar tab
                   }}
                 >
                   Agregar
@@ -82,9 +81,10 @@ const FrostyBites = () => {
                   subCategoryId={subCategoryId} setSubCategoryId={setSubCategoryId}
                   image={image} setImage={setImage}
                   otherFields={otherFields} setOtherFields={setOtherFields}
+                  flavor={flavor} setFlavor={setFlavor}   // <--- PASAR ESTADO FLAVOR
                   handleSubmit={handleSubmit}
                   handleUpdate={handleUpdate}
-                  tipoObjeto={tipoObjeto} setTipoObjeto={setTipoObjeto} // Asegúrate de pasar tipoObjeto
+                  tipoObjeto={tipoObjeto} setTipoObjeto={setTipoObjeto}
                   isEditing={isEditing}
                 />
               )}
