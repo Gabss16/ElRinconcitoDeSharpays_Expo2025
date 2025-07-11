@@ -6,9 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import "./App.css";
-import Sidebar from "./components/Sidebar";
 import Login from "./pages/Login.jsx";
-import Register from "./pages/Register.jsx";
 import Employee from "./pages/Employee.jsx";
 import RecoveryPassword from "./pages/RecoveryPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
@@ -58,7 +56,6 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/RecoveryPassword" element={<RecoveryPassword />} />
           <Route path="/ResetPassword" element={<ResetPassword />} />
-          <Route path="/Register" element={<Register />} />
           <Route path="/NotFound" element={<NotFound/>}/>
           <Route element={<PrivateRoute />}>
             <Route path="/Dashboard" element={<Dashboard />} />
