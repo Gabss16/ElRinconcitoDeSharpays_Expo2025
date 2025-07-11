@@ -11,6 +11,7 @@ import Paraiso from "./pages/ShopParaiso.jsx";
 import ParaisoDetailPage from "./pages/ParaisoDetailPage.jsx";
 import NavBar from "./components/NavBar.jsx";
 import ShoppingCart from "./pages/shoppingCart.jsx";
+import CheckOut from "./pages/CheckOut.jsx"
 import { AuthProvider } from "./context/AuthContext";
 
 // Importa CartProvider
@@ -34,6 +35,7 @@ function App() {
             <Route path="/frostyBites/:id" element={<FrostyBitesDetailPage />} />
             <Route path="/paraiso/:id" element={<ParaisoDetailPage />} />
             <Route path="/carrito" element={<ShoppingCart />} />
+            <Route path="/checkOut" element={<CheckOut />} />
           </Routes>
         </CartProvider>
       </AuthProvider>
