@@ -1,18 +1,40 @@
+import { useLocation } from "react-router-dom";
+
 const CustomInput = ({
-  value,
-  onChange,
+  label,
+  placeholder,
+  type,
+  name,
   disable,
-  className = "",
-  ...props
+  hidden,
+  onChange,
+  value,
+  maxLength
 }) => {
+
+  const location = useLocation();
+
+  const whiteLabel = ["/Login","/Register","/RecoveryPassword"];
+
   return (
-    <input
-      className={`custom-input ${className}`}
-      value={value}
-      onChange={onChange}
-      disabled={disable}
-      {...props}
-    />
+    <div className="m-2">
+      <label htmlFor={name} className={whiteLabel.includes(location.pathname) ? 'text-white' : 'form-label'} hidden={hidden}> {/* White text only for specific pages*/}
+        {label}
+      </label>
+      <div className="mt-2">
+        <input
+          id={name}
+          placeholder={placeholder}
+          type={type}
+          className="custom-input"
+          disabled={disable}
+          hidden={hidden}
+          onChange={onChange}
+          value={value}
+          maxLength={maxLength}
+        />
+      </div>
+    </div>
   );
 };
 

@@ -1,0 +1,11 @@
+.glass-box {
+width: 500px;
+height: 600px;
+border-radius: 30px;
+border: 5px solid rgba(254, 63, 142, 0.44);
+background: rgba(254, 63, 142, 0.38);
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.13);
+backdrop-filter: blur(11.1px);
+-webkit-backdrop-filter: blur(11.1px);
+-webkit-backdrop-filter: blur(7.9px);
+}

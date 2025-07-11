@@ -7,9 +7,9 @@ import useProductsWithCategories from "../components/home/hooks/useProductsWithC
 const Home = () => {
   const { products, categories, loading, error } = useProductsWithCategories();
   const [activeCategory, setActiveCategory] = useState("Todos");
+  const [displayedProducts, setDisplayedProducts] = useState([]);
 
-  // Crear array de categorías incluyendo "Todos"
-  const categoryNames = ["Todos", ...categories.map((c) => c.category)];
+  const categoryNames = categories.map((c) => c.category);
 
   // Filtrar productos según categoría seleccionada
   const filteredProducts = products.filter((product) => {
@@ -17,21 +17,45 @@ const Home = () => {
     return product.categoryId?.category === activeCategory;
   });
 
-  // Obtener conteo de productos por categoría
+  // Mostrar máximo 1 producto por categoría (hasta 3 total)
+  useEffect(() => {
+    if (activeCategory === "Todos") {
+      const selected = [];
+      const usedCategories = new Set();
+
+      for (let product of products) {
+        const cat = product.categoryId?.category;
+        if (cat && !usedCategories.has(cat)) {
+          selected.push(product);
+          usedCategories.add(cat);
+        }
+        if (selected.length === 3) break;
+      }
+
+      setDisplayedProducts(selected);
+    } else {
+      const filtered = products.filter(
+        (p) => p.categoryId?.category === activeCategory
+      );
+      setDisplayedProducts(filtered);
+    }
+  }, [products, activeCategory]);
+
   const getCategoryCount = (categoryName) => {
-    if (categoryName === "Todos") return products.length;
-    return products.filter(p => p.categoryId?.category === categoryName).length;
+    return products.filter((p) => p.categoryId?.category === categoryName).length;
   };
 
   return (
     <div className="main-container-Inicio">
-      <BannerPrincipal/>
-      
+      <BannerPrincipal />
+
       <div className="container-header-inicio">
-        <p>¡Nuevas ideas, mismo corazón! <span>Descubre lo más reciente y vendido de nuestra creatividad."</span></p>
+        <p>
+          ¡Nuevas ideas, mismo corazón!{" "}
+          <span>Descubre lo más reciente y vendido de nuestra creatividad."</span>
+        </p>
       </div>
 
-      {/* Sección de filtros */}
       <div className="products-section">
         <div className="category-filters">
           <h3>Nuestras tiendas:</h3>
@@ -49,26 +73,20 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Sección de productos */}
         <div className="products-container">
           {loading && <div className="loading">Cargando productos...</div>}
-          
           {error && <div className="error">Error: {error}</div>}
-          
+
           {!loading && !error && (
             <>
-              <div className="products-header">
-                <h3>Lo más vendido en Rincón de Sharpay:</h3>
-                <p>Mostrando {filteredProducts.length} productos</p>
-              </div>
-              
-              <div className="products-grid">
-                {filteredProducts.map((product) => (
+
+              <div className="products-grid-home">
+                {displayedProducts.map((product) => (
                   <CardProduct key={product._id} producto={product} />
                 ))}
               </div>
-              
-              {filteredProducts.length === 0 && (
+
+              {displayedProducts.length === 0 && (
                 <div className="no-products">
                   <p>No hay productos disponibles en esta categoría</p>
                 </div>
