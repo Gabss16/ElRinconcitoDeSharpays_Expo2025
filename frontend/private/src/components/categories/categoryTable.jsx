@@ -32,9 +32,7 @@ const CategoryTable = ({ categories, deleteCategory, updateCategory, loading }) 
         </div>
 
         {/* Encabezado Acciones */}
-        <div className="actions-header">
-          <span>Acciones</span>
-        </div>
+   
 
         {/* Tabla con scroll */}
         <div className="table-scroll-wrapper">
@@ -43,7 +41,7 @@ const CategoryTable = ({ categories, deleteCategory, updateCategory, loading }) 
             <span>Categoría</span>
             <span>Imagen</span>
             <span>Activo</span>
-            <span></span> {/* Columna fantasma para alinear botones */}
+            <span>Acciones</span>
           </div>
 
           <div className="table-body">
