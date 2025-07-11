@@ -108,6 +108,12 @@ const Login = () => {
                         width={"100%"}
                         height={"50px"}
                       />
+                      <div className="go-to-register text-center mt-5 d-flex">
+                        <p className="m-0 ps-3 pe-1 text-white">
+                          ¿No tienes cuenta?
+                        </p>
+                        <LinkText text={"Registrarme"} action={"/Register"} />
+                      </div>
                     </div>
                   </form>
               </>

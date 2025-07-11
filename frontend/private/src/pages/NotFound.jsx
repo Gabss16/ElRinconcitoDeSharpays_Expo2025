@@ -9,24 +9,19 @@ import "../styles/NotFound.css";
 import CustomButton from "../components/CustomButton.jsx";
 import { Link } from "react-router-dom";
 
+import LightsAnimation from "../components/lightsAnimation.jsx";
+
 const NotFound = () => {
   return (
     <>
-      <div className="container section spacing">
-        <div className="container-inner">
+      <div className="lights-background">
+        <LightsAnimation NUM_LIGHTS={50}/>
+        <div className="container not-found-main">
+        <div className="container-inner text-center">
           <div className="text-center">
-            <h1 className="fw-bold mt-5 pt-5" style={{ fontSize: "4em" }}>
+            <h1 className="fw-bold mt-5 pt-5 text-white" style={{ fontSize: "4em" }}>
               Página no encontrada
             </h1>
-            <Link to={"/Dashboard"}>
-              <CustomButton
-                text={"Regresar"}
-                background={"#ff6daa"}
-                color={"white"}
-                width={"120px"}
-                height={"50px"}
-              />
-            </Link>
           </div>
           <div className="not-found">
             <img
@@ -52,7 +47,17 @@ const NotFound = () => {
               src={PlanetYellow}
             />
           </div>
+          <Link to={"/Dashboard"}>
+              <CustomButton
+                text={"Regresar"}
+                background={"#ffffffff"}
+                color={"black"}
+                width={"120px"}
+                height={"50px"}
+              />
+            </Link>
         </div>
+      </div>
       </div>
     </>
   );
