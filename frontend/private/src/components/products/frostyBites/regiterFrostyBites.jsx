@@ -9,20 +9,30 @@ import CustomButton from "../../CustomButton";
 import "../../../styles/registerSharpays.css";
 
 const FlavorUploadPage = ({
-  name, setName,
-  description, setDescription,
-  stock, setStock,
-  price, setPrice,
-  categoryId, setCategoryId,
-  subCategoryId, setSubCategoryId,
-  image, setImage,
-  otherFields, setOtherFields,
+  name,
+  setName,
+  description,
+  setDescription,
+  stock,
+  setStock,
+  price,
+  setPrice,
+  categoryId,
+  setCategoryId,
+  subCategoryId,
+  setSubCategoryId,
+  image,
+  setImage,
+  otherFields,
+  setOtherFields,
+  flavor,
+  setFlavor,
   handleSubmit,
-  tipoObjeto, setTipoObjeto,
+  tipoObjeto,
+  setTipoObjeto,
   isEditing,
-  handleUpdate
+  handleUpdate,
 }) => {
-
   const [imageUrl, setImageUrl] = useState(null);
   const [errors, setErrors] = useState({}); // Estado para manejar errores
 
@@ -39,16 +49,18 @@ const FlavorUploadPage = ({
     setSubCategoryId(tipoObjeto);
     setImage(imageUrl);
     setOtherFields({
-      flavor: "", // Inicializar el sabor como string vacío
+      sabor: flavor,
     });
-  }, [tipoObjeto, imageUrl]);
+  }, [tipoObjeto, flavor, imageUrl]);
 
   const validateForm = () => {
     const newErrors = {};
     if (!name) newErrors.name = "El título es requerido.";
     if (!price) newErrors.price = "El precio es requerido.";
     if (!stock) newErrors.stock = "El stock es requerido.";
-    if (!otherFields.flavor) newErrors.flavor = "El sabor es requerido."; // Validación para el sabor
+    if (!flavor) newErrors.flavor = "El sabor es requerido.";
+    if (!description) newErrors.description = "La descripcion es requerida.";
+    if (!tipoObjeto) newErrors.tipoObjeto = "La categoria es requerida.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Retorna true si no hay errores
   };
@@ -90,6 +102,9 @@ const FlavorUploadPage = ({
           onChange={(e) => setTipoObjeto(e.target.value)}
           categoryFilter="68670de0d4a3c856571b7fb1"
         />
+        {errors.tipoObjeto && (
+          <p style={{ color: "pink" }}>{errors.tipoObjeto}</p>
+        )}
 
         <div className="mt-6">
           <Subtitle>Detalles</Subtitle>
@@ -103,7 +118,8 @@ const FlavorUploadPage = ({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
-              {errors.name && <p style={{ color: 'pink' }}>{errors.name}</p>} {/* Mensaje de error */}
+              {errors.name && <p style={{ color: "pink" }}>{errors.name}</p>}{" "}
+              {/* Mensaje de error */}
             </div>
             <div className="input-precio">
               <CustomInput
@@ -112,9 +128,28 @@ const FlavorUploadPage = ({
                 type="number"
                 name="precio"
                 value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => {
+                  const val = e.target.value;
+
+                  // Validar si es número positivo mayor que 0
+                  if (!/^\d*\.?\d*$/.test(val)) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      price: "Solo se permiten números positivos.",
+                    }));
+                  } else if (parseFloat(val) <= 0) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      price: "El precio debe ser mayor que 0.",
+                    }));
+                  } else {
+                    setErrors((prev) => ({ ...prev, price: "" }));
+                  }
+
+                  setPrice(val);
+                }}
               />
-              {errors.price && <p style={{ color: 'pink' }}>{errors.price}</p>} {/* Mensaje de error */}
+              {errors.price && <p style={{ color: "pink" }}>{errors.price}</p>}
             </div>
             <div className="input-stock">
               <CustomInput
@@ -123,20 +158,45 @@ const FlavorUploadPage = ({
                 type="number"
                 name="stock"
                 value={stock}
-                onChange={(e) => setStock(e.target.value)}
+                onChange={(e) => {
+                  const val = e.target.value;
+
+                  // Solo números enteros positivos
+                  if (!/^\d+$/.test(val)) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      stock: "Solo se permiten números enteros positivos.",
+                    }));
+                  } else if (parseInt(val, 10) <= 0) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      stock: "El stock debe ser mayor que 0.",
+                    }));
+                  } else {
+                    setErrors((prev) => ({ ...prev, stock: "" }));
+                  }
+
+                  setStock(val);
+                }}
               />
-              {errors.stock && <p style={{ color: 'pink' }}>{errors.stock}</p>} {/* Mensaje de error */}
+              {errors.stock && <p style={{ color: "pink" }}>{errors.stock}</p>}
             </div>
-            <div className="input-sabor"> {/* Cambié el nombre de la clase */}
+
+            <div className="input-sabor">
+              {" "}
+              {/* Cambié el nombre de la clase */}
               <CustomInput
                 label="Sabor"
                 placeholder="Sabor"
                 type="text"
                 name="sabor"
-                value={otherFields.flavor} // Usar el valor de sabor
-                onChange={(e) => setOtherFields({ ...otherFields, flavor: e.target.value })} // Actualizar el sabor
+                value={flavor} // Usar el valor de sabor
+                onChange={(e) => setFlavor(e.target.value)}
               />
-              {errors.flavor && <p style={{ color: 'pink' }}>{errors.flavor}</p>} {/* Mensaje de error */}
+              {errors.flavor && (
+                <p style={{ color: "pink" }}>{errors.flavor}</p>
+              )}{" "}
+              {/* Mensaje de error */}
             </div>
           </div>
 
@@ -149,6 +209,25 @@ const FlavorUploadPage = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+            {/* Alerta si hay menos de 10 caracteres */}
+            {description.length > 0 && description.length < 10 && (
+              <div
+                style={{
+                  backgroundColor: "#ffe0e0",
+                  color: "#ffffff",
+                  padding: "8px",
+                  borderRadius: "6px",
+                  marginBottom: "8px",
+                  fontWeight: "500",
+                }}
+              >
+                La descripción debe tener al menos 10 caracteres.
+              </div>
+            )}
+
+            {errors.description && (
+              <p style={{ color: "pink" }}>{errors.description}</p>
+            )}
           </div>
         </div>
 
