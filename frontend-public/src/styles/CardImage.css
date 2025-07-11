@@ -1,7 +1,7 @@
 .upload-image-card {
   text-align: center;
   position: absolute;  /* o fixed */
-  top: 90px;
+  top: 100px;
   left: 20px;
 }
 
