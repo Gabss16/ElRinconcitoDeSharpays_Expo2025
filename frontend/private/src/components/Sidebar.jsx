@@ -44,9 +44,6 @@ return (
 <NavLink to="/employee" className="nav-item" onClick={toggleSidebar}>
 <FaUsers /> <span>Empleados</span>
 </NavLink>
-<NavLink to="/discounts" className="nav-item" onClick={toggleSidebar}>
-<FaTags /> <span>Descuentos</span>
-</NavLink>
 <NavLink to="/category" className="nav-item" onClick={toggleSidebar}>
 <FaStore /> <span>Administración de tiendas</span>
 </NavLink>
