@@ -190,6 +190,12 @@
     display: none;
   }
 
+  .dropdown .drop-btn {
+    background-color: white;
+    border: none;
+    outline: none;
+  }
+
   .dropdown-content {
     position: static;
     box-shadow: none;
