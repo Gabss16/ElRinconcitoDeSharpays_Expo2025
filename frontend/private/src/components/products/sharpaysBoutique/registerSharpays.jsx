@@ -10,21 +10,30 @@ import CustomButton from "../../CustomButton";
 import "../../../styles/registerSharpays.css";
 
 const ImageUploadPage = ({
-  name, setName,
-  description, setDescription,
-  stock, setStock,
-  price, setPrice,
-  categoryId, setCategoryId,
-  subCategoryId, setSubCategoryId,
-  image, setImage,
-  otherFields, setOtherFields,
+  name,
+  setName,
+  description,
+  setDescription,
+  stock,
+  setStock,
+  price,
+  setPrice,
+  categoryId,
+  setCategoryId,
+  subCategoryId,
+  setSubCategoryId,
+  image,
+  setImage,
+  otherFields,
+  setOtherFields,
   handleSubmit,
-  selectedSizes, setSelectedSizes,
-  tipoObjeto, setTipoObjeto,
+  selectedSizes,
+  setSelectedSizes,
+  tipoObjeto,
+  setTipoObjeto,
   isEditing,
-  handleUpdate
+  handleUpdate,
 }) => {
-
   const [imageUrl, setImageUrl] = useState(null);
   const [errors, setErrors] = useState({}); // Estado para manejar errores
 
@@ -50,21 +59,24 @@ const ImageUploadPage = ({
     if (!name) newErrors.name = "El título es requerido.";
     if (!price) newErrors.price = "El precio es requerido.";
     if (!stock) newErrors.stock = "El stock es requerido.";
-    if (selectedSizes.length === 0) newErrors.sizes = "Debes seleccionar al menos una talla.";
+    if (selectedSizes.length === 0)
+      newErrors.sizes = "Debes seleccionar al menos una talla.";
+    if (!description) newErrors.description = "La descripcion es requerida.";
+    if (!tipoObjeto) newErrors.tipoObjeto = "La categoria es requerida.";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Retorna true si no hay errores
   };
 
   const handleFormSubmit = (e) => {
-  e.preventDefault();
-  if (validateForm()) {
-    if (isEditing) {
-      handleUpdate(); // Sin pasar el evento
-    } else {
-      handleSubmit(); // Sin pasar el evento
+    e.preventDefault();
+    if (validateForm()) {
+      if (isEditing) {
+        handleUpdate(); // Sin pasar el evento
+      } else {
+        handleSubmit(); // Sin pasar el evento
+      }
     }
-  }
-};
+  };
 
   return (
     <div>
@@ -92,6 +104,9 @@ const ImageUploadPage = ({
           onChange={(e) => setTipoObjeto(e.target.value)}
           categoryFilter="6855bf0c8bda3da90eca92c4"
         />
+        {errors.tipoObjeto && (
+          <p style={{ color: "pink" }}>{errors.tipoObjeto}</p>
+        )}
 
         <div className="mt-6">
           <Subtitle>Detalles</Subtitle>
@@ -105,7 +120,8 @@ const ImageUploadPage = ({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
-              {errors.name && <p style={{ color: 'pink' }}>{errors.name}</p>} {/* Mensaje de error */}
+              {errors.name && <p style={{ color: "pink" }}>{errors.name}</p>}{" "}
+              {/* Mensaje de error */}
             </div>
             <div className="input-precio">
               <CustomInput
@@ -114,9 +130,28 @@ const ImageUploadPage = ({
                 type="number"
                 name="precio"
                 value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => {
+                  const val = e.target.value;
+
+                  // Validar si es número positivo mayor que 0
+                  if (!/^\d*\.?\d*$/.test(val)) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      price: "Solo se permiten números positivos.",
+                    }));
+                  } else if (parseFloat(val) <= 0) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      price: "El precio debe ser mayor que 0.",
+                    }));
+                  } else {
+                    setErrors((prev) => ({ ...prev, price: "" }));
+                  }
+
+                  setPrice(val);
+                }}
               />
-              {errors.price && <p style={{ color: 'pink' }}>{errors.price}</p>} {/* Mensaje de error */}
+              {errors.price && <p style={{ color: "pink" }}>{errors.price}</p>}
             </div>
             <div className="input-stock">
               <CustomInput
@@ -125,10 +160,30 @@ const ImageUploadPage = ({
                 type="number"
                 name="stock"
                 value={stock}
-                onChange={(e) => setStock(e.target.value)}
+                onChange={(e) => {
+                  const val = e.target.value;
+
+                  // Solo números enteros positivos
+                  if (!/^\d+$/.test(val)) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      stock: "Solo se permiten números enteros positivos.",
+                    }));
+                  } else if (parseInt(val, 10) <= 0) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      stock: "El stock debe ser mayor que 0.",
+                    }));
+                  } else {
+                    setErrors((prev) => ({ ...prev, stock: "" }));
+                  }
+
+                  setStock(val);
+                }}
               />
-              {errors.stock && <p style={{ color: 'pink' }}>{errors.stock}</p>} {/* Mensaje de error */}
+              {errors.stock && <p style={{ color: "pink" }}>{errors.stock}</p>}
             </div>
+
             <div className="input-tallas">
               <label className="text-sm font-semibold mb-1 block">
                 Tallas disponibles
@@ -137,7 +192,8 @@ const ImageUploadPage = ({
                 selectedSizes={selectedSizes}
                 setSelectedSizes={setSelectedSizes}
               />
-              {errors.sizes && <p style={{ color: 'pink' }}>{errors.sizes}</p>} {/* Mensaje de error */}
+              {errors.sizes && <p style={{ color: "pink" }}>{errors.sizes}</p>}{" "}
+              {/* Mensaje de error */}
             </div>
           </div>
 
@@ -150,6 +206,25 @@ const ImageUploadPage = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+            {/* Alerta si hay menos de 10 caracteres */}
+            {description.length > 0 && description.length < 10 && (
+              <div
+                style={{
+                  backgroundColor: "#ffe0e0",
+                  color: "#ffffff",
+                  padding: "8px",
+                  borderRadius: "6px",
+                  marginBottom: "8px",
+                  fontWeight: "500",
+                }}
+              >
+                La descripción debe tener al menos 10 caracteres.
+              </div>
+            )}
+
+            {errors.description && (
+              <p style={{ color: "pink" }}>{errors.description}</p>
+            )}
           </div>
         </div>
 
