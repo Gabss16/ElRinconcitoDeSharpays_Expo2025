@@ -87,16 +87,8 @@ const CategoryTable = ({ categories, deleteCategory, updateCategory, loading }) 
                     className="action-button"
                     onClick={() => updateCategory(cat)}
                   />
-                  <Button
-                    text="Eliminar"
-                    border="1px solid #FD0053"
-                    color="#FD0053"
-                    background="white"
-                    height="32px"
-                    width="80px"
-                    className="action-button"
-                    onClick={() => deleteCategory(cat._id)}
-                  />
+                 
+                  
                 </div>
               </div>
             ))

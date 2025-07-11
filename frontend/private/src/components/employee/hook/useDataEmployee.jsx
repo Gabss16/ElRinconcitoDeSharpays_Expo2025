@@ -34,7 +34,6 @@ const useDataEmployee = () => {
       setName(data.name);
       setEmail(data.email);
       setImageUrl(data.image)
-      console.log(data.name)
       return;
     } catch (error) {
       console.error("Error al obtener los empleados", error);
