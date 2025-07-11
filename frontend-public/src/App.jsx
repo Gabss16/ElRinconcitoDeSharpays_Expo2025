@@ -12,6 +12,7 @@ import ParaisoDetailPage from "./pages/ParaisoDetailPage.jsx";
 import NavBar from "./components/NavBar.jsx";
 import ShoppingCart from "./pages/shoppingCart.jsx";
 import { AuthProvider } from "./context/AuthContext";
+import Home from "./pages/Home.jsx"
 
 // Importa CartProvider
 import { CartProvider } from "./context/CartContext";
@@ -23,7 +24,7 @@ function App() {
         <CartProvider>
           <NavBar />
           <Routes>
-            <Route path="/" element={<Navigate to="/profile" replace />} />
+            <Route path="/" element={<Navigate to="/Inicio" replace />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/sharpays" element={<Sharpays />} />
             <Route path="/bougies" element={<Bougies />} />
@@ -34,6 +35,7 @@ function App() {
             <Route path="/frostyBites/:id" element={<FrostyBitesDetailPage />} />
             <Route path="/paraiso/:id" element={<ParaisoDetailPage />} />
             <Route path="/carrito" element={<ShoppingCart />} />
+            <Route path="/Inicio" element={<Home />} />
           </Routes>
         </CartProvider>
       </AuthProvider>
