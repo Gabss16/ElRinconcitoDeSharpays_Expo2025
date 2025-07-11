@@ -26,7 +26,7 @@ const Menu = () => {
       <nav className={`menu-nav ${isMenuOpen ? "open" : ""}`}>
         <Link to="/" onClick={toggleMenu}>Inicio</Link>
         <div className="dropdown">
-          <button>Tiendas</button>
+          <button className="drop-btn">Tiendas</button>
           <div className="dropdown-content">
             <Link to="/sharpays" onClick={toggleMenu}>Sharpay's Boutique</Link>
             <Link to="/frostyBites" onClick={toggleMenu}>Frostibites</Link>
