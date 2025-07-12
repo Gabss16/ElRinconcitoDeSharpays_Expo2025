@@ -3,44 +3,34 @@ import orderDetailModel from '../models/orderDatails.js';
 
 const createOrderFromCart = async (req, res) => {
   try {
-    const { customerId, shippingAddress, status = "pending" } = req.body;
+    const { customerId, orderDetails, shippingAddress, status = "pending" } = req.body;
 
-    // Validar que el customerId sea válido
-    if (!customerId) {
-      return res.status(400).json({ message: "Falta customerId" });
+    // Validar datos obligatorios
+    if (!customerId || !Array.isArray(orderDetails) || orderDetails.length === 0) {
+      return res.status(400).json({ message: "Faltan datos: customerId o detalles de orden vacíos" });
     }
 
-    // Obtener carrito actual
-    const cart = await orderDetailModel.findOne({ customerId });
-    if (!cart || cart.items.length === 0) {
-      return res.status(400).json({ message: "El carrito está vacío" });
-    }
+    // Calcular total sumando unitPrice * quantity
+    const total = orderDetails.reduce((acc, item) => acc + (item.unitPrice * item.quantity), 0);
 
-    // Calcular total basado en carrito
-    const total = cart.items.reduce((acc, item) => acc + item.totalPrice, 0);
-
-    // Crear orden nueva
+    // Crear nuevo objeto orden con datos recibidos
     const order = new Order({
       customerId,
-      orderDetails: cart.items,
+      orderDetails,
       total,
       status,
       shippingAddress,
     });
 
+    // Guardar en la base de datos
     await order.save();
 
-    // Opcional: Vaciar carrito después de crear la orden
-    cart.items = [];
-    cart.totalCartPrice = 0;
-    await cart.save();
-
+    // Responder con la orden creada
     res.status(201).json(order);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error creando la orden desde el carrito", error });
   }
 };
-
 
 export default createOrderFromCart;
