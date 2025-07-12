@@ -63,8 +63,8 @@ Por otro lado, el equipo administrativo podrá:
 - **Wompi** – Pasarela de pago para ventas en línea.
 
 ---
----
-###Convenciones de nomenclatura utilizadas
+
+## Nomenclatura utilizadas
 Para mantener la consistencia y evitar errores durante el desarrollo del proyecto, especialmente al integrar frontend y backend, se definieron las siguientes convenciones de nombres:
 
 Backend (Node.js + Express.js)
