@@ -1,50 +1,42 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import SucessAlert from "../components/SuccessAlert.jsx";
 
-//Rutas a las cuales en las cuales se mostrará la animación.
-const animatedRoutes = [
-  "/"
-];
-
-const loadingAnimation = ({ children }) => {
-  const location = useLocation();
-  const [loading, setLoading] = useState(false);
-  const [showChildren, setShowChildren] = useState(true);
+const LoadingAnimation = ({ children, navTo, alert}) => {
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (animatedRoutes.includes(location.pathname)) {
-      setLoading(true);
-      setShowChildren(false);
-
-      const timer = setTimeout(() => {
-        setLoading(false);
-        setShowChildren(true);
-      }, 1000); // duracion de la animación
-
-      return () => clearTimeout(timer);
-    } else {
+    const timer = setTimeout(() => {
       setLoading(false);
-      setShowChildren(true);
-    }
-  }, [location.pathname]);
+      navigate(navTo || null)
+      if(alert)
+      {
+        SucessAlert(alert);
+      }
+    }, 1100); // duración de la animación 1s
 
-  return loading ? <div
+    return () => clearTimeout(timer); // limpiar el timeout al desmontar
+  }, []);
+
+  return loading ? (
+    <div
       style={{
-        position: true ? "fixed" : "relative",
-        top: true ? 0 : "auto",
-        left: true ? 0 : "auto",
-        width: true ? "100vw" : "100%",
-        height: true ? "100vh" : "100%",
-        backgroundColor: "rgb(255, 255, 255)", 
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100vw",
+        height: "100vh",
+        backgroundColor: "rgb(255, 255, 255)",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        zIndex: 9999, 
+        zIndex: 9999,
         fontFamily: '"Inter", sans-serif',
         fontSize: "1.1rem",
         color: "#fe3f8d",
-        pointerEvents: "all", 
+        pointerEvents: "all",
       }}
     >
       <div
@@ -66,7 +58,10 @@ const loadingAnimation = ({ children }) => {
           }
         }
       `}</style>
-    </div> : showChildren ? children : null;
+    </div>
+  ) : (
+    children
+  );
 };
 
-export default loadingAnimation;
+export default LoadingAnimation;

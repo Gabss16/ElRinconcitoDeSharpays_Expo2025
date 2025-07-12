@@ -19,6 +19,8 @@ import Register from "./pages/Register.jsx";
 import RecoveryPassword from "./pages/RecoveryPassword.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
+import LoadingAnimation from "./components/LoadingAnimation.jsx";
+
 import Footer from "./components/Footer.jsx";
 
 // Importa CartProvider
@@ -56,7 +58,8 @@ function App() {
             <Route path="/carrito" element={<ShoppingCart />} />
             <Route path="/checkOut" element={<CheckOut />} />
             <Route path="/Inicio" element={<Home />} />
-            <Route path="/notFound" element={<NotFound />} />
+            <Route path="/notFound" element={<NotFound/>}/>
+          <Route path="*" element={<LoadingAnimation navTo="/notFound" replace />} />
           </Routes>
           <Footer/>
         </CartProvider>

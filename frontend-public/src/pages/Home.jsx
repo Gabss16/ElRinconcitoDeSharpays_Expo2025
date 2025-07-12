@@ -4,6 +4,8 @@ import BannerPrincipal from "../components/bannerPrincipal.jsx";
 import CardProduct from "../components/shop/CardProduct.jsx";
 import useProductsWithCategories from "../components/home/hooks/useProductsWithCategories.jsx";
 
+import {AuthContext} from "../context/AuthContext.jsx";
+
 const Home = () => {
   const { products, categories, loading, error } = useProductsWithCategories();
   const [activeCategory, setActiveCategory] = useState("Todos");

@@ -47,7 +47,7 @@ const NotFound = () => {
               src={PlanetYellow}
             />
           </div>
-          <Link to={"/Dashboard"}>
+          <Link to={"/inicio"}>
               <CustomButton
                 text={"Regresar"}
                 background={"#ffffffff"}
