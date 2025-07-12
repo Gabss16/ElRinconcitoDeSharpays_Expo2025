@@ -64,3 +64,21 @@ Por otro lado, el equipo administrativo podrá:
 
 ---
 
+## Nomenclatura utilizadas
+Para mantener la consistencia y evitar errores durante el desarrollo del proyecto, especialmente al integrar frontend y backend, se definieron las siguientes convenciones de nombres:
+
+Backend (Node.js + Express.js)
+Se utilizó lowerCamelCase en la definición de nombres de variables, funciones, controladores y modelos.
+Esta convención es estándar en entornos JavaScript y facilita la lectura del código al seguir el estilo común de la comunidad Node.js.
+
+Frontend (React.js)
+Se usó una combinación de lowerCamelCase y UpperCamelCase:
+
+Para nombres de variables, hooks y funciones se empleó lowerCamelCase.
+
+
+Para nombres de componentes, páginas y archivos CSS se utilizó UpperCamelCase (PascalCase).
+
+
+Esta decisión se tomó para evitar conflictos con JSX, ya que React interpreta los nombres que comienzan en minúscula como elementos HTML nativos. Además, separar visualmente los componentes de funciones comunes mejora la mantenibilidad del proyecto.
+

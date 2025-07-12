@@ -5,7 +5,6 @@ import { config } from "../config.js";
 
 const registerCostumerController = {};
 
-// REGISTRO SIMPLE CON JWT (como Employee)
 registerCostumerController.register = async (req, res) => {
   const { name, email, password, department, address } = req.body;
 
@@ -25,7 +24,7 @@ registerCostumerController.register = async (req, res) => {
       email,
       password: passwordHash,
       department,
-      address,
+      address
     });
 
     await newCostumer.save();
