@@ -11,7 +11,7 @@ const Footer = () => {
                         <button><a href="#"><i className="fa-brands fa-facebook"></i></a></button>
                         <button><a href="#"><i className="fa-brands fa-tiktok"></i></a></button>
                     </div>
-                    <div><a href="#">Política de privacidad</a><span> | </span><a href="#">Términos y condiciones</a></div>
+                    <div><a href="#">Política de Privacidad</a><span> | </span><a href="#">Términos y Condiciones</a></div>
             </div>
         </>
     );

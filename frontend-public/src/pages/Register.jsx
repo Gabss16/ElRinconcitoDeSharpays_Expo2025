@@ -21,88 +21,132 @@ import CustomSelect from "../components/CustomSelect.jsx";
 
 //Departementos API
 import Departments from "../utils/apiDepartmentsSV.jsx"
+import { register } from "../hook/useRegister.jsx";
+import { useState } from "react";
+
+import ErrorAlert from "../components/ErrorAlert.jsx";
+import SuccessAlert from "../components/SuccessAlert.jsx";
 
 const Register = () => {
 
   const depa = Departments();
-
   const navigate = useNavigate();
 
-    return (
-      <>
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [address, setAddress] = useState("");
+  const [department, setDepartment] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!name || !email || !password) {
+      ErrorAlert("Todos los campos son obligatorios");
+    }
+    else if(name.length <= 2)
+    {
+      ErrorAlert("El nombre es muy corto")
+    }
+    else if(password.length <= 8)
+    {
+      ErrorAlert("La contraseña debe ser mínimo de 8 carácteres")
+    }
+    else {
+      const success = await register({ name, email, password, department, address });
+      console.log(department)
+
+      if (success) {
+        navigate("/login");
+      }
+    }
+
+  };
+
+  return (
+    <>
       <div className="register-container d-flex">
         <div className="lights-background">
-        <img src={huella} className="float huella"/>
-        <img src={paleta} className="float paleta"/>
-        <img src={vela} className="float vela"/>
-        <img src={cactus} className="float cactus"/>
+          <img src={huella} className="float huella" />
+          <img src={paleta} className="float paleta" />
+          <img src={vela} className="float vela" />
+          <img src={cactus} className="float cactus" />
 
-        <LightsAnimation
-          NUM_LIGHTS={80}
+          <LightsAnimation
+            NUM_LIGHTS={80}
           />
 
-        <GlassBox>
-        {
-          <>
-          <LogoLogin textStyle={"text-white fw-bold fs-5 pt-2 w-50"} />
-                    
-                      <form className="register-content d-flex justify-content-center align-items-center flex-column mt-4 w-100">
+          <GlassBox>
+            {
+              <>
+                <LogoLogin textStyle={"text-white fw-bold fs-5 pt-2 w-50"} />
 
-                      <CustomTitle
-                        style={"text-white fw-bold fs-2 mb-5"}
-                        text={"Registro"}
-                        />
+                <form className="register-content d-flex justify-content-center align-items-center flex-column mt-4 w-100" onSubmit={handleSubmit}>
 
-                        <CustomInput
-                        label={"Nombre"}
-                        placeholder={"Nombre completo"}
-                        name={"name"}
-                        />
+                  <CustomInput
+                    label={"Nombre"}
+                    placeholder={"Nombre completo"}
+                    name={"name"}
+                    onChange={(e) => setName(e.target.value)}
+                  />
 
-                        <CustomInput
-                        label={"Correo eletrónico"}
-                        placeholder={"ejemplo@gmail.com"}
-                        type={"email"}
-                        name={"password"}
-                        />
+                  <CustomInput
+                    label={"Correo electrónico"}
+                    placeholder={"ejemplo@gmail.com"}
+                    type={"email"}
+                    name={"email"}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
 
-                        <CustomSelect
-                        name={"Departamento"}
-                        departmens={depa}
-                        />
-                        <CustomInput
-                        label={"Dirección"}
-                        placeholder={"Dirección del lugar de entrega"}
-                        name={"direccion"}
-                        type={"textarea"}
-                        />
+                  <CustomSelect
+                    name={"Departamento"}
+                    departmens={depa}
+                    onChange={(e) => {
+                      const selected = depa.find((d) => d.value === e.target.value);
+                      setDepartment(selected?.label);
+                    }}
+                  />
+                  <CustomInput
+                    label={"Dirección"}
+                    placeholder={"Dirección del lugar de entrega"}
+                    name={"direccion"}
+                    type={"textarea"}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
 
-                      <div style={{width: '300px', marginTop: '30px'}}>
-                      <CustomButton
-                        text={"Registrarme"}
-                        action={(e) => navigate("/inicio")}
-                        background={"black"}
-                        color={"white"}
-                        width={"100%"}
-                        height={"50px"}
-                        />
-                      </div>
+                  <CustomInput
+                    label={"Contraseña"}
+                    placeholder={"Contraseña"}
+                    name={"password"}
+                    type={"password"}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
 
-                      <div className="go-to-register text-center mt-5 pt-4 d-flex">
-                        <LinkText
-                        text={"Iniciar sesión"}
-                        action={"/login"}
-                        />
-                      </div>
+                  <div style={{ width: '300px', marginTop: '30px' }}>
+                    <CustomButton
+                      text={"Registrarme"}
+                      background={"black"}
+                      color={"white"}
+                      width={"100%"}
+                      height={"50px"}
+                    />
+                  </div>
 
-                      </form>
-          </>
-        }
-        </GlassBox>
+                  <div className="go-to-register text-center mt-1 pt-4 d-flex">
+                    <LinkText
+                      text={"Iniciar sesión"}
+                      action={"/login"}
+                    />
+                  </div>
+
+                </form>
+              </>
+            }
+          </GlassBox>
         </div>
       </div>
-      </>
-    )
+    </>
+  )
 }
 
 export default Register;
