@@ -54,7 +54,7 @@ const orderSchema = new Schema(
     categoryId: {
       type: Schema.Types.ObjectId,
       ref: "category", 
-      required: true,
+      required: false,
     },
     orderDetails: {
       type: [itemSchema],

@@ -51,31 +51,29 @@ const CheckoutPage = () => {
       city: formData.municipality,
     };
 
-    
+
 
 
     const payload = {
-  customerId: orderDetail.customerId,
-  categoryId:
-    typeof orderDetail.items[0]?.product?.categoryId === 'object'
-      ? orderDetail.items[0].product.categoryId._id
-      : orderDetail.items[0]?.product?.categoryId,
-  status: "pendiente",
-  shippingAddress,
-  total: orderDetail.total,
-  orderDetails: orderDetail.items.map((item) => ({
-    productId: item.product._id,
-    productName: item.product.name,
-    unitPrice: item.product.price,
-    image: item.product.image,
-    quantity: item.quantity,
-    totalPrice: item.product.price * item.quantity,
-    discount: 0,
-    customDesign: item.product.customDesign || null,
-  })),
-};
+      customerId: orderDetail.customerId,
+      products: orderDetail.items.map(item => ({
+        productId: item.product._id,
+        categoryId: item.product.categoryId?._id || item.product.categoryId, // <--- solo ID aquí
+        productName: item.product.name,
+        unitPrice: item.product.price,
+        image: item.product.image,
+        quantity: item.quantity,
+        totalPrice: item.product.price * item.quantity,
+        discount: 0,
+        customDesign: item.product.customDesign || null
+      })),
+      shippingAddress,
+      status: "pendiente",
+    };
 
-    
+
+
+
 
     try {
       setLoading(true);
@@ -84,6 +82,7 @@ const CheckoutPage = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
+      console.log("Payload a enviar:", JSON.stringify(payload, null, 2));
 
       if (!res.ok) throw new Error("Error al crear la orden");
       console.log("🛒 Payload final:", payload);
