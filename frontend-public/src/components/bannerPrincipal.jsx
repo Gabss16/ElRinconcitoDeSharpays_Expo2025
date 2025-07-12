@@ -1,6 +1,9 @@
 // Importamos React, hooks y estilos globales CSS
 import React, { useEffect, useRef } from "react";
 import "../styles/Banner.css";
+import { Link } from "react-router-dom";
+
+import {useAuth} from "../context/AuthContext.jsx";
 
 // Función que genera un tamaño aleatorio para imágenes (entre 180px y 580px de ancho y 180px a 480px de alto)
 const randomSize = () => {
@@ -27,6 +30,10 @@ const elements = [
 
 // Componente principal de React
 export default function App() {
+
+  //Para verificar si el usuario ya inicio sesión
+  const {authCookie} = useAuth();
+
   // Referencias al DOM para la capa de desenfoque y a los elementos decorativos/imágenes
   const overlayRef = useRef();
   const itemRefs = useRef([]);
@@ -116,10 +123,14 @@ export default function App() {
       <div className="title">
         <span className="subtitle">El Rinconcito de</span>
         <span className="main-title">Sharpay</span>
+      {/* Botón de login */}
+      {!authCookie &&
+      <Link to={"/login"}>
+      <button className="login-btn mt-4">Iniciar Sesión</button>
+      </Link>
+      }
       </div>
 
-      {/* Botón de login */}
-      <button className="login-btn">LOGIN</button>
     </div>
   );
 }

@@ -48,13 +48,13 @@ const Login = () => {
       return;
     }
     SuccessAlert("Sesión iniciada con éxito");
-    //navigate("/Dashboard");
+    navigate("/inicio");
   };
 
   
   useEffect(() => {
     if (authCookie) {
-    //navigate("/Dashboard");
+    navigate("/inicio");
     }
   }, [authCookie]);
 

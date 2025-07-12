@@ -18,6 +18,7 @@ import Login from "./pages/Login.jsx"
 import Register from "./pages/Register.jsx";
 import RecoveryPassword from "./pages/RecoveryPassword.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import HomePublic from "./pages/HomePublic.jsx";
 
 import LoadingAnimation from "./components/LoadingAnimation.jsx";
 
@@ -29,7 +30,7 @@ import { CartProvider } from "./context/CartContext";
 function App() {
   function NavBarSelector() {
     const { pathname } = useLocation();
-    const noNavbarPaths = ["/login", "/register", "/recoveryPassword", "/notFound"]
+    const noNavbarPaths = ["/login", "/register", "/recoveryPassword", "/notFound", "/elRinconcitoDeSharpays"]
 
     if (noNavbarPaths.includes(pathname)) return null
     else
@@ -43,7 +44,7 @@ function App() {
           <NavBarSelector/>
           <Routes>
             <Route path="/login" element={<Login />} />
-            <Route path="/" element={<Navigate to="/Inicio" replace />} />
+            <Route path="/" element={<Navigate to="/inicio" replace />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/register" element={<Register />} />
             <Route path="/recoveryPassword" element={<RecoveryPassword />} />
@@ -57,7 +58,8 @@ function App() {
             <Route path="/paraiso/:id" element={<ParaisoDetailPage />} />
             <Route path="/carrito" element={<ShoppingCart />} />
             <Route path="/checkOut" element={<CheckOut />} />
-            <Route path="/Inicio" element={<Home />} />
+            <Route path="/inicio" element={<Home />} />
+            <Route path="/elRinconcitoDeSharpays" element={<HomePublic />} />
             <Route path="/notFound" element={<NotFound/>}/>
           <Route path="*" element={<LoadingAnimation navTo="/notFound" replace />} />
           </Routes>
