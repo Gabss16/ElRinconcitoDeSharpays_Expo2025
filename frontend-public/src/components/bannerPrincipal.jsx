@@ -4,6 +4,11 @@ import "../styles/Banner.css";
 import { Link } from "react-router-dom";
 
 import {useAuth} from "../context/AuthContext.jsx";
+import img1 from "../assets/Candles.jpeg"
+import img2 from "../assets/img2.jpeg"
+import img3 from "../assets/img3.jpeg"
+import img4 from "../assets/img4.jpeg"
+import img5 from "../assets/img5.jpeg"
 
 // Función que genera un tamaño aleatorio para imágenes (entre 180px y 580px de ancho y 180px a 480px de alto)
 const randomSize = () => {
@@ -15,11 +20,11 @@ const randomSize = () => {
 // Array con todos los elementos visuales (imágenes y decoraciones)
 const elements = [
   // Cada objeto representa una imagen o decoración
-  { type: "img", src: "/img1.jpg", style: { top: "5%", left: "10%", ...randomSize() }, depth: 1 },
-  { type: "img", src: "/img2.jpg", style: { top: "20%", left: "60%", ...randomSize() }, depth: 2 },
-  { type: "img", src: "/img3.jpg", style: { top: "60%", left: "5%", ...randomSize() }, depth: 3 },
-  { type: "img", src: "/img4.jpg", style: { top: "65%", left: "60%", ...randomSize() }, depth: 1 },
-  { type: "img", src: "/img5.jpg", style: { top: "40%", left: "30%", ...randomSize() }, depth: 2 },
+  { type: "img", src: img1, style: { top: "5%", left: "10%", ...randomSize() }, depth: 1 },
+  { type: "img", src: img2, style: { top: "20%", left: "60%", ...randomSize() }, depth: 2 },
+  { type: "img", src: img3, style: { top: "60%", left: "5%", ...randomSize() }, depth: 3 },
+  { type: "img", src: img4, style: { top: "65%", left: "60%", ...randomSize() }, depth: 1 },
+  { type: "img", src: img5, style: { top: "40%", left: "30%", ...randomSize() }, depth: 2 },
   // Elementos decorativos
   { type: "shape", style: { top: "15%", left: "25%" }, className: "bg-shape", depth: 4 },
   { type: "shape", style: { top: "70%", left: "70%" }, className: "bg-shape", depth: 2 },
