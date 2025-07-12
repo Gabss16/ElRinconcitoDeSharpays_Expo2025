@@ -80,7 +80,7 @@ const Register = () => {
                       <div style={{width: '300px', marginTop: '30px'}}>
                       <CustomButton
                         text={"Registrarme"}
-                        action={(e) => navigate("/Inicio")}
+                        action={(e) => navigate("/inicio")}
                         background={"black"}
                         color={"white"}
                         width={"100%"}
@@ -91,7 +91,7 @@ const Register = () => {
                       <div className="go-to-register text-center mt-5 pt-4 d-flex">
                         <LinkText
                         text={"Iniciar sesión"}
-                        action={"/Login"}
+                        action={"/login"}
                         />
                       </div>
 

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import "./App.css";
 import Profile from "./pages/Profile.jsx";
 import Sharpays from "./pages/ShopSharpays.jsx";
@@ -17,6 +17,7 @@ import Home from "./pages/Home.jsx"
 import Login from "./pages/Login.jsx"
 import Register from "./pages/Register.jsx";
 import RecoveryPassword from "./pages/RecoveryPassword.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 import Footer from "./components/Footer.jsx";
 
@@ -24,11 +25,20 @@ import Footer from "./components/Footer.jsx";
 import { CartProvider } from "./context/CartContext";
 
 function App() {
+  function NavBarSelector() {
+    const { pathname } = useLocation();
+    const noNavbarPaths = ["/login", "/register", "/recoveryPassword", "/notFound"]
+
+    if (noNavbarPaths.includes(pathname)) return null
+    else
+    return <NavBar/>;
+  }
+
   return (
     <Router>
       <AuthProvider>
         <CartProvider>
-          <NavBar />
+          <NavBarSelector/>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<Navigate to="/Inicio" replace />} />
@@ -46,6 +56,7 @@ function App() {
             <Route path="/carrito" element={<ShoppingCart />} />
             <Route path="/checkOut" element={<CheckOut />} />
             <Route path="/Inicio" element={<Home />} />
+            <Route path="/notFound" element={<NotFound />} />
           </Routes>
           <Footer/>
         </CartProvider>
