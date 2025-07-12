@@ -48,13 +48,13 @@ const Login = () => {
       return;
     }
     SuccessAlert("Sesión iniciada con éxito");
-    //navigate("/Dashboard");
+    navigate("/inicio");
   };
 
   
   useEffect(() => {
     if (authCookie) {
-    //navigate("/Dashboard");
+    navigate("/inicio");
     }
   }, [authCookie]);
 
@@ -98,7 +98,7 @@ const Login = () => {
                     <div style={{ width: "300px", marginTop: "5px" }}>
                       <LinkText
                         text={"Olvidé mi contraseña"}
-                        action={"/RecoveryPassword"}
+                        action={"/recoveryPassword"}
                       />
 
                       <CustomButton
@@ -112,7 +112,7 @@ const Login = () => {
                         <p className="m-0 ps-3 pe-1 text-white">
                           ¿No tienes cuenta?
                         </p>
-                        <LinkText text={"Registrarme"} action={"/Register"} />
+                        <LinkText text={"Registrarme"} action={"/register"} />
                       </div>
                     </div>
                   </form>
