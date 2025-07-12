@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import CarouselCard from '../components/carouselCard.jsx';
-import useOrderDetail from '../components/checkOut/hooks/useOrderDetail.jsx';
 import SuccessAlert from '../components/SuccessAlert.jsx';
 import ErrorAlert from '../components/ErrorAlert.jsx';
 import '../styles/checkOut.css';
@@ -21,22 +20,17 @@ const CheckoutPage = () => {
     zipCode: ''
   });
 
-  const {
-    subtotal,
-    shipping,
-    tax,
-    total,
-    paymentMethod,
-    setPaymentMethod,
-  } = useOrderDetail();
+  const [orderDetail, setOrderDetail] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("otro");
 
   useEffect(() => {
-    const exists = localStorage.getItem("OrderDetail");
-    if (!exists) {
+    const stored = localStorage.getItem("OrderDetail");
+    if (!stored) {
       ErrorAlert("No hay ninguna orden activa.");
-      setTimeout(() => {
-        navigate("/");
-      }, 3000);
+      setTimeout(() => navigate("/"), 3000);
+    } else {
+      setOrderDetail(JSON.parse(stored));
     }
   }, []);
 
@@ -48,17 +42,61 @@ const CheckoutPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Datos del formulario:', formData);
-  };
+    if (!orderDetail) return;
 
-  const handleContinueToPayment = () => {
-    localStorage.removeItem("OrderDetail");
-    SuccessAlert("¡Pago procesado con éxito!");
-    setTimeout(() => {
-      navigate("/");
-    }, 3000);
+    const shippingAddress = {
+      address: `${formData.houseNumber}, CP: ${formData.postalCode}`,
+      city: formData.municipality,
+    };
+
+    
+
+
+    const payload = {
+  customerId: orderDetail.customerId,
+  categoryId:
+    typeof orderDetail.items[0]?.product?.categoryId === 'object'
+      ? orderDetail.items[0].product.categoryId._id
+      : orderDetail.items[0]?.product?.categoryId,
+  status: "pendiente",
+  shippingAddress,
+  total: orderDetail.total,
+  orderDetails: orderDetail.items.map((item) => ({
+    productId: item.product._id,
+    productName: item.product.name,
+    unitPrice: item.product.price,
+    image: item.product.image,
+    quantity: item.quantity,
+    totalPrice: item.product.price * item.quantity,
+    discount: 0,
+    customDesign: item.product.customDesign || null,
+  })),
+};
+
+    
+
+    try {
+      setLoading(true);
+      const res = await fetch("http://localhost:4000/api/createOrderFromCart/create-from-cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error("Error al crear la orden");
+      console.log("🛒 Payload final:", payload);
+
+      SuccessAlert("¡Orden creada exitosamente!");
+      localStorage.removeItem("OrderDetail");
+      setTimeout(() => navigate("/"), 3000);
+    } catch (err) {
+      ErrorAlert("Error al procesar la orden");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -89,6 +127,7 @@ const CheckoutPage = () => {
                       value={formData.firstName}
                       onChange={handleInputChange}
                       className="form-input"
+                      required
                     />
                   </div>
                   <div className="form-group">
@@ -99,6 +138,7 @@ const CheckoutPage = () => {
                       value={formData.lastName}
                       onChange={handleInputChange}
                       className="form-input"
+                      required
                     />
                   </div>
                 </div>
@@ -112,6 +152,7 @@ const CheckoutPage = () => {
                       value={formData.phone}
                       onChange={handleInputChange}
                       className="form-input"
+                      required
                     />
                   </div>
                   <div className="form-group">
@@ -122,6 +163,7 @@ const CheckoutPage = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       className="form-input"
+                      required
                     />
                   </div>
                 </div>
@@ -134,6 +176,7 @@ const CheckoutPage = () => {
                     value={formData.municipality}
                     onChange={handleInputChange}
                     className="form-input"
+                    required
                   />
                 </div>
 
@@ -145,6 +188,7 @@ const CheckoutPage = () => {
                     value={formData.houseNumber}
                     onChange={handleInputChange}
                     className="form-input"
+                    required
                   />
                 </div>
 
@@ -157,6 +201,7 @@ const CheckoutPage = () => {
                       value={formData.postalCode}
                       onChange={handleInputChange}
                       className="form-input"
+                      required
                     />
                   </div>
                   <div className="form-group">
@@ -185,8 +230,8 @@ const CheckoutPage = () => {
 
                 <p className="location-helper">Selecciona una ubicación cercana a ti.</p>
 
-                <button type="submit" className="purchase-button">
-                  Guardar y continuar
+                <button type="submit" className="purchase-button" disabled={loading}>
+                  {loading ? "Procesando..." : "Finalizar compra"}
                 </button>
               </form>
             </div>
@@ -197,26 +242,12 @@ const CheckoutPage = () => {
             <div className="payment-method-container">
               <div className="payment-summary">
                 <div className="summary-row">
-                  <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
-                </div>
-                <div className="summary-row">
-                  <span>Envío</span>
-                  <span>${shipping.toFixed(2)}</span>
-                </div>
-                <div className="summary-row">
-                  <span>Impuestos</span>
-                  <span>${tax.toFixed(2)}</span>
-                </div>
-                <div className="summary-row total-amount">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>${orderDetail?.total.toFixed(2)}</span>
                 </div>
               </div>
 
-              <button className="purchase-button" onClick={handleContinueToPayment}>
-                Continuar al pago
-              </button>
+              <p className="location-helper">Verifica los datos antes de pagar</p>
             </div>
           </div>
         </div>
