@@ -1,13 +1,14 @@
 import customersModel from "../models/costumer.js";
 import employeesModel from "../models/employee.js";
-import bcryptjs from "bcryptjs"; 
+import bcryptjs from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
 import { config } from "../config.js";
 
 const loginController = {};
 
-loginController.login = async (req, res) => {
-    const { email, password } = req.body;
+// LOGIN PRIVATE - Only Employees
+loginController.loginPrivate = async (req, res) => {
+  const { email, password } = req.body;
 
   try {
     // 1. Admin, 2. Empleado, 3. Cliente
@@ -26,11 +27,6 @@ loginController.login = async (req, res) => {
       //2. Empleados
       userFound = await employeesModel.findOne({ email });
       userType = "employee";
-      if (!userFound) {
-        //3. Cliente
-        userFound = await customersModel.findOne({ email });
-        userType = "customer";
-      }
     }
 
     //Si no encontramos a ningun usuario con esas credenciales
@@ -47,30 +43,40 @@ loginController.login = async (req, res) => {
       }
     }
 
-    //// TOKEN
-    //Para validar que inició sesión
+
+    // Generar token
     jsonwebtoken.sign(
-      //1-Que voy a guardar
-      { id: userFound._id, userType: userType, name: userFound.name, image: userFound.image, email: userFound.email},
-      //2-Secreto
+      {
+        id: userFound._id,
+        userType,
+        name: userFound.name,
+        image: userFound.image,
+        email: userFound.email,
+      },
       config.JWT.secret,
-      //3-Cuando expira
       { expiresIn: config.JWT.expiresIn },
-      //4. Funcion flecha
-       (err, token) => {
+      (err, token) => {
         if (err) {
           console.error(err);
           return res.status(500).json({ message: "Error generating token" });
         }
 
-        // Guardar el token en una cookie con configuraciones adecuadas
-        res.cookie("authToken", token, { 
+        res.cookie("authToken", token, {
           httpOnly: true,
-          maxAge: 24 * 60 * 60 * 1000, // 24 horas en milisegundos
-          path: '/', // Cookie disponible en toda la aplicación
-          sameSite: 'lax', // Protección contra CSRF
+          maxAge: 24 * 60 * 60 * 1000,
+          path: "/",
+          sameSite: "lax",
         });
-        res.status(200).json({ message: `${userType} login successfull`, token, userId: userFound._id, userType: userType ,name: userFound.name, image: userFound.image, email: userFound.email });
+
+        res.status(200).json({
+          message: `${userType} login successful`,
+          token,
+          userId: userFound._id,
+          userType,
+          name: userFound.name,
+          image: userFound.image,
+          email: userFound.email,
+        });
       }
     );
   } catch (error) {
@@ -78,5 +84,80 @@ loginController.login = async (req, res) => {
   }
 };
 
+// LOGIN PUBLIC - Only Customers
+loginController.loginPublic = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    let userFound;
+    let userType;
+
+    // 1. Admin
+    if (
+      email === config.ADMIN.emailAdmin &&
+      password === config.ADMIN.password
+    ) {
+      userType = "admin";
+      userFound = { _id: "admin", name: "Admin", image: "", email, password };
+    } else {
+      // 2. Customer
+      userFound = await customersModel.findOne({ email });
+      userType = "customer";
+    }
+
+    if (!userFound) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    if (userType === "employee") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    if (userType !== "admin") {
+      const isMatch = await bcryptjs.compare(password, userFound.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: "Invalid password" });
+      }
+    }
+
+    // Generar token
+    jsonwebtoken.sign(
+      {
+        id: userFound._id,
+        userType,
+        name: userFound.name,
+        image: userFound.image,
+        email: userFound.email,
+      },
+      config.JWT.secret,
+      { expiresIn: config.JWT.expiresIn },
+      (err, token) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ message: "Error generating token" });
+        }
+
+        res.cookie("authToken", token, {
+          httpOnly: true,
+          maxAge: 24 * 60 * 60 * 1000,
+          path: "/",
+          sameSite: "lax",
+        });
+
+        res.status(200).json({
+          message: `${userType} login successful`,
+          token,
+          userId: userFound._id,
+          userType,
+          name: userFound.name,
+          image: userFound.image,
+          email: userFound.email,
+        });
+      }
+    );
+  } catch (error) {
+    res.status(500).json({ message: "Error", error: error.message });
+  }
+};
 
 export default loginController;
