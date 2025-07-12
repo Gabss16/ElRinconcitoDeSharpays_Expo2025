@@ -37,7 +37,7 @@ const CardPersonalInformation = () => {
       </div>
       
       <div className="personal-info-row">
-        <Button text="Cambiar contraseña" className="password-btn" />
+        <Button text="Cambiar Contraseña" className="password-btn" />
       </div>
     </div>
   );

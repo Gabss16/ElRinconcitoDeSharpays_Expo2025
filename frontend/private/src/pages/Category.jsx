@@ -13,7 +13,7 @@ const CategoryPage = () => {
         <div className="col-2"></div>
         <div className="col-10">
           <div className="users-main-container">
-            <h1 className="main-title">Categorías</h1>
+            <h1 className="main-title">Tiendas Sharpay</h1>
             <div className="form-and-fields">
               <RegisterCategories {...data} resetForm={data.resetForm} />
             </div>
