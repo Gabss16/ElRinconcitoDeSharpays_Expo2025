@@ -1,7 +1,7 @@
 // src/components/SidebarMenu.jsx
 import React from 'react';
 import '../styles/SubMenu.css';
-import useUserDataSubcategories from './SubCategories/hook/userDataSubCategory';
+import useUserDataSubcategories from './subCategory/hook/userDataSubCategory';
 
 const SidebarMenu = ({ categoryId, selectedSubcategory, setSelectedSubcategory }) => {
   const { subcategories } = useUserDataSubcategories();

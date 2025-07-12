@@ -189,7 +189,7 @@ body, html, #root {
 
   .white-box {
     top: -15vh;
-    flex-direction: column;
+    
     padding: 20px;
   }
 }
@@ -246,10 +246,7 @@ body, html, #root {
     gap: 15px;
   }
 
-  .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 16px;
-  }
+  
 }
 
 
@@ -278,12 +275,10 @@ body, html, #root {
     top: -15vh;
     padding: 15px;
     gap: 15px;
+    flex-direction: column;
   }
 
-  .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 16px;
-  }
+  
 }
 
 
@@ -313,10 +308,7 @@ body, html, #root {
    
   }
 
-  .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 16px;
-  }
+  
 }
 
 @media (max-width: 640px) {
