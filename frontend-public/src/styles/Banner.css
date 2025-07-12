@@ -11,7 +11,7 @@ body, html {
 .hero-container {
   position: relative;
   width: 100vw;
-  height: 700px;
+  height: 100vh;
   background: #fff0f6;
   overflow: hidden;
 }

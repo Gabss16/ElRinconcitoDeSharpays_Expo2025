@@ -34,7 +34,7 @@ const Menu = () => {
             <Link to="/paraiso" onClick={toggleMenu}>El Paraíso de Dios</Link>
           </div>
         </div>
-        <Link to="/sobre-nosotros" onClick={toggleMenu}>Sobre Nosotros</Link>
+        <Link to="/elRinconcitoDeSharpays" onClick={toggleMenu}>Sobre Nosotros</Link>
       </nav>
 
       <div className="menu-right">
