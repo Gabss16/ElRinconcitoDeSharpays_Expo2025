@@ -26,7 +26,7 @@ const useDataEmployee = () => {
     }
   };
 
-  const fetchEmployeesById = async () => {
+  const fetchEmployeesById = async (id) => {
     setLoading(true);
     try {
       const response = await fetch(`${API}/${id}`);
@@ -34,7 +34,6 @@ const useDataEmployee = () => {
       setName(data.name);
       setEmail(data.email);
       setImageUrl(data.image)
-      console.log(data.name)
       return;
     } catch (error) {
       console.error("Error al obtener los empleados", error);

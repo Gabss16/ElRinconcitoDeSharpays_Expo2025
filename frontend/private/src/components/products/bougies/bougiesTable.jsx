@@ -1,11 +1,14 @@
-// src/components/tables/ProductsTableCandles.jsx
-import React from "react";
+import React, { useState } from "react";
 import InputText from "../../CustomInput";
 import Button from "../../CustomButton";
 import "../../../styles/ProductsTable.css";
 
+
+  
+
 const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEditable = true }) => {
-  // FILTRAMOS LOS PRODUCTOS PARA MOSTRAR SOLO LOS DE LA CATEGORÍA "68670dadd4a3c856571b7fb0"
+  const [searchTerm, setSearchTerm] = useState("");
+  // FILTRAMOS LOS PRODUCTOS 
   const filteredProducts = products.filter((prod) => {
   const cat =
     typeof prod.categoryId === "string"
@@ -14,20 +17,30 @@ const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEdit
       ? prod.categoryId.$oid || prod.categoryId._id
       : null;
   return cat === "68670dadd4a3c856571b7fb0";
-});
+})
+.filter((prod) => {
+      // Filtro de búsqueda por nombre o descripción
+      const term = searchTerm.toLowerCase();
+      return (
+        prod.name?.toLowerCase().includes(term) ||
+        prod.description?.toLowerCase().includes(term)
+      );
+      })
 
   return (
     <div className="products-table-container">
       <div className="card-table">
         <div className="search-box">
           <InputText
-            type="text"
-            name="buscar"
-            placeholder="Buscar productos"
-            className="search-input-field"
-          />
+        type="text"
+        name="buscar"
+        placeholder="Buscar productos"
+        className="search-input-field"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
         </div>
-
+        <div className="table-scroll-wrapper">
         <div className={`table-header-row ${!isEditable ? "no-actions" : ""}`}>
           <span>Nombre</span>
           <span>Descripción</span>
@@ -107,6 +120,7 @@ const ProductsTable = ({ products, deleteProduct, updateProduct, loading, isEdit
               </div>
             ))
           )}
+        </div>
         </div>
       </div>
     </div>

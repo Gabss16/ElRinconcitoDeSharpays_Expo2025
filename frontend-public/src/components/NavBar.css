@@ -13,6 +13,30 @@
   justify-content: space-between;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
+.theme-toggle-custom {
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+@keyframes spinTheme {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 1;
+  }
+}
 
 
 .menu-left {
@@ -130,4 +154,60 @@
   gap: 6px;
   text-decoration: none;
   color: black;
+}
+
+/* Estilo base para el logo */
+.menu-logo {
+  height: 24px;
+  width: 24px;
+  cursor: default; /* Por defecto, no parece botón */
+}
+
+/* Logo como botón en móviles */
+@media (max-width: 768px) {
+  .menu-logo {
+    cursor: pointer;
+  }
+
+  .menu-nav {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background-color: white;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    display: none;
+    z-index: 999;
+  }
+
+  .menu-nav.open {
+    display: flex;
+  }
+
+  .menu-right {
+    display: none;
+  }
+
+  .dropdown .drop-btn {
+    background-color: white;
+    border: none;
+    outline: none;
+  }
+
+  .dropdown-content {
+    position: static;
+    box-shadow: none;
+    background-color: transparent;
+    display: none;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .dropdown-content a {
+    padding: 8px 0;
+  }
 }

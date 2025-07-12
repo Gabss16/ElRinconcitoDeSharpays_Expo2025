@@ -77,7 +77,7 @@ const Login = () => {
                   <form className="login-content d-flex justify-content-center align-items-center flex-column mt-4 w-100" onSubmit={handleSubmit}>
                     <CustomTitle
                       style={"text-white fw-bold fs-2 mb-5"}
-                      text={"Login"}
+                      text={"Iniciar Sesión"}
                     />
 
                     <CustomInput
@@ -108,12 +108,6 @@ const Login = () => {
                         width={"100%"}
                         height={"50px"}
                       />
-                      <div className="go-to-register text-center mt-5 d-flex">
-                        <p className="m-0 ps-3 pe-1 text-white">
-                          ¿No tienes cuenta?
-                        </p>
-                        <LinkText text={"Registrarme"} action={"/Register"} />
-                      </div>
                     </div>
                   </form>
               </>

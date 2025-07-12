@@ -1,0 +1,33 @@
+/* Perfil general */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  main {
+    display: flex;
+    flex-wrap: wrap; /* Esto permite que los elementos se reorganicen en pantallas pequeñas */
+    justify-content: flex-start;
+    gap: 20px; /* Espaciado entre los cards */
+    padding: 20px;
+  }
+  
+  .card {
+    flex: 1 1 250px; /* Los cards ocupan al menos 250px, pero pueden crecer */
+    max-width: 100%; /* Se asegura que no se desborden */
+    box-sizing: border-box;
+  }
+  
+  @media (max-width: 768px) {
+    /* En pantallas más pequeñas (tablets y móviles) */
+    main {
+      flex-direction: column; /* Los cards se apilan en una sola columna */
+      align-items: center;
+    }
+  
+    .card {
+      width: 100%; /* Los cards ocupan todo el ancho disponible */
+    }
+  }
+  

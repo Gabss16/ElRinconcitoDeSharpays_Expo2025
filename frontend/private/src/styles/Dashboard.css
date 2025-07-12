@@ -1,5 +1,7 @@
 .store-card-section {
     overflow-y: auto;
+    padding-top: 50px;
+    padding-bottom: 50px;
 }
 
 .grahpics {
@@ -31,7 +33,7 @@
 }
 
 .table-header-row , .table-body .table-item {
-    grid-template-columns: 1fr 3fr 1.2fr 1.2fr 1.2fr 1.2fr !important;
+    grid-template-columns: 1fr 3fr 1.2fr 1.2fr 1.2fr 1.2fr 1.5fr !important;
 }
 
 .product-list-dashboard {
