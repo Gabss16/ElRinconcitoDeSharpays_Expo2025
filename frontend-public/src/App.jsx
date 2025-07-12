@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import "./App.css";
 import Profile from "./pages/Profile.jsx";
@@ -12,7 +13,7 @@ import ParaisoDetailPage from "./pages/ParaisoDetailPage.jsx";
 import NavBar from "./components/NavBar.jsx";
 import ShoppingCart from "./pages/shoppingCart.jsx";
 import CheckOut from "./pages/CheckOut.jsx"
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, AuthContext } from "./context/AuthContext";
 import Home from "./pages/Home.jsx"
 import Login from "./pages/Login.jsx"
 import Register from "./pages/Register.jsx";
@@ -31,11 +32,17 @@ import { CartProvider } from "./context/CartContext";
 function App() {
   function NavBarSelector() {
     const { pathname } = useLocation();
-    const noNavbarPaths = ["/login", "/register", "/recoveryPassword", "/notFound", "/elRinconcitoDeSharpays"]
+    const { isLoggedIn } = useContext(AuthContext);
 
-    if (noNavbarPaths.includes(pathname)) return null
-    else
-      return <NavBar />;
+    const noNavbarPaths = ["/login", "/register", "/recoveryPassword", "/notFound"];
+
+    if (noNavbarPaths.includes(pathname)) return null;
+
+    if (pathname === "/elRinconcitoDeSharpays" && !isLoggedIn) return null;
+
+    if (isLoggedIn) return <NavBar />;
+
+    return null;
   }
 
   return (
