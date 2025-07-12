@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
-
+import defaulImg from "../assets/profile-img-default.png"
 
 import '../styles/CardImage.css';
+import CustomButton from "./CustomButton";
+import { useAuth } from "../context/AuthContext";
 
 const CardImage = ({ onUpload, defaultImage }) => {
+
+  const { logout } = useAuth();
+
+  defaultImage = defaulImg;
   const [preview, setPreview] = useState(defaultImage || null);
   const fileInputRef = useRef(null);
 
@@ -45,6 +51,14 @@ const CardImage = ({ onUpload, defaultImage }) => {
       <p className="upload-image-text">
         800 x 800 px recomendado - PNG o JPEG
       </p>
+
+      <CustomButton 
+            text="Cerrar sesión"
+            background="#000000ff"
+            height={50}
+            width={200}
+            color="white"
+          onClick={logout}/>
 
       <input
         ref={fileInputRef}

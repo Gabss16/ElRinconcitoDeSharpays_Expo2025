@@ -21,7 +21,7 @@ import CustomSelect from "../components/CustomSelect.jsx";
 
 //Departementos API
 import Departments from "../utils/apiDepartmentsSV.jsx"
-import { register } from "../hook/useRegister.jsx";
+import useRegisterCustomer from "../components/customer/hook/useDataCustomer.jsx";
 import { useState } from "react";
 
 import ErrorAlert from "../components/ErrorAlert.jsx";
@@ -31,6 +31,7 @@ const Register = () => {
 
   const depa = Departments();
   const navigate = useNavigate();
+  const {registerCustomer} = useRegisterCustomer();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -53,7 +54,7 @@ const Register = () => {
       ErrorAlert("La contraseña debe ser mínimo de 8 carácteres")
     }
     else {
-      const success = await register({ name, email, password, department, address });
+      const success = await registerCustomer({ name, email, password, department, address });
       console.log(department)
 
       if (success) {

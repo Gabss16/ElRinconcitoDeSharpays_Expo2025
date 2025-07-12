@@ -10,7 +10,7 @@ export default function CardUbication() {
   const [editando, setEditando] = useState(false);
 
   return (
-    <div className="card-ubication">
+    <div className="card-ubication mt-5">
       <label className="card-ubication__label">Ubicación</label>
       <div className="card-ubication__input-container">
         {editando ? (

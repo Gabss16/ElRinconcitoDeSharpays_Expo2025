@@ -1,15 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import InputText from "../components/CustomInput";
 import Button from "../components/CustomButton";
 import '../styles/CardPersonalInformation.css';
+import { useAuth } from "../context/AuthContext.jsx";
+import useDataCustomer from "../components/customer/hook/useDataCustomer";
+
+import { Link } from 'react-router-dom';
+
+import SuccessAlert from "../components/SuccessAlert";
+import ErrorAlert from "../components/ErrorAlert";
 
 const CardPersonalInformation = () => {
-  const [name, setName] = useState("German Gonzalez");
-  const [email, setEmail] = useState("gonzagermang24@gmail.com");
-  const [isEditable, setIsEditable] = useState(false); // Estado para controlar si los inputs son editables
+  const { user } = useAuth();
+  const data = useDataCustomer();
 
-  const toggleEdit = () => {
-    setIsEditable(!isEditable); // Cambia el estado de editabilidad
+  const [isEditable, setIsEditable] = useState(false);
+
+  useEffect(() => {
+    if (user?.id) {
+      data.fetchCustomerById(user?.id);
+    }
+  }, [user?.id]);
+
+  const toggleEdit = async () => {
+    if (isEditable) {
+      SuccessAlert("Edita tu información");
+
+      try {
+        await data.updateCustomer(user?.id);
+        SuccessAlert("Perfil actualizado exitosamente");
+        setIsEditable(false);
+      } catch (error) {
+        ErrorAlert("Error al actualizar el perfil");
+      }
+    } else {
+      SuccessAlert("Ahora puedes editar tus datos");
+      setIsEditable(true);
+    }
   };
 
   return (
@@ -21,23 +48,40 @@ const CardPersonalInformation = () => {
       <div className="personal-info-row">
         <div className="personal-info-inputs">
           <InputText
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className={`info-input ${!isEditable ? "readonly" : ""}`} // Añadir clase 'readonly' si no es editable
-            readOnly={!isEditable} // Solo se puede editar si isEditable es true
+            value={data.name}
+            onChange={(e) => data.setName(e.target.value)}
+            className="info-input"
+            disable={!isEditable}
           />
           <InputText
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={`info-input ${!isEditable ? "readonly" : ""}`} // Añadir clase 'readonly' si no es editable
-            readOnly={!isEditable} // Solo se puede editar si isEditable es true
+            value={data.email}
+            onChange={(e) => data.setEmail(e.target.value)}
+            className="info-input"
+            disable={!isEditable}
           />
         </div>
-        <Button text={isEditable ? "Guardar" : "Editar"} className="edit-btn" onClick={toggleEdit} />
-      </div>
-      
-      <div className="personal-info-row">
-        <Button text="Cambiar Contraseña" className="password-btn" />
+
+        <div className="d-flex justify-content-start" style={{ gap: 50 }}>
+          <Button
+            text={isEditable ? "Guardar" : "Editar"}
+            className="edit-btn"
+            onClick={toggleEdit}
+            background="#ff6daa"
+            height={50}
+            width={100}
+            color="white"
+          />
+          <Link to={"/recoveryPassword"}>
+          <Button
+            text="Cambiar Contraseña"
+            className="password-btn"
+            background="#ff6daa"
+            height={50}
+            width={200}
+            color="white"
+          />
+          </Link>
+        </div>
       </div>
     </div>
   );

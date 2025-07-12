@@ -37,7 +37,7 @@ const elements = [
 export default function App() {
 
   //Para verificar si el usuario ya inicio sesión
-  const {authCookie} = useAuth();
+  const { isLoggedIn } = useAuth();
 
   // Referencias al DOM para la capa de desenfoque y a los elementos decorativos/imágenes
   const overlayRef = useRef();
@@ -129,7 +129,7 @@ export default function App() {
         <span className="subtitle">El Rinconcito de</span>
         <span className="main-title">Sharpay</span>
       {/* Botón de login */}
-      {!authCookie &&
+      {!isLoggedIn  &&
       <Link to={"/login"}>
       <button className="login-btn mt-4">Iniciar Sesión</button>
       </Link>
