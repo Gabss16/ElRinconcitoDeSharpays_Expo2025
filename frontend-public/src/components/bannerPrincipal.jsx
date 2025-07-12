@@ -1,6 +1,14 @@
 // Importamos React, hooks y estilos globales CSS
 import React, { useEffect, useRef } from "react";
 import "../styles/Banner.css";
+import { Link } from "react-router-dom";
+
+import {useAuth} from "../context/AuthContext.jsx";
+import img1 from "../assets/Candles.jpeg"
+import img2 from "../assets/img2.jpeg"
+import img3 from "../assets/img3.jpeg"
+import img4 from "../assets/img4.jpeg"
+import img5 from "../assets/img5.jpeg"
 
 // Función que genera un tamaño aleatorio para imágenes (entre 180px y 580px de ancho y 180px a 480px de alto)
 const randomSize = () => {
@@ -12,11 +20,11 @@ const randomSize = () => {
 // Array con todos los elementos visuales (imágenes y decoraciones)
 const elements = [
   // Cada objeto representa una imagen o decoración
-  { type: "img", src: "/img1.jpg", style: { top: "5%", left: "10%", ...randomSize() }, depth: 1 },
-  { type: "img", src: "/img2.jpg", style: { top: "20%", left: "60%", ...randomSize() }, depth: 2 },
-  { type: "img", src: "/img3.jpg", style: { top: "60%", left: "5%", ...randomSize() }, depth: 3 },
-  { type: "img", src: "/img4.jpg", style: { top: "65%", left: "60%", ...randomSize() }, depth: 1 },
-  { type: "img", src: "/img5.jpg", style: { top: "40%", left: "30%", ...randomSize() }, depth: 2 },
+  { type: "img", src: img1, style: { top: "5%", left: "10%", ...randomSize() }, depth: 1 },
+  { type: "img", src: img2, style: { top: "20%", left: "60%", ...randomSize() }, depth: 2 },
+  { type: "img", src: img3, style: { top: "60%", left: "5%", ...randomSize() }, depth: 3 },
+  { type: "img", src: img4, style: { top: "65%", left: "60%", ...randomSize() }, depth: 1 },
+  { type: "img", src: img5, style: { top: "40%", left: "30%", ...randomSize() }, depth: 2 },
   // Elementos decorativos
   { type: "shape", style: { top: "15%", left: "25%" }, className: "bg-shape", depth: 4 },
   { type: "shape", style: { top: "70%", left: "70%" }, className: "bg-shape", depth: 2 },
@@ -27,6 +35,10 @@ const elements = [
 
 // Componente principal de React
 export default function App() {
+
+  //Para verificar si el usuario ya inicio sesión
+  const {authCookie} = useAuth();
+
   // Referencias al DOM para la capa de desenfoque y a los elementos decorativos/imágenes
   const overlayRef = useRef();
   const itemRefs = useRef([]);
@@ -116,10 +128,14 @@ export default function App() {
       <div className="title">
         <span className="subtitle">El Rinconcito de</span>
         <span className="main-title">Sharpay</span>
+      {/* Botón de login */}
+      {!authCookie &&
+      <Link to={"/login"}>
+      <button className="login-btn mt-4">Iniciar Sesión</button>
+      </Link>
+      }
       </div>
 
-      {/* Botón de login */}
-      <button className="login-btn">LOGIN</button>
     </div>
   );
 }

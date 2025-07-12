@@ -2,9 +2,9 @@ import React from "react";
 import useDataShoppingCart from "../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import ProductCartItem from "../components/productCardItem.jsx";
 import PaymentMethod from "../components/PaymentMethod.jsx";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext.jsx";
 import CarouselCard from "../components/carouselCard.jsx";
-import "../styles/shoppingCart.css";
+import "../styles/ShoppingCart.css";
 
 const ShoppingCartPage = () => {
   const {

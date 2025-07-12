@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CustomTitle from "../components/CustomTitle";
-import OrderCard from "../components/Orders/ordersCard";
-import useOrdersWithCategories from "../components/Orders/hook/useOrders.jsx";
+import OrderCard from "../components/order/ordersCard.jsx";
+import useOrdersWithCategories from "../components/order/hook/useOrders.jsx";
 import "../styles/Orders.css";
 
 const Orders = () => {
