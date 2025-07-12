@@ -1,9 +1,9 @@
 import SuccessAlert from "../components/SuccessAlert.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
 
-const API = "http://localhost:4000/api/registerEmployee";
+const API = "http://localhost:4000/api/registerCostumer";
 
-export const registerEmployee = async ({ name, email, password }) => {
+export const register = async ({ name, email, password, department, address}) => {
   try {
     const res = await fetch(API, {
       method: "POST",
@@ -11,7 +11,7 @@ export const registerEmployee = async ({ name, email, password }) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({ name, email, password, department, address }),
     });
 
     const data = await res.json();
