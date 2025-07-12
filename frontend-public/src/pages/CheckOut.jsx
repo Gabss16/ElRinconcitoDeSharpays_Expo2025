@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import CarouselCard from '../components/carouselCard.jsx';
+import useOrderDetail from '../components/checkOut/hooks/useOrderDetail.jsx';
+import SuccessAlert from '../components/SuccessAlert.jsx';
+import ErrorAlert from '../components/ErrorAlert.jsx';
 import '../styles/checkOut.css';
 
 const CheckoutPage = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -14,6 +20,26 @@ const CheckoutPage = () => {
     postalCode: '',
     zipCode: ''
   });
+
+  const {
+    subtotal,
+    shipping,
+    tax,
+    total,
+    paymentMethod,
+    setPaymentMethod,
+  } = useOrderDetail();
+
+  // ✅ Verificar si existe OrderDetail al cargar
+  useEffect(() => {
+    const exists = localStorage.getItem("OrderDetail");
+    if (!exists) {
+      ErrorAlert("No hay ninguna orden activa.");
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -28,11 +54,13 @@ const CheckoutPage = () => {
     console.log('Datos del formulario:', formData);
   };
 
-  const orderSummary = {
-    subtotal: 47.0,
-    shipping: 0.0,
-    tax: 0.0,
-    total: 47.0
+  // ✅ Acción al hacer clic en “Continuar al pago”
+  const handleContinueToPayment = () => {
+    localStorage.removeItem("OrderDetail");
+    SuccessAlert("¡Pago procesado con éxito!");
+    setTimeout(() => {
+      navigate("/");
+    }, 3000);
   };
 
   return (
@@ -145,6 +173,18 @@ const CheckoutPage = () => {
                   </div>
                 </div>
 
+                <div className="form-group full-width">
+                  <label>Método de pago:</label>
+                  <select
+                    value={paymentMethod}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="form-input"
+                  >
+                    <option value="otro">Otro</option>
+                    <option value="paypal">PayPal (+5.5%)</option>
+                  </select>
+                </div>
+
                 <p className="location-helper">Selecciona una ubicación cercana a ti.</p>
 
                 <button type="submit" className="purchase-button">
@@ -160,23 +200,25 @@ const CheckoutPage = () => {
               <div className="payment-summary">
                 <div className="summary-row">
                   <span>Subtotal</span>
-                  <span>${orderSummary.subtotal.toFixed(2)}</span>
+                  <span>${subtotal.toFixed(2)}</span>
                 </div>
                 <div className="summary-row">
                   <span>Envío</span>
-                  <span>${orderSummary.shipping.toFixed(2)}</span>
+                  <span>${shipping.toFixed(2)}</span>
                 </div>
                 <div className="summary-row">
                   <span>Impuestos</span>
-                  <span>${orderSummary.tax.toFixed(2)}</span>
+                  <span>${tax.toFixed(2)}</span>
                 </div>
                 <div className="summary-row total-amount">
                   <span>Total</span>
-                  <span>${orderSummary.total.toFixed(2)}</span>
+                  <span>${total.toFixed(2)}</span>
                 </div>
               </div>
 
-              <button className="purchase-button">Continuar al pago</button>
+              <button className="purchase-button" onClick={handleContinueToPayment}>
+                Continuar al pago
+              </button>
             </div>
           </div>
         </div>
