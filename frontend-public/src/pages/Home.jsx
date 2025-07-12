@@ -58,7 +58,7 @@ const Home = () => {
 
       <div className="products-section">
         <div className="category-filters">
-          <h3>Nuestras tiendas:</h3>
+          <h3>Nuestras Tiendas:</h3>
           <div className="filter-buttons">
             {categoryNames.map((category) => (
               <button
