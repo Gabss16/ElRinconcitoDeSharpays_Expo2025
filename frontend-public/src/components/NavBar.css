@@ -1,10 +1,11 @@
-.menu-header {
+  .menu-header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000; /* más alto que todo */
   background-color: white;
+  max-width: 100vw;
   padding: 16px 24px;
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
@@ -19,9 +20,6 @@
   align-items: center;
   justify-content: center;
 }
-
-
-
 
 @keyframes spinTheme {
   0% {
@@ -189,7 +187,6 @@
   .menu-right {
     display: none;
   }
-
   .dropdown-content {
     position: static;
     box-shadow: none;
@@ -204,4 +201,16 @@
   .dropdown-content a {
     padding: 8px 0;
   }
+}
+
+.drop-btn {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  background-color: white  ;
+  transition: all .2s linear;
+}
+.drop-btn:hover {
+  transform: translateY(-5px);
 }

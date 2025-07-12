@@ -10,13 +10,11 @@ body, html, #root {
   height: 100%;
   width: 100%;
   font-family: sans-serif;
-  background-color: #ffffff;
 }
 
 .page-wrapper {
-  width: 100%;
+  width: 100vw;
   min-height: 100vh;
-  background-color: #ffffff;
 }
 
 .hero {
@@ -98,8 +96,7 @@ body, html, #root {
   flex: 1;
 }
 
-/* Media Queries para pantallas más pequeñas */
-@media (max-width: 1200px) {
+@media (max-width: 1670px) {
   body, html, #root {
   height: 100%;
   width: 100%;
@@ -112,6 +109,7 @@ body, html, #root {
 
   .hero-subtitle {
     bottom: calc(12% + 220px);
+    left: 1%;
   }
 
   .white-box {
@@ -119,7 +117,7 @@ body, html, #root {
   }
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1590px) {
   body, html, #root {
   height: 100%;
   width: 100%;
@@ -127,21 +125,49 @@ body, html, #root {
   background-color: #ffffff;
 }
   .hero-title {
+    font-size: 250px;
+  }
+
+  .hero-title3 {
+    font-size: 220px;
+  }
+
+  .hero-subtitle {
+    bottom: calc(12% + 220px);
+    left: 0%;
+  }
+
+  .white-box {
+    top: -15vh;
+  }
+}
+
+@media (max-width: 1490px) {
+  body, html, #root {
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+  background-color: #ffffff;
+}
+  .hero-title {
+    font-size: 250px;
+  }
+
+  .hero-title3 {
     font-size: 200px;
   }
 
   .hero-subtitle {
-    bottom: calc(12% + 180px);
+    bottom: calc(12% + 220px);
+    left: -5%;
   }
 
   .white-box {
-    top: -10vh;
-    flex-direction: column;
-    padding: 20px;
+    top: -15vh;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1440px) and (max-height: 970px) {
   body, html, #root {
   height: 100%;
   width: 100%;
@@ -149,23 +175,51 @@ body, html, #root {
   background-color: #ffffff;
 }
   .hero-title {
-    font-size: 150px;
+    font-size: 250px;
   }
 
   .hero-subtitle {
-    bottom: calc(12% + 150px);
+    bottom: calc(12% + 220px);
+    left: -8%;
+  }
+
+  .hero-title3 {
+    font-size: 180px;
+  }
+
+  .white-box {
+    top: -15vh;
+    
+    padding: 20px;
+  }
+}
+
+@media (max-width: 1310px) {
+  body, html, #root {
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+  background-color: #ffffff;
+}
+  .hero-title {
+    font-size: 240px;
+  }
+  
+
+  .hero-subtitle {
+    bottom: calc(12% + 225px);
     font-size: 40px;
     transform: translateX(0);
     left: 5%;
   }
 
   .white-box {
-    top: -5vh;
+    top: -16vh;
     gap: 20px;
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1160px) {
   body, html, #root {
   height: 100%;
   width: 100%;
@@ -173,6 +227,72 @@ body, html, #root {
   background-color: #ffffff;
 }
   .hero-title {
+    font-size: 220px;
+  }
+  .hero-title3 {
+    font-size: 160px;
+  }
+
+  .hero-subtitle {
+    bottom: calc(12% + 120px);
+    font-size: 30px;
+    transform: translateX(0);
+    left: 5%;
+  }
+
+  .white-box {
+    top: -20;
+    padding: 15px;
+    gap: 15px;
+  }
+
+  
+}
+
+
+@media (max-width: 1110px) {
+  body, html, #root {
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+  background-color: #ffffff;
+}
+  .hero-title {
+    font-size: 180px;
+  }
+  .hero-title3 {
+    font-size: 130px;
+  }
+
+  .hero-subtitle {
+    bottom: calc(12% + 120px);
+    font-size: 30px;
+    transform: translateX(0);
+    left: 5%;
+  }
+
+  .white-box {
+    top: -15vh;
+    padding: 15px;
+    gap: 15px;
+    flex-direction: column;
+  }
+
+  
+}
+
+
+@media (max-width: 840px) {
+  body, html, #root {
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+  background-color: #ffffff;
+}
+  .hero-title {
+    font-size: 130px;
+  }
+  .hero-title3 {
     font-size: 100px;
   }
 
@@ -184,9 +304,70 @@ body, html, #root {
   }
 
   .white-box {
-    top: 0;
-    padding: 15px;
-    gap: 15px;
+    top: -13vh;
+   
+  }
+
+  
+}
+
+@media (max-width: 640px) {
+  body, html, #root {
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+  background-color: #ffffff;
+}
+  .hero-title {
+    font-size: 100px;
+  }
+  .hero-title3 {
+    font-size: 70px;
+  }
+
+  .hero-subtitle {
+    bottom: calc(12% + 120px);
+    font-size: 30px;
+    transform: translateX(0);
+    left: 5%;
+  }
+
+  .white-box {
+    top: -13vh;
+   
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  body, html, #root {
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+  background-color: #ffffff;
+}
+  .hero-title {
+    font-size: 60px;
+  }
+  .hero-title3 {
+    font-size: 45px;
+  }
+
+  .hero-subtitle {
+    bottom: calc(12% + 120px);
+    font-size: 30px;
+    transform: translateX(0);
+    left: 5%;
+  }
+
+  .white-box {
+    top: -12vh;
+   
   }
 
   .products-grid {

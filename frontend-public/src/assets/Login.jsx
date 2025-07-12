@@ -54,7 +54,7 @@ const Login = () => {
   
   useEffect(() => {
     if (authCookie) {
-    //navigate("/Dashboard");
+    navigate("/Dashboard");
     }
   }, [authCookie]);
 
