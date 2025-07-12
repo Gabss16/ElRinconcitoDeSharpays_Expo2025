@@ -104,6 +104,16 @@ const useDataShoppingCart = () => {
     }
   };
 
+  const moveCartToOrderDetail = () => {
+  const orderDetail = {
+    items: cartItems,
+    total,
+  };
+
+  localStorage.setItem("OrderDetail", JSON.stringify(orderDetail));
+  clearCart();
+  };
+
   return {
     cartItems,
     total,
@@ -115,6 +125,7 @@ const useDataShoppingCart = () => {
     decrementQuantity,
     clearCart,
     createOrderFromCart,
+    moveCartToOrderDetail,
   };
 };
 
