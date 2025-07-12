@@ -30,7 +30,6 @@ const CheckoutPage = () => {
     setPaymentMethod,
   } = useOrderDetail();
 
-  // ✅ Verificar si existe OrderDetail al cargar
   useEffect(() => {
     const exists = localStorage.getItem("OrderDetail");
     if (!exists) {
@@ -54,7 +53,6 @@ const CheckoutPage = () => {
     console.log('Datos del formulario:', formData);
   };
 
-  // ✅ Acción al hacer clic en “Continuar al pago”
   const handleContinueToPayment = () => {
     localStorage.removeItem("OrderDetail");
     SuccessAlert("¡Pago procesado con éxito!");
