@@ -45,7 +45,7 @@ return (
 <FaUsers /> <span>Empleados</span>
 </NavLink>
 <NavLink to="/category" className="nav-item" onClick={toggleSidebar}>
-<FaStore /> <span>Administración de tiendas</span>
+<FaStore /> <span>Administración de Tiendas</span>
 </NavLink>
 
 <div className="section-title">TIENDAS</div>

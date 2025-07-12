@@ -177,10 +177,13 @@ body, html, #root {
   .hero-title {
     font-size: 250px;
   }
+  .hero-title2 {
+    font-size: 250px;
+  }
 
   .hero-subtitle {
-    bottom: calc(12% + 220px);
-    left: -8%;
+    bottom: calc(12% + 230px);
+    left: -6%;
   }
 
   .hero-title3 {
@@ -188,7 +191,7 @@ body, html, #root {
   }
 
   .white-box {
-    top: -15vh;
+    top: -20vh;
     
     padding: 20px;
   }
@@ -205,7 +208,9 @@ body, html, #root {
     font-size: 240px;
   }
   
-
+.hero-title2 {
+    font-size: 240px;
+  }
   .hero-subtitle {
     bottom: calc(12% + 225px);
     font-size: 40px;
@@ -229,15 +234,18 @@ body, html, #root {
   .hero-title {
     font-size: 220px;
   }
+  .hero-title2 {
+    font-size: 220px;
+  }
   .hero-title3 {
     font-size: 160px;
   }
 
   .hero-subtitle {
-    bottom: calc(12% + 120px);
+    bottom: calc(12% + 205px);
     font-size: 30px;
     transform: translateX(0);
-    left: 5%;
+    left: 4%;
   }
 
   .white-box {
@@ -260,15 +268,18 @@ body, html, #root {
   .hero-title {
     font-size: 180px;
   }
+  .hero-title2 {
+    font-size: 180px;
+  }
   .hero-title3 {
     font-size: 130px;
   }
 
   .hero-subtitle {
-    bottom: calc(12% + 120px);
+    bottom: calc(12% + 180px);
     font-size: 30px;
     transform: translateX(0);
-    left: 5%;
+    left: 7%;
   }
 
   .white-box {
@@ -290,6 +301,9 @@ body, html, #root {
   background-color: #ffffff;
 }
   .hero-title {
+    font-size: 130px;
+  }
+  .hero-title2 {
     font-size: 130px;
   }
   .hero-title3 {
@@ -319,6 +333,9 @@ body, html, #root {
   background-color: #ffffff;
 }
   .hero-title {
+    font-size: 100px;
+  }
+  .hero-title2 {
     font-size: 100px;
   }
   .hero-title3 {
@@ -354,12 +371,15 @@ body, html, #root {
   .hero-title {
     font-size: 60px;
   }
+  .hero-title2 {
+    font-size: 60px;
+  }
   .hero-title3 {
     font-size: 45px;
   }
 
   .hero-subtitle {
-    bottom: calc(12% + 120px);
+    bottom: calc(25% );
     font-size: 30px;
     transform: translateX(0);
     left: 5%;
