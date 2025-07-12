@@ -1,6 +1,16 @@
 import { useEffect, useRef } from "react";
 
-//imagenes
+import bougiesBack from "../assets/bougies.jpeg";
+import bougiesLogo from "../assets/bougies.png";
+
+import frostyBack from "../assets/frosty.jpeg";
+import frostyLogo from "../assets/frostyBitesWhite.png";
+
+import sharpaysBack from "../assets/sharpays.jpeg";
+import sharpaysLogo from "../assets/sharpaysLogoPink.png";
+
+import paraisoBack from "../assets/paraiso.jpeg";
+import paraisoLogo from "../assets/elParaisoDeDios.png";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,66 +20,82 @@ gsap.registerPlugin(ScrollTrigger);
 const brands = [
   {
     name: "Bougies",
-    image: "/bougies.png",
+    logo: bougiesLogo,
+    background: bougiesBack,
     description: "Velas aromáticas que iluminan tu alma.",
   },
   {
     name: "Frosty Bites",
-    image: "/frosty.png",
+    logo: frostyLogo,
+    background: frostyBack,
     description: "Delicias frías para un día caluroso.",
   },
   {
     name: "Sharpays Boutique",
-    image: "/sharpay.png",
+    logo: sharpaysLogo,
+    background: sharpaysBack,
     description: "Moda para peluditos con estilo.",
   },
   {
     name: "El paraíso de Dios",
-    image: "/paraiso.png",
+    logo: paraisoLogo,
+    background: paraisoBack,
     description: "Frutas benditas, 100% naturales.",
   },
   {
     name: "No los Atropelles",
-    image: "/atropelles.png",
+    logo: "/atropelles.png",
+    background: "/atropelles-bg.jpg",
     description: "Campaña vial con impacto visual.",
   },
 ];
 
 export default function ScrollAnimation() {
-  const scrollRef = useRef();
+  const containerRef = useRef();
+  const horizontalRef = useRef();
 
   useEffect(() => {
-    const el = scrollRef.current;
-    gsap.to(el, {
-      xPercent: -100 * (brands.length - 1),
+    const sections = gsap.utils.toArray(".panel");
+
+    gsap.to(horizontalRef.current, {
+      xPercent: -100 * (sections.length - 1),
       ease: "none",
       scrollTrigger: {
-        trigger: el,
+        trigger: containerRef.current,
+        start: "top top",
+        end: () => "+=" + containerRef.current.offsetWidth,
+        scrub: true,
         pin: true,
-        scrub: 1,
-        end: () => "+=" + el.offsetWidth,
+        anticipatePin: 1,
       },
     });
   }, []);
 
   return (
-    <div className="w-screen h-screen overflow-x-hidden overflow-y-scroll">
+    <div ref={containerRef} className="h-screen overflow-hidden relative">
       <div
-        ref={scrollRef}
-        className="flex h-screen w-[500vw]" // 5 secciones * 100vw
+        ref={horizontalRef}
+        className="flex h-screen w-[500vw]"
       >
         {brands.map((brand, index) => (
           <section
             key={index}
-            className="w-screen h-screen flex items-center justify-center flex-col text-white text-center p-8 bg-cover bg-center relative"
+            className="panel w-screen h-screen relative flex items-center justify-center text-white text-center p-8 bg-cover bg-center"
             style={{
-              backgroundImage: `url(${brand.image})`,
-              backgroundBlendMode: "overlay",
+              backgroundImage: `url(${brand.background})`,
               backgroundColor: "rgba(0,0,0,0.6)",
+              backgroundBlendMode: "overlay",
             }}
           >
-            <h1 className="text-5xl font-bold mb-4">{brand.name}</h1>
-            <p className="text-lg max-w-xl">{brand.description}</p>
+            <div className="z-10 flex flex-col items-center">
+              <img
+                src={brand.logo}
+                alt={brand.name}
+                className="w-48 h-48 object-contain mb-6"
+              />
+              <h1 className="text-5xl font-bold mb-4">{brand.name}</h1>
+              <p className="text-lg max-w-xl">{brand.description}</p>
+            </div>
           </section>
         ))}
       </div>

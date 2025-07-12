@@ -1,6 +1,6 @@
 import BannerPrincipal from "../components/bannerPrincipal.jsx";
 import CarouselCard from "../components/carouselCard.jsx";
-import CustomButton from "../components/CustomButton.jsx";
+import ScrollAnimation from "../components/ScrollAnimation.jsx";
 import { Link } from "react-router-dom";
 const HomePublic = () => {
     return (
@@ -19,7 +19,7 @@ const HomePublic = () => {
                     </div>
                 </div>
                 <CarouselCard />
-
+                <ScrollAnimation/>
             </div>
         </>
     );
