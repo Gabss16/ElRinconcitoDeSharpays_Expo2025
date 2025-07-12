@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
   const navigate = useNavigate();
 
-  // Función para limpiar sesión - función interna que no causa dependencias cíclicas
+  // Función para limpiar sesión
   const clearSession = () => {
     localStorage.removeItem("token");
     Cookies.remove("authToken", { path: "/" });
@@ -33,7 +33,6 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(false);
   };
 
-  // Definir la función logout como useCallback para evitar recreaciones
   const logout = useCallback(() => {
     const logoutUser = async () => {
       try {
@@ -45,7 +44,7 @@ export const AuthProvider = ({ children }) => {
         console.error("Error during logout:", error);
       } finally {
         clearSession();
-        navigate("/Login");
+        navigate("/elRinconcitoDeSharpays");
       }
     };
 
@@ -70,8 +69,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", data.token);
         setauthCookie(data.token);
         setUser(data.user);
-        if (user?.userType === "employee") return ErrorAlert("Acceso denegado");
-        else setIsLoggedIn(true);
+        setIsLoggedIn(true);
         return true;
       } else {
         return false;
@@ -105,13 +103,14 @@ export const AuthProvider = ({ children }) => {
                 const payload = JSON.parse(atob(tokenParts[1]));
                 setUser({
                   id: payload.id,
-                  userType: payload.userType,
                   name: payload.name,
                   image: payload.image,
                   email: payload.email,
                 });
                 setauthCookie(token || cookieToken);
                 setIsLoggedIn(true);
+              } else {
+                clearSession();
               }
             } catch (e) {
               console.error("Error decoding token:", e);
@@ -141,6 +140,7 @@ export const AuthProvider = ({ children }) => {
         logout,
         isLoggedIn,
         API: API_URL,
+        clearSession, // Opcional si quieres usar desde otros componentes
       }}
     >
       {children}

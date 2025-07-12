@@ -54,7 +54,7 @@ const orderSchema = new Schema(
     categoryId: {
       type: Schema.Types.ObjectId,
       ref: "category", 
-      required: true,
+      required: false,
     },
     orderDetails: {
       type: [itemSchema],
@@ -69,11 +69,11 @@ const orderSchema = new Schema(
       required: true,
       min: 0,
     },
-    status: {
-      type: String,
-      enum: ["pendiente", "pagado", "entregado", "completado", "cancelado"],
-      default: "pending",
-    },
+   status: {
+  type: String,
+  enum: ["pendiente", "pagado", "entregado", "completado", "cancelado"],
+  default: "pendiente", 
+},
     shippingAddress: {
       type: shippingAddressSchema,
       required: true,

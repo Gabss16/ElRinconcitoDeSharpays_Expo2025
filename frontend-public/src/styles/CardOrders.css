@@ -40,3 +40,25 @@
   margin: 0;
   font-weight: 350;
 }
+
+/* Responsive para tablets y móviles */
+@media (max-width: 992px) {
+  .card-orders {
+    width: 90%;   /* Ocupa casi todo el ancho disponible */
+    height: auto; /* Deja que la altura se adapte */
+  }
+}
+
+@media (max-width: 480px) {
+  .card-orders {
+    width: 100%; /* Full width en móviles pequeños */
+    padding: 10px; /* Un poco de padding para respirar */
+  }
+  .card-orders__image {
+    width: 150px;
+    height: 150px;
+  }
+  .card-orders__text {
+    font-size: 18px;
+  }
+}

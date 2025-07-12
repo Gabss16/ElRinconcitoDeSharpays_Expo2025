@@ -82,26 +82,59 @@ const useDataShoppingCart = () => {
     0
   );
 
-  const createOrderFromCart = async (customerId) => {
-    setLoading(true);
-    try {
-      const res = await fetch(API_CREATE_ORDER, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ customerId }),
-      });
+const createOrderFromCart = async (customerId, categoryId, shippingAddress, status = "pendiente") => {
+  setLoading(true);
+  try {
+    const payload = {
+      customerId,
+      categoryId,
+      shippingAddress,
+      status,
+      orderDetails: cartItems.map(item => ({
+        productId: item.product._id,
+        productName: item.product.name,
+        unitPrice: item.product.price,
+        image: item.product.image,
+        quantity: item.quantity,
+        discount: 0,
+        totalPrice: item.product.price * item.quantity,
+        customDesign: item.product.customDesign || null,
+      })),
+      total,
+    };
 
-      if (!res.ok) throw new Error("Error al crear orden desde el carrito");
+    console.log("🛒 Payload enviado:", payload);
 
-      const data = await res.json();
-      clearCart();
-      return data;
-    } catch (err) {
-      setError(err.message);
-      console.error("❌", err.message);
-    } finally {
-      setLoading(false);
-    }
+    const res = await fetch(API_CREATE_ORDER, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) throw new Error("Error al crear orden desde el carrito");
+
+    const data = await res.json();
+    clearCart();
+    return data;
+  } catch (err) {
+    setError(err.message);
+    console.error("❌", err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+
+
+  const moveCartToOrderDetail = () => {
+  const orderDetail = {
+    items: cartItems,
+    total,
+  };
+
+  localStorage.setItem("OrderDetail", JSON.stringify(orderDetail));
+  clearCart();
   };
 
   return {
@@ -115,6 +148,7 @@ const useDataShoppingCart = () => {
     decrementQuantity,
     clearCart,
     createOrderFromCart,
+    moveCartToOrderDetail,
   };
 };
 

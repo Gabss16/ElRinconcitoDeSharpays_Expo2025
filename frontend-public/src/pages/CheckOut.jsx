@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import CarouselCard from '../components/carouselCard.jsx';
+import SuccessAlert from '../components/SuccessAlert.jsx';
+import ErrorAlert from '../components/ErrorAlert.jsx';
 import '../styles/checkOut.css';
 
 const CheckoutPage = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -15,6 +20,20 @@ const CheckoutPage = () => {
     zipCode: ''
   });
 
+  const [orderDetail, setOrderDetail] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("otro");
+
+  useEffect(() => {
+    const stored = localStorage.getItem("OrderDetail");
+    if (!stored) {
+      ErrorAlert("No hay ninguna orden activa.");
+      setTimeout(() => navigate("/"), 3000);
+    } else {
+      setOrderDetail(JSON.parse(stored));
+    }
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -23,16 +42,60 @@ const CheckoutPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Datos del formulario:', formData);
-  };
+    if (!orderDetail) return;
 
-  const orderSummary = {
-    subtotal: 47.0,
-    shipping: 0.0,
-    tax: 0.0,
-    total: 47.0
+    const shippingAddress = {
+      address: `${formData.houseNumber}, CP: ${formData.postalCode}`,
+      city: formData.municipality,
+    };
+
+
+
+
+    const payload = {
+      customerId: orderDetail.customerId,
+      products: orderDetail.items.map(item => ({
+        productId: item.product._id,
+        categoryId: item.product.categoryId?._id || item.product.categoryId, // <--- solo ID aquí
+        productName: item.product.name,
+        unitPrice: item.product.price,
+        image: item.product.image,
+        quantity: item.quantity,
+        totalPrice: item.product.price * item.quantity,
+        discount: 0,
+        customDesign: item.product.customDesign || null
+      })),
+      shippingAddress,
+      status: "pendiente",
+    };
+
+
+
+
+
+    try {
+      setLoading(true);
+      const res = await fetch("http://localhost:4000/api/createOrderFromCart/create-from-cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      console.log("Payload a enviar:", JSON.stringify(payload, null, 2));
+
+      if (!res.ok) throw new Error("Error al crear la orden");
+      console.log("🛒 Payload final:", payload);
+
+      SuccessAlert("¡Orden creada exitosamente!");
+      localStorage.removeItem("OrderDetail");
+      setTimeout(() => navigate("/"), 3000);
+    } catch (err) {
+      ErrorAlert("Error al procesar la orden");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -63,6 +126,7 @@ const CheckoutPage = () => {
                       value={formData.firstName}
                       onChange={handleInputChange}
                       className="form-input"
+                      required
                     />
                   </div>
                   <div className="form-group">
@@ -73,6 +137,7 @@ const CheckoutPage = () => {
                       value={formData.lastName}
                       onChange={handleInputChange}
                       className="form-input"
+                      required
                     />
                   </div>
                 </div>
@@ -86,6 +151,7 @@ const CheckoutPage = () => {
                       value={formData.phone}
                       onChange={handleInputChange}
                       className="form-input"
+                      required
                     />
                   </div>
                   <div className="form-group">
@@ -96,6 +162,7 @@ const CheckoutPage = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       className="form-input"
+                      required
                     />
                   </div>
                 </div>
@@ -108,6 +175,7 @@ const CheckoutPage = () => {
                     value={formData.municipality}
                     onChange={handleInputChange}
                     className="form-input"
+                    required
                   />
                 </div>
 
@@ -119,6 +187,7 @@ const CheckoutPage = () => {
                     value={formData.houseNumber}
                     onChange={handleInputChange}
                     className="form-input"
+                    required
                   />
                 </div>
 
@@ -131,6 +200,7 @@ const CheckoutPage = () => {
                       value={formData.postalCode}
                       onChange={handleInputChange}
                       className="form-input"
+                      required
                     />
                   </div>
                   <div className="form-group">
@@ -145,10 +215,22 @@ const CheckoutPage = () => {
                   </div>
                 </div>
 
+                <div className="form-group full-width">
+                  <label>Método de pago:</label>
+                  <select
+                    value={paymentMethod}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="form-input"
+                  >
+                    <option value="otro">Otro</option>
+                    <option value="paypal">PayPal (+5.5%)</option>
+                  </select>
+                </div>
+
                 <p className="location-helper">Selecciona una ubicación cercana a ti.</p>
 
-                <button type="submit" className="purchase-button">
-                  Guardar y continuar
+                <button type="submit" className="purchase-button" disabled={loading}>
+                  {loading ? "Procesando..." : "Finalizar compra"}
                 </button>
               </form>
             </div>
@@ -159,24 +241,12 @@ const CheckoutPage = () => {
             <div className="payment-method-container">
               <div className="payment-summary">
                 <div className="summary-row">
-                  <span>Subtotal</span>
-                  <span>${orderSummary.subtotal.toFixed(2)}</span>
-                </div>
-                <div className="summary-row">
-                  <span>Envío</span>
-                  <span>${orderSummary.shipping.toFixed(2)}</span>
-                </div>
-                <div className="summary-row">
-                  <span>Impuestos</span>
-                  <span>${orderSummary.tax.toFixed(2)}</span>
-                </div>
-                <div className="summary-row total-amount">
                   <span>Total</span>
-                  <span>${orderSummary.total.toFixed(2)}</span>
+                  <span>${orderDetail?.total.toFixed(2)}</span>
                 </div>
               </div>
 
-              <button className="purchase-button">Continuar al pago</button>
+              <p className="location-helper">Verifica los datos antes de pagar</p>
             </div>
           </div>
         </div>

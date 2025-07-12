@@ -1,15 +1,10 @@
 .personal-info-card {
-
-  max-width: 1000px;
-  padding: 108px 12px;
-  margin: 60px 10px 310px 310px; /* pegado a la izquierda, menos margen arriba */
   background: #fff;
-
   display: flex;
   flex-direction: column;
-  gap: 32px; /* menos espacio entre filas */
-   max-height: 300px;  
-
+  gap: 32px;
+  margin: 60px 10px 310px 310px;
+  padding: 108px 12px;
 }
 
 .personal-info-header {
@@ -17,9 +12,9 @@
 }
 
 .personal-info-title {
-  font-weight: 600;
-  font-size: 18px;
   color: #111;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .divider {
@@ -28,29 +23,40 @@
   margin: 16px 0;
 }
 
-.personal-info-row {
-  display: flex;
+.personal-info-inputs {
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
+  display: flex;
+  flex: 1;
+  gap: 34px;
 }
 
-.personal-info-inputs {
-  display: flex;
-  gap: 34px;
-  flex: 1;
+.info-input {
+  background-color: transparent;
+}
+
+.info-input input {
+  border-bottom: 1px solid #e0e0e0;
+  color: #111;
+  font-size: 16px;
+  padding: 8px;
+}
+
+.info-input[readonly] {
+  background-color: #f0f0f0;
+  cursor: not-allowed;
+  height: 40px;
 }
 
 .edit-btn,
 .password-btn {
-  background-color: #FE3F8D;
-  color: #fff;
+  background-color: #fe3f8d;
   border: none;
   border-radius: 6px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
   font-weight: 500;
   padding: 10px 24px;
-  font-size: 16px;
-  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
@@ -65,22 +71,4 @@
 
 .password-btn {
   margin-top: 0;
-}
-/* Para los inputs cuando no están editables (color gris) */
-.info-input[readonly] {
-  background-color: #f0f0f0; /* Color gris claro */
-  cursor: not-allowed;
-  height: 40px; /* Cambia el cursor para mostrar que no se puede escribir */
-}
-
-/* Para los inputs cuando son editables (color original) */
-.info-input {
-  background-color: transparent; /* Color transparente cuando son editables */
-}
-
-.info-input input {
-  color: #111; /* Color de texto cuando es editable */
-  font-size: 16px;
-  border-bottom: 1px solid #e0e0e0;
-  padding: 8px;
 }

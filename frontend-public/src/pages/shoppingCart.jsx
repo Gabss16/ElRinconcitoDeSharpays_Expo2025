@@ -1,9 +1,11 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import useDataShoppingCart from "../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import ProductCartItem from "../components/productCardItem.jsx";
 import PaymentMethod from "../components/PaymentMethod.jsx";
-import { useAuth } from "../context/AuthContext.jsx";
 import CarouselCard from "../components/carouselCard.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+import CheckoutPage from "./CheckOut.jsx";
 import "../styles/ShoppingCart.css";
 
 const ShoppingCartPage = () => {
@@ -13,31 +15,35 @@ const ShoppingCartPage = () => {
     createOrderFromCart,
     clearCart,
     loading,
+    moveCartToOrderDetail,
   } = useDataShoppingCart();
 
   const { user, isLoggedIn } = useAuth();
   const customerId = user?._id || user?.id;
+  const navigate = useNavigate();
 
-  const handleCreateOrder = async (paymentMethod) => {
-    if (!isLoggedIn) {
-      alert("Debes iniciar sesión para crear una orden");
-      return;
-    }
-    if (cartItems.length === 0) return;
+ const handleCreateOrder = (paymentMethod) => {
+  if (!isLoggedIn) {
+    alert("Debes iniciar sesión para crear una orden");
+    return;
+  }
 
-    try {
-      // Aquí puedes agregar la lógica para el método de pago seleccionado
-      console.log("Método de pago seleccionado:", paymentMethod);
-      await createOrderFromCart(customerId);
-      clearCart();
-    } catch (err) {
-      console.error("Error al crear orden:", err);
-    }
+  if (cartItems.length === 0) return;
+
+  const orderDetail = {
+    items: cartItems,
+    total,
+    paymentMethod,
+    customerId,
   };
 
-  
+  localStorage.setItem("OrderDetail", JSON.stringify(orderDetail));
+  navigate("/checkOut");
+};
+
+
   const subtotal = total;
-  const deliveryFee = 0; 
+  const deliveryFee = 0;
   const discount = 0;
   const finalTotal = subtotal + deliveryFee - discount;
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import bougiesBack from "../assets/bougies.jpeg";
 import bougiesLogo from "../assets/bougies.png";
@@ -12,10 +12,8 @@ import sharpaysLogo from "../assets/sharpaysLogoPink.png";
 import paraisoBack from "../assets/paraiso.jpeg";
 import paraisoLogo from "../assets/elParaisoDeDios.png";
 
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import noLosAtropellesLogo from "../assets/noLosAtropelles.png";
+import noLosAtropellesBackground from "../assets/noLosAtropellesBackground.png";
 
 const brands = [
   {
@@ -44,61 +42,135 @@ const brands = [
   },
   {
     name: "No los Atropelles",
-    logo: "/atropelles.png",
-    background: "/atropelles-bg.jpg",
+    logo: noLosAtropellesLogo,
+    background: noLosAtropellesBackground,
     description: "Campaña vial con impacto visual.",
   },
 ];
 
 export default function ScrollAnimation() {
-  const containerRef = useRef();
-  const horizontalRef = useRef();
+  return (
+    <div
+      className="container-fluid p-0 mt-5"
+      style={{
+        scrollSnapType: "y mandatory",
+        overflowY: "auto",
+        overflowX: 'hidden',
+        height: "100vh",
+        width: "100vw",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none", 
+      }}
+    >
+      {brands.map((brand, index) => (
+        <BrandSection key={index} brand={brand} />
+      ))}
+    </div>
+  );
+}
+
+function BrandSection({ brand }) {
+  const ref = useRef();
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const sections = gsap.utils.toArray(".panel");
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold: 0.5 }
+    );
 
-    gsap.to(horizontalRef.current, {
-      xPercent: -100 * (sections.length - 1),
-      ease: "none",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top top",
-        end: () => "+=" + containerRef.current.offsetWidth,
-        scrub: true,
-        pin: true,
-        anticipatePin: 1,
-      },
-    });
+    if (ref.current) observer.observe(ref.current);
+    return () => ref.current && observer.unobserve(ref.current);
   }, []);
 
   return (
-    <div ref={containerRef} className="h-screen overflow-hidden relative">
+    <section
+      ref={ref}
+      style={{
+        height: "100vh",
+        width: "100vw",
+        position: "relative",
+        scrollSnapAlign: "start",
+        overflow: "hidden",
+      }}
+    >
+      {/* Imagen de fondo */}
       <div
-        ref={horizontalRef}
-        className="flex h-screen w-[500vw]"
+        style={{
+          position: "absolute",
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: `url(${brand.background})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "brightness(0.2)",
+          transition: "filter 1s ease",
+          zIndex: 0,
+          ...(visible ? { filter: "brightness(0.2)" } : { filter: "brightness(0.4)" }),
+        }}
+      />
+
+      {/* Overlay oscuro para oscurecer más la imagen */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: "rgba(0,0,0,0.1)",
+          transition: "background-color 1s ease",
+          zIndex: 1,
+          ...(visible ? { backgroundColor: "rgba(0,0,0,0.2)" } : { backgroundColor: "rgba(0,0,0,0.4)" }),
+        }}
+      />
+
+      {/* Contenido con blur */}
+      <div
+        className="d-flex align-items-center justify-content-around p-5 rounded-4 shadow-lg"
+        style={{
+          position: "relative",
+          zIndex: 2,
+          width: "100%",
+          height: "100%",
+          backdropFilter: "blur(5px)",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          color: "#f8f9fa",
+          transition: "all 1s ease",
+          transform: visible ? "scale(1) translateY(0)" : "scale(0.95) translateY(40px)",
+          opacity: visible ? 1 : 0,
+        }}
       >
-        {brands.map((brand, index) => (
-          <section
-            key={index}
-            className="panel w-screen h-screen relative flex items-center justify-center text-white text-center p-8 bg-cover bg-center"
+        {/* Texto a la izquierda */}
+        <div style={{ maxWidth: "60%" }}>
+          <h1
+            className="fw-bold mb-4"
+            style={{ fontSize: "8rem", textShadow: "0 0 10px #fff" }}
+          >
+            {brand.name}
+          </h1>
+          <p
+            className="lead"
             style={{
-              backgroundImage: `url(${brand.background})`,
-              backgroundColor: "rgba(0,0,0,0.6)",
-              backgroundBlendMode: "overlay",
+              color: "#f8f9fa",
+              textShadow: "0 0 6px #000",
+              fontSize: "2rem",
             }}
           >
-            <div className="z-10 flex flex-col items-center">
-              <img
-                src={brand.logo}
-                alt={brand.name}
-                className="w-48 h-48 object-contain mb-6"
-              />
-              <h1 className="text-5xl font-bold mb-4">{brand.name}</h1>
-              <p className="text-lg max-w-xl">{brand.description}</p>
-            </div>
-          </section>
-        ))}
+            {brand.description}
+          </p>
+        </div>
+
+        {/* Logo a la derecha */}
+        <div style={{ maxWidth: "50%" }}>
+          <img
+            src={brand.logo}
+            alt={brand.name}
+            className="img-fluid"
+            style={{
+              maxHeight: "500px",
+              filter: "drop-shadow(0 0 12px white)",
+              objectFit: "contain",
+            }}
+          />
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
