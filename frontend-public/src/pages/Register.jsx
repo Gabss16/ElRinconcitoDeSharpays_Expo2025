@@ -44,12 +44,20 @@ const Register = () => {
     if (!name || !email || !password) {
       ErrorAlert("Todos los campos son obligatorios");
     }
+    else if(name.length <= 2)
+    {
+      ErrorAlert("El nombre es muy corto")
+    }
+    else if(password.length <= 8)
+    {
+      ErrorAlert("La contraseña debe ser mínimo de 8 carácteres")
+    }
     else {
       const success = await register({ name, email, password, department, address });
       console.log(department)
 
       if (success) {
-        navigate("/inicio");
+        navigate("/login");
       }
     }
 

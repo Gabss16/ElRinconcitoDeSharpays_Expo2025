@@ -19,6 +19,7 @@ import Register from "./pages/Register.jsx";
 import RecoveryPassword from "./pages/RecoveryPassword.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import HomePublic from "./pages/HomePublic.jsx";
+import PrivateRoute from "./components/PrivateRoute.jsx";
 
 import LoadingAnimation from "./components/LoadingAnimation.jsx";
 
@@ -34,36 +35,38 @@ function App() {
 
     if (noNavbarPaths.includes(pathname)) return null
     else
-    return <NavBar/>;
+      return <NavBar />;
   }
 
   return (
     <Router>
       <AuthProvider>
         <CartProvider>
-          <NavBarSelector/>
+          <NavBarSelector />
           <Routes>
-            <Route path="/login" element={<Login />} />
             <Route path="/" element={<Navigate to="/inicio" replace />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/recoveryPassword" element={<RecoveryPassword />} />
-            <Route path="/sharpays" element={<Sharpays />} />
-            <Route path="/bougies" element={<Bougies />} />
-            <Route path="/frostyBites" element={<FrostyBites />} />
-            <Route path="/paraiso" element={<Paraiso />} />
-            <Route path="/sharpays/:id" element={<SharpaysDetailPage />} />
-            <Route path="/bougies/:id" element={<BougiesDetailPage />} />
-            <Route path="/frostyBites/:id" element={<FrostyBitesDetailPage />} />
-            <Route path="/paraiso/:id" element={<ParaisoDetailPage />} />
-            <Route path="/carrito" element={<ShoppingCart />} />
-            <Route path="/checkOut" element={<CheckOut />} />
-            <Route path="/inicio" element={<Home />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/elRinconcitoDeSharpays" element={<HomePublic />} />
-            <Route path="/notFound" element={<NotFound/>}/>
-          <Route path="*" element={<LoadingAnimation navTo="/notFound" replace />} />
+            <Route path="/notFound" element={<NotFound />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/sharpays" element={<Sharpays />} />
+              <Route path="/bougies" element={<Bougies />} />
+              <Route path="/frostyBites" element={<FrostyBites />} />
+              <Route path="/paraiso" element={<Paraiso />} />
+              <Route path="/sharpays/:id" element={<SharpaysDetailPage />} />
+              <Route path="/bougies/:id" element={<BougiesDetailPage />} />
+              <Route path="/frostyBites/:id" element={<FrostyBitesDetailPage />} />
+              <Route path="/paraiso/:id" element={<ParaisoDetailPage />} />
+              <Route path="/carrito" element={<ShoppingCart />} />
+              <Route path="/checkOut" element={<CheckOut />} />
+              <Route path="/inicio" element={<Home />} />
+            </Route>
+            <Route path="*" element={<LoadingAnimation navTo="/notFound" replace />} />
           </Routes>
-          <Footer/>
+          <Footer />
         </CartProvider>
       </AuthProvider>
     </Router>
