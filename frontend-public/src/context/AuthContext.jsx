@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
   // Función para iniciar sesión
   const login = async (email, password) => {
     try {
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch(`${API_URL}/login/public`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
