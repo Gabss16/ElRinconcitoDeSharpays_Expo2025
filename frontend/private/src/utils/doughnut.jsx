@@ -30,11 +30,16 @@ const DoughnutChart = () => {
     chartInstanceRef.current = new Chart(ctx, {
       type: 'doughnut',
       data: {
-        labels: ['Producto A', 'Producto B', 'Producto C'],
+        labels: [
+          'Sharpays Boutique',
+          'Bougies',
+          'FrostyBites',
+          'El Paraiso de Dioss',
+        ],
         datasets: [
           {
-            data: [30, 40, 30],
-            backgroundColor: ['#ff87d4', '#b2f1f0', '#f9e375'],
+            data: [12, 8, 5, 10], // Cantidad de productos por negocio (ejemplo)
+            backgroundColor: ['#ff87d4', '#b2f1f0', '#f9e375', '#c2b6ff'],
             borderColor: 'white',
             borderWidth: 5,
             hoverOffset: 10,
@@ -55,7 +60,7 @@ const DoughnutChart = () => {
             },
           },
           title: {
-            display: false
+            display: false, // No mostrar título
           },
         },
       },
