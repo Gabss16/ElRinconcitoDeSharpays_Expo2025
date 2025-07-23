@@ -76,6 +76,7 @@ const ShoppingCartPage = () => {
                 total={finalTotal}
                 onCreateOrder={handleCreateOrder}
                 loading={loading}
+               
               />
             </div>
           </div>

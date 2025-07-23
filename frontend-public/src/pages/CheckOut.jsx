@@ -89,6 +89,8 @@ const CheckoutPage = () => {
 
       SuccessAlert("¡Orden creada exitosamente!");
       localStorage.removeItem("OrderDetail");
+      localStorage.removeItem("shoppingCart");
+      
       setTimeout(() => navigate("/"), 3000);
     } catch (err) {
       ErrorAlert("Error al procesar la orden");
