@@ -3,7 +3,7 @@
 
 .main-container-Inicio {
     min-height: 100vh;
-    background-color: #ffffff;
+    background-color: inherit;
     padding-bottom: 3rem;
   }
   
@@ -23,12 +23,12 @@
     transform: translateX(-50%);
     width: 1000px; 
     height: 2px;
-    background-color: #f3f0f0;
+    background-color: inherit;
   }
   
   .container-header-inicio p {
     font-size: 1.4rem;
-    color: #333;
+    color: inherit;
     font-weight: 600;
     margin: 0;
   }
@@ -56,7 +56,7 @@
   
   .category-filters h3 {
     font-size: 1.3rem;
-    color: #333;
+    color: inherit;
     margin-bottom: 1.5rem;
     font-weight: 600;
     padding-bottom: 30px;
