@@ -73,7 +73,7 @@ return (
 </nav>
 
 <button className="logout-button" onClick={(e) => {e.preventDefault(); logout(); SuccessAlert("Sesión cerrada con éxito")}}>
-<FaSignOutAlt /> <span>Logout</span>
+<FaSignOutAlt /> <span>Cerrar Sesión</span>
 </button>
 </aside>
 </>

@@ -3,7 +3,12 @@ import QuantitySelector from "../QuantitySelector";
 import useDataShoppingCart from "../../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import "../../styles/CamisaDetail.css"; // reutilizamos estilos
 
+import {useNavigate} from "react-router-dom"
+
+import SuccessAlert from "../../components/SuccessAlert.jsx";
+
 const PaletaDetail = ({ product }) => {
+  const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const zoomRef = useRef(null);
 
@@ -14,7 +19,9 @@ const PaletaDetail = ({ product }) => {
   const handleAddToCart = () => {
     // Crear objeto con sabor para diferenciar en el carrito
     const productWithFlavor = { ...product, flavor: product.flavor };
+    SuccessAlert("Se agregó al carrito");
     addToCart(productWithFlavor, quantity);
+    navigate("/carrito");
   };
 
   const handleMouseMove = (e) => {

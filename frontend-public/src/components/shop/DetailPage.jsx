@@ -1,10 +1,13 @@
 import React, { useState, useRef } from "react";
+import {useNavigate} from "react-router-dom"
 import SizeSelector from "../Size";
 import QuantitySelector from "../QuantitySelector";
 import useDataShoppingCart from "../../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import "../../styles/CamisaDetail.css";
+import SuccessAlert from "../../components/SuccessAlert.jsx";
 
 const CamisaDetail = ({ product }) => {
+  const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState(product.size?.[0] || "");
   const [quantity, setQuantity] = useState(1);
   const zoomRef = useRef(null);
@@ -22,7 +25,9 @@ const CamisaDetail = ({ product }) => {
       options.flavor = product.flavor;
     }
 
+    SuccessAlert("Se agregó al carrito");
     addToCart(product, quantity, options);
+    navigate("/carrito");
   };
 
   const handleMouseMove = (e) => {
