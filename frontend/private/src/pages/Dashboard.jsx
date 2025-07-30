@@ -37,7 +37,7 @@ const Dashboard = () => {
           <div className="col-2">
             {/*Espacio para que el navbar se muestre*/}
           </div>
-          <div className="col-10">
+          <div className="col-10 main-dashboard">
             <div className="d-flex justify-content-between align-items-center">
               <div className="mt-3">
                 <h1 className="fw-bold fs-2">Bienvenido/a</h1>
@@ -100,7 +100,7 @@ const Dashboard = () => {
                 <h4>Lista de productos</h4>
                 <ProductsTable {...dataProducts} isEditable={false} />
               </div>
-              <div>
+              <div className="sales-by-shop">
                 <h4>Ventas por negocio</h4>
                 <Doughnut />
               </div>
