@@ -1,5 +1,5 @@
 .personal-info-card {
-  background: #fff;
+  background: inherit;
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -12,7 +12,7 @@
 }
 
 .personal-info-title {
-  color: #111;
+  color: inherit;
   font-size: 18px;
   font-weight: 600;
 }
