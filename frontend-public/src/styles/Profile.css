@@ -21,35 +21,131 @@ main {
   min-width: 250px; /* Para que no se reduzcan demasiado */
 }
 
-/* Tablets - Apilar cards en 2 columnas */
+/* Tablets - max-width: 992px */
 @media (max-width: 992px) {
-  main {
-    justify-content: center; /* Centrar el contenido */
+  .personal-info-card {
+    margin: 40px 10px 200px 10px;
+    padding: 80px 12px;
   }
+
+  .personal-info-inputs {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .card-ubication {
+    position: static;
+    width: 100%;
+    height: auto;
+    margin: 20px 0;
+  }
+
+  .upload-image-card {
+    position: static;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .card-orders {
+    position: static;
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .card-orders__image {
+    width: 180px;
+    height: 180px;
+  }
+
+  .card-orders__text {
+    font-size: 22px;
+  }
+
+  main {
+    justify-content: center;
+  }
+
   .card {
-    flex: 1 1 45%; /* Ocupa casi la mitad del ancho */
+    flex: 1 1 45%;
     max-width: 45%;
   }
 }
 
-/* Móviles - Apilar cards en 1 columna */
+/* Móviles - max-width: 768px */
 @media (max-width: 768px) {
+  .personal-info-card {
+    margin: 20px 10px;
+    padding: 60px 12px;
+  }
+
+  .card-ubication {
+    padding: 12px 16px;
+    border-radius: 20px;
+  }
+
+  .upload-image-card {
+    margin-bottom: 32px;
+  }
+
+  .upload-image-preview {
+    width: 160px;
+    height: 160px;
+  }
+
+  .card-orders__image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .card-orders__text {
+    font-size: 18px;
+  }
+
   main {
     flex-direction: column;
     align-items: center;
   }
 
   .card {
-    flex: none;
-    width: 100%; /* Ocupa todo el ancho disponible */
-    max-width: 400px; /* Limitar el ancho para no ser muy grande en pantallas anchas */
+    width: 100%;
+    max-width: 400px;
   }
 }
 
-/* Extra pequeño - Ajuste final */
+/* Extra pequeños - max-width: 400px */
 @media (max-width: 400px) {
+  .personal-info-card {
+    margin: 10px;
+    padding: 40px 10px;
+  }
+
+  .card-ubication {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+
+  .card-ubication__input {
+    padding: 0 12px;
+  }
+
+  .upload-image-preview {
+    width: 140px;
+    height: 140px;
+  }
+
+  .upload-image-button {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+
+  .card-orders__text {
+    font-size: 16px;
+  }
+
   .card {
     max-width: 100%;
-    padding: 0 10px; /* Espacio lateral pequeño */
+    padding: 0 10px;
   }
 }
