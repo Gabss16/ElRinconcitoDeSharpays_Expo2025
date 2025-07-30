@@ -21,6 +21,7 @@ import RecoveryPassword from "./pages/RecoveryPassword.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import HomePublic from "./pages/HomePublic.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
+import TshirtDesign from "./pages/TshirtDesign.jsx";
 
 import LoadingAnimation from "./components/LoadingAnimation.jsx";
 
@@ -54,6 +55,7 @@ function App() {
             <Route path="/" element={<Navigate to="/inicio" replace />} />
             <Route path="/login" element={<Login />} />
             <Route path="/recoveryPassword" element={<RecoveryPassword />} />
+            <Route path="/TshirtDesign" element={<TshirtDesign />} />
             <Route path="/register" element={<Register />} />
             <Route path="/elRinconcitoDeSharpays" element={<HomePublic />} />
             <Route path="/notFound" element={<NotFound />} />
