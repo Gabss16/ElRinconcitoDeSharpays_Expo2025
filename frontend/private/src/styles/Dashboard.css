@@ -43,3 +43,25 @@
 .product-list-dashboard .products-table-container {
     max-height: 500px !important;
 }
+
+/* RESPONSIVE */
+
+@media (max-width: 1024px ) {
+    .main-dashboard { 
+        width: 100% !important;
+    }
+
+    .product-list-dashboard , .sales-by-shop, .footer-gif-container{
+        display: none;
+    }
+
+    .grahpics{
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    .store-card-section {
+        margin-top: 250px;
+        flex-wrap: wrap !important;
+    }
+}

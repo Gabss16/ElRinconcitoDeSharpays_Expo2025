@@ -106,7 +106,7 @@
     color: #c43a7d;
     }
     
-    @media (max-width: 1560px) and (max-height: 962px)  {
+    @media (max-width: 1560px) and (max-height: 962px) , (max-width: 1024px)  {
     .sidebar {
     left: -260px;
     }
