@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 
+import "../styles/Profile.css"
+
 import useDataEmployee from "../components/employee/hook/useDataEmployee.jsx";
 import RegisterEmployee from "../components/employee/registerEmployee.jsx";
 
@@ -24,7 +26,7 @@ const Profile = () => {
                     <div className="col-10">
 
                         <div
-                            className="mt-4"
+                            className="mt-4 container-profile"
                             style={{
                                 borderRadius: 25,
                                 padding: '20px',
@@ -35,7 +37,7 @@ const Profile = () => {
                             <h1 className="fw-bold p-2">Perfil</h1>
                             <RegisterEmployee
                                 {...data} id={user?.id} fromProfile={true} />
-                            <div className="footer-gif-container" style={{
+                            <div className="gif-animation-profile" style={{
                                 marginTop: '20px',
                                 textAlign: 'center',
                                 backgroundColor: '#fff'
