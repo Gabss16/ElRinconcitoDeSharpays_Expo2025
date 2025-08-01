@@ -39,7 +39,7 @@ const Dashboard = () => {
           </div>
           <div className="col-10 main-dashboard">
             <div className="d-flex justify-content-between align-items-center">
-              <div className="mt-3">
+              <div className="mt-3 user-name-section">
                 <h1 className="fw-bold fs-2">Bienvenido/a</h1>
                 <span className="fs-4">{dataEmployees?.name}</span>
               </div>
@@ -54,22 +54,22 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <hr />
+            <hr style={{width: '100%'}}/>
 
             <div className="grahpics d-flex justify-content-around">
-              <div>
+              <div className="bar-chart">
                 <h4>Productos más vendidos</h4>
                 <BarChart />
               </div>
 
-              <div>
+              <div className="total-sales">
                 <h4>Ventas por mes</h4>
                 <TotalSales />
               </div>
 
               <div>
                 <div
-                  className="footer-gif-container"
+                  className="gif-animation"
                   style={{
                     marginTop: "20px",
                     textAlign: "center",

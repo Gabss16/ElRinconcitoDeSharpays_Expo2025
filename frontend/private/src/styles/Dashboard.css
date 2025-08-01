@@ -51,8 +51,13 @@
         width: 100% !important;
     }
 
-    .product-list-dashboard , .sales-by-shop, .footer-gif-container{
-        display: none;
+    .user-name-section
+    {
+        padding-left: 60px;
+    }
+
+    .product-list-dashboard , .sales-by-shop, .gif-animation{
+        display: none !important;
     }
 
     .grahpics{
@@ -63,5 +68,42 @@
     .store-card-section {
         margin-top: 250px;
         flex-wrap: wrap !important;
+    }
+}
+
+@media (max-width: 480px) 
+{ 
+    .user-name-section
+    {
+        padding-left: 120px;
+    }
+
+    .pf-cover {
+        display: none;
+    }
+    .bar-chart , .total-sales{
+        display: none !important;
+    }
+    .gif-animation{ 
+        display: flex !important;
+    }
+    .store-card-section {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 375px) 
+{ 
+    .user-name-section
+    {
+        padding-left: 100px;
+    }
+}
+
+@media (max-width: 320px) 
+{ 
+    .user-name-section
+    {
+        padding-left: 85px;
     }
 }
