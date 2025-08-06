@@ -1,44 +1,35 @@
 import { useRef, useState } from 'react';
 
-const DesignControls = ({ onImageUpload, onDelete, hasSelection, fileInputRef, onAddText }) => {
-  const [textInput, setTextInput] = useState('');
-
+const DesignControls = ({ onImageUpload, onDelete, hasSelection, fileInputRef, isLoading }) => {
+  
   const handleUploadClick = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleAddText = () => {
-    if (textInput.trim()) {
-      onAddText(textInput);
-      setTextInput(''); // Limpiar campo
+    if (!isLoading) {
+      fileInputRef.current.click();
     }
   };
 
   return (
-    <div className="design-controls">
-      <h3>Personaliza tu diseño</h3>
+    <div className="design-controls-panel">
+      <h3>Controles de Diseño</h3>
 
       <div className="upload-section">
-        <button onClick={handleUploadClick} className="upload-button">
-          Cargar tu diseño
+        <button 
+          onClick={handleUploadClick} 
+          className="upload-button"
+          disabled={isLoading}
+        >
+          {isLoading ? 'Cargando...' : 'Cargar tu diseño'}
         </button>
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept="image/jpeg,image/png,image/svg+xml,image/gif"
           onChange={onImageUpload}
           style={{ display: 'none' }}
         />
-      </div>
-
-      <div className="text-section">
-        <input
-          type="text"
-          placeholder="Escribe tu texto"
-          value={textInput}
-          onChange={(e) => setTextInput(e.target.value)}
-        />
-        <button onClick={handleAddText}>Añadir texto</button>
+        <p className="upload-hint">
+          Formatos: JPG, PNG, SVG, GIF (máx. 10MB)
+        </p>
       </div>
 
       <button 
@@ -46,21 +37,22 @@ const DesignControls = ({ onImageUpload, onDelete, hasSelection, fileInputRef, o
         className="delete-button"
         disabled={!hasSelection}
       >
-        Eliminar diseño seleccionado
+        {hasSelection ? 'Eliminar diseño seleccionado' : 'Selecciona un elemento para eliminar'}
       </button>
 
       <div className="instructions">
-        <p>Después de subir tu diseño, puedes:</p>
+        <h4>Instrucciones:</h4>
         <ul>
-          <li>Arrastrar para moverlo</li>
-          <li>Usar los controles para cambiar el tamaño</li>
-          <li>Rotar con el control circular</li>
-          <li>Seleccionar y eliminar diseños</li>
+          <li>🖱️ Arrastra elementos para moverlos</li>
+          <li>🔄 Usa los controles para redimensionar</li>
+          <li>↻ Rota con el control circular</li>
+          <li>🗑️ Selecciona y elimina elementos</li>
+          <li>📝 Agrega texto personalizado</li>
         </ul>
       </div>
 
       <div className="price-section">
-        <p>Precio: $515.99</p>
+        <p className="price">Precio: $515.99</p>
         <button className="add-to-cart">Añadir al carrito</button>
       </div>
     </div>

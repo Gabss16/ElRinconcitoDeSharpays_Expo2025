@@ -2,32 +2,61 @@ import { useState, useRef, useLayoutEffect, useCallback } from 'react';
 import * as fabric from 'fabric';
 import ColorPicker from './ColorPicker';
 import DesignControls from './DesignControls';
-import DualTShirtView from './DualTshirtView';
+import TShirtView from './TshirtView';
+import TextControls from './TextControls';
+import LoadingSpinner from './LoadingSpinner';
 
 const TShirtDesigner = () => {
   const [tshirtColor, setTshirtColor] = useState('#ffffff');
-  const frontCanvasRef = useRef(null);
-  const backCanvasRef = useRef(null);
-  const [frontCanvas, setFrontCanvas] = useState(null);
-  const [backCanvas, setBackCanvas] = useState(null);
+  const [viewSide, setViewSide] = useState('front');
+  const [isLoading, setIsLoading] = useState(false);
+  const [history, setHistory] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const canvasRef = useRef(null);
+  const [canvas, setCanvas] = useState(null);
   const fileInputRef = useRef(null);
-  const [editingSide, setEditingSide] = useState('front');
 
-  const getActiveCanvas = () => (editingSide === 'front' ? frontCanvas : backCanvas);
+  const toggleViewSide = useCallback(() => {
+    setViewSide(prev => (prev === 'front' ? 'back' : 'front'));
+  }, []);
 
-  const initializeCanvas = useCallback((ref, setCanvas) => {
-    const canvasEl = ref.current;
-    if (!canvasEl) return;
+  // Guardar estado en historial
+  const saveState = useCallback(() => {
+    if (!canvas) return;
+    
+    const state = JSON.stringify(canvas.toJSON());
+    const newHistory = history.slice(0, historyIndex + 1);
+    newHistory.push(state);
+    setHistory(newHistory);
+    setHistoryIndex(newHistory.length - 1);
+  }, [canvas, history, historyIndex]);
 
-    // Elimina cualquier canvas fabric anterior en ese <canvas>
-    if (canvasEl.__fabricInstance) {
-      canvasEl.__fabricInstance.dispose();
-      canvasEl.__fabricInstance = null;
+  // Deshacer última acción
+  const undo = useCallback(() => {
+    if (historyIndex > 0 && canvas) {
+      const prevState = history[historyIndex - 1];
+      canvas.loadFromJSON(prevState, () => {
+        canvas.renderAll();
+        setHistoryIndex(historyIndex - 1);
+      });
     }
+  }, [canvas, history, historyIndex]);
 
-    // Limpia el contenido real del canvas HTML
-    canvasEl.width = canvasEl.width;
-    canvasEl.height = canvasEl.height;
+  // Rehacer acción
+  const redo = useCallback(() => {
+    if (historyIndex < history.length - 1 && canvas) {
+      const nextState = history[historyIndex + 1];
+      canvas.loadFromJSON(nextState, () => {
+        canvas.renderAll();
+        setHistoryIndex(historyIndex + 1);
+      });
+    }
+  }, [canvas, history, historyIndex]);
+
+  // Optimizado: Canvas solo se crea una vez
+  useLayoutEffect(() => {
+    const canvasEl = canvasRef.current;
+    if (!canvasEl || canvas) return;
 
     const parent = canvasEl.parentElement;
     const { width, height } = parent.getBoundingClientRect();
@@ -35,75 +64,133 @@ const TShirtDesigner = () => {
     const fabricCanvas = new fabric.Canvas(canvasEl, {
       backgroundColor: 'transparent',
       selection: true,
+      perPixelTargetFind: true,
+      selectionFullyContained: true,
+      skipTargetFind: false,
       renderOnAddRemove: false,
+      snapAngle: 0,
     });
 
     fabricCanvas.setWidth(width);
     fabricCanvas.setHeight(height);
+    fabricCanvas.defaultCursor = 'default';
+    fabricCanvas.hoverCursor = 'move';
 
-    // Guarda la instancia en el DOM para futuras referencias
-    canvasEl.__fabricInstance = fabricCanvas;
+    fabricCanvas.on('object:modified', (e) => {
+      const obj = e.target;
+      let left = obj.left,
+          top = obj.top,
+          maxLeft = fabricCanvas.getWidth() - obj.getScaledWidth(),
+          maxTop = fabricCanvas.getHeight() - obj.getScaledHeight();
+
+      const newLeft = Math.min(Math.max(left, 0), maxLeft);
+      const newTop = Math.min(Math.max(top, 0), maxTop);
+
+      if (newLeft !== left || newTop !== top) {
+        obj.set({ left: newLeft, top: newTop });
+        obj.setCoords();
+        fabricCanvas.renderAll();
+      }
+      
+      saveState(); // Guardar estado después de modificación
+    });
+
     setCanvas(fabricCanvas);
-  }, []);
 
-  useLayoutEffect(() => {
-    initializeCanvas(frontCanvasRef, setFrontCanvas);
-    initializeCanvas(backCanvasRef, setBackCanvas);
-
-    return () => {
-      if (frontCanvasRef.current?.__fabricInstance) {
-        frontCanvasRef.current.__fabricInstance.dispose();
-        frontCanvasRef.current.__fabricInstance = null;
-      }
-      if (backCanvasRef.current?.__fabricInstance) {
-        backCanvasRef.current.__fabricInstance.dispose();
-        backCanvasRef.current.__fabricInstance = null;
-      }
-    };
+    return () => fabricCanvas.dispose();
   }, []);
 
   const handleImageUpload = useCallback(
-    (e) => {
+    async (e) => {
       const file = e.target.files[0];
-      const canvas = getActiveCanvas();
-      if (!file || !canvas) return;
+      if (!file || !canvas) {
+        console.warn('No hay archivo o canvas no disponible');
+        return;
+      }
 
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const imgElement = new Image();
-        imgElement.src = event.target.result;
-        imgElement.onload = () => {
-          const img = new fabric.Image(imgElement, {
-            scaleX: canvas.getWidth() / (2 * imgElement.width),
-            scaleY: canvas.getHeight() / (2 * imgElement.height),
-            left: canvas.getWidth() / 2,
-            top: canvas.getHeight() / 2,
-            originX: 'center',
-            originY: 'center',
-            selectable: true,
-          });
-          canvas.add(img);
-          canvas.setActiveObject(img);
-          canvas.renderAll();
+      // Validación mejorada
+      if (!['image/jpeg', 'image/png', 'image/svg+xml', 'image/gif'].includes(file.type)) {
+        alert('Por favor, sube solo imágenes JPG, PNG, SVG o GIF');
+        return;
+      }
+
+      if (file.size > 10 * 1024 * 1024) { // 10MB
+        alert('La imagen es muy grande. Máximo 10MB');
+        return;
+      }
+
+      setIsLoading(true);
+
+      try {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const imgElement = new Image();
+          imgElement.crossOrigin = 'anonymous';
+          imgElement.src = event.target.result;
+
+          imgElement.onload = () => {
+            try {
+              const fabricImage = new fabric.Image(imgElement, {
+                scaleX: canvas.getWidth() / (2 * imgElement.width),
+                scaleY: canvas.getHeight() / (2 * imgElement.height),
+                left: canvas.getWidth() / 2,
+                top: canvas.getHeight() / 2,
+                originX: 'center',
+                originY: 'center',
+                stroke: 'rgba(0,123,255,0.5)',
+                strokeWidth: 2,
+                objectCaching: true,
+                selectable: true,
+                evented: true,
+              });
+
+              canvas.add(fabricImage);
+              canvas.setActiveObject(fabricImage);
+              
+              // Usar la solución que ya funcionaba en tu código original
+              canvas.remove(fabricImage);
+              canvas.add(fabricImage);
+              
+              canvas.renderAll();
+              saveState();
+              setIsLoading(false);
+            } catch (error) {
+              console.error('Error creando imagen Fabric:', error);
+              alert('Error al procesar la imagen');
+              setIsLoading(false);
+            }
+          };
+
+          imgElement.onerror = (err) => {
+            console.error('Error cargando imagen nativa', err);
+            alert('Error al cargar la imagen. Intenta con otra imagen.');
+            setIsLoading(false);
+          };
         };
-      };
-      reader.readAsDataURL(file);
-      e.target.value = '';
+        
+        reader.readAsDataURL(file);
+        e.target.value = '';
+      } catch (error) {
+        console.error('Error en handleImageUpload:', error);
+        alert('Error al procesar la imagen');
+        setIsLoading(false);
+      }
     },
-    [editingSide, frontCanvas, backCanvas]
+    [canvas, saveState]
   );
 
-  const handleDeleteDesign = () => {
-    const canvas = getActiveCanvas();
-    const obj = canvas?.getActiveObject();
-    if (obj) {
-      canvas.remove(obj);
-      canvas.renderAll();
+  const handleDeleteDesign = useCallback(() => {
+    if (canvas) {
+      const obj = canvas.getActiveObject();
+      if (obj) {
+        canvas.remove(obj);
+        canvas.renderAll();
+        saveState();
+      }
     }
-  };
+  }, [canvas, saveState]);
 
-  const handleAddText = (text) => {
-    const canvas = getActiveCanvas();
+  const handleAddText = useCallback((text, fontSize, fontFamily, color) => {
     if (!canvas || !text.trim()) return;
 
     const textObj = new fabric.Textbox(text, {
@@ -111,44 +198,63 @@ const TShirtDesigner = () => {
       top: canvas.getHeight() / 2,
       originX: 'center',
       originY: 'center',
-      fontSize: 24,
-      fill: '#000000',
-      fontFamily: 'Arial',
+      fontSize: fontSize || 24,
+      fill: color || '#000000',
+      fontFamily: fontFamily || 'Arial',
       editable: true,
       selectable: true,
+      stroke: 'rgba(0,123,255,0.3)',
+      strokeWidth: 1,
     });
 
     canvas.add(textObj);
     canvas.setActiveObject(textObj);
     canvas.renderAll();
-  };
+    saveState();
+  }, [canvas, saveState]);
 
   return (
-    <div className="tshirt-designer">
-      <div className="design-area">
-        <DualTShirtView
-          tshirtColor={tshirtColor}
-          frontCanvasRef={frontCanvasRef}
-          backCanvasRef={backCanvasRef}
-        />
-        <div style={{ marginTop: '10px' }}>
-          <label>Editar lado: </label>
-          <select value={editingSide} onChange={(e) => setEditingSide(e.target.value)}>
-            <option value="front">Frente</option>
-            <option value="back">Atrás</option>
-          </select>
+    <div className="app-container">
+      {isLoading && <LoadingSpinner />}
+      
+      {/* Header con camisetas y controles de texto lado a lado */}
+      <div className="header-section">
+        {/* Camisetas a la izquierda */}
+        <div className="tshirt-display">
+          <TShirtView
+            tshirtColor={tshirtColor}
+            viewSide={viewSide}
+            canvasRef={canvasRef}
+          />
+         
+        </div>
+
+        {/* Controles de texto a la derecha */}
+        <div className="text-controls-header">
+          <TextControls
+            onAddText={handleAddText}
+            canUndo={historyIndex > 0}
+            canRedo={historyIndex < history.length - 1}
+            onUndo={undo}
+            onRedo={redo}
+          />
         </div>
       </div>
 
-      <div className="controls">
-        <ColorPicker color={tshirtColor} onChange={setTshirtColor} />
-        <DesignControls
-          onImageUpload={handleImageUpload}
-          onDelete={handleDeleteDesign}
-          hasSelection={getActiveCanvas()?.getActiveObject() !== null}
-          fileInputRef={fileInputRef}
-          onAddText={handleAddText}
-        />
+      {/* Content section solo con controles de diseño abajo */}
+      <div className="content-section">
+        <div className="design-controls-bottom">
+          <div className="controls-row">
+            <ColorPicker color={tshirtColor} onChange={setTshirtColor} />
+            <DesignControls
+              onImageUpload={handleImageUpload}
+              onDelete={handleDeleteDesign}
+              hasSelection={canvas?.getActiveObject() !== null}
+              fileInputRef={fileInputRef}
+              isLoading={isLoading}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

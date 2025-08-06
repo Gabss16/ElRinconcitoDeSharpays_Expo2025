@@ -18,44 +18,55 @@ const ColorPicker = ({ color, onChange }) => {
   const [showPicker, setShowPicker] = useState(false);
 
   return (
-    <div className="color-picker">
-      <h3>Color de la camiseta</h3>
+    <div className="color-picker-panel">
+      <h3>Color de la Camiseta</h3>
       
-      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '10px' }}>
+      {/* Colores rápidos */}
+      <div className="quick-colors">
         {basicColors.map((c) => (
-          <div
+          <button
             key={c}
             onClick={() => onChange(c)}
+            className="color-swatch"
             style={{
-              width: '30px',
-              height: '30px',
               backgroundColor: c,
-              border: c === color ? '3px solid #000' : '1px solid #ccc',
-              cursor: 'pointer',
-              borderRadius: '4px',
+              border: c === color ? '3px solid #007bff' : '2px solid #ddd',
             }}
             title={c}
+            aria-label={`Seleccionar color ${c}`}
           />
         ))}
       </div>
 
-      <button onClick={() => setShowPicker(!showPicker)} style={{ marginBottom: '10px' }}>
-        {showPicker ? 'Ocultar selector' : 'Mostrar selector avanzado'}
+      {/* Toggle para selector avanzado */}
+      <button 
+        onClick={() => setShowPicker(!showPicker)} 
+        className="picker-toggle"
+      >
+        {showPicker ? '▼ Ocultar selector' : '▶ Selector avanzado'}
       </button>
 
+      {/* Selector de color avanzado */}
       {showPicker && (
-        <HexColorPicker color={color} onChange={onChange} style={{ width: '100%', maxWidth: '280px' }} />
+        <div className="advanced-picker">
+          <HexColorPicker 
+            color={color} 
+            onChange={onChange}
+            className="hex-picker"
+          />
+          <div className="color-value">
+            <label htmlFor="color-input">Código HEX:</label>
+            <input
+              id="color-input"
+              type="text"
+              value={color}
+              onChange={(e) => onChange(e.target.value)}
+              className="color-code-input"
+              pattern="^#[0-9A-Fa-f]{6}$"
+            />
+          </div>
+        </div>
       )}
-
-      <div className="color-value" style={{ marginTop: '10px' }}>
-        <span>Código: </span>
-        <input
-          type="text"
-          value={color}
-          onChange={(e) => onChange(e.target.value)}
-          style={{ width: '100px' }}
-        />
-      </div>
     </div>
   );
 };
