@@ -3,14 +3,16 @@ import { View, StatusBar, StyleSheet, Image, Text, TextInput, TouchableOpacity }
 import { FontAwesome } from '@expo/vector-icons';
 import { useFonts } from "expo-font";
 
+//Typing effect
+import Typical from 'react-native-typical';
+
 export default function Login() {
-  
-  //This custom fonts were added from 'Google Fonts' and were applied with the 'expo-font' react's library.
   const [fonts] = useFonts({
-    Poppins: require("../../assets/fonts/Poppins.ttf")
+    Poppins: require("../../assets/fonts/Poppins.ttf"),
+    PoppinsBold: require("../../assets/fonts/Poppins-Bold.ttf")
   })
 
-  if(!fonts) return null;
+  if (!fonts) return null;
 
   return (
     <View style={styles.container}>
@@ -20,10 +22,15 @@ export default function Login() {
         style={styles.logo}
         resizeMode="contain"
       />
-      <Text style={styles.title}>Iniciar Sesión</Text>
+       <Typical
+        steps={['El Rinconcito de\n Sharpays']}
+        loop={1}
+        wrapper="Text"
+        style={{color: 'white', fontFamily: 'PoppinsBold', fontSize: 24, marginTop: 8, textAlign: 'center'}}
+      />
 
       <View style={styles.box}>
-
+        <Text style={styles.title}>Iniciar Sesión</Text>
         <Text style={styles.info}>Complete los campos</Text>
 
         <View style={styles.fields}>
@@ -36,14 +43,11 @@ export default function Login() {
           <TextInput placeholder='Contraseña' style={styles.inputs}></TextInput>
         </View>
 
-
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Ingresar</Text>
         </TouchableOpacity>
 
-
         <Text style={styles.forgettenPassword}>Olvidé mi contraseña</Text>
-
       </View>
 
     </View>
@@ -53,54 +57,52 @@ export default function Login() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#FE3F8D',
+    position: 'relative',
+    alignItems: 'center'
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 140,
+    height: 140,
+    marginTop: 60
   },
   title: {
-    fontFamily: "Poppins",
-    fontWeight: 'bold',
-    color: 'white',
-    fontSize: 35,
-    top: 70
+    fontFamily: "PoppinsBold",
+    color: '#636361ff',
+    fontSize: 26
   },
   box: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '60%',
     backgroundColor: 'white',
-    width: '100%',
-    height: '50%',
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
-    top: 130,
-    margin: 0,
-    // Child elements
+    paddingVertical: 20,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   info: {
     color: "#636361ff",
-    bottom: 60,
-    fontSize: 16,
-    fontFamily: "Poppins"
+    fontSize: 14,
+    fontFamily: "Poppins",
+    marginBottom: 60
   },
   fields: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    margin: 10,
+    marginVertical: 8,
     width: 280,
     height: 50,
     borderRadius: 15,
     padding: 10,
     backgroundColor: '#eeeeeee5',
     color: "#7A7A73",
-
-    bottom: 30
   },
   inputs: {
+    flex: 1,
     fontSize: 14,
     paddingLeft: 10,
     fontFamily: "Poppins"
@@ -115,15 +117,17 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 30,
+    marginTop: 40
   },
   buttonText: {
     color: 'white',
-    fontWeight: 'bold',
-    fontFamily: "Poppins"
+    fontFamily: "PoppinsBold"
   },
   forgettenPassword: {
-    top: 40,
     color: '#4e4e4eff',
     textDecorationLine: 'underline',
+    fontFamily: "Poppins",
+    marginTop: 20
   }
 });
