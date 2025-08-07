@@ -14,13 +14,37 @@
     --transition: all 0.5s ease;
   }
   
-  /*body {
-    background-color: var(--bg-color);
-    transition: background-color 0.5s ease;
-  }
-  body.dark {
-    --bg-color: #535c72;
-  }*/
+/* Modo claro (por defecto) */
+body {
+  background-color: #ffffff; 
+  color: #000000;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Modo oscuro */
+body.dark {
+  background-color: #121212; 
+  color: #ffffff;
+}
+
+
+.rosado {
+  color: #ff6fa5; 
+}
+
+
+body, body.dark {
+  font-family: 'Arial', sans-serif; 
+}
+
+
+a {
+  color: #000000;
+}
+body.dark a {
+  color: #000000;
+}
+
   
   .switch {
     position: relative;

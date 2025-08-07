@@ -7,7 +7,7 @@
   border: 1px solid #efefef;
   border-radius: 35px;     /* Radio exacto */
   padding: 16px 24px;
-  background: #fff;
+  background: inherit;
   display: flex;
   flex-direction: column;
   justify-content: center; /* Centra verticalmente contenido */
@@ -19,7 +19,7 @@
 .card-ubication__label {
   font-weight: 600;
   font-size: 14px;
-  color: #111;
+  color: inherit;
   margin: 0;
 }
 

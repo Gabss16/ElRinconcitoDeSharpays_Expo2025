@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   padding: 2rem 1rem;
-  background: #f7f7f7;
+  background: inherit;
   min-height: 100vh;
 }
 
@@ -17,7 +17,7 @@
 
 /* Contenedor blanco principal */
 .cart-content {
-  background-color: #ffffff;
+  background-color: inherit;
   width: 100%;
   max-width: 1600px;
   padding: 2rem;

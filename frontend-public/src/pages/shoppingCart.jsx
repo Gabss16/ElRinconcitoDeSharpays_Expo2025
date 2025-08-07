@@ -6,6 +6,7 @@ import PaymentMethod from "../components/PaymentMethod.jsx";
 import CarouselCard from "../components/carouselCard.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import CheckoutPage from "./CheckOut.jsx";
+import ErrorAlert from "../components/ErrorAlert.jsx";
 import "../styles/ShoppingCart.css";
 
 const ShoppingCartPage = () => {
@@ -24,7 +25,7 @@ const ShoppingCartPage = () => {
 
  const handleCreateOrder = (paymentMethod) => {
   if (!isLoggedIn) {
-    alert("Debes iniciar sesión para crear una orden");
+    ErrorAlert("Debes iniciar sesión para crear una orden");
     return;
   }
 
@@ -76,6 +77,7 @@ const ShoppingCartPage = () => {
                 total={finalTotal}
                 onCreateOrder={handleCreateOrder}
                 loading={loading}
+               
               />
             </div>
           </div>

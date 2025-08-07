@@ -3,8 +3,12 @@ import SizeSelector from "../Size";
 import QuantitySelector from "../QuantitySelector";
 import useDataShoppingCart from "../../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import "../../styles/CamisaDetail.css";
+import SuccessAlert from "../../components/SuccessAlert.jsx";
+
+import {useNavigate} from "react-router-dom"
 
 const CamisaDetail = ({ product }) => {
+  const navigate = useNavigate();
   const [selectedSize, setSelectedSize] = useState(product.size?.[0] || "");
   const [quantity, setQuantity] = useState(1);
   const zoomRef = useRef(null);
@@ -16,8 +20,11 @@ const CamisaDetail = ({ product }) => {
 
   const handleAddToCart = () => {
     if (!selectedSize) return;
+
     const productWithSize = { ...product, size: selectedSize };
+    SuccessAlert("Se agregó al carrito");
     addToCart(productWithSize, quantity);
+    navigate("/carrito");
   };
 
   const handleMouseMove = (e) => {

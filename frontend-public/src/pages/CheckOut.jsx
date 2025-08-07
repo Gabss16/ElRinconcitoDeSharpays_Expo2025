@@ -88,7 +88,10 @@ const CheckoutPage = () => {
       console.log("🛒 Payload final:", payload);
 
       SuccessAlert("¡Orden creada exitosamente!");
+      navigate("/inicio");
       localStorage.removeItem("OrderDetail");
+      localStorage.removeItem("shoppingCart");
+      
       setTimeout(() => navigate("/"), 3000);
     } catch (err) {
       ErrorAlert("Error al procesar la orden");

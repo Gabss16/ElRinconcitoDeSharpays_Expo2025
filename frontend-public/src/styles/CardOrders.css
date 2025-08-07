@@ -5,11 +5,11 @@
   width: 420px;
   height: 550px;
   border-radius: 12px;      /* Radio general arriba */
-  border-bottom-left-radius: 8px;   /* Solo esquinas inferiores ajustadas */
+  border-bottom-left-radius: 8px;   /* Solo esquinas inferiores ajustadas    */
   border-bottom-right-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1);
   overflow: hidden;
-  background-color: #fff;
+  background-color: inherit;
   text-align: center;
   font-family: Arial, sans-serif;
 }
@@ -35,7 +35,7 @@
 }
 
 .card-orders__text {
-  color: #999999;
+  color: inherit;
   font-size: 25px;
   margin: 0;
   font-weight: 350;

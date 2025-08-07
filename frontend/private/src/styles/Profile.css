@@ -1,0 +1,96 @@
+@media (max-width: 1440px) 
+{
+    .fields-section {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .gif-animation-profile {
+        margin-top: 0px !important;
+    }
+
+    .gif-animation-profile img {
+        width: 300px !important;
+    }
+}
+
+@media (max-width: 1024px ) { 
+    .form-row-wrapper {
+        gap: 20px;
+    }
+    .image-con {
+        width: 200px !important;
+        height: 200px !important;
+    }
+    .image-upload-section button {
+        width: 200px !important;
+        height: 50px;
+    }
+}
+
+@media (max-width: 960px) {
+    .form-row-wrapper {
+        gap: 0px;
+    }
+    .image-con {
+        width: 140px !important;
+        height: 140px !important;
+    }
+
+    .image-upload-section button {
+        width: 140px !important;
+        height: 50px;
+        font-size: 12px !important;
+    }
+
+    .image-upload-section {
+        width: 260px !important;
+    }
+}
+
+@media (max-width: 860px) {
+    .image-upload-section {
+        width: 200px !important;
+    }
+
+    .image-upload-section button {
+        width: 140px !important;
+        height: 50px;
+        font-size: 12px !important;
+    }
+}
+@media (max-width: 768px) {
+    .image-upload-section {
+        width: 0px !important;
+    }
+    .image-upload-section div {
+        margin-left: 0px !important;
+    }
+    .image-con {
+        width: 150px !important;
+        height: 150px !important;
+    }
+    .image-upload-section button {
+        width: 150px !important;
+        height: 50px;
+        font-size: 14px !important;
+    }
+    .fields-section {
+        align-items: center !important;
+    }   
+    .gif-animation-profile {
+     display: none !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .container-profile .custom-input{
+        width: 230px !important;
+    }
+}
+
+@media (max-width: 375px) {
+    .container-profile .custom-input{
+        width: 200px !important;
+    }
+}

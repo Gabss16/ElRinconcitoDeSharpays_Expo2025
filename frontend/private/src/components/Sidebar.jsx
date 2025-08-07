@@ -13,7 +13,8 @@ FaLeaf,
 FaFileInvoice,
 FaSignOutAlt,
 FaBars,
-FaBell
+FaBell,
+FaUser
 } from 'react-icons/fa';
 
 import { useAuth } from '../context/AuthContext';
@@ -38,6 +39,10 @@ return (
 <nav>
 <NavLink to="/Dashboard" className="nav-item" onClick={toggleSidebar}>
 <FaHome /> <span>Home</span>
+</NavLink>
+
+<NavLink to="/profile" className="nav-item nav-profile" onClick={toggleSidebar}>
+<FaUser /> <span>Perfil</span>
 </NavLink>
 
 <div className="section-title">CONFIGURACIONES</div>
@@ -73,7 +78,7 @@ return (
 </nav>
 
 <button className="logout-button" onClick={(e) => {e.preventDefault(); logout(); SuccessAlert("Sesión cerrada con éxito")}}>
-<FaSignOutAlt /> <span>Logout</span>
+<FaSignOutAlt /> <span>Cerrar Sesión</span>
 </button>
 </aside>
 </>

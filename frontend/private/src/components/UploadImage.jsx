@@ -26,7 +26,7 @@ const UploadImage = ({ onUpload, defaultImage, fromProfile = false}) => {
 
   return (
     <div style={{ textAlign: "center", marginLeft: "40px" }}>
-      <div
+      <div className="image-con"
         style={{
           width: "300px",
           height: "300px",
