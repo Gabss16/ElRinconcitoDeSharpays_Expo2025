@@ -1,8 +1,17 @@
 import React from 'react';
 import { View, StatusBar, StyleSheet, Image, Text, TextInput, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { useFonts } from "expo-font";
 
 export default function Login() {
+  
+  //This custom fonts were added from 'Google Fonts' and were applied with the 'expo-font' react's library.
+  const [fonts] = useFonts({
+    Poppins: require("../../assets/fonts/Poppins.ttf")
+  })
+
+  if(!fonts) return null;
+
   return (
     <View style={styles.container}>
       <StatusBar hidden />
@@ -53,6 +62,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   title: {
+    fontFamily: "Poppins",
     fontWeight: 'bold',
     color: 'white',
     fontSize: 35,
@@ -73,7 +83,8 @@ const styles = StyleSheet.create({
   info: {
     color: "#636361ff",
     bottom: 60,
-    fontSize: 16
+    fontSize: 16,
+    fontFamily: "Poppins"
   },
   fields: {
     display: 'flex',
@@ -91,7 +102,8 @@ const styles = StyleSheet.create({
   },
   inputs: {
     fontSize: 14,
-    paddingLeft: 10
+    paddingLeft: 10,
+    fontFamily: "Poppins"
   },
   icons: {
     color: "#7A7A73",
@@ -107,6 +119,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: 'bold',
+    fontFamily: "Poppins"
   },
   forgettenPassword: {
     top: 40,
