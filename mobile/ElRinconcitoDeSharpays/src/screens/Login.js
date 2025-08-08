@@ -1,5 +1,18 @@
 import React from 'react';
-import { View, StatusBar, StyleSheet, Image, Text, TextInput, TouchableOpacity } from 'react-native';
+import {
+  View,
+  StatusBar,
+  StyleSheet,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ScrollView
+} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useFonts } from "expo-font";
 
@@ -15,43 +28,67 @@ export default function Login() {
   if (!fonts) return null;
 
   return (
-    <View style={styles.container}>
-      <StatusBar hidden />
+  <KeyboardAvoidingView
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    style={styles.container}
+  >
+    <StatusBar hidden />
+
+    <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', height: 135 }}>
       <Image
         source={require('../../assets/SharpayLogoWhite.png')}
         style={styles.logo}
         resizeMode="contain"
       />
-       <Typical
-        steps={['El Rinconcito de\n Sharpays']}
+      <Typical
+        steps={['El Rinconcito de\nSharpays']}
         loop={1}
         wrapper="Text"
-        style={{color: 'white', fontFamily: 'PoppinsBold', fontSize: 24, marginTop: 8, textAlign: 'center'}}
+        style={{
+          color: 'white',
+          fontFamily: 'PoppinsBold',
+          fontSize: 16,
+          textAlign: 'start',
+          paddingLeft: 10
+        }}
       />
+    </View>
 
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.box}>
         <Text style={styles.title}>Iniciar Sesión</Text>
         <Text style={styles.info}>Complete los campos</Text>
 
-        <View style={styles.fields}>
-          <FontAwesome name='envelope' size={17} style={styles.icons}></FontAwesome>
-          <TextInput placeholder='Correo electrónico' style={styles.inputs}></TextInput>
-        </View>
+        <ScrollView
+          contentContainerStyle={{ alignItems: 'center' }}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.fields}>
+            <FontAwesome name='envelope' size={17} style={styles.icons} />
+            <TextInput placeholder='Correo electrónico' style={styles.inputs} />
+          </View>
 
-        <View style={styles.fields}>
-          <FontAwesome name='lock' size={22} style={styles.icons}></FontAwesome>
-          <TextInput placeholder='Contraseña' style={styles.inputs}></TextInput>
-        </View>
+          <View style={styles.fields}>
+            <FontAwesome name='lock' size={22} style={styles.icons} />
+            <TextInput placeholder='Contraseña' secureTextEntry style={styles.inputs} />
+          </View>
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Ingresar</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Ingresar</Text>
+          </TouchableOpacity>
 
         <Text style={styles.forgettenPassword}>Olvidé mi contraseña</Text>
-      </View>
 
-    </View>
-  );
+        </ScrollView>
+        
+
+      </View>
+    </TouchableWithoutFeedback>
+  </KeyboardAvoidingView>
+);
+
+
 }
 
 const styles = StyleSheet.create({
@@ -59,28 +96,26 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FE3F8D',
     position: 'relative',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   logo: {
-    width: 140,
-    height: 140,
-    marginTop: 60
+    width: 60,
+    height: 60
   },
   title: {
     fontFamily: "PoppinsBold",
     color: '#636361ff',
-    fontSize: 26
+    fontSize: 26,
+    marginTop: 100
   },
   box: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    flex: 1,
+    width: '100%',
     height: '60%',
+    marginBottom: 0,
     backgroundColor: 'white',
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
-    paddingVertical: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -118,7 +153,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 30,
-    marginTop: 40
+    marginTop: 50
   },
   buttonText: {
     color: 'white',
