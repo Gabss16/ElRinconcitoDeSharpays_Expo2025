@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useContext ,useEffect } from "react";
+import { Alert } from "react-native";
 import {
   View,
   StatusBar,
@@ -19,74 +20,114 @@ import { useFonts } from "expo-font";
 //Typing effect
 import Typical from 'react-native-typical';
 
+import { AuthContext } from "../context/AuthContext";
+
 export default function Login() {
   const [fonts] = useFonts({
     Poppins: require("../../assets/fonts/Poppins.ttf"),
     PoppinsBold: require("../../assets/fonts/Poppins-Bold.ttf")
   })
 
+  
+  const { login, authToken } = useContext(AuthContext);
+  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  
+  useEffect(() => {
+    if (authToken) {
+      navigation.replace("Home");
+    }
+  }, [authToken])
+  
   if (!fonts) return null;
 
+  const handleLogin = async () => {
+    if(!email || !password)
+    {
+      Alert.alert("Complete los campos");
+      return;
+    }
+    else
+    {
+      const success = await login(email, password);
+      if (success) {
+        navigation.replace("TabNavigator");
+      }
+    }
+  };
+
   return (
-  <KeyboardAvoidingView
-    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    style={styles.container}
-  >
-    <StatusBar hidden />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+    >
+      <StatusBar hidden />
 
-    <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', height: 135 }}>
-      <Image
-        source={require('../../assets/SharpayLogoWhite.png')}
-        style={styles.logo}
-        resizeMode="contain"
-      />
-      <Typical
-        steps={['El Rinconcito de\nSharpays']}
-        loop={1}
-        wrapper="Text"
-        style={{
-          color: 'white',
-          fontFamily: 'PoppinsBold',
-          fontSize: 16,
-          textAlign: 'start',
-          paddingLeft: 10
-        }}
-      />
-    </View>
-
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={styles.box}>
-        <Text style={styles.title}>Iniciar Sesión</Text>
-        <Text style={styles.info}>Complete los campos</Text>
-
-        <ScrollView
-          contentContainerStyle={{ alignItems: 'center' }}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.fields}>
-            <FontAwesome name='envelope' size={17} style={styles.icons} />
-            <TextInput placeholder='Correo electrónico' style={styles.inputs} />
-          </View>
-
-          <View style={styles.fields}>
-            <FontAwesome name='lock' size={22} style={styles.icons} />
-            <TextInput placeholder='Contraseña' secureTextEntry style={styles.inputs} />
-          </View>
-
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Ingresar</Text>
-          </TouchableOpacity>
-
-        <Text style={styles.forgettenPassword}>Olvidé mi contraseña</Text>
-
-        </ScrollView>
-        
-
+      <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', height: 135 }}>
+        <Image
+          source={require('../../assets/SharpayLogoWhite.png')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+        <Typical
+          steps={['El Rinconcito de\nSharpays']}
+          loop={1}
+          wrapper="Text"
+          style={{
+            color: 'white',
+            fontFamily: 'PoppinsBold',
+            fontSize: 16,
+            textAlign: 'start',
+            paddingLeft: 10
+          }}
+        />
       </View>
-    </TouchableWithoutFeedback>
-  </KeyboardAvoidingView>
-);
+
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.box}>
+          <Text style={styles.title}>Iniciar Sesión</Text>
+          <Text style={styles.info}>Complete los campos</Text>
+
+          <ScrollView
+            contentContainerStyle={{ alignItems: 'center' }}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.fields}>
+              <FontAwesome name='envelope' size={17} style={styles.icons} />
+              <TextInput
+                placeholder='Correo electrónico'
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                style={styles.inputs} />
+            </View>
+
+            <View style={styles.fields}>
+              <FontAwesome name='lock' size={22} style={styles.icons} />
+              <TextInput
+                placeholder="Contraseña"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                style={styles.inputs} />
+            </View>
+
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
+              <Text style={styles.buttonText}>Ingresar</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.forgettenPassword}>Olvidé mi contraseña</Text>
+
+          </ScrollView>
+
+
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
+  );
 
 
 }
