@@ -15,7 +15,7 @@ const DesignControls = ({ onImageUpload, onDelete, hasSelection, fileInputRef, i
       <div className="upload-section">
         <button 
           onClick={handleUploadClick} 
-          className="upload-button"
+          className="upload-button-soft"
           disabled={isLoading}
         >
           {isLoading ? 'Cargando...' : 'Cargar tu diseño'}
@@ -34,11 +34,12 @@ const DesignControls = ({ onImageUpload, onDelete, hasSelection, fileInputRef, i
 
       <button 
         onClick={onDelete} 
-        className="delete-button"
+        className="delete-button-black"
         disabled={!hasSelection}
       >
         {hasSelection ? 'Eliminar diseño seleccionado' : 'Selecciona un elemento para eliminar'}
       </button>
+      
       <div className="price-section">
         <p className="price">Precio: $515.99</p>
         <button className="add-to-cart">Añadir al carrito</button>
