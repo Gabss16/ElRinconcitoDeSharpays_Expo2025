@@ -239,6 +239,17 @@ const TShirtDesigner = () => {
             onRedo={redo}
           />
         </div>
+
+        <div className="instructions">
+        <h4>Instrucciones:</h4>
+        <ul>
+          <li>- Arrastra elementos para moverlos</li>
+          <li>- Usa los controles para redimensionar</li>
+          <li>- Rota con el control circular</li>
+          <li>- Selecciona y elimina elementos</li>
+          <li>- Agrega texto personalizado</li>
+        </ul>
+      </div>
       </div>
 
       {/* Content section solo con controles de diseño abajo */}
