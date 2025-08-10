@@ -1,3 +1,7 @@
+/* Fuente Poppins importada */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Estructura principal */
 .card-orders {
   position: absolute;
   top: 120px;
@@ -10,50 +14,68 @@
   box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1);
   overflow: hidden;
   background-color: inherit;
-  text-align: left; /* Cambiado de center a left */
-  font-family: 'Poppins', sans-serif; /* Fuente actualizada */
+  text-align: left;
+  font-family: 'Poppins', sans-serif;
 }
 
+/* Header rosado con título */
 .card-orders__header {
   height: 50px;
   background-color: #ff3399;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.header-title {
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+/* Cuerpo de la card */
 .card-orders__body {
   margin: 0;
   padding: 40px 20px 30px;
-  text-align: left; /* Asegura alineación izquierda */
+  text-align: left;
+  height: calc(100% - 50px);
+  box-sizing: border-box;
 }
 
+/* Estilos cuando no hay pedidos */
 .card-orders__image {
   width: 220px;
   height: 220px;
   margin: 0 auto 20px;
   object-fit: contain;
   display: block;
+  opacity: 0.8;
 }
 
 .card-orders__text {
-  color: inherit;
+  color: #555;
   font-size: 25px;
   margin: 0;
-  font-weight: 350;
-  text-align: left; /* Alineación izquierda */
-  font-family: 'Poppins', sans-serif; /* Fuente actualizada */
+  font-weight: 400;
+  text-align: center;
 }
 
-/* Scroll personalizado (delgado y estilizado) */
+/* Lista de pedidos */
 .orders-list {
   width: 100%;
-  max-height: 400px;
+  max-height: 100%;
   overflow-y: auto;
-  padding-right: 5px; /* Espacio para el scroll */
+  padding-right: 5px;
 }
 
+/* Scrollbar personalizada (delgada) */
 .orders-list::-webkit-scrollbar {
-  width: 4px; /* Scroll más delgado */
+  width: 4px;
 }
 
 .orders-list::-webkit-scrollbar-track {
@@ -62,22 +84,21 @@
 }
 
 .orders-list::-webkit-scrollbar-thumb {
-  background: #888;
+  background: #ff3399;
   border-radius: 10px;
 }
 
 .orders-list::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #e6007a;
 }
 
+/* Items individuales */
 .order-item {
   display: flex;
   align-items: center;
   border-bottom: 1px solid #eee;
-  padding: 10px;
-  margin-bottom: 10px;
+  padding: 12px 0;
   gap: 15px;
-  font-family: 'Poppins', sans-serif; /* Fuente actualizada */
 }
 
 .order-item-image {
@@ -85,16 +106,18 @@
   height: 60px;
   object-fit: cover;
   border-radius: 8px;
+  border: 1px solid #eee;
 }
 
 .order-item-details {
   flex: 1;
-  text-align: left; /* Asegura alineación izquierda */
 }
 
 .order-item-name {
-  font-weight: 600; /* Ajustado para Poppins */
+  font-weight: 600;
   margin-bottom: 5px;
+  color: #333;
+  font-size: 15px;
 }
 
 .order-item p {
@@ -103,28 +126,50 @@
   color: #555;
 }
 
-/* Responsive (manteniendo tus ajustes) */
+/* Efectos hover para items */
+.order-item:hover {
+  background-color: #f9f9f9;
+}
+
+/* Responsive Design */
+@media (max-width: 1600px) {
+  .card-orders {
+    left: auto;
+    right: 50px;
+  }
+}
+
 @media (max-width: 992px) {
   .card-orders {
+    position: relative;
+    top: auto;
+    left: auto;
     width: 90%;
     height: auto;
-    left: auto; /* Ajuste para responsive */
-    right: 20px;
+    margin: 20px auto;
   }
 }
 
 @media (max-width: 480px) {
   .card-orders {
     width: 100%;
-    padding: 10px;
-    left: 0; /* Ajuste para móviles */
-    top: 80px;
+    padding: 0;
   }
+  
   .card-orders__image {
     width: 150px;
     height: 150px;
   }
+  
   .card-orders__text {
     font-size: 18px;
+  }
+  
+  .header-title {
+    font-size: 1.1rem;
+  }
+  
+  .order-item {
+    padding: 10px 0;
   }
 }

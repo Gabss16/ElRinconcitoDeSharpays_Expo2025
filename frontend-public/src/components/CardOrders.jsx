@@ -2,10 +2,12 @@ import React from "react";
 import orderslogo from "../assets/orderslogoprofile.png";
 import "../styles/CardOrders.css";
 
-const CardOrders = ({ cartItems = [] }) => {  // Valor por defecto aquí
+const CardOrders = ({ cartItems = [] }) => {
   return (
     <div className="card-orders">
-      <div className="card-orders__header"></div>
+      <div className="card-orders__header">
+        <h2 className="header-title">Pedidos</h2>
+      </div>
       <div className="card-orders__body">
         {cartItems.length === 0 ? (
           <>
