@@ -15,7 +15,7 @@ const DesignControls = ({ onImageUpload, onDelete, hasSelection, fileInputRef, i
       <div className="upload-section">
         <button 
           onClick={handleUploadClick} 
-          className="upload-button"
+          className="upload-button-soft"
           disabled={isLoading}
         >
           {isLoading ? 'Cargando...' : 'Cargar tu diseño'}
@@ -34,23 +34,12 @@ const DesignControls = ({ onImageUpload, onDelete, hasSelection, fileInputRef, i
 
       <button 
         onClick={onDelete} 
-        className="delete-button"
+        className="delete-button-black"
         disabled={!hasSelection}
       >
         {hasSelection ? 'Eliminar diseño seleccionado' : 'Selecciona un elemento para eliminar'}
       </button>
-
-      <div className="instructions">
-        <h4>Instrucciones:</h4>
-        <ul>
-          <li>🖱️ Arrastra elementos para moverlos</li>
-          <li>🔄 Usa los controles para redimensionar</li>
-          <li>↻ Rota con el control circular</li>
-          <li>🗑️ Selecciona y elimina elementos</li>
-          <li>📝 Agrega texto personalizado</li>
-        </ul>
-      </div>
-
+      
       <div className="price-section">
         <p className="price">Precio: $515.99</p>
         <button className="add-to-cart">Añadir al carrito</button>

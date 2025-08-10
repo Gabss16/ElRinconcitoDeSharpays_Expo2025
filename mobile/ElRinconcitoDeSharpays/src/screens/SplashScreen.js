@@ -31,7 +31,7 @@ const SplashScreen = ({ navigation }) => {
 
     // Navegar al login después de todo
     setTimeout(() => {
-      navigation.navigate('Login');
+      navigation.replace('Login');
     }, 3000);
   }, []);
 
@@ -46,14 +46,14 @@ const SplashScreen = ({ navigation }) => {
 
       {/* Logo rosa (desaparece) */}
       <Animated.Image
-        source={require('../../assets/SharpayLogo.png')}
+        source={require('../../assets/rinconcitoDeSharpays.png')}
         style={[styles.logo, { position: 'absolute', opacity: logoPinkOpacity }]}
         resizeMode="contain"
       />
 
       {/* Logo blanco (aparece) */}
       <Animated.Image
-        source={require('../../assets/SharpayLogoWhite.png')}
+        source={require('../../assets/rinconcitoDeSharpaysWhite.png')}
         style={[styles.logo, { position: 'absolute', opacity: logoWhiteOpacity }]}
         resizeMode="contain"
       />

@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "ElRinconcitoDeSharpays",
+    "name": "El Rinconcito De Sharpays",
     "slug": "ElRinconcitoDeSharpays",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/SharpayLogo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {

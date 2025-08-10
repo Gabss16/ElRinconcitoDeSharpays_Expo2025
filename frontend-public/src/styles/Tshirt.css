@@ -9,6 +9,7 @@
   --border-gray: #dee2e6;        /* Bordes */
   --success-green: #28a745;      /* Verde de éxito */
   --warning-red: #dc3545;        /* Rojo de advertencia */
+  --soft-gray: #6c757d;          /* Gris suave para botón de cargar */
   --shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
@@ -33,6 +34,9 @@ body {
   padding: 20px;
   background: var(--white);
   min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 40px; /* Más espacio desde arriba para el navbar */
 }
 
 /* Header con camisetas y controles de texto lado a lado */
@@ -40,11 +44,10 @@ body {
   display: grid;
   grid-template-columns: 1fr 350px;
   gap: 40px;
-  padding: 30px 0 50px;
-  border-bottom: 2px solid var(--border-gray);
-  margin-bottom: 30px;
-  min-height: 600px;
   align-items: start;
+  width: 100%;
+  margin-bottom: 30px;
+  margin-top: 20px; /* Espacio adicional desde arriba */
 }
 
 .tshirt-display {
@@ -52,6 +55,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
 /* Controles de texto ahora en el header a la derecha */
@@ -60,16 +64,11 @@ body {
   border: 2px solid var(--border-gray);
   border-radius: 12px;
   padding: 25px;
-  box-shadow: var(--shadow);
-  height: fit-content;
-}
-
-/* Content section solo con controles de diseño abajo */
-.content-section {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  min-height: 300px;
+  width: 100%;
+  max-width: 350px;
+  min-height: 420px;
+  box-shadow: 0 12px 12px rgba(0, 0, 0, 0.123);
+  animation: fadeInUp 0.6s ease-out;
 }
 
 /* Ya no necesitamos sidebar, solo controles abajo */
@@ -79,14 +78,17 @@ body {
   border-radius: 12px;
   padding: 25px;
   box-shadow: var(--shadow);
+}
+
+.content-section {
   width: 100%;
-  max-width: 1200px;
 }
 
 .controls-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 30px;
+  margin-bottom: 30px;
 }
 
 /* ===== VISTA DE CAMISETA OPTIMIZADA ===== */
@@ -154,7 +156,8 @@ body {
 .text-controls-panel h3 {
   color: var(--dark-text);
   margin-bottom: 20px;
-  font-size: 1.4em;
+  font-size: 1.2em;
+  font-weight: bold;
   border-bottom: 2px solid var(--primary-pink);
   padding-bottom: 10px;
 }
@@ -165,7 +168,7 @@ body {
 
 .text-input {
   width: 100%;
-  padding: 12px;
+  padding: 8px;
   border: 2px solid var(--border-gray);
   border-radius: 8px;
   font-size: 14px;
@@ -185,7 +188,7 @@ body {
   background: var(--primary-pink);
   color: var(--white);
   border: none;
-  border-radius: 8px;
+  border-radius: 25px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -211,26 +214,28 @@ body {
 }
 
 .option-group label {
-  display: block;
+  display: flex;
+  justify-content: start;
+  align-items: center;
   font-weight: 600;
-  margin-bottom: 5px;
-  color: var(--dark-text);
+  font-size: 14px;
 }
 
 .size-slider {
   width: 80%;
-  margin-right: 10px;
+  accent-color: #ff6b9d;
 }
 
 .size-value {
   font-weight: 600;
-  color: var(--accent-blue);
+  padding-left: 10px; 
+  color: #ff6b9d;
 }
 
 .font-select {
   width: 100%;
   padding: 8px;
-  border: 2px solid var(--border-gray);
+  border: 2px solid #ff8fab65;
   border-radius: 6px;
   font-size: 14px;
   background: var(--white);
@@ -245,7 +250,7 @@ body {
 .color-input {
   width: 40px;
   height: 40px;
-  border: 2px solid var(--border-gray);
+  border: 1px solid var(--border-gray);
   border-radius: 6px;
   cursor: pointer;
 }
@@ -259,8 +264,8 @@ body {
 .history-controls {
   display: flex;
   gap: 10px;
-  margin-top: 20px;
-  padding-top: 20px;
+  margin-top: 10px;
+  padding-top: 10px;
   border-top: 1px solid var(--border-gray);
 }
 
@@ -300,6 +305,33 @@ body {
   margin-bottom: 20px;
 }
 
+/* NUEVO BOTÓN DE CARGAR - GRIS SUAVE SIN BORDES */
+.upload-button-soft {
+  width: 100%;
+  padding: 15px;
+  background: var(--soft-gray);
+  color: var(--white);
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 8px;
+}
+
+.upload-button-soft:hover:not(:disabled) {
+  background: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.upload-button-soft:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* BOTÓN DE CARGAR ORIGINAL MANTENIDO PARA COMPATIBILIDAD */
 .upload-button {
   width: 100%;
   padding: 15px;
@@ -332,6 +364,33 @@ body {
   margin-top: 5px;
 }
 
+/* NUEVO BOTÓN DE ELIMINAR - NEGRO SIN BORDES */
+.delete-button-black {
+  width: 100%;
+  padding: 12px;
+  background: #000000;
+  color: var(--white);
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.delete-button-black:hover:not(:disabled) {
+  background: #333333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.delete-button-black:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #6c757d;
+}
+
+/* BOTÓN DE ELIMINAR ORIGINAL MANTENIDO PARA COMPATIBILIDAD */
 .delete-button {
   width: 100%;
   padding: 12px;
@@ -379,54 +438,6 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-.picker-toggle {
-  width: 100%;
-  padding: 10px;
-  background: var(--light-gray);
-  border: 2px solid var(--border-gray);
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  margin-bottom: 10px;
-}
-
-.picker-toggle:hover {
-  background: #e9ecef;
-  border-color: var(--accent-blue);
-}
-
-.advanced-picker {
-  margin-top: 15px;
-}
-
-.hex-picker {
-  width: 100% !important;
-  height: 150px !important;
-  border-radius: 8px !important;
-  margin-bottom: 15px;
-}
-
-.color-value {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.color-value label {
-  font-weight: 600;
-  color: var(--dark-text);
-}
-
-.color-code-input {
-  flex: 1;
-  padding: 8px;
-  border: 2px solid var(--border-gray);
-  border-radius: 4px;
-  font-family: 'Courier New', monospace;
-  font-weight: 600;
-}
-
 /* ===== BOTÓN GIRAR ===== */
 .flip-button {
   margin-top: 20px;
@@ -447,30 +458,44 @@ body {
   box-shadow: 0 6px 20px rgba(255,107,157,0.4);
 }
 
-/* ===== INSTRUCCIONES ===== */
-.instructions {
-  background: linear-gradient(135deg, #f8f9ff, #e3f2fd);
-  border-left: 4px solid var(--accent-blue);
+/* ===== INSTRUCCIONES CELESTE EJECUTIVO ===== */
+.instructions-box {
+  background: linear-gradient(135deg, #e3f2fd, #f0f8ff);
+  border: 1px solid #b3e5fc;
+  border-radius: 12px;
   padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.1);
+  animation: fadeInUp 0.6s ease-out;
 }
 
-.instructions h4 {
-  color: var(--dark-text);
-  margin-bottom: 12px;
+.instructions-box h4 {
+  color: #1565c0;
+  margin-bottom: 15px;
   font-size: 1.1em;
+  font-weight: 600;
+  text-align: center;
 }
 
-.instructions ul {
+.instructions-list {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.instructions li {
-  margin-bottom: 8px;
-  color: #495057;
+.instructions-list li {
+  color: #37474f;
+  padding: 8px 0;
   font-size: 14px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.instructions-list li:before {
+  content: "•";
+  color: #2196f3;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
 }
 
 /* ===== PRECIO Y CARRITO ===== */
@@ -484,7 +509,7 @@ body {
 .price {
   font-size: 24px;
   font-weight: 700;
-  color: var(--success-green);
+  color: var(--primary-pink);
   margin-bottom: 15px;
 }
 
@@ -573,15 +598,25 @@ body {
   .text-controls-header {
     max-width: 600px;
     margin: 0 auto;
+    min-height: auto;
   }
   
   .tshirt-wrapper {
     max-width: 800px;
     min-width: 600px;
   }
+  
+  .controls-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 992px) {
+  .header-section {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  
   .content-section {
     flex-direction: column;
     align-items: center;

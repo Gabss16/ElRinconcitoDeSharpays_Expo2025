@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { HexColorPicker } from 'react-colorful';
 
 const basicColors = [
   '#f08080', // rojo claro
@@ -15,12 +14,10 @@ const basicColors = [
 ];
 
 const ColorPicker = ({ color, onChange }) => {
-  const [showPicker, setShowPicker] = useState(false);
-
   return (
     <div className="color-picker-panel">
       <h3>Color de la Camiseta</h3>
-      
+
       {/* Colores rápidos */}
       <div className="quick-colors">
         {basicColors.map((c) => (
@@ -38,35 +35,40 @@ const ColorPicker = ({ color, onChange }) => {
         ))}
       </div>
 
-      {/* Toggle para selector avanzado */}
-      <button 
-        onClick={() => setShowPicker(!showPicker)} 
-        className="picker-toggle"
+      {/* Instrucciones de Personalización - Alargado */}
+      <div
+        className="instructions-box"
+        style={{
+          padding: '12px 15px',
+          marginTop: '15px',
+          width: '85%',    // ocupa todo el ancho disponible
+          // maxWidth: '600px', // opcional si quieres limitar el ancho máximo
+        }}
       >
-        {showPicker ? '▼ Ocultar selector' : '▶ Selector avanzado'}
-      </button>
-
-      {/* Selector de color avanzado */}
-      {showPicker && (
-        <div className="advanced-picker">
-          <HexColorPicker 
-            color={color} 
-            onChange={onChange}
-            className="hex-picker"
-          />
-          <div className="color-value">
-            <label htmlFor="color-input">Código HEX:</label>
-            <input
-              id="color-input"
-              type="text"
-              value={color}
-              onChange={(e) => onChange(e.target.value)}
-              className="color-code-input"
-              pattern="^#[0-9A-Fa-f]{6}$"
-            />
-          </div>
-        </div>
-      )}
+        <h4 style={{ fontSize: '0.95em', marginBottom: '10px' }}>
+          Personaliza tu camiseta
+        </h4>
+        <ul className="instructions-list" style={{ fontSize: '12px' }}>
+          <li style={{ padding: '4px 0', paddingLeft: '15px' }}>
+            Selecciona el color de camiseta
+          </li>
+          <li style={{ padding: '4px 0', paddingLeft: '15px' }}>
+            Escribe tu texto personalizado
+          </li>
+          <li style={{ padding: '4px 0', paddingLeft: '15px' }}>
+            Ajusta tamaño y fuente
+          </li>
+          <li style={{ padding: '4px 0', paddingLeft: '15px' }}>
+            Cambia el color del texto
+          </li>
+          <li style={{ padding: '4px 0', paddingLeft: '15px' }}>
+            Sube tu diseño propio
+          </li>
+          <li style={{ padding: '4px 0', paddingLeft: '15px' }}>
+            Arrastra y redimensiona
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };

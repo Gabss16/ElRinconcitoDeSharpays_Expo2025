@@ -5,7 +5,7 @@ import LoadingAnimation from "../components/LoadingAnimation.jsx";
 
 const PrivateRoute = () => {
   const { authCookie } = useAuth();
-  return authCookie ? <Outlet /> : <LoadingAnimation navTo={"/login"} alert={"Debes iniciar sesión"} />;
+  return authCookie ? <Outlet /> : <LoadingAnimation navTo={"/elRinconcitoDeSharpays"} />;
 };
 
 export default PrivateRoute;

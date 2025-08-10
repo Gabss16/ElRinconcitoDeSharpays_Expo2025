@@ -1,97 +1,187 @@
-import React from 'react';
-import { View, StatusBar, StyleSheet, Image, Text, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState, useContext ,useEffect } from "react";
+import { Alert } from "react-native";
+import {
+  View,
+  StatusBar,
+  StyleSheet,
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ScrollView
+} from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { useFonts } from "expo-font";
+
+//Typing effect
+import Typical from 'react-native-typical';
+
+import { AuthContext } from "../context/AuthContext";
 
 export default function Login() {
+  const [fonts] = useFonts({
+    Poppins: require("../../assets/fonts/Poppins.ttf"),
+    PoppinsBold: require("../../assets/fonts/Poppins-Bold.ttf")
+  })
+
+  
+  const { login, authToken } = useContext(AuthContext);
+  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  
+  useEffect(() => {
+    if (authToken) {
+      navigation.replace("Home");
+    }
+  }, [authToken])
+  
+  if (!fonts) return null;
+
+  const handleLogin = async () => {
+    if(!email || !password)
+    {
+      Alert.alert("Complete los campos");
+      return;
+    }
+    else
+    {
+      const success = await login(email, password);
+      if (success) {
+        navigation.replace("TabNavigator");
+      }
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+    >
       <StatusBar hidden />
-      <Image
-        source={require('../../assets/SharpayLogoWhite.png')}
-        style={styles.logo}
-        resizeMode="contain"
-      />
-      <Text style={styles.title}>Iniciar Sesión</Text>
 
-      <View style={styles.box}>
-
-        <Text style={styles.info}>Complete los campos</Text>
-
-        <View style={styles.fields}>
-          <FontAwesome name='envelope' size={17} style={styles.icons}></FontAwesome>
-          <TextInput placeholder='Correo electrónico' style={styles.inputs}></TextInput>
-        </View>
-
-        <View style={styles.fields}>
-          <FontAwesome name='lock' size={22} style={styles.icons}></FontAwesome>
-          <TextInput placeholder='Contraseña' style={styles.inputs}></TextInput>
-        </View>
-
-
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Ingresar</Text>
-        </TouchableOpacity>
-
-
-        <Text style={styles.forgettenPassword}>Olvidé mi contraseña</Text>
-
+      <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row', height: 135 }}>
+        <Image
+          source={require('../../assets/SharpayLogoWhite.png')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+        <Typical
+          steps={['El Rinconcito de\nSharpays']}
+          loop={1}
+          wrapper="Text"
+          style={{
+            color: 'white',
+            fontFamily: 'PoppinsBold',
+            fontSize: 16,
+            textAlign: 'start',
+            paddingLeft: 10
+          }}
+        />
       </View>
 
-    </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.box}>
+          <Text style={styles.title}>Iniciar Sesión</Text>
+          <Text style={styles.info}>Complete los campos</Text>
+
+          <ScrollView
+            contentContainerStyle={{ alignItems: 'center' }}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.fields}>
+              <FontAwesome name='envelope' size={17} style={styles.icons} />
+              <TextInput
+                placeholder='Correo electrónico'
+                value={email}
+                onChangeText={setEmail}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                style={styles.inputs} />
+            </View>
+
+            <View style={styles.fields}>
+              <FontAwesome name='lock' size={22} style={styles.icons} />
+              <TextInput
+                placeholder="Contraseña"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+                style={styles.inputs} />
+            </View>
+
+            <TouchableOpacity style={styles.button} onPress={handleLogin}>
+              <Text style={styles.buttonText}>Ingresar</Text>
+            </TouchableOpacity>
+
+            <Text style={styles.forgettenPassword}>Olvidé mi contraseña</Text>
+
+          </ScrollView>
+
+
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
+
+
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#FE3F8D',
+    position: 'relative',
+    alignItems: 'center',
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 60,
+    height: 60
   },
   title: {
-    fontWeight: 'bold',
-    color: 'white',
-    fontSize: 35,
-    top: 70
+    fontFamily: "PoppinsBold",
+    color: '#636361ff',
+    fontSize: 26,
+    marginTop: 100
   },
   box: {
-    backgroundColor: 'white',
+    flex: 1,
     width: '100%',
-    height: '50%',
+    height: '60%',
+    marginBottom: 0,
+    backgroundColor: 'white',
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
-    top: 130,
-    margin: 0,
-    // Child elements
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   info: {
     color: "#636361ff",
-    bottom: 60,
-    fontSize: 16
+    fontSize: 14,
+    fontFamily: "Poppins",
+    marginBottom: 60
   },
   fields: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    margin: 10,
+    marginVertical: 8,
     width: 280,
     height: 50,
     borderRadius: 15,
     padding: 10,
     backgroundColor: '#eeeeeee5',
     color: "#7A7A73",
-
-    bottom: 30
   },
   inputs: {
+    flex: 1,
     fontSize: 14,
-    paddingLeft: 10
+    paddingLeft: 10,
+    fontFamily: "Poppins"
   },
   icons: {
     color: "#7A7A73",
@@ -103,14 +193,17 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 30,
+    marginTop: 50
   },
   buttonText: {
     color: 'white',
-    fontWeight: 'bold',
+    fontFamily: "PoppinsBold"
   },
   forgettenPassword: {
-    top: 40,
     color: '#4e4e4eff',
     textDecorationLine: 'underline',
+    fontFamily: "Poppins",
+    marginTop: 20
   }
 });

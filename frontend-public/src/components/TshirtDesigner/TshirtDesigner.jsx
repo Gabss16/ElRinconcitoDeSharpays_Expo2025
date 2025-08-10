@@ -254,6 +254,9 @@ const TShirtDesigner = () => {
               isLoading={isLoading}
             />
           </div>
+          
+          {/* Instrucciones celestes debajo de los controles */}
+      
         </div>
       </div>
     </div>
