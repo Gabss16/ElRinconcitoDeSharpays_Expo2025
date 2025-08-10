@@ -1,22 +1,22 @@
 .card-orders {
-  position: absolute;       /* Necesario para usar top y left exactos */
-  top: 120px;               /* Posición vertical */
-  left: 1450px;             /* Posición horizontal */
+  position: absolute;
+  top: 120px;
+  left: 1450px;
   width: 420px;
   height: 550px;
-  border-radius: 12px;      /* Radio general arriba */
-  border-bottom-left-radius: 8px;   /* Solo esquinas inferiores ajustadas    */
+  border-radius: 12px;
+  border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1);
   overflow: hidden;
   background-color: inherit;
-  text-align: center;
-  font-family: Arial, sans-serif;
+  text-align: left; /* Cambiado de center a left */
+  font-family: 'Poppins', sans-serif; /* Fuente actualizada */
 }
 
 .card-orders__header {
   height: 50px;
-  background-color: #ff3399; /* rosa fuerte */
+  background-color: #ff3399;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
 }
@@ -24,6 +24,7 @@
 .card-orders__body {
   margin: 0;
   padding: 40px 20px 30px;
+  text-align: left; /* Asegura alineación izquierda */
 }
 
 .card-orders__image {
@@ -39,33 +40,34 @@
   font-size: 25px;
   margin: 0;
   font-weight: 350;
+  text-align: left; /* Alineación izquierda */
+  font-family: 'Poppins', sans-serif; /* Fuente actualizada */
 }
 
-/* Responsive para tablets y móviles */
-@media (max-width: 992px) {
-  .card-orders {
-    width: 90%;   /* Ocupa casi todo el ancho disponible */
-    height: auto; /* Deja que la altura se adapte */
-  }
-}
-
-@media (max-width: 480px) {
-  .card-orders {
-    width: 100%; /* Full width en móviles pequeños */
-    padding: 10px; /* Un poco de padding para respirar */
-  }
-  .card-orders__image {
-    width: 150px;
-    height: 150px;
-  }
-  .card-orders__text {
-    font-size: 18px;
-  }
-}
+/* Scroll personalizado (delgado y estilizado) */
 .orders-list {
   width: 100%;
   max-height: 400px;
   overflow-y: auto;
+  padding-right: 5px; /* Espacio para el scroll */
+}
+
+.orders-list::-webkit-scrollbar {
+  width: 4px; /* Scroll más delgado */
+}
+
+.orders-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.orders-list::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.orders-list::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .order-item {
@@ -75,6 +77,7 @@
   padding: 10px;
   margin-bottom: 10px;
   gap: 15px;
+  font-family: 'Poppins', sans-serif; /* Fuente actualizada */
 }
 
 .order-item-image {
@@ -86,9 +89,42 @@
 
 .order-item-details {
   flex: 1;
+  text-align: left; /* Asegura alineación izquierda */
 }
 
 .order-item-name {
-  font-weight: bold;
+  font-weight: 600; /* Ajustado para Poppins */
   margin-bottom: 5px;
+}
+
+.order-item p {
+  margin: 3px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Responsive (manteniendo tus ajustes) */
+@media (max-width: 992px) {
+  .card-orders {
+    width: 90%;
+    height: auto;
+    left: auto; /* Ajuste para responsive */
+    right: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-orders {
+    width: 100%;
+    padding: 10px;
+    left: 0; /* Ajuste para móviles */
+    top: 80px;
+  }
+  .card-orders__image {
+    width: 150px;
+    height: 150px;
+  }
+  .card-orders__text {
+    font-size: 18px;
+  }
 }
