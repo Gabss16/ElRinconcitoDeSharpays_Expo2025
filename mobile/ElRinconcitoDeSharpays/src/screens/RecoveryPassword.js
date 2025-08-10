@@ -20,12 +20,18 @@ const RecoveryPassword = () => {
     }
   };
 
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.container}>
       {/* Botón de retroceso */}
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={24} color="black" />
-      </TouchableOpacity>
+      <View style={styles.header}>
+                <TouchableOpacity style={styles.backButton} onPress={handleGoBack}>
+                  <Ionicons name="chevron-back" size={24} color="#333" />
+                </TouchableOpacity>
+      </View>
 
       {/* Título */}
       <Text style={styles.title}>Reinicia tu contraseña</Text>
@@ -42,6 +48,7 @@ const RecoveryPassword = () => {
           placeholderTextColor="#999"
           value={email}
           onChangeText={setEmail}
+          keyboardType="email-address"
         />
         <Ionicons name="mail-outline" size={20} color="#999" style={styles.icon} />
       </View>
@@ -64,15 +71,18 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   backButton: {
-    marginBottom: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    paddingBottom: 20,
   },
   title: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
     color: "#000",
   },
   subtitle: {
-    fontSize: 13,
+    fontSize: 18,
     color: "#999",
     marginBottom: 30,
   },
@@ -80,7 +90,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
     color: "#000",
-    marginBottom: 5,
+    marginBottom: 12,
   },
   inputContainer: {
     flexDirection: "row",
@@ -90,7 +100,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     paddingHorizontal: 15,
     height: 50,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   input: {
     flex: 1,
