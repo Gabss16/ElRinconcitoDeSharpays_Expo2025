@@ -9,6 +9,8 @@ import BougiesDetailPage from "./pages/BougiesDetailPage.jsx";
 import FrostyBites from "./pages/ShopFrostyBites.jsx";
 import FrostyBitesDetailPage from "./pages/FrostyDetailPage.jsx";
 import Paraiso from "./pages/ShopParaiso.jsx";
+import Duas from "./pages/ShopDuas.jsx";
+import DuasDetail from "./pages/DuaDetailPage.jsx";
 import ParaisoDetailPage from "./pages/ParaisoDetailPage.jsx";
 import NavBar from "./components/NavBar.jsx";
 import ShoppingCart from "./pages/shoppingCart.jsx";
@@ -69,6 +71,8 @@ function App() {
               <Route path="/bougies/:id" element={<BougiesDetailPage />} />
               <Route path="/frostyBites/:id" element={<FrostyBitesDetailPage />} />
               <Route path="/paraiso/:id" element={<ParaisoDetailPage />} />
+              <Route path="/duas" element={<Duas />} />
+               <Route path="/duas/:id" element={<DuasDetail />} />
               <Route path="/carrito" element={<ShoppingCart />} />
               <Route path="/checkOut" element={<CheckOut />} />
               <Route path="/inicio" element={<Home />} />

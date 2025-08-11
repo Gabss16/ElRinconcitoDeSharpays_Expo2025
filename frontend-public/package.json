@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "fabric": "^6.7.1",
+    "framer-motion": "^12.23.12",
     "gsap": "^3.13.0",
+    "html2canvas": "^1.4.1",
     "js-cookie": "^3.0.5",
     "react": "^19.1.0",
     "react-colorful": "^5.6.1",
@@ -20,7 +22,8 @@
     "react-router-dom": "^7.6.3",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.22.2",
-    "swiper": "^11.2.10"
+    "swiper": "^11.2.10",
+    "vanilla-tilt": "^1.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
