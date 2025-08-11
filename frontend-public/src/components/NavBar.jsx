@@ -34,8 +34,10 @@ const Menu = () => {
               <Link to="/frostyBites">Frostibites</Link>
               <Link to="/bougies">Bougies</Link>
               <Link to="/paraiso">El Paraíso de Dios</Link>
+              
             </div>
           </div>
+          <Link to="/duas">DUAS</Link>
           <Link to="/elRinconcitoDeSharpays">Sobre Nosotros</Link>
         </nav>
 

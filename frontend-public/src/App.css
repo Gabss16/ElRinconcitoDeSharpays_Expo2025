@@ -4,6 +4,8 @@
   font-family: "Poppins", sans-serif;
 }
 
+
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -332,3 +334,5 @@ div:where(.swal2-icon).swal2-question{
     padding: 20px 10px 0 10px !important;
   }
 }
+
+

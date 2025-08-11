@@ -1,0 +1,112 @@
+/* Espacio para el menú */
+.landing-container {
+  background-color: #ffffff;
+  min-height: 100vh;
+  margin-top: 80px; /* Ajusta según la altura de tu menú */
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.landing-content {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  gap: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/* Texto */
+.landing-text {
+  flex: 1 1 65%;
+}
+
+.landing-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+}
+
+.landing-paragraph {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 2rem;
+  max-width: 500px;
+}
+
+/* Botón */
+.buy-button {
+  padding: 0.9rem 2rem;
+  font-size: 1.1rem;
+  background-color: #FE3F8D;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.buy-button:hover {
+  background-color: #FE3F8D;
+  transform: translateY(-2px);
+}
+
+.shiny-btn-text {
+  color: white;
+}
+
+/* Imagen */
+.landing-image {
+  flex: 1 1 30%;
+  display: flex;
+  justify-content: center;
+}
+
+.image-dog {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .landing-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .landing-text {
+    flex: 1 1 100%;
+  }
+
+  .landing-image {
+    flex: 1 1 100%;
+    margin-top: 2rem;
+  }
+
+  .landing-title {
+    font-size: 2rem;
+  }
+
+  .landing-paragraph {
+    font-size: 1rem;
+  }
+}
+
+.highlighted-rotating-text {
+  background-color: #FE3F8D; /* rosa claro */
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0.3rem;
+}

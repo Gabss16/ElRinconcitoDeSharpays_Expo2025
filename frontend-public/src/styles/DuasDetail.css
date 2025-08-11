@@ -1,0 +1,84 @@
+.camisa-detail-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Info arriba */
+.camisa-detail-wrapper {
+  width: 100%;
+  max-width: 1200px; /* o el máximo que quieras */
+  margin: 0 auto; /* para centrar la página */
+  padding: 0 20px; /* algo de padding horizontal */
+}
+
+.camisa-info-container {
+  width: 100%;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.camisa-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.camisa-name {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.camisa-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #2c7;
+  white-space: nowrap;
+  margin-left: auto; /* para empujar al extremo derecho */
+}
+
+/* La descripción debajo ocupa toda la línea */
+.camisa-description {
+  font-size: 1rem;
+  color: #555;
+  margin: 8px 0 0 0;
+}
+
+
+/* Card y formulario */
+.camisa-content {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 250px;
+}
+
+.form input,
+.form button {
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.form button {
+  background-color: #2c7;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.form button:hover {
+  background-color: #28a745;
+}
