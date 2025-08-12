@@ -1,11 +1,48 @@
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
+import useDataShoppingCart from '../shoppingCart/hooks/useDataShoppingCart';
 
-const DesignControls = ({ onImageUpload, onDelete, hasSelection, fileInputRef, isLoading }) => {
-  
+const DesignControls = ({ 
+  onImageUpload, 
+  onDelete, 
+  hasSelection, 
+  fileInputRef, 
+  isLoading, 
+  fabricCanvas
+}) => {
+
+  const { addToCart } = useDataShoppingCart();
+
+  // Aquí la función debe estar declarada
   const handleUploadClick = () => {
     if (!isLoading) {
       fileInputRef.current.click();
     }
+  };
+
+  const handleAddToCart = () => {
+    if (!fabricCanvas || fabricCanvas.getObjects().length === 0) {
+      alert("No hay diseño para agregar.");
+      return;
+    }
+
+    const dataURL = fabricCanvas.toDataURL({
+      format: "png",
+      quality: 1,
+      multiplier: 2,
+    });
+
+    const customProduct = {
+      _id: `custom-${Date.now()}`,
+      name: "Camiseta Personalizada",
+      price: 515.99,
+      image: dataURL,
+      description: "Diseño único creado en el editor",
+      size: null,
+      flavor: null,
+    };
+
+    addToCart(customProduct, 1);
+    alert("✅ Diseño agregado al carrito");
   };
 
   return (
@@ -14,7 +51,7 @@ const DesignControls = ({ onImageUpload, onDelete, hasSelection, fileInputRef, i
 
       <div className="upload-section">
         <button 
-          onClick={handleUploadClick} 
+          onClick={handleUploadClick}  
           className="upload-button-soft"
           disabled={isLoading}
         >
@@ -42,7 +79,12 @@ const DesignControls = ({ onImageUpload, onDelete, hasSelection, fileInputRef, i
       
       <div className="price-section">
         <p className="price">Precio: $515.99</p>
-        <button className="add-to-cart">Añadir al carrito</button>
+        <button 
+          className="add-to-cart" 
+          onClick={handleAddToCart}
+        >
+          Añadir al carrito
+        </button>
       </div>
     </div>
   );
