@@ -94,7 +94,11 @@ const createOrderFromCart = async (customerId, categoryId, shippingAddress, stat
         productId: item.product._id,
         productName: item.product.name,
         unitPrice: item.product.price,
-        image: item.product.image,
+        // 🔹 Ajuste para que si es DUA tome carnetImage o fotoImage
+        image: item.product.image 
+               || item.product.duaData?.carnetImage 
+               || item.product.duaData?.fotoImage 
+               || null,
         quantity: item.quantity,
         discount: 0,
         totalPrice: item.product.price * item.quantity,
