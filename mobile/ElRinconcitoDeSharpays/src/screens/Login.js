@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useFonts } from "expo-font";
+import { useNavigation } from "@react-navigation/native";
 
 //Typing effect
 import Typical from 'react-native-typical';
@@ -28,6 +29,7 @@ export default function Login() {
     PoppinsBold: require("../../assets/fonts/Poppins-Bold.ttf")
   })
 
+  const navigation = useNavigation(); // inicializamos la navegación
   
   const { login, authToken } = useContext(AuthContext);
   
@@ -119,7 +121,9 @@ export default function Login() {
               <Text style={styles.buttonText}>Ingresar</Text>
             </TouchableOpacity>
 
-            <Text style={styles.forgettenPassword}>Olvidé mi contraseña</Text>
+            <TouchableOpacity onPress={() => navigation.navigate("RecoveryPassword")}>
+              <Text style={styles.forgettenPassword}>Olvidé mi contraseña</Text>
+            </TouchableOpacity>
 
           </ScrollView>
 
