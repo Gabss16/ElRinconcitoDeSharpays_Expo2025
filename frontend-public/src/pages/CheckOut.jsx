@@ -42,6 +42,18 @@ const CheckoutPage = () => {
     }));
   };
 
+  const uploadToCloudinary = async (base64Image) => {
+    const formData = new FormData();
+    formData.append("file", base64Image);
+    formData.append("upload_preset", "tu_upload_preset"); // <- reemplaza con tu preset
+    const res = await fetch("https://api.cloudinary.com/v1_1/tu_cloud_name/image/upload", {
+      method: "POST",
+      body: formData
+    });
+    const data = await res.json();
+    return data.secure_url;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!orderDetail) return;
@@ -51,48 +63,64 @@ const CheckoutPage = () => {
       city: formData.municipality,
     };
 
-
-
-
-    const payload = {
-      customerId: orderDetail.customerId,
-      products: orderDetail.items.map(item => ({
-        productId: item.product._id,
-        categoryId: item.product.categoryId?._id || item.product.categoryId, // <--- solo ID aquí
-        productName: item.product.name,
-        unitPrice: item.product.price,
-        image: item.product.image,
-        quantity: item.quantity,
-        totalPrice: item.product.price * item.quantity,
-        discount: 0,
-        customDesign: item.product.customDesign || null
-      })),
-      shippingAddress,
-      status: "pendiente",
-    };
-
-
-
-
-
     try {
       setLoading(true);
-      const res = await fetch("http://localhost:4000/api/createOrderFromCart/create-from-cart", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-      console.log("Payload a enviar:", JSON.stringify(payload, null, 2));
+
+      // Subir diseños personalizados a Cloudinary
+      const productsWithUrls = await Promise.all(
+        orderDetail.items.map(async (item) => {
+          let finalImage = item.product.image;
+          let customDesign = item.product.customDesign;
+
+          if (customDesign && customDesign.startsWith("data:image")) {
+            const uploadedUrl = await uploadToCloudinary(customDesign);
+            finalImage = uploadedUrl;
+            customDesign = uploadedUrl;
+          }
+
+          return {
+            productId: item.product._id,
+            categoryId: item.product.categoryId?._id || item.product.categoryId,
+            productName: item.product.name,
+            unitPrice: item.product.price,
+            image: finalImage,
+            quantity: item.quantity,
+            totalPrice: item.product.price * item.quantity,
+            discount: 0,
+            customDesign,
+          };
+        })
+      );
+
+      const payload = {
+        customerId: orderDetail.customerId,
+        products: productsWithUrls,
+        shippingAddress,
+        status: "pendiente",
+        customerInfo: {
+          ...formData,
+          paymentMethod
+        }
+      };
+
+      console.log("Payload final a enviar:", payload);
+
+      const res = await fetch(
+        "http://localhost:4000/api/createOrderFromCart/create-from-cart",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
 
       if (!res.ok) throw new Error("Error al crear la orden");
-      console.log("🛒 Payload final:", payload);
 
       SuccessAlert("¡Orden creada exitosamente!");
       navigate("/inicio");
       localStorage.removeItem("OrderDetail");
       localStorage.removeItem("shoppingCart");
-      
-      setTimeout(() => navigate("/"), 3000);
+
     } catch (err) {
       ErrorAlert("Error al procesar la orden");
       console.error(err);
@@ -120,111 +148,45 @@ const CheckoutPage = () => {
               </h2>
 
               <form onSubmit={handleSubmit} className="checkout-form">
+                {/* Campos completos como tenías */}
                 <div className="form-row">
                   <div className="form-group">
-                    <input
-                      type="text"
-                      name="firstName"
-                      placeholder="Nombre"
-                      value={formData.firstName}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      required
-                    />
+                    <input type="text" name="firstName" placeholder="Nombre" value={formData.firstName} onChange={handleInputChange} className="form-input" required/>
                   </div>
                   <div className="form-group">
-                    <input
-                      type="text"
-                      name="lastName"
-                      placeholder="Segundo nombre"
-                      value={formData.lastName}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      required
-                    />
+                    <input type="text" name="lastName" placeholder="Segundo nombre" value={formData.lastName} onChange={handleInputChange} className="form-input" required/>
                   </div>
                 </div>
 
                 <div className="form-row">
                   <div className="form-group">
-                    <input
-                      type="tel"
-                      name="phone"
-                      placeholder="Teléfono"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      required
-                    />
+                    <input type="tel" name="phone" placeholder="Teléfono" value={formData.phone} onChange={handleInputChange} className="form-input" required/>
                   </div>
                   <div className="form-group">
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Correo Electrónico"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      required
-                    />
+                    <input type="email" name="email" placeholder="Correo Electrónico" value={formData.email} onChange={handleInputChange} className="form-input" required/>
                   </div>
                 </div>
 
                 <div className="form-group full-width">
-                  <input
-                    type="text"
-                    name="municipality"
-                    placeholder="Municipio"
-                    value={formData.municipality}
-                    onChange={handleInputChange}
-                    className="form-input"
-                    required
-                  />
+                  <input type="text" name="municipality" placeholder="Municipio" value={formData.municipality} onChange={handleInputChange} className="form-input" required/>
                 </div>
 
                 <div className="form-group full-width">
-                  <input
-                    type="text"
-                    name="houseNumber"
-                    placeholder="Número de casa, Apt #"
-                    value={formData.houseNumber}
-                    onChange={handleInputChange}
-                    className="form-input"
-                    required
-                  />
+                  <input type="text" name="houseNumber" placeholder="Número de casa, Apt #" value={formData.houseNumber} onChange={handleInputChange} className="form-input" required/>
                 </div>
 
                 <div className="form-row">
                   <div className="form-group">
-                    <input
-                      type="text"
-                      name="postalCode"
-                      placeholder="Código postal"
-                      value={formData.postalCode}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      required
-                    />
+                    <input type="text" name="postalCode" placeholder="Código postal" value={formData.postalCode} onChange={handleInputChange} className="form-input" required/>
                   </div>
                   <div className="form-group">
-                    <input
-                      type="text"
-                      name="zipCode"
-                      placeholder="ZIP/Postal Code"
-                      value={formData.zipCode}
-                      onChange={handleInputChange}
-                      className="form-input"
-                    />
+                    <input type="text" name="zipCode" placeholder="ZIP/Postal Code" value={formData.zipCode} onChange={handleInputChange} className="form-input"/>
                   </div>
                 </div>
 
                 <div className="form-group full-width">
                   <label>Método de pago:</label>
-                  <select
-                    value={paymentMethod}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="form-input"
-                  >
+                  <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} className="form-input">
                     <option value="otro">Otro</option>
                     <option value="paypal">PayPal (+5.5%)</option>
                   </select>
