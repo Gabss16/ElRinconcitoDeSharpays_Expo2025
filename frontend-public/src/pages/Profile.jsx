@@ -12,11 +12,11 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <main className="flex-grow-1 d-flex justify-content-start">
-        {/* Pasa cartItems como prop */}
-        <CardOrders cartItems={cartItems || []} /> {/* Fallback con array vacío */}
-        <CardUbication />
-        <CardPersonalInformation />
+        {/* Orden visual: imagen → info personal → ubicación → pedidos */}
         <CardImage />
+        <CardPersonalInformation />
+        <CardUbication />
+        <CardOrders cartItems={cartItems || []} />
       </main>
     </div>
   );
