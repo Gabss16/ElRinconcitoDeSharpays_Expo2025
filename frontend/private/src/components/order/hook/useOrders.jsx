@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import toast from "react-hot-toast";
+
 
 const API_ORDERS = "http://localhost:4000/api/orders";
 const API_CATEGORIES = "http://localhost:4000/api/categories";
@@ -17,7 +17,7 @@ const useOrdersWithCategories = () => {
         fetch(API_ORDERS),
         fetch(API_CATEGORIES),
       ]);
-      if (!resOrders.ok || !resCat.ok) throw new Error("Error cargando datos");
+    
       const [ordersData, categoriesData] = await Promise.all([
         resOrders.json(),
         resCat.json(),
@@ -41,7 +41,7 @@ const useOrdersWithCategories = () => {
         body: JSON.stringify(updatedFields),
       });
 
-      if (!res.ok) throw new Error("Error al actualizar orden");
+
 
       const updatedOrder = await res.json();
 

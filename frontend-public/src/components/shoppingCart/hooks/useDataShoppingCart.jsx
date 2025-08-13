@@ -16,7 +16,7 @@ const useDataShoppingCart = () => {
     localStorage.setItem("shoppingCart", JSON.stringify(items));
   };
 
-  // Añadir producto al carrito
+  // 🔹 Agregar producto al carrito (soporta normal, DUA y camisetas personalizadas)
   const addToCart = (product, quantity = 1, options = {}) => {
     const key = `${product._id || product.id}_${options.size || ""}_${options.flavor || ""}`;
 
@@ -45,25 +45,20 @@ const useDataShoppingCart = () => {
     });
   };
 
-  // Eliminar producto
   const removeFromCart = (key) => {
     const updatedCart = cartItems.filter((item) => item.key !== key);
     setCartItems(updatedCart);
     saveToLocalStorage(updatedCart);
   };
 
-  // Incrementar cantidad
   const incrementQuantity = (key) => {
     const updatedCart = cartItems.map((item) =>
-      item.key === key
-        ? { ...item, quantity: item.quantity + 1 }
-        : item
+      item.key === key ? { ...item, quantity: item.quantity + 1 } : item
     );
     setCartItems(updatedCart);
     saveToLocalStorage(updatedCart);
   };
 
-  // Decrementar cantidad
   const decrementQuantity = (key) => {
     const updatedCart = cartItems
       .map((item) =>
@@ -77,19 +72,17 @@ const useDataShoppingCart = () => {
     saveToLocalStorage(updatedCart);
   };
 
-  // Vaciar carrito
   const clearCart = () => {
     setCartItems([]);
     localStorage.removeItem("shoppingCart");
   };
 
-  // Calcular total
   const total = cartItems.reduce(
     (acc, item) => acc + item.product.price * item.quantity,
     0
   );
 
-  // Crear orden desde carrito
+  // 🔹 Crear orden desde carrito (maneja customDesign)
   const createOrderFromCart = async (
     customerId,
     categoryId,
@@ -107,12 +100,11 @@ const useDataShoppingCart = () => {
           productId: item.product._id || null,
           productName: item.product.name,
           unitPrice: item.product.price,
-          // Imagen compatible con producto normal, DUA o camiseta personalizada
           image:
             item.product.image ||
             item.product.duaData?.carnetImage ||
             item.product.duaData?.fotoImage ||
-            item.product.customDesign || // imagen base64
+            item.product.customDesign || // ✅ base64 camiseta personalizada
             null,
           quantity: item.quantity,
           discount: 0,
@@ -143,7 +135,7 @@ const useDataShoppingCart = () => {
     }
   };
 
-  // Guardar carrito como detalle de orden en localStorage
+  // 🔹 Guardar carrito como detalle de orden en localStorage
   const moveCartToOrderDetail = () => {
     const orderDetail = {
       items: cartItems,

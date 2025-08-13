@@ -15,15 +15,14 @@ const TShirtDesigner = () => {
   const canvasRef = useRef(null);
   const [canvas, setCanvas] = useState(null);
   const fileInputRef = useRef(null);
+  const dualImage = '/images/dualchemis.png';
 
   const toggleViewSide = useCallback(() => {
     setViewSide(prev => (prev === 'front' ? 'back' : 'front'));
   }, []);
 
-  // Guardar estado en historial
   const saveState = useCallback(() => {
     if (!canvas) return;
-
     const state = JSON.stringify(canvas.toJSON());
     const newHistory = history.slice(0, historyIndex + 1);
     newHistory.push(state);
@@ -31,7 +30,6 @@ const TShirtDesigner = () => {
     setHistoryIndex(newHistory.length - 1);
   }, [canvas, history, historyIndex]);
 
-  // Deshacer última acción
   const undo = useCallback(() => {
     if (historyIndex > 0 && canvas) {
       const prevState = history[historyIndex - 1];
@@ -42,7 +40,6 @@ const TShirtDesigner = () => {
     }
   }, [canvas, history, historyIndex]);
 
-  // Rehacer acción
   const redo = useCallback(() => {
     if (historyIndex < history.length - 1 && canvas) {
       const nextState = history[historyIndex + 1];
@@ -53,7 +50,6 @@ const TShirtDesigner = () => {
     }
   }, [canvas, history, historyIndex]);
 
-  // Optimizado: Canvas solo se crea una vez
   useLayoutEffect(() => {
     const canvasEl = canvasRef.current;
     if (!canvasEl || canvas) return;
@@ -62,8 +58,9 @@ const TShirtDesigner = () => {
     const { width, height } = parent.getBoundingClientRect();
 
     const fabricCanvas = new fabric.Canvas(canvasEl, {
-      backgroundColor: 'transparent',
+      dualImage: true,
       selection: true,
+      preserveObjectStacking: true,
       perPixelTargetFind: true,
       selectionFullyContained: true,
       skipTargetFind: false,
@@ -75,6 +72,12 @@ const TShirtDesigner = () => {
     fabricCanvas.setHeight(height);
     fabricCanvas.defaultCursor = 'default';
     fabricCanvas.hoverCursor = 'move';
+
+    fabric.Image.fromURL('/images/dualchemis.png', (img) => {
+      img.scaleToWidth(fabricCanvas.getWidth());
+      img.scaleToHeight(fabricCanvas.getHeight());
+      fabricCanvas.setBackgroundImage(img, fabricCanvas.renderAll.bind(fabricCanvas));
+    });
 
     fabricCanvas.on('object:modified', (e) => {
       const obj = e.target;
@@ -92,7 +95,7 @@ const TShirtDesigner = () => {
         fabricCanvas.renderAll();
       }
 
-      saveState(); // Guardar estado después de modificación
+      saveState();
     });
 
     setCanvas(fabricCanvas);
@@ -103,18 +106,14 @@ const TShirtDesigner = () => {
   const handleImageUpload = useCallback(
     async (e) => {
       const file = e.target.files[0];
-      if (!file || !canvas) {
-        console.warn('No hay archivo o canvas no disponible');
-        return;
-      }
+      if (!file || !canvas) return;
 
-      // Validación mejorada
       if (!['image/jpeg', 'image/png', 'image/svg+xml', 'image/gif'].includes(file.type)) {
         alert('Por favor, sube solo imágenes JPG, PNG, SVG o GIF');
         return;
       }
 
-      if (file.size > 10 * 1024 * 1024) { // 10MB
+      if (file.size > 10 * 1024 * 1024) {
         alert('La imagen es muy grande. Máximo 10MB');
         return;
       }
@@ -146,8 +145,6 @@ const TShirtDesigner = () => {
 
               canvas.add(fabricImage);
               canvas.setActiveObject(fabricImage);
-
-              // Usar la solución que ya funcionaba en tu código original
               canvas.remove(fabricImage);
               canvas.add(fabricImage);
 
@@ -161,8 +158,7 @@ const TShirtDesigner = () => {
             }
           };
 
-          imgElement.onerror = (err) => {
-            console.error('Error cargando imagen nativa', err);
+          imgElement.onerror = () => {
             alert('Error al cargar la imagen. Intenta con otra imagen.');
             setIsLoading(false);
           };
@@ -213,23 +209,53 @@ const TShirtDesigner = () => {
     saveState();
   }, [canvas, saveState]);
 
+  // 🔹 Nueva función para exportar camiseta + diseño en un solo PNG
+  const exportDesign = useCallback(() => {
+    return new Promise((resolve) => {
+      if (!canvas) return resolve(null);
+  
+      const shirtImage = new Image();
+      shirtImage.src = '/images/dualchemis.png';
+      shirtImage.crossOrigin = 'anonymous';
+  
+      shirtImage.onload = () => {
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = canvas.getWidth();
+        tempCanvas.height = canvas.getHeight();
+        const ctx = tempCanvas.getContext('2d');
+  
+        ctx.drawImage(shirtImage, 0, 0, tempCanvas.width, tempCanvas.height);
+  
+        const designData = canvas.toDataURL('image/png');
+        const designImage = new Image();
+        designImage.src = designData;
+        designImage.crossOrigin = 'anonymous';
+  
+        designImage.onload = () => {
+          ctx.drawImage(designImage, 0, 0);
+  
+          const finalImage = tempCanvas.toDataURL('image/png');
+          console.log("✅ Imagen final generada");
+          resolve(finalImage); // 👈 devolver la imagen
+        };
+      };
+    });
+  }, [canvas]);
+  
+
   return (
     <div className="app-container">
       {isLoading && <LoadingSpinner />}
 
-      {/* Header con camisetas y controles de texto lado a lado */}
       <div className="header-section">
-        {/* Camisetas a la izquierda */}
         <div className="tshirt-display">
           <TShirtView
             tshirtColor={tshirtColor}
             viewSide={viewSide}
             canvasRef={canvasRef}
           />
-
         </div>
 
-        {/* Controles de texto a la derecha */}
         <div className="text-controls-header">
           <TextControls
             onAddText={handleAddText}
@@ -241,7 +267,6 @@ const TShirtDesigner = () => {
         </div>
       </div>
 
-      {/* Content section solo con controles de diseño abajo */}
       <div className="content-section">
         <div className="design-controls-bottom">
           <div className="controls-row">
@@ -253,12 +278,10 @@ const TShirtDesigner = () => {
               fileInputRef={fileInputRef}
               isLoading={isLoading}
               fabricCanvas={canvas}
+              exportDesign={exportDesign}
             />
-
+            <button onClick={exportDesign}>Exportar diseño</button>
           </div>
-
-          {/* Instrucciones celestes debajo de los controles */}
-
         </div>
       </div>
     </div>

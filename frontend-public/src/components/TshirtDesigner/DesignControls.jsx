@@ -7,42 +7,50 @@ const DesignControls = ({
   hasSelection, 
   fileInputRef, 
   isLoading, 
-  fabricCanvas
+  fabricCanvas,
+  exportDesign // <--- pasarlo desde TShirtDesigner
 }) => {
 
   const { addToCart } = useDataShoppingCart();
 
-  // Aquí la función debe estar declarada
   const handleUploadClick = () => {
     if (!isLoading) {
       fileInputRef.current.click();
     }
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!fabricCanvas || fabricCanvas.getObjects().length === 0) {
       alert("No hay diseño para agregar.");
       return;
     }
 
-    const dataURL = fabricCanvas.toDataURL({
-      format: "png",
-      quality: 1,
-      multiplier: 2,
-    });
+    if (!exportDesign) {
+      alert("Función exportDesign no disponible.");
+      return;
+    }
 
-    const customProduct = {
-      _id: `custom-${Date.now()}`,
-      name: "Camiseta Personalizada",
-      price: 515.99,
-      image: dataURL,
-      description: "Diseño único creado en el editor",
-      size: null,
-      flavor: null,
-    };
+    try {
+      const finalImage = await exportDesign(); // 🔹 combina base + diseño
 
-    addToCart(customProduct, 1);
-    alert("✅ Diseño agregado al carrito");
+      const customProduct = {
+        _id: `custom-${Date.now()}`,
+        name: "Camiseta Personalizada",
+        price: 15.99,
+        image: finalImage,
+        customDesign: finalImage, // ✅ para enviar al backend
+        description: "Diseño único creado en el editor",
+        size: null,
+        flavor: null,
+      };
+
+      addToCart(customProduct, 1);
+      alert("✅ Diseño agregado al carrito");
+
+    } catch (err) {
+      console.error("Error al exportar el diseño:", err);
+      alert("❌ No se pudo agregar el diseño al carrito");
+    }
   };
 
   return (
@@ -78,7 +86,7 @@ const DesignControls = ({
       </button>
       
       <div className="price-section">
-        <p className="price">Precio: $515.99</p>
+        <p className="price">Precio: $15.99</p>
         <button 
           className="add-to-cart" 
           onClick={handleAddToCart}
@@ -91,3 +99,4 @@ const DesignControls = ({
 };
 
 export default DesignControls;
+
