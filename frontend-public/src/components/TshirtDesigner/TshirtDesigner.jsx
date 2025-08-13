@@ -279,7 +279,7 @@ const TShirtDesigner = () => {
               fabricCanvas={canvas}
               exportDesign={exportDesign}
             />
-            <button onClick={exportDesign}>Exportar diseño</button>
+          
           </div>
         </div>
       </div>
