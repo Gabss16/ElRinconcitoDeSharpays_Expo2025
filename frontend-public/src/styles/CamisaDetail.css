@@ -5,12 +5,13 @@
   padding: 48px;
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(233, 30, 99, 0.08); /* rosa muy suave */
+  box-shadow: 0 8px 20px rgba(233, 30, 99, 0.08);
   max-width: 1200px;
-  margin: 40px auto;
+  margin: 80px auto 40px auto; /* Aumenta el espacio arriba */
   align-items: flex-start;
   font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
 }
+
 
 .camisa-image-container {
   flex: 1;

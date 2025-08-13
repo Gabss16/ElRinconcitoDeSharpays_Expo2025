@@ -268,7 +268,6 @@ const TShirtDesigner = () => {
       </div>
 
       <div className="content-section">
-        <div className="design-controls-bottom">
           <div className="controls-row">
             <ColorPicker color={tshirtColor} onChange={setTshirtColor} />
             <DesignControls
@@ -284,7 +283,6 @@ const TShirtDesigner = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

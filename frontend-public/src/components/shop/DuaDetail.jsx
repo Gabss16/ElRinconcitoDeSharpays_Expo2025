@@ -74,11 +74,11 @@ const DuasDetail = ({ product }) => {
     <div className="camisa-detail-wrapper container">
       {/* Info del producto */}
       <div className="camisa-info-container">
-        <div className="camisa-header">
-          <h1 className="camisa-name">{product.name}</h1>
-          <span className="camisa-price">${parseFloat(product.price).toFixed(2)}</span>
+        <div className="camisa-headerg">
+          <h1 className="camisa-nameg">{product.name}</h1>
+          <span className="camisa-priceg">${parseFloat(product.price).toFixed(2)}</span>
         </div>
-        <p className="camisa-description">{product.description}</p>
+        <p className="camisa-description1">{product.description}</p>
       </div>
 
       {/* Card y formulario */}
