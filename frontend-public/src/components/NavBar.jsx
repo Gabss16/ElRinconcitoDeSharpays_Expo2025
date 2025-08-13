@@ -38,7 +38,7 @@ const Menu = () => {
             </div>
           </div>
           <Link to="/duas">DUAS</Link>
-          <Link to="/TshirtDesign">Personalización de camisetas </Link>
+          
           <Link to="/elRinconcitoDeSharpays">Sobre Nosotros</Link>
         </nav>
 
