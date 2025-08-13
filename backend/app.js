@@ -15,12 +15,19 @@ import subCategoryRoutes from './src/routes/subCategory.js';
 import productRoutes from './src/routes/products.js';
 import orderDetailRoutes from "./src/routes/orderDetails.js";
 import advertisementsRoutes from "./src/routes/advertisements.js"
-import ratingsRoutes from "./src/routes/ratings.js"
 import orders from "./src/routes/order.js"
-import discountsRoutes from "./src/routes/discounts.js"
 import createOrderFromCart from "./src/routes/orderFromCart.js"
 
 import cors from "cors";
+
+import swagger from "swagger-ui-express";
+import fs from "fs";
+import path from "path";
+
+const swaggerDocument = JSON.parse(
+     fs.readFileSync(path.resolve("./documentation.json"),
+     "utf-8")
+    );
 
 const app = express();
 
@@ -51,9 +58,10 @@ app.use('/api/subCategory', subCategoryRoutes);
 app.use('/api/Products', productRoutes);
 app.use("/api/orderDetail", orderDetailRoutes);
 app.use("/api/advertisements", advertisementsRoutes)
-app.use("/api/ratings", ratingsRoutes)
 app.use("/api/orders", orders)
-app.use("/api/discounts", discountsRoutes)
 app.use("/api/createOrderFromCart", createOrderFromCart)
+
+//API Documetation 
+app.use("/api/documentation", swagger.serve, swagger.setup(swaggerDocument));
 
 export default app;

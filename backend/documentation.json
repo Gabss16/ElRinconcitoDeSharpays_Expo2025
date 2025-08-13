@@ -1,0 +1,3067 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "El rinconcito de Sharpays",
+    "description": "La documentación API para el sistema web y aplicación móvil de El rinconcito de Sharpays ©.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/elrinconcitodesharpa/El-Riconcito-De-Sharpays/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    }
+  ],
+  "paths": {
+    "/api/login": {
+      "post": {
+        "tags": [
+          "Inicio de sesión"
+        ],
+        "summary": "Iniciar sesión",
+        "description": "Verifica la existencia de un usuario mediante los parámetros.",
+        "operationId": "post-api-login",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_login_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/logOut": {
+      "post": {
+        "tags": [
+          "Cerrar sesión"
+        ],
+        "summary": "Cerrar sesión",
+        "description": "Su función limpiar el token de inicio de sesión, o en otras palabras cerrar la sesión del usuario.",
+        "operationId": "post-api-logOut",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/recoveryPassword/requestCode": {
+      "post": {
+        "tags": [
+          "Restablecimiento de contraseña"
+        ],
+        "summary": "Solicitar cambio de contraseña",
+        "description": " Su función es enviar la petición de cambio de contraseña, verifica que el correo ingresado por el usuario sea válido.",
+        "operationId": "post-api-recoveryPassword",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/recoveryPassword_requestCode_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/recoveryPassword/verifyCode": {
+      "post": {
+        "tags": [
+          "Restablecimiento de contraseña"
+        ],
+        "summary": "Validar código de verificación",
+        "description": "Su función es verificar el código enviado al correo de el usuario.",
+        "operationId": "post-api-recoveryPassword-verifyCode",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/recoveryPassword_verifyCode_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/recoveryPassword/newPassword": {
+      "post": {
+        "tags": [
+          "Restablecimiento de contraseña"
+        ],
+        "summary": "Cambiar contraseña",
+        "description": "Su función es actualizar la contraseña del usuario.",
+        "operationId": "post-api-recoveryPassword-newPassword",
+        "parameters": [
+          {
+            "name": "newPassword",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/recoveryPassword_newPassword_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/employees": {
+      "get": {
+        "tags": [
+          "Empleados"
+        ],
+        "summary": "Obtener todos los empleados",
+        "description": "Su función es obtener todos los empleados registados en la base de datos.",
+        "operationId": "get-api-employees",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Empleados"
+        ],
+        "summary": "Actualizar empleado",
+        "description": "Su función es actualizar los datos de un empleado.",
+        "operationId": "put-api-employees",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_employees_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Empleados"
+        ],
+        "summary": "Registar un nuevo empleado",
+        "description": "Su función es registrar un nuevo empleado en la base de datos.",
+        "operationId": "post-api-employees",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_employees_body_1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Empleados"
+        ],
+        "summary": "Eliminar un empleado",
+        "description": "Su función es eliminar un empleado de la base de datos, por medio del Id.",
+        "operationId": "delete-api-employees",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/registerEmployee": {
+      "post": {
+        "tags": [
+          "Empleados"
+        ],
+        "summary": "Crear una cuenta de empleado",
+        "description": "Su función es crear una cuenta desde el Registro de la parte privada del sistema web.",
+        "operationId": "post-api-registerEmployee",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_registerEmployee_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/categories": {
+      "get": {
+        "tags": [
+          "Categorías"
+        ],
+        "summary": "Obtener las categorías",
+        "description": "Su función es obtener todas las categorias de la base de datos, son las tiendas registradas de la empresa.",
+        "operationId": "get-api-categories",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Categorías"
+        ],
+        "summary": "Actualizar una categoría",
+        "description": "Su función es actualizar una categoría por medio del Id.",
+        "operationId": "put-api-categories",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "image",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_categories_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Categorías"
+        ],
+        "summary": "Crear una nueva categoría",
+        "description": "Su función es crear una nueva categoría.",
+        "operationId": "post-api-categories",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isActive",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "image",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Categorías"
+        ],
+        "summary": "Eliminar una categoría",
+        "description": "Su función es eliminar una categoría de la base de datos por medio del Id.",
+        "operationId": "delete-api-categories",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/categories/:id": {
+      "get": {
+        "tags": [
+          "Categorías"
+        ],
+        "summary": "Obtener una categoría específica",
+        "description": "Su función es obtener una categoría específica, sería una tienda registrada en la base de datos.",
+        "operationId": "get-api-categories-:id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/employees/:id": {
+      "get": {
+        "tags": [
+          "Empleados"
+        ],
+        "summary": "Obtener un empleado específico",
+        "description": "Su función es obtener un empleado específico por medio del Id.",
+        "operationId": "get-api-employees-:id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/costumer": {
+      "get": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Obtener los clientes",
+        "description": "Su función es obtener todos los clientes registrados en la base de datos.",
+        "operationId": "get-api-customer",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Actualizar un cliente",
+        "description": "Su función es actualizar los datos de un cliente en específico por medio del Id.",
+        "operationId": "put-api-customer",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "department",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_costumer_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Eliminar una cliente",
+        "description": "Su función es eliminar un cliente específico por medio del Id.",
+        "operationId": "delete-api-customer",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/costumer/:id": {
+      "get": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Obtener un cliente específico",
+        "description": "Su función es obtener un cliente específico por medio del Id.",
+        "operationId": "get-api-costumer-:id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/registerCostumer": {
+      "post": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Registrar un nuevo cliente",
+        "description": "Su función es registrar un nuevo cliente.",
+        "operationId": "post-api-registerCostumer",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "password",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "deparment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_registerCostumer_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/subCategory": {
+      "get": {
+        "tags": [
+          "SubCategorías"
+        ],
+        "summary": "Obtener todas las subcategorías",
+        "description": "Su función es obtener todas las subcategorías que son las categorías de los productos de la base de datos.",
+        "operationId": "get-api-subCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "SubCategorías"
+        ],
+        "summary": "Actualizar una categoría",
+        "description": "Su función es actualizar una categoría específica por medio del Id.",
+        "operationId": "put-api-subCategory",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_subCategory_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "SubCategorías"
+        ],
+        "summary": "Crear una nueva subcategoría",
+        "description": "Su función es crear una nueva subcategoría, se refiere a la categoría de un producto.",
+        "operationId": "post-api-subCategory",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_subCategory_body_1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "SubCategorías"
+        ],
+        "summary": "Eliminar una subcategoría",
+        "description": "Su función es eliminar una subcategoría específica.",
+        "operationId": "delete-api-subCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/Products": {
+      "get": {
+        "tags": [
+          "Productos"
+        ],
+        "summary": "Obtener todos los productos",
+        "description": "Su función es obtener todos los productos de todas las categorías de la base de datos.",
+        "operationId": "get-api-products",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Productos"
+        ],
+        "summary": "Actualizar un producto",
+        "description": "Su función es actualizar un producto por medio del Id.",
+        "operationId": "put-api-Products",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stock",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "price",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subCategoryId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "image",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "otherFields",
+            "in": "query",
+            "description": "Este campo contiene información única del producto, ya que pueden variar; por ejemplo: Talla, Tamaño, etc.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_Products_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Productos"
+        ],
+        "summary": "Registrar un nuevo producto",
+        "description": "Su función es registrar un nuevo producto en la base de datos.",
+        "operationId": "post-api-Products",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stock",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "price",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subCategoryId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "image",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "otherFields",
+            "in": "query",
+            "description": "Este campo contiene información única del producto, ya que pueden variar; por ejemplo: Talla, Tamaño, etc.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_Products_body_1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Productos"
+        ],
+        "summary": "Eliminar un producto",
+        "description": "Su función es eliminar un producto de la base de datos, por medio del Id.",
+        "operationId": "delete-api-Products",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/Products/:id": {
+      "get": {
+        "tags": [
+          "Productos"
+        ],
+        "summary": "Obtener un producto específico",
+        "description": "Su función es obtener un producto específico por medio del Id.",
+        "operationId": "get-api-Products-:id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/orderDetail": {
+      "get": {
+        "tags": [
+          "Detalle de orden"
+        ],
+        "summary": "Obtener los carritos de compras",
+        "description": "SU función es obtener todos los carritos de compras realizados por los usuarios, que están registrados en la base de datos.",
+        "operationId": "get-api-orderDetail",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/orderDetail/add": {
+      "post": {
+        "tags": [
+          "Detalle de orden"
+        ],
+        "summary": "Agregar un producto la carrito de compras",
+        "description": "Su función es agregar un nuevo producto al carrito de usuario.",
+        "operationId": "post-api-orderDetail-add",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productoName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "unitPrice",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "image",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "quantity",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "discount",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customDesign",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "totalPrice",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/orderDetail_add_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/orderDetail/:customerId": {
+      "get": {
+        "tags": [
+          "Detalle de orden"
+        ],
+        "summary": "Obtener un carrito específico",
+        "description": "Su función es obtenre un producto específico por medio del Id del Cliente, es el carrito de cada Usuario dentro de la base de datos.",
+        "operationId": "get-api-orderDetails-:customerId",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/orderDetail/remove": {
+      "delete": {
+        "tags": [
+          "Detalle de orden"
+        ],
+        "summary": "Eliminar un producto del carrito de compra",
+        "description": "Su función es eliminar un producto del carrito del Usuario/Cliente.",
+        "operationId": "delete-api-orderDetail-remove",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "productId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/orderDetail/clear": {
+      "delete": {
+        "tags": [
+          "Detalle de orden"
+        ],
+        "summary": "Limpiar el carrito de compras",
+        "description": "Su función es limpiar el carrito de compras del Usuario/Cliente.",
+        "operationId": "delete-api-orderDetail-clear",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/advertisements": {
+      "get": {
+        "tags": [
+          "Eventos"
+        ],
+        "summary": "Obtener todos los eventos",
+        "description": "Su función es obtener todos los eventos registrados en la base de datos.",
+        "operationId": "get-api-advertisements",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Eventos"
+        ],
+        "summary": "Actualizar un evento",
+        "description": "Su función es actualizar un evento",
+        "operationId": "put-api-advertisements",
+        "parameters": [
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "image",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "otherFields",
+            "in": "query",
+            "description": "Este campo contiene propiedas propias o distintas de los eventos.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_advertisements_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Eventos"
+        ],
+        "summary": "Registrar un nuevo evento",
+        "operationId": "post-api-advertisements",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Eventos"
+        ],
+        "summary": "Eliminar un evento",
+        "description": "Su función es eliminar un evento de la base de datos.",
+        "operationId": "delete-api-advertisements",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/advertisements/:id/toggle-status": {
+      "patch": {
+        "tags": [
+          "Eventos"
+        ],
+        "summary": "Cambiar el estado del evento",
+        "description": "Su función es cambiar o actualizar el estado de un evento registrado en la base de datos.",
+        "operationId": "patch-api-advertisements-:id-toggle-status",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/orders": {
+      "get": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Obtener todas los pedidos",
+        "description": "Su función es obtener todas los pedidos/ordenes registrados dentro de la base de datos.",
+        "operationId": "get-api-orders",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Actualizar un pedido",
+        "description": "Su función es actualizar un pedido dentro de la base de datos por medio del Id.",
+        "operationId": "put-api-orders",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderDetails",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "total",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "shippingAddress",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_orders_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Registrar un pedido",
+        "description": "Su función es registrar un pedido dentro de la base de datos.",
+        "operationId": "post-api-orders",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderDetails",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "total",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "shippingAddress",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/api_orders_body_1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Eliminar un pedido",
+        "description": "Su función es eliminar el pedido de un cliente, por medio de su Id.",
+        "operationId": "delete-api-orders",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/orders/:id": {
+      "get": {
+        "tags": [
+          "Pedidos"
+        ],
+        "summary": "Obtener una orden específica",
+        "description": "Su función es obtener un pedido específico por medio del Id.",
+        "operationId": "get-api-order-:id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/createOrderFromCart/create-from-cart": {
+      "post": {
+        "tags": [
+          "Pedido desde carrito de compra"
+        ],
+        "summary": "Crear un pedido desde el carrito de compras",
+        "description": "Su función es crear un pedido desde el carrito de compras, es decir crearlo a partir de lo que el usuario hay Schema: type: object properties: id: type: integer format: int64 guardado en el carrito previamente.",
+        "operationId": "post-api-createOrderFromCart-create-from-cart",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orderDetails",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "total",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "shippingAddress",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createOrderFromCart_createfromcart_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Advertisements": {
+        "title": "Advertisements",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "r7qak69gyblxw"
+            }
+          },
+          "status": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "lzmbozec3kr9x"
+            }
+          },
+          "title": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "3uc89hy5dx3kf"
+            }
+          },
+          "image": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "rok4atrc89fig"
+            }
+          }
+        }
+      },
+      "Category": {
+        "title": "Category",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "1uab6a6i5xm05"
+            }
+          },
+          "category": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "x77xxeyz8nxad"
+            }
+          },
+          "image": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "iz28hk0vp2dp5"
+            }
+          },
+          "isActive": {
+            "type": "boolean",
+            "x-stoplight": {
+              "id": "9b1mlbyw023q3"
+            }
+          }
+        }
+      },
+      "Costumer": {
+        "title": "Costumer",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "ikv1wr86t0t4n"
+            }
+          },
+          "email": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "ujlfnun7oo7ap"
+            }
+          },
+          "password": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "jm7laxzrvjoxs"
+            }
+          },
+          "address": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "lj0musby9hheu"
+            }
+          }
+        }
+      },
+      "Employee": {
+        "title": "Employee",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "howvey3dq7393"
+            }
+          },
+          "email": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "huq4nmqi0d83m"
+            }
+          },
+          "password": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "n656s2obmo6va"
+            }
+          },
+          "image": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "u6gdaswoippqi"
+            }
+          }
+        }
+      },
+      "OrderDetail-Item": {
+        "title": "OrderDetail-Item",
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string"
+          },
+          "productName": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "355cm54jxpdag"
+            }
+          },
+          "unitPrice": {
+            "type": "number",
+            "x-stoplight": {
+              "id": "60571klqeg7ee"
+            }
+          },
+          "image": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "gwsbnk16x2qpf"
+            }
+          },
+          "quantity": {
+            "type": "number",
+            "x-stoplight": {
+              "id": "95byijp2z26iz"
+            }
+          },
+          "customDesign": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "yonls5f8d5ii1"
+            }
+          },
+          "totalPrice": {
+            "type": "number",
+            "x-stoplight": {
+              "id": "szsgje33z3n6b"
+            }
+          }
+        }
+      },
+      "OrderDetail": {
+        "title": "OrderDetail",
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "x-stoplight": {
+              "id": "d0oojbu0hrgjl"
+            },
+            "items": {}
+          },
+          "totalCartPrice": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "ek7ep7ajsy40f"
+            }
+          }
+        }
+      },
+      "Orders-item": {
+        "title": "Orders",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "productId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "jdu2zknnr0lx1"
+            }
+          },
+          "productName": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "mox5r7k88tfwk"
+            }
+          },
+          "unitPrice": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "cfvrs8wyvxmxb"
+            }
+          },
+          "image": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "i6tw9tfenxhn6"
+            }
+          },
+          "quantity": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "lavdlmvxe0aaa"
+            }
+          },
+          "totalPrice": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "darxu00ioplpt"
+            }
+          },
+          "discount": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "vvrwn052n0z3w"
+            }
+          },
+          "customDesign": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "qu69cj8tvlbg7"
+            }
+          }
+        }
+      },
+      "ShippingAddress": {
+        "title": "ShippingAddress",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "k8gjz8rcimaql"
+            }
+          },
+          "city": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "5yrq3laxq0zhq"
+            }
+          }
+        }
+      },
+      "Orders": {
+        "title": "Orders",
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "yoihyxplg3yvv"
+            }
+          },
+          "orderDetails": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "93j12ya1ignzk"
+            }
+          },
+          "total": {
+            "type": "number",
+            "x-stoplight": {
+              "id": "o2lmpwkq1nzuu"
+            }
+          },
+          "status": {
+            "type": "boolean",
+            "x-stoplight": {
+              "id": "lo21crpdmklku"
+            }
+          },
+          "shippingAddress": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "d1p1hjpzoj3ot"
+            }
+          }
+        }
+      },
+      "Products": {
+        "title": "Products",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "d4v3e1iddlvre"
+            }
+          },
+          "description": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "tzrmh0hch6a5m"
+            }
+          },
+          "stock": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "j7w90rea9kzm1"
+            }
+          },
+          "price": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "zqubp962ow2z0"
+            }
+          },
+          "image": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "clqt6tq8n66vz"
+            }
+          },
+          "categoryId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "9zyddzeksh29m"
+            }
+          },
+          "subCategoryId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "zprtfa7xa059s"
+            }
+          }
+        }
+      },
+      "SubCategory": {
+        "title": "SubCategory",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "km36qorwbx6lj"
+            }
+          },
+          "categoryId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "6djtnho4h46jj"
+            }
+          },
+          "description": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "7adyqi136vzto"
+            }
+          }
+        }
+      },
+      "api_login_body": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "8hlkjtpfpsump"
+            }
+          },
+          "password": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "i3klbnpdjqsmk"
+            }
+          }
+        }
+      },
+      "recoveryPassword_requestCode_body": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "h8stbh4ablben"
+            }
+          }
+        }
+      },
+      "recoveryPassword_verifyCode_body": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "xkkohvzeekyo1"
+            }
+          }
+        }
+      },
+      "recoveryPassword_newPassword_body": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "da9cjpd12obaa"
+            }
+          }
+        }
+      },
+      "api_employees_body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "sn7m354pjqwe5"
+            }
+          },
+          "email": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "0076crsj3eeu8"
+            }
+          },
+          "password": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "uhev3vn27ax30"
+            }
+          }
+        }
+      },
+      "api_employees_body_1": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "uch776n7j2cis"
+            }
+          },
+          "email": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "m5w43u5euh6wm"
+            }
+          },
+          "password": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "dv1n40gdxs5sa"
+            }
+          }
+        }
+      },
+      "api_registerEmployee_body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "1uv1mszw3bzsm"
+            }
+          },
+          "email": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "fun9qo79wl5oo"
+            }
+          },
+          "password": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "z0ld8da42vxdc"
+            }
+          }
+        }
+      },
+      "api_categories_body": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "zdzy68bk17356"
+            }
+          },
+          "description": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "l4cxb8tejc9np"
+            }
+          },
+          "isActive": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "ftt4ahv1v4pod"
+            }
+          },
+          "image": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "h7n7pphreb36g"
+            }
+          }
+        }
+      },
+      "api_costumer_body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "uleamzmpjbxey"
+            }
+          },
+          "email": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "ynldb5pdo03p1"
+            }
+          },
+          "password": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "w1mj1c9c4hct1"
+            }
+          },
+          "department": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "xvkrb27sx5zxe"
+            }
+          }
+        }
+      },
+      "api_registerCostumer_body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "eowo8r8yxktrt"
+            }
+          },
+          "email": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "9xw63p5ljpdd8"
+            }
+          },
+          "password": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "0sdsmy1lp0hug"
+            }
+          },
+          "department": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "j4moyqye99qu5"
+            }
+          },
+          "address": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "eg8hykymqmxse"
+            }
+          }
+        }
+      },
+      "api_subCategory_body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "bihvojgik58gj"
+            }
+          },
+          "description": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "y0qgs6n31j06n"
+            }
+          },
+          "categoryId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "yxi5i0vrwge8r"
+            }
+          }
+        }
+      },
+      "api_subCategory_body_1": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "bihvojgik58gj"
+            }
+          },
+          "description": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "y0qgs6n31j06n"
+            }
+          },
+          "categoryId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "yxi5i0vrwge8r"
+            }
+          }
+        }
+      },
+      "api_Products_body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "kyc7nxy47sgjl"
+            }
+          },
+          "description": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "68fljcyov9rc9"
+            }
+          },
+          "stock": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "ea9bpijkulenb"
+            }
+          },
+          "price": {
+            "type": "number",
+            "x-stoplight": {
+              "id": "3wvtgyp1ko80m"
+            }
+          },
+          "categoryId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "v0nslzolzcf2z"
+            }
+          },
+          "subCategoryId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "mnmwz46kw882x"
+            }
+          },
+          "image": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "a4dk1o7d9iyo8"
+            }
+          },
+          "otherFields": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "sek9yh7xrn8z9"
+            }
+          }
+        }
+      },
+      "api_Products_body_1": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "kyc7nxy47sgjl"
+            }
+          },
+          "description": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "68fljcyov9rc9"
+            }
+          },
+          "stock": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "ea9bpijkulenb"
+            }
+          },
+          "price": {
+            "type": "number",
+            "x-stoplight": {
+              "id": "3wvtgyp1ko80m"
+            }
+          },
+          "categoryId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "v0nslzolzcf2z"
+            }
+          },
+          "subCategoryId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "mnmwz46kw882x"
+            }
+          },
+          "image": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "a4dk1o7d9iyo8"
+            }
+          },
+          "otherFields": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "sek9yh7xrn8z9"
+            }
+          }
+        }
+      },
+      "orderDetail_add_body": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "xc802v9iogzpj"
+            }
+          },
+          "productoName": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "1fyufcbxk6dyg"
+            }
+          },
+          "unitPrice": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "iyovanmrcvxce"
+            }
+          },
+          "image": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "m9q4fh0bar8f6"
+            }
+          },
+          "quantity": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "v8o9ytsr6b16a"
+            }
+          },
+          "discount": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "6noxghwevz3hb"
+            }
+          },
+          "customDesign": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "nbuc7c7j9fy6c"
+            }
+          },
+          "totalPrice": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "8shjt7ms96did"
+            }
+          }
+        }
+      },
+      "api_advertisements_body": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "muhtqdzv3b7cd"
+            }
+          },
+          "status": {
+            "type": "boolean",
+            "x-stoplight": {
+              "id": "149gc22myfekh"
+            }
+          },
+          "title": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "n3bqpgvivl5vv"
+            }
+          },
+          "image": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "3n2eo01jj5jjh"
+            }
+          },
+          "otherFields": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "zellbbwm8ntut"
+            }
+          }
+        }
+      },
+      "api_orders_body": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "3shd3ug3casoi"
+            }
+          },
+          "categoryId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "2g0ub6mt3vqhq"
+            }
+          },
+          "orderDetails": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "pt3znbmh4qh01"
+            }
+          },
+          "total": {
+            "type": "number",
+            "x-stoplight": {
+              "id": "fogb6r8baq3cr"
+            }
+          },
+          "status": {
+            "type": "boolean",
+            "x-stoplight": {
+              "id": "0re6oyfk2ll0g"
+            }
+          },
+          "shippingAddress": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "js5bfrja39jom"
+            }
+          },
+          "id": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "6f3qkubu8ws4s"
+            }
+          }
+        }
+      },
+      "api_orders_body_1": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "3shd3ug3casoi"
+            }
+          },
+          "categoryId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "2g0ub6mt3vqhq"
+            }
+          },
+          "orderDetails": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "pt3znbmh4qh01"
+            }
+          },
+          "total": {
+            "type": "number",
+            "x-stoplight": {
+              "id": "fogb6r8baq3cr"
+            }
+          },
+          "status": {
+            "type": "boolean",
+            "x-stoplight": {
+              "id": "0re6oyfk2ll0g"
+            }
+          },
+          "shippingAddress": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "js5bfrja39jom"
+            }
+          }
+        }
+      },
+      "createOrderFromCart_createfromcart_body": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "3shd3ug3casoi"
+            }
+          },
+          "categoryId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "2g0ub6mt3vqhq"
+            }
+          },
+          "orderDetails": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "pt3znbmh4qh01"
+            }
+          },
+          "total": {
+            "type": "number",
+            "x-stoplight": {
+              "id": "fogb6r8baq3cr"
+            }
+          },
+          "status": {
+            "type": "boolean",
+            "x-stoplight": {
+              "id": "0re6oyfk2ll0g"
+            }
+          },
+          "shippingAddress": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "js5bfrja39jom"
+            }
+          }
+        }
+      }
+    },
+    "responses": {}
+  }
+}
