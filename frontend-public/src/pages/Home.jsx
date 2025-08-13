@@ -195,7 +195,7 @@ const Home = () => {
     flex: 2,
     height: "400px",
     position: "relative",
-    backgroundColor: "#fff",
+    
     borderRadius: "12px",
     top: "-20px",    // sube 20px
     left: "-80px"     // mueve a la derecha 10px

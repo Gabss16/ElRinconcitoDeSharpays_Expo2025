@@ -176,6 +176,7 @@
     margin: 0;
   }
   
+  
   /* Responsive Design */
   @media (max-width: 1024px) {
     .products-grid-home {
