@@ -175,6 +175,8 @@ const TShirtDesigner = () => {
     [canvas, saveState]
   );
 
+  
+
   const handleDeleteDesign = useCallback(() => {
     if (canvas) {
       const obj = canvas.getActiveObject();

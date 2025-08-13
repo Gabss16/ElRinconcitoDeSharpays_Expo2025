@@ -31,20 +31,23 @@ const DesignControls = ({
     }
 
     try {
+      // 🔹 Generamos la imagen final (base64)
       const finalImage = await exportDesign();
 
+      // 🔹 Creamos un producto personalizado temporal
       const customProduct = {
-        _id: `custom-${Date.now()}`,
+        _id: `custom-${Date.now()}`,  // id temporal
         name: product?.name || "Camiseta Personalizada",
         price: product?.price || 15.99,
-        image: finalImage,
-        customDesign: finalImage,
+        image: finalImage,            // base64
+        customDesign: finalImage,     // guardamos base64 para el hook
         description: product?.description || "Diseño único creado en el editor",
         size: null,
         flavor: null,
+        isCustom: true,               // marca producto como personalizado
       };
 
-      addToCart(customProduct, 1);
+      addToCart(customProduct, 1); // 🔹 Guardamos en el carrito
       alert("✅ Diseño agregado al carrito");
     } catch (err) {
       console.error("Error al exportar el diseño:", err);
