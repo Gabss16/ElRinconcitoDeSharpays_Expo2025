@@ -23,7 +23,7 @@ const TShirtDesigner = () => {
   // Guardar estado en historial
   const saveState = useCallback(() => {
     if (!canvas) return;
-    
+
     const state = JSON.stringify(canvas.toJSON());
     const newHistory = history.slice(0, historyIndex + 1);
     newHistory.push(state);
@@ -79,9 +79,9 @@ const TShirtDesigner = () => {
     fabricCanvas.on('object:modified', (e) => {
       const obj = e.target;
       let left = obj.left,
-          top = obj.top,
-          maxLeft = fabricCanvas.getWidth() - obj.getScaledWidth(),
-          maxTop = fabricCanvas.getHeight() - obj.getScaledHeight();
+        top = obj.top,
+        maxLeft = fabricCanvas.getWidth() - obj.getScaledWidth(),
+        maxTop = fabricCanvas.getHeight() - obj.getScaledHeight();
 
       const newLeft = Math.min(Math.max(left, 0), maxLeft);
       const newTop = Math.min(Math.max(top, 0), maxTop);
@@ -91,7 +91,7 @@ const TShirtDesigner = () => {
         obj.setCoords();
         fabricCanvas.renderAll();
       }
-      
+
       saveState(); // Guardar estado después de modificación
     });
 
@@ -146,11 +146,11 @@ const TShirtDesigner = () => {
 
               canvas.add(fabricImage);
               canvas.setActiveObject(fabricImage);
-              
+
               // Usar la solución que ya funcionaba en tu código original
               canvas.remove(fabricImage);
               canvas.add(fabricImage);
-              
+
               canvas.renderAll();
               saveState();
               setIsLoading(false);
@@ -167,7 +167,7 @@ const TShirtDesigner = () => {
             setIsLoading(false);
           };
         };
-        
+
         reader.readAsDataURL(file);
         e.target.value = '';
       } catch (error) {
@@ -216,7 +216,7 @@ const TShirtDesigner = () => {
   return (
     <div className="app-container">
       {isLoading && <LoadingSpinner />}
-      
+
       {/* Header con camisetas y controles de texto lado a lado */}
       <div className="header-section">
         {/* Camisetas a la izquierda */}
@@ -226,7 +226,7 @@ const TShirtDesigner = () => {
             viewSide={viewSide}
             canvasRef={canvasRef}
           />
-         
+
         </div>
 
         {/* Controles de texto a la derecha */}
@@ -252,11 +252,13 @@ const TShirtDesigner = () => {
               hasSelection={canvas?.getActiveObject() !== null}
               fileInputRef={fileInputRef}
               isLoading={isLoading}
+              fabricCanvas={canvas}
             />
+
           </div>
-          
+
           {/* Instrucciones celestes debajo de los controles */}
-      
+
         </div>
       </div>
     </div>

@@ -1,20 +1,25 @@
 import React from "react";
 import "../components/productCardItem.css";
 import useDataShoppingCart from "./shoppingCart/hooks/useDataShoppingCart";
-import trashIcon from "../assets/trashIcon.png"
+import trashIcon from "../assets/trashIcon.png";
 
 const ProductCartItem = ({ item }) => {
   const { updateQuantity, removeFromCart } = useDataShoppingCart();
 
   const { product, quantity } = item;
-  const { _id, name, price, image, description, size, flavor } = product;
+  const { _id, name, price, image, description, size, flavor, duaData } = product;
 
-
+  // Determinar la imagen a mostrar
+  const productImage =
+    image ||
+    duaData?.carnetImage ||
+    duaData?.fotoImage ||
+    "https://via.placeholder.com/160x200?text=Sin+Foto";
 
   return (
     <div className="cart-card">
       <div className="cart-image">
-        <img src={image} alt={name} />
+        <img src={productImage} alt={name} />
       </div>
 
       <div className="cart-info">
