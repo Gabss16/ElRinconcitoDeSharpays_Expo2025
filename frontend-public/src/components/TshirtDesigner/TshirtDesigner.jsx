@@ -243,7 +243,6 @@ const TShirtDesigner = () => {
 
       {/* Content section solo con controles de diseño abajo */}
       <div className="content-section">
-        <div className="design-controls-bottom">
           <div className="controls-row">
             <ColorPicker color={tshirtColor} onChange={setTshirtColor} />
             <DesignControls
@@ -256,10 +255,6 @@ const TShirtDesigner = () => {
             />
 
           </div>
-
-          {/* Instrucciones celestes debajo de los controles */}
-
-        </div>
       </div>
     </div>
   );
