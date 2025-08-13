@@ -255,13 +255,6 @@ const TShirtDesigner = () => {
             />
 
           </div>
-<<<<<<< HEAD
-
-          {/* Instrucciones celestes debajo de los controles */}
-
-        </div>
-=======
->>>>>>> German
       </div>
     </div>
   );
