@@ -5,7 +5,7 @@ import useDataShoppingCart from "../../components/shoppingCart/hooks/useDataShop
 import "../../styles/CamisaDetail.css";
 import SuccessAlert from "../../components/SuccessAlert.jsx";
 
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const CamisaDetail = ({ product }) => {
   const navigate = useNavigate();
@@ -25,6 +25,11 @@ const CamisaDetail = ({ product }) => {
     SuccessAlert("Se agregó al carrito");
     addToCart(productWithSize, quantity);
     navigate("/carrito");
+  };
+
+  // Nueva función para redirigir a la página de personalización
+  const handleCustomizeShirt = () => {
+    navigate("/TshirtDesign");
   };
 
   const handleMouseMove = (e) => {
@@ -79,9 +84,14 @@ const CamisaDetail = ({ product }) => {
           onChange={handleQuantityChange}
         />
 
-        <button className="add-cart-btn" onClick={handleAddToCart}>
-          Añadir al carrito
-        </button>
+        {/* Contenedor para los botones */}
+        <div className="buttons-container">
+   
+          
+          <button className="customize-btn" onClick={handleCustomizeShirt}>
+            Personaliza tu camisa
+          </button>
+        </div>
       </div>
     </div>
   );
