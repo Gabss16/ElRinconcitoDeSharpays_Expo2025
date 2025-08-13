@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [authToken, setAuthToken] = useState(null);
   const [loading, setLoading] = useState(false);
-  const API_URL = "http://ip-pc:4000/api";
+  const API_URL = "http://10.10.1.172:4000/api";
 
   useEffect(() => {
   const loadToken = async () => {
@@ -44,12 +44,13 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch(`${API_URL}/login/private`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
         credentials: "include",
       });
+
 
       const data = await response.json();
 
