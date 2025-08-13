@@ -1,6 +1,7 @@
 import BannerPrincipal from "../components/bannerPrincipal.jsx";
 import CarouselCard from "../components/carouselCard.jsx";
 import ScrollAnimation from "../components/ScrollAnimation.jsx";
+import CircularGallery from "../components/reactBits/CircularGallery.jsx";
 import { Link } from "react-router-dom";
 const HomePublic = () => {
     return (
@@ -18,7 +19,7 @@ const HomePublic = () => {
                             a perritos en situacion de calle</p>
                     </div>
                 </div>
-                <CarouselCard />
+                <CircularGallery />
                 <ScrollAnimation/>
             </div>
         </>
