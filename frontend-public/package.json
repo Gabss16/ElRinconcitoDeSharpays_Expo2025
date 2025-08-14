@@ -26,6 +26,7 @@
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.22.2",
     "swiper": "^11.2.10",
+    "three": "^0.179.1",
     "vanilla-tilt": "^1.8.1"
   },
   "devDependencies": {
