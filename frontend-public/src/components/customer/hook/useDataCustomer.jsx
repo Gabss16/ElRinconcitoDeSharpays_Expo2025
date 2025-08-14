@@ -13,7 +13,7 @@ const useDataCustomer = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [department, setDepartment] = useState("");
-  const [address, setAddress] = useState("");
+
 
   // Obtener todos los clientes
   const fetchCustomers = async () => {
@@ -29,7 +29,7 @@ const useDataCustomer = () => {
     }
   };
 
-  const registerCustomer = async ({ name, email, password, department, address }) => {
+  const registerCustomer = async ({ name, email, password, department }) => {
     try {
       const res = await fetch("http://localhost:4000/api/registerCostumer", {
         method: "POST",
@@ -37,7 +37,7 @@ const useDataCustomer = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, password, department, address }),
+        body: JSON.stringify({ name, email, password, department }),
       });
 
       const data = await res.json();
@@ -68,7 +68,6 @@ const useDataCustomer = () => {
       setName(data.name);
       setEmail(data.email);
       setDepartment(data.department);
-      setAddress(data.address);
       setPassword("");
     } catch (error) {
       console.error("Error fetching customer by id", error);
@@ -125,7 +124,6 @@ const useDataCustomer = () => {
     setEmail("");
     setPassword("");
     setDepartment("");
-    setAddress("");
   };
 
   return {
@@ -141,8 +139,6 @@ const useDataCustomer = () => {
     setPassword,
     department,
     setDepartment,
-    address,
-    setAddress,
     fetchCustomers,
     fetchCustomerById,
     registerCustomer,

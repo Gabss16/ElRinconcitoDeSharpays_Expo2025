@@ -36,7 +36,6 @@ const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [address, setAddress] = useState("");
   const [department, setDepartment] = useState("");
 
   const handleSubmit = async (e) => {
@@ -49,7 +48,7 @@ const Register = () => {
     } else if (password.length <= 8) {
       ErrorAlert("La contraseña debe ser mínimo de 8 carácteres");
     } else {
-      const success = await registerCustomer({ name, email, password, department, address });
+      const success = await registerCustomer({ name, email, password, department });
       if (success) {
         SuccessAlert("Registro exitoso");
         navigate("/login");
@@ -75,7 +74,7 @@ const Register = () => {
               <>
                 <LogoLogin textStyle={"text-white fw-bold fs-5 pt-2 w-50"} />
 
-                <form className="register-content d-flex justify-content-center align-items-center flex-column mt-4 w-100" onSubmit={handleSubmit}>
+                <form className="register-content d-flex justify-content-center align-items-center flex-column mt-5 pt-4 w-100" onSubmit={handleSubmit}>
 
                   <CustomInput
                     label={"Nombre"}
@@ -99,13 +98,6 @@ const Register = () => {
                       const selected = depa.find((d) => d.value === e.target.value);
                       setDepartment(selected?.label);
                     }}
-                  />
-                  <CustomInput
-                    label={"Dirección"}
-                    placeholder={"Dirección del lugar de entrega"}
-                    name={"direccion"}
-                    type={"textarea"}
-                    onChange={(e) => setAddress(e.target.value)}
                   />
 
                   <CustomInput
