@@ -54,7 +54,7 @@ export default function Login() {
     {
       const success = await login(email, password);
       if (success) {
-        navigation.replace("TabNavigator");
+        navigation.replace("Home");
       }
     }
   };

@@ -7,34 +7,78 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  StatusBar
+  StatusBar,
+  Alert
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../context/AuthContext';
+import { useEmployee } from '../hooks/profile/useEmployee'; // Ajusta la ruta según tu proyecto
 
 export default function Home() {
+  const { logout } = React.useContext(AuthContext);
+  const { employee } = useEmployee();
+  const navigation = useNavigation();
+
+  const handleLogout = () => {
+    Alert.alert(
+      "Cerrar sesión",
+      "¿Seguro que quieres cerrar sesión?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Sí",
+          onPress: async () => {
+            await logout();
+            navigation.replace("Login"); // Ajusta el nombre de la pantalla de login
+          }
+        }
+      ]
+    );
+  };
+
   return (
     <ScrollView style={styles.container}>
       <StatusBar barStyle="dark-content" />
 
-      {/* Search and Profile */}
+      {/* Top Bar con perfil y logout */}
+      <View style={styles.topBar}>
+        <TouchableOpacity onPress={handleLogout} style={{ padding: 5 }}>
+          <FontAwesome name="sign-out" size={26} color="#FE3F8D" />
+        </TouchableOpacity>
+
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Image
+            source={require('../../assets/SharpayLogo.png')}
+            style={styles.appLogo}
+            resizeMode="contain"
+          />
+        </View>
+
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <Image
+            source={{ uri: employee?.image || 'https://via.placeholder.com/150' }} // URL de Cloudinary o placeholder
+            style={styles.topProfileImage}
+            defaultSource={require('../../assets/placeholder.png')}
+          />
+        </TouchableOpacity>
+      </View>
+
+      {/* Search */}
       <View style={styles.searchContainer}>
         <FontAwesome name="search" size={18} color="#000" style={{ marginRight: 10 }} />
         <TextInput placeholder="Buscar" style={styles.searchInput} />
-        <Image
-          source={{ uri: 'https://randomuser.me/api/portraits/women/44.jpg' }}
-          style={styles.profileImage}
-        />
       </View>
 
       {/* Greeting Card */}
       <View style={styles.greetingCard}>
         <View style={{ flex: 1 }}>
           <Text style={styles.greetingText}>
-            <Text style={styles.bold}>Buenos dias! </Text>
-            <Text style={styles.highlight}>Gabriela</Text>
+            <Text style={styles.bold}>Buenos días! </Text>
+            <Text style={styles.highlight}>{employee?.name || 'Usuario'}</Text>
           </Text>
           <Text style={styles.subText}>Gestiona tus ordenes con confianza y claridad</Text>
-          <Text style={styles.pending}>12 ordenes pendientes el dia de hoy</Text>
+          <Text style={styles.pending}>12 ordenes pendientes el día de hoy</Text>
         </View>
         <Image
           source={require('../../assets/SharpayLogoWhite.png')}
@@ -116,6 +160,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 40
   },
+  appLogo: {
+    width: 100,
+    height: 50,
+    marginHorizontal: 10,
+  },  
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 15,
+    paddingHorizontal: 5,
+  },
+  topProfileImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -128,11 +189,6 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 14
-  },
-  profileImage: {
-    width: 30,
-    height: 30,
-    borderRadius: 50
   },
   greetingCard: {
     flexDirection: 'row',
