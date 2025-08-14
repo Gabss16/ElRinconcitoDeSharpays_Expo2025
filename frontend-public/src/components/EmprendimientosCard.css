@@ -6,10 +6,10 @@
   position: relative;
   width: 320px;
   height: 450px;
-  background: #232323;
+  background: #ffffff;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0px 16px 10px 5px rgba(0,0,0,0.1);
+  box-shadow: 0px 10px 0px 5px rgba(0,0,0,0.2);
 }
 
 .Emprendimientos-card-container .Emprendimientos-card:before{
@@ -70,7 +70,7 @@
   position: relative;
   font-weight: 600;
   letter-spacing: 1px;
-  color: #fff;
+  color: #000000;
   margin: 0;
 }
 
@@ -98,7 +98,7 @@
 }
 
 .Emprendimientos-card-container .Emprendimientos-card .Emprendimientos-contentBx .Emprendimientos-description p, .Emprendimientos-card-container .Emprendimientos-card .Emprendimientos-contentBx .color h3{
-  color: #fff;
+  color: #000000;
   font-weight: 300;
   font-size: 14px;
   text-transform: uppercase;
@@ -113,7 +113,7 @@
   line-height: 26px;
   font-size: 14px;
   display: inline-block;
-  color: #111;
+  color: #000000;
   background: #fff;
   margin: 0 5px;
   transition: 0.5s;
@@ -143,7 +143,7 @@
   margin-top: 10px;
   text-decoration: none;
   font-weight: 600;
-  color: #111;
+  color: #000000;
   opacity: 0;
   transform: translateY(50px);
   transition: 0.5s;

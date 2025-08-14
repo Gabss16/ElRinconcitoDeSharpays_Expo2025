@@ -72,10 +72,6 @@ const CostumerSchema = new Schema(
     department: {
       type: String,
       required: true,
-    },
-    address: {
-      type: String,
-      required: true,
     }
   },
   {

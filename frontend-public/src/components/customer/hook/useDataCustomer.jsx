@@ -13,7 +13,7 @@ const useDataCustomer = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [department, setDepartment] = useState("");
-  const [address, setAddress] = useState("");
+
 
   // Obtener todos los clientes
   const fetchCustomers = async () => {
@@ -38,7 +38,7 @@ const useDataCustomer = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, password, department, address }),
+        body: JSON.stringify({ name, email, password, department }),
       });
 
       const data = await res.json();
@@ -70,7 +70,6 @@ const useDataCustomer = () => {
       setName(data.name);
       setEmail(data.email);
       setDepartment(data.department);
-      setAddress(data.address);
       setPassword("");
     } catch (error) {
       console.error("Error fetching customer by id", error);
@@ -162,7 +161,6 @@ const updateCustomerDepartment = async (id, newDepartment) => {
     setEmail("");
     setPassword("");
     setDepartment("");
-    setAddress("");
   };
 
   // Retorno del hook

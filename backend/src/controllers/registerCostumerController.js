@@ -6,7 +6,7 @@ import { config } from "../config.js";
 const registerCostumerController = {};
 
 registerCostumerController.register = async (req, res) => {
-  const { name, email, password, department, address } = req.body;
+  const { name, email, password, department } = req.body;
 
   try {
     
@@ -24,7 +24,6 @@ registerCostumerController.register = async (req, res) => {
       email,
       password: passwordHash,
       department,
-      address
     });
 
     await newCostumer.save();
