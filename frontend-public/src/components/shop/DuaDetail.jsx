@@ -4,6 +4,7 @@ import Card3D from "./Card3D";
 import html2canvas from "html2canvas";
 import useDataShoppingCart from "../../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import SuccessAlert from "../../components/SuccessAlert.jsx";
+import ErrorAlert from "../../components/ErrorAlert.jsx";
 import { useNavigate } from "react-router-dom";
 
 const DuasDetail = ({ product }) => {
@@ -24,33 +25,65 @@ const DuasDetail = ({ product }) => {
   const carnetRef = useRef(null);
   const previewFoto = data.foto ? URL.createObjectURL(data.foto) : null;
 
+  // Subir imagen a Cloudinary
+  const uploadToCloudinary = async (base64Image) => {
+    if (!base64Image) return null;
+    try {
+      const formData = new FormData();
+      formData.append("file", base64Image);
+      formData.append("upload_preset", "preset_camisetas"); // tu preset real
+
+      const res = await fetch("https://api.cloudinary.com/v1_1/dqmol5thk/image/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const cloudData = await res.json();
+      return cloudData.secure_url || null;
+    } catch (err) {
+      console.error("Error subiendo imagen a Cloudinary:", err);
+      return null;
+    }
+  };
+
   const handleAddToCart = async () => {
     if (!data.nombre || !data.apellido) {
-      SuccessAlert("Completa los datos antes de continuar");
+      ErrorAlert("Completa los datos antes de continuar");
       return;
     }
 
-    let carnetImage = null;
-    let fotoImage = null;
+    let carnetImageUrl = null;
+    let fotoImageUrl = null;
 
-    // Convertir la card a imagen
+    // Generar imagen del carnet y subirla
     if (carnetRef.current) {
       const canvas = await html2canvas(carnetRef.current);
-      carnetImage = canvas.toDataURL();
+      const carnetImageBase64 = canvas.toDataURL();
+      carnetImageUrl = await uploadToCloudinary(carnetImageBase64);
     }
 
-    // Foto de usuario
+    // Subir foto del usuario si existe
     if (data.foto) {
-      fotoImage = previewFoto;
+      const fileReader = new FileReader();
+      const filePromise = new Promise((resolve) => {
+        fileReader.onload = async () => {
+          const uploadedUrl = await uploadToCloudinary(fileReader.result);
+          resolve(uploadedUrl);
+        };
+      });
+      fileReader.readAsDataURL(data.foto);
+      fotoImageUrl = await filePromise;
     }
 
     const productWithDetails = {
       ...product,
       duaData: {
         ...data,
-        carnetImage,
-        fotoImage
-      }
+        carnetImage: carnetImageUrl,
+        fotoImage: fotoImageUrl
+      },
+      customDesign: carnetImageUrl, 
+      image: carnetImageUrl 
     };
 
     SuccessAlert("DUA agregado al carrito");
