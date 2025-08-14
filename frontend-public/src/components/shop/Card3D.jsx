@@ -41,7 +41,7 @@ const Card3D = forwardRef(({ data }, ref) => {
 
       <div className="photo-section">
         <img
-          src={foto || 'https://via.placeholder.com/160x200?text=Sin+Foto'}
+          src={foto}
           alt="Foto del animal"
           className="profile-pic"
         />
@@ -50,7 +50,7 @@ const Card3D = forwardRef(({ data }, ref) => {
       <div className="info-section">
         <p><strong>Apellidos:</strong> {apellido}</p>
         <p><strong>Nombres:</strong> {nombre}</p>
-        <p><strong>Género:</strong> {genero} &nbsp;&nbsp; <strong>Salvadoreño por:</strong> {nacionalidad}</p>
+        <p><strong>Género:</strong> {genero} &nbsp;&nbsp; <strong>Nacionalidad:</strong> {nacionalidad}</p>
         <p><strong>Fecha y lugar de nacimiento:</strong> {nacimiento}</p>
         <p><strong>En caso de emergencia llamar a:</strong> {emergencia}</p>
       </div>
