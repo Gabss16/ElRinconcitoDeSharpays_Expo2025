@@ -146,7 +146,7 @@ const Home = () => {
 
 
 
-      <div style={{
+      <div className="bottom-home-container" style={{
   display: "flex",
   justifyContent: "center",
   alignItems: "flex-start",
@@ -198,7 +198,8 @@ const Home = () => {
     
     borderRadius: "12px",
     top: "-20px",    // sube 20px
-    left: "-80px"     // mueve a la derecha 10px
+    left: "-80px",     // mueve a la derecha 10px,
+    marginBottom: '10vh'
     
   }}>
     {loadingAds && <p>Cargando eventos...</p>}

@@ -5,19 +5,19 @@ import CircularGallery from "../components/reactBits/CircularGallery.jsx";
 import SuccessAlert from "../components/SuccessAlert.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
 import "../styles/checkOut.css";
+import useDataCustomer from "../components/customer/hook/useDataCustomer.jsx";
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
 
+  const {fetchCustomerById,name,email,department} = useDataCustomer();
+
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    firstName: name ||"",
     phone: "",
-    email: "",
-    municipality: "",
+    email: email || "",
+    municipality: department || "",
     houseNumber: "",
-    postalCode: "",
-    zipCode: "",
   });
 
   const [orderDetail, setOrderDetail] = useState(null);
@@ -26,6 +26,7 @@ const CheckoutPage = () => {
 
   useEffect(() => {
     const stored = localStorage.getItem("OrderDetail");
+
     if (!stored) {
       ErrorAlert("No hay ninguna orden activa.");
       setTimeout(() => navigate("/"), 3000);
@@ -194,7 +195,7 @@ const CheckoutPage = () => {
 
               <form onSubmit={handleSubmit} className="checkout-form">
                 {/* Campos completos como tenías */}
-                <div className="form-row">
+                <div className="form-group full-width">
                   <div className="form-group">
                     <input
                       type="text"
@@ -207,15 +208,7 @@ const CheckoutPage = () => {
                     />
                   </div>
                   <div className="form-group">
-                    <input
-                      type="text"
-                      name="lastName"
-                      placeholder="Segundo nombre"
-                      value={formData.lastName}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      required
-                    />
+                   
                   </div>
                 </div>
 
@@ -270,25 +263,10 @@ const CheckoutPage = () => {
 
                 <div className="form-row">
                   <div className="form-group">
-                    <input
-                      type="text"
-                      name="postalCode"
-                      placeholder="Código postal"
-                      value={formData.postalCode}
-                      onChange={handleInputChange}
-                      className="form-input"
-                      required
-                    />
+                    
                   </div>
                   <div className="form-group">
-                    <input
-                      type="text"
-                      name="zipCode"
-                      placeholder="ZIP/Postal Code"
-                      value={formData.zipCode}
-                      onChange={handleInputChange}
-                      className="form-input"
-                    />
+                    
                   </div>
                 </div>
 
