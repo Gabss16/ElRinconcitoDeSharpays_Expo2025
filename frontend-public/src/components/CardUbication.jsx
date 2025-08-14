@@ -10,25 +10,44 @@ export default function CardUbication() {
   const [newDepartment, setNewDepartment] = useState(""); // Para cambiar el departamento
   const [isEditable, setIsEditable] = useState(false); // Para permitir la edición
   const data = useDataCustomer();
-  const depa = Departments(); // Lista de departamentos
+  const depa = Departments(); // Lista de departamentos de la API
 
+  // Función para obtener el nombre del departamento por su código
+  const getDepartmentNameByCode = (code) => {
+    const dep = depa.find((department) => department.value === code);
+    return dep ? dep.label : "Sin ubicación";
+  };
+
+  // Obtener los datos del cliente cuando el usuario está logueado
   useEffect(() => {
     if (user?.id) {
       data.fetchCustomerById(user?.id);
     }
   }, [user?.id]);
 
+  // Actualizar el departamento cuando la data cambia
   useEffect(() => {
-    setDepartment(data.department || "Sin ubicación");
+    if (data.department) {
+      // Obtener el nombre del departamento desde la lista de departamentos
+      const departmentName = getDepartmentNameByCode(data.department);
+      setDepartment(departmentName);  // Guardar el nombre del departamento
+      setNewDepartment(data.department); // Guardar el código para actualizaciones
+    }
   }, [data.department]);
 
-  // Guardar el nuevo departamento en el backend
+  // Función para actualizar el departamento en el backend
   const handleUpdateDepartment = async () => {
+    if (!newDepartment || newDepartment === "") {
+      alert("Por favor selecciona un departamento.");
+      return;
+    }
+
     try {
       // Llamar a la API para actualizar el departamento
       const success = await data.updateCustomerDepartment(user.id, newDepartment);
       if (success) {
-        setDepartment(newDepartment); // Actualizamos el departamento localmente
+        const departmentName = getDepartmentNameByCode(newDepartment); // Mapear el nombre
+        setDepartment(departmentName); // Actualizamos el nombre del departamento localmente
         alert("Ubicación actualizada con éxito");
         setIsEditable(false); // Deshabilitamos la edición
       } else {
@@ -45,6 +64,7 @@ export default function CardUbication() {
     if (isEditable) {
       handleUpdateDepartment(); // Si está en modo edición, guardar el cambio
     } else {
+      setNewDepartment(department); // Inicializamos con el valor actual del departamento
       setIsEditable(true); // Activar modo edición
     }
   };
@@ -58,13 +78,13 @@ export default function CardUbication() {
           // Si está en modo edición, mostrar el select para cambiar el departamento
           <select
             className="card-ubication__input"
-            value={newDepartment || department}
+            value={newDepartment}
             onChange={(e) => setNewDepartment(e.target.value)} // Cambiar departamento
           >
             <option value="">Selecciona un departamento</option>
             {depa && depa.map((dep) => (
               <option key={dep.value} value={dep.value}>
-                {dep.label}
+                {dep.label} {/* Mostrar el nombre del departamento */}
               </option>
             ))}
           </select>
@@ -80,9 +100,13 @@ export default function CardUbication() {
         )}
       </div>
 
-      {/* Botón de editar/guardar desde CardPersonalInformation */}
       <div className="card-ubication__button-container">
-      
+        <button 
+          className="card-ubication__button"
+          onClick={toggleEdit}
+        >
+          {isEditable ? "Guardar" : "Editar"}
+        </button>
       </div>
     </div>
   );
