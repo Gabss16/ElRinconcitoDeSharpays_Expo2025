@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -11,11 +11,13 @@ import {
   Alert
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { AuthContext } from '../context/AuthContext'; // Ajusta ruta si es diferente
 import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../context/AuthContext';
+import { useEmployee } from '../hooks/profile/useEmployee'; // Ajusta la ruta según tu proyecto
 
 export default function Home() {
-  const { user, userImage, logout } = useContext(AuthContext);
+  const { logout } = React.useContext(AuthContext);
+  const { employee } = useEmployee();
   const navigation = useNavigation();
 
   const handleLogout = () => {
@@ -35,32 +37,16 @@ export default function Home() {
     );
   };
 
-  // Función para obtener la fuente de la imagen de perfil
-  const getProfileImageSource = () => {
-    if (userImage) {
-      // Si la imagen viene como URL completa
-      if (userImage.startsWith('http')) {
-        return { uri: userImage };
-      }
-      // Si la imagen viene como nombre de archivo del servidor
-      return { uri: `http://10.10.4.21:4000/uploads/${userImage}` };
-    }
-    // Imagen por defecto si no hay foto de perfil
-    return require('../../assets/placeholder.png');
-  };
-
   return (
     <ScrollView style={styles.container}>
       <StatusBar barStyle="dark-content" />
 
       {/* Top Bar con perfil y logout */}
       <View style={styles.topBar}>
-        {/* Logout */}
         <TouchableOpacity onPress={handleLogout} style={{ padding: 5 }}>
           <FontAwesome name="sign-out" size={26} color="#FE3F8D" />
         </TouchableOpacity>
 
-        {/* Contenedor del logo centrado */}
         <View style={{ flex: 1, alignItems: 'center' }}>
           <Image
             source={require('../../assets/SharpayLogo.png')}
@@ -69,15 +55,16 @@ export default function Home() {
           />
         </View>
 
-        {/* Foto de perfil dinámica */}
-        <Image
-          source={getProfileImageSource()}
-          style={styles.topProfileImage}
-          defaultSource={require('../../assets/placeholder.png')}
-        />
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <Image
+            source={{ uri: employee?.image || 'https://via.placeholder.com/150' }} // URL de Cloudinary o placeholder
+            style={styles.topProfileImage}
+            defaultSource={require('../../assets/placeholder.png')}
+          />
+        </TouchableOpacity>
       </View>
 
-      {/* Search and Profile */}
+      {/* Search */}
       <View style={styles.searchContainer}>
         <FontAwesome name="search" size={18} color="#000" style={{ marginRight: 10 }} />
         <TextInput placeholder="Buscar" style={styles.searchInput} />
@@ -88,7 +75,7 @@ export default function Home() {
         <View style={{ flex: 1 }}>
           <Text style={styles.greetingText}>
             <Text style={styles.bold}>Buenos días! </Text>
-            <Text style={styles.highlight}>{user || 'Usuario'}</Text>
+            <Text style={styles.highlight}>{employee?.name || 'Usuario'}</Text>
           </Text>
           <Text style={styles.subText}>Gestiona tus ordenes con confianza y claridad</Text>
           <Text style={styles.pending}>12 ordenes pendientes el día de hoy</Text>
@@ -173,11 +160,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 40
   },
-  signOut: {
-    width: 50,
-    height: 50,
-    padding: 5
-  },
   appLogo: {
     width: 100,
     height: 50,
@@ -207,11 +189,6 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 14
-  },
-  profileImage: {
-    width: 30,
-    height: 30,
-    borderRadius: 50
   },
   greetingCard: {
     flexDirection: 'row',

@@ -6,9 +6,8 @@ const AuthContext = createContext(null);
 export { AuthContext };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [userImage, setUserImage] = useState(null);
   const [authToken, setAuthToken] = useState(null);
+  const [userId, setUserId] = useState(null); // Solo id
   const [loading, setLoading] = useState(false);
   const API_URL = "http://10.10.4.21:4000/api";
 
@@ -16,18 +15,10 @@ export const AuthProvider = ({ children }) => {
     const loadStoredData = async () => {
       try {
         const token = await AsyncStorage.getItem("token");
-        const storedUser = await AsyncStorage.getItem("user");
-        const storedUserImage = await AsyncStorage.getItem("userImage");
-        
-        if (token && token !== 'undefined') {
-          setAuthToken(token);
-        }
-        if (storedUser && storedUser !== 'undefined') {
-          setUser(storedUser);
-        }
-        if (storedUserImage && storedUserImage !== 'undefined') {
-          setUserImage(storedUserImage);
-        }
+        const storedUserId = await AsyncStorage.getItem("userId");
+
+        if (token && token !== "undefined") setAuthToken(token);
+        if (storedUserId && storedUserId !== "undefined") setUserId(storedUserId);
       } catch (error) {
         console.error("Error loading stored data:", error);
       }
@@ -36,10 +27,9 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const clearSession = async () => {
-    await AsyncStorage.multiRemove(["token", "user", "userImage"]);
-    setUser(null);
-    setUserImage(null);
+    await AsyncStorage.multiRemove(["token", "userId"]);
     setAuthToken(null);
+    setUserId(null);
   };
 
   const logout = useCallback(async () => {
@@ -68,24 +58,16 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (response.ok) {
-        // Guardar token solo si existe
         if (data.token) {
           await AsyncStorage.setItem("token", data.token);
           setAuthToken(data.token);
         }
-        
-        // Guardar name (no userName) solo si existe y no es undefined
-        if (data.name && data.name !== undefined) {
-          await AsyncStorage.setItem("user", data.name);
-          setUser(data.name);
+
+        if (data.userId && data.userId !== undefined) {
+          await AsyncStorage.setItem("userId", String(data.userId));
+          setUserId(data.userId);
         }
-        
-        // Guardar la imagen de perfil si viene en la respuesta
-        if (data.image && data.image !== undefined) {
-          await AsyncStorage.setItem("userImage", data.image);
-          setUserImage(data.image);
-        }
-        
+
         console.log("Datos recibidos del servidor:", data);
         Alert.alert("Inicio de sesión exitoso");
         return true;
@@ -103,9 +85,8 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        user,
-        userImage,
         authToken,
+        userId,
         loading,
         login,
         logout,
