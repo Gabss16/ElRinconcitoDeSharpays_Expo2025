@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const LOCAL_IP = "192.168.1.1"; // Cambiar por tu IP
+const LOCAL_IP = "192.168.56.1"; // Cambiar por tu IP
 const API_HOST =
   Platform.OS === "android"
-    ? "http://10.0.2.2:4000"
+    ? "http://10.10.4.21:4000"
     : `http://${LOCAL_IP}:4000`;
 
 const API = `${API_HOST}/api/recoveryPassword`;
