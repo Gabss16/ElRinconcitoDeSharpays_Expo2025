@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useDataShoppingCart from "../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import ProductCartItem from "../components/productCardItem.jsx";
 import PaymentMethod from "../components/PaymentMethod.jsx";
-import CarouselCard from "../components/carouselCard.jsx";
+import CircularGallery from "../components/reactBits/CircularGallery.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import CheckoutPage from "./CheckOut.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
@@ -51,7 +51,7 @@ const ShoppingCartPage = () => {
   return (
     <div className="shopping-cart-page">
       <div className="carousel-wrapper">
-        <CarouselCard />
+        <CircularGallery />
       </div>
 
       <div className="cart-content">

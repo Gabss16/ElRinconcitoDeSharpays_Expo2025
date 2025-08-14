@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import CarouselCard from '../components/carouselCard.jsx';
+import CircularGallery from '../components/reactBits/CircularGallery.jsx';
 import SuccessAlert from '../components/SuccessAlert.jsx';
 import ErrorAlert from '../components/ErrorAlert.jsx';
 import '../styles/checkOut.css';
@@ -149,7 +149,7 @@ const handleSubmit = async (e) => {
   return (
     <div className="shopping-cart-page">
       <div className="carousel-wrapper">
-        <CarouselCard />
+        <CircularGallery />
       </div>
 
       <div className="cart-content">

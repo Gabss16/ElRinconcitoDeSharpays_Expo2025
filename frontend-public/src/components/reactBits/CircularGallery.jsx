@@ -1,6 +1,14 @@
 import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from "ogl";
 import { useEffect, useRef } from "react";
 
+import noLosAtropellesBackground from "../../assets/noLosAtropellesBackground.png"
+import img3 from "../../assets/img3.jpeg"
+import img4 from "../../assets/img4.jpeg"
+import paraiso from "../../assets/paraiso.jpeg"
+import sharpays from "../../assets/sharpays.jpeg";
+import duas from "../../assets/duasPage.png";
+import bougies from "../../assets/bougies.jpeg";
+
 import "./CircularGallery.css";
 
 function debounce(func, wait) {
@@ -32,7 +40,7 @@ function createTextTexture(gl, text, font = "bold 30px monospace", color = "blac
   const textWidth = Math.ceil(metrics.width);
   const textHeight = Math.ceil(parseInt(font, 10) * 1.2);
   canvas.width = textWidth + 20;
-  canvas.height = textHeight + 20;
+  canvas.height = textHeight + 100;
   context.font = font;
   context.fillStyle = color;
   context.textBaseline = "middle";
@@ -85,7 +93,7 @@ class Title {
     });
     this.mesh = new Mesh(this.gl, { geometry, program });
     const aspect = width / height;
-    const textHeight = this.plane.scale.y * 0.15;
+    const textHeight = this.plane.scale.y * 0.20;
     const textWidth = textHeight * aspect;
     this.mesh.scale.set(textWidth, textHeight, 1);
     this.mesh.position.y = -this.plane.scale.y * 0.5 - textHeight * 0.5 - 0.05;
@@ -271,8 +279,8 @@ class Media {
       }
     }
     this.scale = this.screen.height / 1000;
-    this.plane.scale.y = (this.viewport.height * (850 * this.scale)) / this.screen.height;
-    this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width;
+    this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height;
+    this.plane.scale.x = (this.viewport.width * (800 * this.scale)) / this.screen.width;
     this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y];
     this.padding = 2;
     this.width = this.plane.scale.x + this.padding;
@@ -298,7 +306,7 @@ class App {
     this.container = container;
     this.scrollSpeed = scrollSpeed;
     this.scroll = { ease: scrollEase, current: 0, target: 0, last: 0 };
-    this.onCheckDebounce = debounce(this.onCheck, 200);
+    this.onCheckDebounce = debounce(this.onCheck, 100);
     this.createRenderer();
     this.createCamera();
     this.createScene();
@@ -320,7 +328,7 @@ class App {
   }
   createCamera() {
     this.camera = new Camera(this.gl);
-    this.camera.fov = 50;
+    this.camera.fov = 40;
     this.camera.position.z = 20;
   }
   createScene() {
@@ -334,18 +342,13 @@ class App {
   }
   createMedias(items, bend = 1, textColor, borderRadius, font) {
     const defaultItems = [
-      { image: `https://picsum.photos/seed/1/800/600?grayscale`, text: "Bridge" },
-      { image: `https://picsum.photos/seed/2/800/600?grayscale`, text: "Desk Setup" },
-      { image: `https://picsum.photos/seed/3/800/600?grayscale`, text: "Waterfall" },
-      { image: `https://picsum.photos/seed/4/800/600?grayscale`, text: "Strawberries" },
-      { image: `https://picsum.photos/seed/5/800/600?grayscale`, text: "Deep Diving" },
-      { image: `https://picsum.photos/seed/16/800/600?grayscale`, text: "Train Track" },
-      { image: `https://picsum.photos/seed/17/800/600?grayscale`, text: "Santorini" },
-      { image: `https://picsum.photos/seed/8/800/600?grayscale`, text: "Blurry Lights" },
-      { image: `https://picsum.photos/seed/9/800/600?grayscale`, text: "New York" },
-      { image: `https://picsum.photos/seed/10/800/600?grayscale`, text: "Good Boy" },
-      { image: `https://picsum.photos/seed/21/800/600?grayscale`, text: "Coastline" },
-      { image: `https://picsum.photos/seed/12/800/600?grayscale`, text: "Palm Trees" },
+      { image: noLosAtropellesBackground, text: "" },
+      { image: img3, text: "Desk Setup" },
+      { image: img4, text: "Waterfall" },
+      { image: paraiso, text: "Strawberries" },
+      { image: sharpays, text: "Deep Diving" },
+      { image: duas, text: "Train Track" },
+      { image: bougies, text: "Santorini" }
     ];
     const galleryItems = items && items.length ? items : defaultItems;
     this.mediasImages = galleryItems.concat(galleryItems);
@@ -457,7 +460,7 @@ class App {
 
 export default function CircularGallery({
   items,
-  bend = -3,
+  bend = 0,
   textColor = "#000000",
   borderRadius = 0.05,
   font = "bold 100px",
