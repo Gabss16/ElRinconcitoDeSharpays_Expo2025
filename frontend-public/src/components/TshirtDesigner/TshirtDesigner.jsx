@@ -6,7 +6,7 @@ import TShirtView from './TshirtView';
 import TextControls from './TextControls';
 import LoadingSpinner from './LoadingSpinner';
 
-const TShirtDesigner = () => {
+const TShirtDesigner = ({ product }) => { // Recibimos 'product' como prop
   const [tshirtColor, setTshirtColor] = useState('#ffffff');
   const [viewSide, setViewSide] = useState('front');
   const [isLoading, setIsLoading] = useState(false);
@@ -213,27 +213,27 @@ const TShirtDesigner = () => {
   const exportDesign = useCallback(() => {
     return new Promise((resolve) => {
       if (!canvas) return resolve(null);
-  
+
       const shirtImage = new Image();
       shirtImage.src = '/images/dualchemis.png';
       shirtImage.crossOrigin = 'anonymous';
-  
+
       shirtImage.onload = () => {
         const tempCanvas = document.createElement('canvas');
         tempCanvas.width = canvas.getWidth();
         tempCanvas.height = canvas.getHeight();
         const ctx = tempCanvas.getContext('2d');
-  
+
         ctx.drawImage(shirtImage, 0, 0, tempCanvas.width, tempCanvas.height);
-  
+
         const designData = canvas.toDataURL('image/png');
         const designImage = new Image();
         designImage.src = designData;
         designImage.crossOrigin = 'anonymous';
-  
+
         designImage.onload = () => {
           ctx.drawImage(designImage, 0, 0);
-  
+
           const finalImage = tempCanvas.toDataURL('image/png');
           console.log("✅ Imagen final generada");
           resolve(finalImage); // 👈 devolver la imagen
@@ -241,7 +241,6 @@ const TShirtDesigner = () => {
       };
     });
   }, [canvas]);
-  
 
   return (
     <div className="app-container">
@@ -268,21 +267,23 @@ const TShirtDesigner = () => {
       </div>
 
       <div className="content-section">
-          <div className="controls-row">
-            <ColorPicker color={tshirtColor} onChange={setTshirtColor} />
-            <DesignControls
-              onImageUpload={handleImageUpload}
-              onDelete={handleDeleteDesign}
-              hasSelection={canvas?.getActiveObject() !== null}
-              fileInputRef={fileInputRef}
-              isLoading={isLoading}
-              fabricCanvas={canvas}
-              exportDesign={exportDesign}
-            />
+        <div className="controls-row">
+          <ColorPicker color={tshirtColor} onChange={setTshirtColor} />
           
-          </div>
+          {/* Pasamos 'product' a DesignControls */}
+          <DesignControls
+            onImageUpload={handleImageUpload}
+            onDelete={handleDeleteDesign}
+            hasSelection={canvas?.getActiveObject() !== null}
+            fileInputRef={fileInputRef}
+            isLoading={isLoading}
+            fabricCanvas={canvas}
+            exportDesign={exportDesign}
+            product={product} // Pasamos el producto aquí
+          />
         </div>
       </div>
+    </div>
   );
 };
 
