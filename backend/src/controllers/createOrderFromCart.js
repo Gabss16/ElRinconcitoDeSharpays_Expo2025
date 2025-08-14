@@ -39,7 +39,7 @@ const createOrderFromCart = async (req, res) => {
           categoryId: item.categoryId || null,
           productName: item.productName,
           unitPrice: item.unitPrice,
-          image: imageUrl || "https://res.cloudinary.com/dy8bfiulj/image/upload/v1750958173/BW_1_xwfqkd.png",
+          image: imageUrl,
           quantity: item.quantity,
           totalPrice: item.unitPrice * item.quantity,
           discount: item.discount || 0,

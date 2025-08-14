@@ -7,13 +7,28 @@ const ProductCartItem = ({ item }) => {
   const { updateQuantity, removeFromCart } = useDataShoppingCart();
 
   const { product, quantity } = item;
-  const { _id, name, price, image, description, size, flavor, duaData } = product;
+  const {
+    _id,
+    name,
+    price,
+    image,
+    description,
+    size,
+    flavor,
+    customDesign,
+    duaData,
+  } = product;
 
   // Determinar la imagen a mostrar
   const productImage =
-    image ||
+    // Primero el Dua
+   
     duaData?.carnetImage ||
-    duaData?.fotoImage ||
+    // Luego el customDesign (camisa)
+    customDesign ||
+    // Luego la imagen normal del producto
+    image ||
+    // Placeholder si nada existe
     "https://via.placeholder.com/160x200?text=Sin+Foto";
 
   return (

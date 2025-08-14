@@ -82,7 +82,8 @@ const DuasDetail = ({ product }) => {
         carnetImage: carnetImageUrl,
         fotoImage: fotoImageUrl
       },
-      customDesign: carnetImageUrl // igual que en la camisa
+      customDesign: carnetImageUrl, 
+      image: carnetImageUrl 
     };
 
     SuccessAlert("DUA agregado al carrito");
