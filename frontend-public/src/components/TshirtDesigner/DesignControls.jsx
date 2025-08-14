@@ -14,9 +14,7 @@ const DesignControls = ({
   const { addToCart } = useDataShoppingCart();
 
   const handleUploadClick = () => {
-    if (!isLoading) {
-      fileInputRef.current.click();
-    }
+    if (!isLoading) fileInputRef.current.click();
   };
 
   const handleAddToCart = async () => {
@@ -24,30 +22,27 @@ const DesignControls = ({
       alert("No hay diseño para agregar.");
       return;
     }
-
     if (!exportDesign) {
       alert("Función exportDesign no disponible.");
       return;
     }
 
     try {
-      // 🔹 Generamos la imagen final (base64)
       const finalImage = await exportDesign();
 
-      // 🔹 Creamos un producto personalizado temporal
       const customProduct = {
-        _id: `custom-${Date.now()}`,  // id temporal
+        _id: `custom-${Date.now()}`,
         name: product?.name || "Camiseta Personalizada",
         price: product?.price || 15.99,
-        image: finalImage,            // base64
-        customDesign: finalImage,     // guardamos base64 para el hook
+        image: null,                 // no enviamos URL directa
+        customDesign: finalImage,    // se enviará base64 al backend
         description: product?.description || "Diseño único creado en el editor",
         size: null,
         flavor: null,
-        isCustom: true,               // marca producto como personalizado
+        isCustom: true,
       };
 
-      addToCart(customProduct, 1); // 🔹 Guardamos en el carrito
+      addToCart(customProduct, 1);
       alert("✅ Diseño agregado al carrito");
     } catch (err) {
       console.error("Error al exportar el diseño:", err);

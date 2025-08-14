@@ -42,92 +42,109 @@ const CheckoutPage = () => {
     }));
   };
 
-  const uploadToCloudinary = async (base64Image) => {
+ const uploadToCloudinary = async (base64Image) => {
+  if (!base64Image) return null;
+
+  try {
     const formData = new FormData();
     formData.append("file", base64Image);
-    formData.append("upload_preset", "tu_upload_preset"); // <- reemplaza con tu preset
-    const res = await fetch("https://api.cloudinary.com/v1_1/tu_cloud_name/image/upload", {
+    formData.append("upload_preset", "preset_camisetas"); // Tu preset real
+
+    const res = await fetch("https://api.cloudinary.com/v1_1/dqmol5thk/image/upload", {
       method: "POST",
       body: formData
     });
+
     const data = await res.json();
+
+    if (!data.secure_url) {
+      console.error("Cloudinary upload failed:", data);
+      return null;
+    }
+
     return data.secure_url;
+  } catch (err) {
+    console.error("Error subiendo imagen a Cloudinary:", err);
+    return null;
+  }
+};
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (!orderDetail) return;
+
+  const shippingAddress = {
+    address: `${formData.houseNumber}, CP: ${formData.postalCode}`,
+    city: formData.municipality,
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!orderDetail) return;
+  try {
+    setLoading(true);
 
-    const shippingAddress = {
-      address: `${formData.houseNumber}, CP: ${formData.postalCode}`,
-      city: formData.municipality,
-    };
+    // Subir diseños personalizados y generar productos finales
+    const productsWithUrls = await Promise.all(
+      orderDetail.items.map(async (item) => {
+        let finalImage = item.product.image || "https://res.cloudinary.com/dy8bfiulj/image/upload/v1750958173/BW_1_xwfqkd.png";
+        let customDesign = item.product.customDesign || null;
 
-    try {
-      setLoading(true);
-
-      // Subir diseños personalizados a Cloudinary
-      const productsWithUrls = await Promise.all(
-        orderDetail.items.map(async (item) => {
-          let finalImage = item.product.image;
-          let customDesign = item.product.customDesign;
-
-          if (customDesign && customDesign.startsWith("data:image")) {
-            const uploadedUrl = await uploadToCloudinary(customDesign);
+        if (customDesign && customDesign.startsWith("data:image")) {
+          const uploadedUrl = await uploadToCloudinary(customDesign);
+          if (uploadedUrl) {
             finalImage = uploadedUrl;
             customDesign = uploadedUrl;
           }
-
-          return {
-            productId: item.product._id,
-            categoryId: item.product.categoryId?._id || item.product.categoryId,
-            productName: item.product.name,
-            unitPrice: item.product.price,
-            image: finalImage,
-            quantity: item.quantity,
-            totalPrice: item.product.price * item.quantity,
-            discount: 0,
-            customDesign,
-          };
-        })
-      );
-
-      const payload = {
-        customerId: orderDetail.customerId,
-        products: productsWithUrls,
-        shippingAddress,
-        status: "pendiente",
-        customerInfo: {
-          ...formData,
-          paymentMethod
         }
-      };
 
-      console.log("Payload final a enviar:", payload);
+        return {
+          productId: item.product._id.startsWith("custom-") ? null : item.product._id,
+          categoryId: item.product.categoryId?._id || null,
+          productName: item.product.name,
+          unitPrice: item.product.price,
+          image: finalImage,
+          quantity: item.quantity,
+          totalPrice: item.product.price * item.quantity,
+          discount: 0,
+          customDesign
+        };
+      })
+    );
 
-      const res = await fetch(
-        "http://localhost:4000/api/createOrderFromCart/create-from-cart",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
+    const payload = {
+      customerId: orderDetail.customerId,
+      products: productsWithUrls,
+      shippingAddress,
+      status: "pendiente"
+    };
 
-      if (!res.ok) throw new Error("Error al crear la orden");
+    console.log("Payload final a enviar:", payload);
 
-      SuccessAlert("¡Orden creada exitosamente!");
-      navigate("/inicio");
-      localStorage.removeItem("OrderDetail");
-      localStorage.removeItem("shoppingCart");
+    const res = await fetch(
+      "http://localhost:4000/api/createOrderFromCart/create-from-cart",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }
+    );
 
-    } catch (err) {
-      ErrorAlert("Error al procesar la orden");
-      console.error(err);
-    } finally {
-      setLoading(false);
+    if (!res.ok) {
+      const errorData = await res.json();
+      console.error("Backend error:", errorData);
+      throw new Error(errorData.message || "Error al crear la orden");
     }
-  };
+
+    SuccessAlert("¡Orden creada exitosamente!");
+    navigate("/inicio");
+    localStorage.removeItem("OrderDetail");
+    localStorage.removeItem("shoppingCart");
+
+  } catch (err) {
+    console.error("❌ Error al procesar la orden:", err);
+    ErrorAlert(err.message || "Error al procesar la orden");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="shopping-cart-page">

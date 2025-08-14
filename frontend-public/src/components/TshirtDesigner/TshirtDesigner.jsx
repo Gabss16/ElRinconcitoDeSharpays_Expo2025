@@ -5,8 +5,10 @@ import DesignControls from './DesignControls';
 import TShirtView from './TshirtView';
 import TextControls from './TextControls';
 import LoadingSpinner from './LoadingSpinner';
+import useDataShoppingCart from '../shoppingCart/hooks/useDataShoppingCart';
 
 const TShirtDesigner = () => {
+  const { addToCart } = useDataShoppingCart();
   const [tshirtColor, setTshirtColor] = useState('#ffffff');
   const [viewSide, setViewSide] = useState('front');
   const [isLoading, setIsLoading] = useState(false);
@@ -73,7 +75,7 @@ const TShirtDesigner = () => {
     fabricCanvas.defaultCursor = 'default';
     fabricCanvas.hoverCursor = 'move';
 
-    fabric.Image.fromURL('/images/dualchemis.png', (img) => {
+    fabric.Image.fromURL(dualImage, (img) => {
       img.scaleToWidth(fabricCanvas.getWidth());
       img.scaleToHeight(fabricCanvas.getHeight());
       fabricCanvas.setBackgroundImage(img, fabricCanvas.renderAll.bind(fabricCanvas));
@@ -99,7 +101,6 @@ const TShirtDesigner = () => {
     });
 
     setCanvas(fabricCanvas);
-
     return () => fabricCanvas.dispose();
   }, []);
 
@@ -128,38 +129,24 @@ const TShirtDesigner = () => {
           imgElement.src = event.target.result;
 
           imgElement.onload = () => {
-            try {
-              const fabricImage = new fabric.Image(imgElement, {
-                scaleX: canvas.getWidth() / (2 * imgElement.width),
-                scaleY: canvas.getHeight() / (2 * imgElement.height),
-                left: canvas.getWidth() / 2,
-                top: canvas.getHeight() / 2,
-                originX: 'center',
-                originY: 'center',
-                stroke: 'rgba(0,123,255,0.5)',
-                strokeWidth: 2,
-                objectCaching: true,
-                selectable: true,
-                evented: true,
-              });
+            const fabricImage = new fabric.Image(imgElement, {
+              scaleX: canvas.getWidth() / (2 * imgElement.width),
+              scaleY: canvas.getHeight() / (2 * imgElement.height),
+              left: canvas.getWidth() / 2,
+              top: canvas.getHeight() / 2,
+              originX: 'center',
+              originY: 'center',
+              stroke: 'rgba(0,123,255,0.5)',
+              strokeWidth: 2,
+              objectCaching: true,
+              selectable: true,
+              evented: true,
+            });
 
-              canvas.add(fabricImage);
-              canvas.setActiveObject(fabricImage);
-              canvas.remove(fabricImage);
-              canvas.add(fabricImage);
-
-              canvas.renderAll();
-              saveState();
-              setIsLoading(false);
-            } catch (error) {
-              console.error('Error creando imagen Fabric:', error);
-              alert('Error al procesar la imagen');
-              setIsLoading(false);
-            }
-          };
-
-          imgElement.onerror = () => {
-            alert('Error al cargar la imagen. Intenta con otra imagen.');
+            canvas.add(fabricImage);
+            canvas.setActiveObject(fabricImage);
+            canvas.renderAll();
+            saveState();
             setIsLoading(false);
           };
         };
@@ -168,14 +155,11 @@ const TShirtDesigner = () => {
         e.target.value = '';
       } catch (error) {
         console.error('Error en handleImageUpload:', error);
-        alert('Error al procesar la imagen');
         setIsLoading(false);
       }
     },
     [canvas, saveState]
   );
-
-  
 
   const handleDeleteDesign = useCallback(() => {
     if (canvas) {
@@ -211,39 +195,63 @@ const TShirtDesigner = () => {
     saveState();
   }, [canvas, saveState]);
 
-  // 🔹 Nueva función para exportar camiseta + diseño en un solo PNG
+  // Exporta el diseño combinado camiseta + canvas como PNG
   const exportDesign = useCallback(() => {
     return new Promise((resolve) => {
       if (!canvas) return resolve(null);
-  
+
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = canvas.getWidth();
+      tempCanvas.height = canvas.getHeight();
+      const ctx = tempCanvas.getContext('2d');
+
       const shirtImage = new Image();
-      shirtImage.src = '/images/dualchemis.png';
+      shirtImage.src = dualImage;
       shirtImage.crossOrigin = 'anonymous';
-  
+
       shirtImage.onload = () => {
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = canvas.getWidth();
-        tempCanvas.height = canvas.getHeight();
-        const ctx = tempCanvas.getContext('2d');
-  
         ctx.drawImage(shirtImage, 0, 0, tempCanvas.width, tempCanvas.height);
-  
+
         const designData = canvas.toDataURL('image/png');
         const designImage = new Image();
         designImage.src = designData;
         designImage.crossOrigin = 'anonymous';
-  
+
         designImage.onload = () => {
           ctx.drawImage(designImage, 0, 0);
-  
           const finalImage = tempCanvas.toDataURL('image/png');
-          console.log("✅ Imagen final generada");
-          resolve(finalImage); // 👈 devolver la imagen
+          resolve(finalImage);
         };
       };
     });
   }, [canvas]);
-  
+
+  // 🔹 Función para agregar camiseta personalizada al carrito
+  const handleAddToCart = useCallback(async () => {
+    if (!canvas || canvas.getObjects().length === 0) {
+      alert('No hay diseño para agregar.');
+      return;
+    }
+    try {
+      const finalImage = await exportDesign();
+      const customProduct = {
+        _id: `custom-${Date.now()}`,
+        name: "Camiseta Personalizada",
+        price: 15.99,
+        image: finalImage,
+        customDesign: finalImage,
+        description: "Diseño único creado en el editor",
+        size: null,
+        flavor: null,
+        isCustom: true,
+      };
+      addToCart(customProduct, 1);
+      alert('✅ Diseño agregado al carrito');
+    } catch (err) {
+      console.error('Error al agregar al carrito:', err);
+      alert('❌ No se pudo agregar el diseño al carrito');
+    }
+  }, [canvas, exportDesign, addToCart]);
 
   return (
     <div className="app-container">
@@ -251,11 +259,7 @@ const TShirtDesigner = () => {
 
       <div className="header-section">
         <div className="tshirt-display">
-          <TShirtView
-            tshirtColor={tshirtColor}
-            viewSide={viewSide}
-            canvasRef={canvasRef}
-          />
+          <TShirtView tshirtColor={tshirtColor} viewSide={viewSide} canvasRef={canvasRef} />
         </div>
 
         <div className="text-controls-header">
@@ -270,21 +274,22 @@ const TShirtDesigner = () => {
       </div>
 
       <div className="content-section">
-          <div className="controls-row">
-            <ColorPicker color={tshirtColor} onChange={setTshirtColor} />
-            <DesignControls
-              onImageUpload={handleImageUpload}
-              onDelete={handleDeleteDesign}
-              hasSelection={canvas?.getActiveObject() !== null}
-              fileInputRef={fileInputRef}
-              isLoading={isLoading}
-              fabricCanvas={canvas}
-              exportDesign={exportDesign}
-            />
-          
-          </div>
+        <div className="controls-row">
+          <ColorPicker color={tshirtColor} onChange={setTshirtColor} />
+          <DesignControls
+            onImageUpload={handleImageUpload}
+            onDelete={handleDeleteDesign}
+            hasSelection={canvas?.getActiveObject() !== null}
+            fileInputRef={fileInputRef}
+            isLoading={isLoading}
+            fabricCanvas={canvas}
+            exportDesign={exportDesign}
+            product={{ name: "Camiseta", price: 15.99 }}
+            onAddToCart={handleAddToCart} // <-- pasar función al botón
+          />
         </div>
       </div>
+    </div>
   );
 };
 
