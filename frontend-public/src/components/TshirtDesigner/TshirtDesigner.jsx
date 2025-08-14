@@ -6,8 +6,8 @@ import TShirtView from './TshirtView';
 import TextControls from './TextControls';
 import LoadingSpinner from './LoadingSpinner';
 import useDataShoppingCart from '../shoppingCart/hooks/useDataShoppingCart';
-
-const TShirtDesigner = () => {
+ 
+const TShirtDesigner = ( { product }) => {
   const { addToCart } = useDataShoppingCart();
   const [tshirtColor, setTshirtColor] = useState('#ffffff');
   const [viewSide, setViewSide] = useState('front');
@@ -18,11 +18,11 @@ const TShirtDesigner = () => {
   const [canvas, setCanvas] = useState(null);
   const fileInputRef = useRef(null);
   const dualImage = '/images/dualchemis.png';
-
+ 
   const toggleViewSide = useCallback(() => {
     setViewSide(prev => (prev === 'front' ? 'back' : 'front'));
   }, []);
-
+ 
   const saveState = useCallback(() => {
     if (!canvas) return;
     const state = JSON.stringify(canvas.toJSON());
@@ -31,7 +31,7 @@ const TShirtDesigner = () => {
     setHistory(newHistory);
     setHistoryIndex(newHistory.length - 1);
   }, [canvas, history, historyIndex]);
-
+ 
   const undo = useCallback(() => {
     if (historyIndex > 0 && canvas) {
       const prevState = history[historyIndex - 1];
@@ -41,7 +41,7 @@ const TShirtDesigner = () => {
       });
     }
   }, [canvas, history, historyIndex]);
-
+ 
   const redo = useCallback(() => {
     if (historyIndex < history.length - 1 && canvas) {
       const nextState = history[historyIndex + 1];
@@ -51,14 +51,14 @@ const TShirtDesigner = () => {
       });
     }
   }, [canvas, history, historyIndex]);
-
+ 
   useLayoutEffect(() => {
     const canvasEl = canvasRef.current;
     if (!canvasEl || canvas) return;
-
+ 
     const parent = canvasEl.parentElement;
     const { width, height } = parent.getBoundingClientRect();
-
+ 
     const fabricCanvas = new fabric.Canvas(canvasEl, {
       dualImage: true,
       selection: true,
@@ -69,65 +69,65 @@ const TShirtDesigner = () => {
       renderOnAddRemove: false,
       snapAngle: 0,
     });
-
+ 
     fabricCanvas.setWidth(width);
     fabricCanvas.setHeight(height);
     fabricCanvas.defaultCursor = 'default';
     fabricCanvas.hoverCursor = 'move';
-
+ 
     fabric.Image.fromURL(dualImage, (img) => {
       img.scaleToWidth(fabricCanvas.getWidth());
       img.scaleToHeight(fabricCanvas.getHeight());
       fabricCanvas.setBackgroundImage(img, fabricCanvas.renderAll.bind(fabricCanvas));
     });
-
+ 
     fabricCanvas.on('object:modified', (e) => {
       const obj = e.target;
       let left = obj.left,
         top = obj.top,
         maxLeft = fabricCanvas.getWidth() - obj.getScaledWidth(),
         maxTop = fabricCanvas.getHeight() - obj.getScaledHeight();
-
+ 
       const newLeft = Math.min(Math.max(left, 0), maxLeft);
       const newTop = Math.min(Math.max(top, 0), maxTop);
-
+ 
       if (newLeft !== left || newTop !== top) {
         obj.set({ left: newLeft, top: newTop });
         obj.setCoords();
         fabricCanvas.renderAll();
       }
-
+ 
       saveState();
     });
-
+ 
     setCanvas(fabricCanvas);
     return () => fabricCanvas.dispose();
   }, []);
-
+ 
   const handleImageUpload = useCallback(
     async (e) => {
       const file = e.target.files[0];
       if (!file || !canvas) return;
-
+ 
       if (!['image/jpeg', 'image/png', 'image/svg+xml', 'image/gif'].includes(file.type)) {
         alert('Por favor, sube solo imágenes JPG, PNG, SVG o GIF');
         return;
       }
-
+ 
       if (file.size > 10 * 1024 * 1024) {
         alert('La imagen es muy grande. Máximo 10MB');
         return;
       }
-
+ 
       setIsLoading(true);
-
+ 
       try {
         const reader = new FileReader();
         reader.onload = (event) => {
           const imgElement = new Image();
           imgElement.crossOrigin = 'anonymous';
           imgElement.src = event.target.result;
-
+ 
           imgElement.onload = () => {
             const fabricImage = new fabric.Image(imgElement, {
               scaleX: canvas.getWidth() / (2 * imgElement.width),
@@ -142,7 +142,7 @@ const TShirtDesigner = () => {
               selectable: true,
               evented: true,
             });
-
+ 
             canvas.add(fabricImage);
             canvas.setActiveObject(fabricImage);
             canvas.renderAll();
@@ -150,7 +150,7 @@ const TShirtDesigner = () => {
             setIsLoading(false);
           };
         };
-
+ 
         reader.readAsDataURL(file);
         e.target.value = '';
       } catch (error) {
@@ -160,7 +160,7 @@ const TShirtDesigner = () => {
     },
     [canvas, saveState]
   );
-
+ 
   const handleDeleteDesign = useCallback(() => {
     if (canvas) {
       const obj = canvas.getActiveObject();
@@ -171,10 +171,10 @@ const TShirtDesigner = () => {
       }
     }
   }, [canvas, saveState]);
-
+ 
   const handleAddText = useCallback((text, fontSize, fontFamily, color) => {
     if (!canvas || !text.trim()) return;
-
+ 
     const textObj = new fabric.Textbox(text, {
       left: canvas.getWidth() / 2,
       top: canvas.getHeight() / 2,
@@ -188,35 +188,35 @@ const TShirtDesigner = () => {
       stroke: 'rgba(0,123,255,0.3)',
       strokeWidth: 1,
     });
-
+ 
     canvas.add(textObj);
     canvas.setActiveObject(textObj);
     canvas.renderAll();
     saveState();
   }, [canvas, saveState]);
-
+ 
   // Exporta el diseño combinado camiseta + canvas como PNG
   const exportDesign = useCallback(() => {
     return new Promise((resolve) => {
       if (!canvas) return resolve(null);
-
+ 
       const tempCanvas = document.createElement('canvas');
       tempCanvas.width = canvas.getWidth();
       tempCanvas.height = canvas.getHeight();
       const ctx = tempCanvas.getContext('2d');
-
+ 
       const shirtImage = new Image();
       shirtImage.src = dualImage;
       shirtImage.crossOrigin = 'anonymous';
-
+ 
       shirtImage.onload = () => {
         ctx.drawImage(shirtImage, 0, 0, tempCanvas.width, tempCanvas.height);
-
+ 
         const designData = canvas.toDataURL('image/png');
         const designImage = new Image();
         designImage.src = designData;
         designImage.crossOrigin = 'anonymous';
-
+ 
         designImage.onload = () => {
           ctx.drawImage(designImage, 0, 0);
           const finalImage = tempCanvas.toDataURL('image/png');
@@ -225,7 +225,7 @@ const TShirtDesigner = () => {
       };
     });
   }, [canvas]);
-
+ 
   // 🔹 Función para agregar camiseta personalizada al carrito
   const handleAddToCart = useCallback(async () => {
     if (!canvas || canvas.getObjects().length === 0) {
@@ -252,16 +252,16 @@ const TShirtDesigner = () => {
       alert('❌ No se pudo agregar el diseño al carrito');
     }
   }, [canvas, exportDesign, addToCart]);
-
+ 
   return (
     <div className="app-container">
       {isLoading && <LoadingSpinner />}
-
+ 
       <div className="header-section">
         <div className="tshirt-display">
           <TShirtView tshirtColor={tshirtColor} viewSide={viewSide} canvasRef={canvasRef} />
         </div>
-
+ 
         <div className="text-controls-header">
           <TextControls
             onAddText={handleAddText}
@@ -272,7 +272,7 @@ const TShirtDesigner = () => {
           />
         </div>
       </div>
-
+ 
       <div className="content-section">
         <div className="controls-row">
           <ColorPicker color={tshirtColor} onChange={setTshirtColor} />
@@ -284,7 +284,7 @@ const TShirtDesigner = () => {
             isLoading={isLoading}
             fabricCanvas={canvas}
             exportDesign={exportDesign}
-            product={{ name: "Camiseta", price: 15.99 }}
+            product={product}
             onAddToCart={handleAddToCart} // <-- pasar función al botón
           />
         </div>
@@ -292,5 +292,5 @@ const TShirtDesigner = () => {
     </div>
   );
 };
-
+ 
 export default TShirtDesigner;

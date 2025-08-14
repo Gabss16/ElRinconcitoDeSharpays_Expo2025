@@ -29,8 +29,23 @@ const CamisaDetail = ({ product }) => {
 
   // Nueva función para redirigir a la página de personalización
   const handleCustomizeShirt = () => {
-    navigate("/TshirtDesign");
+    // Verifica si el objeto tiene los datos correctos
+    
+console.log("Funcion handleCustomizeShirt");
+  const productData = {
+    name: product.name,
+    price: product.price,
+    description: product.description,
+    selectedSize,
+    quantity,
   };
+  
+// Verifica si el objeto tiene los datos correctos
+console.log("Enviando datos al navigate:", productData);
+
+  // Navegar a /TshirtDesign con el estado del producto
+  navigate("/TshirtDesign", { state: productData });
+};
 
   const handleMouseMove = (e) => {
     const zoomContainer = zoomRef.current;

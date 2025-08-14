@@ -83,13 +83,14 @@ const DesignControls = ({
       </button>
 
       <div className="price-section">
-        <p className="price">
-          Precio: ${product?.price ? product.price.toFixed(2) : "15.99"}
-        </p>
-        <button className="add-to-cart" onClick={handleAddToCart}>
-          Añadir al carrito
-        </button>
-      </div>
+  <p className="price">
+    Precio: ${product?.price ? product.price.toFixed(2) : "Precio no disponible"}
+  </p>
+  <button className="add-to-cart" onClick={handleAddToCart}>
+    Añadir al carrito
+  </button>
+</div>
+
     </div>
   );
 };
