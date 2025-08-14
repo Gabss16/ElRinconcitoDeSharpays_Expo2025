@@ -29,6 +29,7 @@ const useDataCustomer = () => {
     }
   };
 
+  // Registrar un cliente
   const registerCustomer = async ({ name, email, password, department, address }) => {
     try {
       const res = await fetch("http://localhost:4000/api/registerCostumer", {
@@ -57,6 +58,7 @@ const useDataCustomer = () => {
     }
   };
 
+  // Obtener un cliente por su ID
   const fetchCustomerById = async (id) => {
     if (!id) return;
     setLoading(true);
@@ -77,30 +79,31 @@ const useDataCustomer = () => {
     }
   };
 
+  // Actualizar un cliente
   const updateCustomer = async (id) => {
-  try {
-    const res = await fetch(`${API}/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ name, email })
-    });
+    try {
+      const res = await fetch(`${API}/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (res.ok) {
-      SuccessAlert(data.message || "Actualización exitosa");
-    } else {
-      ErrorAlert(data.message || "Error al actualizar");
+      if (res.ok) {
+        SuccessAlert(data.message || "Actualización exitosa");
+      } else {
+        ErrorAlert(data.message || "Error al actualizar");
+      }
+    } catch (error) {
+      console.error("Error al actualizar:", error);
+      ErrorAlert("Error del servidor");
     }
-  } catch (error) {
-    console.error("Error al actualizar:", error);
-    ErrorAlert("Error del servidor");
-  }
-};
+  };
 
-
+  // Eliminar un cliente
   const deleteCustomer = async (id) => {
     if (!id) throw new Error("ID es requerido para eliminar");
     try {
@@ -115,10 +118,44 @@ const useDataCustomer = () => {
     }
   };
 
+  // Actualizar el departamento de un cliente
+const updateCustomerDepartment = async (id, newDepartment) => {
+  try {
+    const res = await fetch(`${API}/${id}/updateDepartment`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ department: newDepartment }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      SuccessAlert(data.message || "Ubicación actualizada con éxito");
+      return true;
+    } else {
+      // En caso de que se devuelvan datos erróneos, manejamos el error.
+      if (data?.error) {
+        ErrorAlert(data.error || "Error desconocido al actualizar ubicación");
+      } else {
+        ErrorAlert(data.message || "Error al actualizar ubicación");
+      }
+      return false;
+    }
+  } catch (error) {
+    console.error("Error al actualizar departamento:", error);
+    ErrorAlert("Error del servidor");
+    return false;
+  }
+};
+
+  // Obtener todos los clientes al inicio
   useEffect(() => {
     fetchCustomers();
   }, []);
 
+  // Resetear formulario
   const resetForm = () => {
     setId("");
     setName("");
@@ -128,6 +165,7 @@ const useDataCustomer = () => {
     setAddress("");
   };
 
+  // Retorno del hook
   return {
     customers,
     loading,
@@ -143,6 +181,7 @@ const useDataCustomer = () => {
     setDepartment,
     address,
     setAddress,
+    updateCustomerDepartment, // Aquí agregamos la función
     fetchCustomers,
     fetchCustomerById,
     registerCustomer,
