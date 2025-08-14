@@ -30,7 +30,7 @@ const useDataCustomer = () => {
   };
 
   // Registrar un cliente
-  const registerCustomer = async ({ name, email, password, department, address }) => {
+  const registerCustomer = async ({ name, email, password, department }) => {
     try {
       const res = await fetch("http://localhost:4000/api/registerCostumer", {
         method: "POST",
@@ -177,8 +177,7 @@ const updateCustomerDepartment = async (id, newDepartment) => {
     setPassword,
     department,
     setDepartment,
-    address,
-    setAddress,
+    
     updateCustomerDepartment, // Aquí agregamos la función
     fetchCustomers,
     fetchCustomerById,
