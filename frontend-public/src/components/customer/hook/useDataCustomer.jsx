@@ -176,8 +176,7 @@ const updateCustomerDepartment = async (id, newDepartment) => {
     password,
     setPassword,
     department,
-    setDepartment,
-    
+    setDepartment,    
     updateCustomerDepartment, // Aquí agregamos la función
     fetchCustomers,
     fetchCustomerById,
