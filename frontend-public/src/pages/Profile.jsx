@@ -15,7 +15,7 @@ const Profile = () => {
         {/* Orden visual: imagen → info personal → ubicación → pedidos */}
         <CardImage />
         <CardPersonalInformation />
-        <CardUbication />
+        <CardUbication  />
         <CardOrders cartItems={cartItems || []} />
       </main>
     </div>

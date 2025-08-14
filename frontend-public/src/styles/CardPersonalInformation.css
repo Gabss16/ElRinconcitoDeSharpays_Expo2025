@@ -28,6 +28,8 @@
   display: flex;
   flex: 1;
   gap: 34px;
+  padding: 25px;
+  padding-right: 45px;
 }
 
 .info-input {
@@ -62,13 +64,4 @@
 
 .edit-btn {
   margin-left: 32px;
-}
-
-.edit-btn:hover,
-.password-btn:hover {
-  background-color: #ff63a4;
-}
-
-.password-btn {
-  margin-top: 0;
 }

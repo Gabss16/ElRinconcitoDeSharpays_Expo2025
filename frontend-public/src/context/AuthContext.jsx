@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         setauthCookie(data.token);
-        setUser(data.user);
+        setUser(data.user); // El objeto 'data.user' debe incluir 'department' si está disponible
         setIsLoggedIn(true);
         return true;
       } else {
@@ -104,8 +104,9 @@ export const AuthProvider = ({ children }) => {
                 setUser({
                   id: payload.id,
                   name: payload.name,
-                  image: payload.image,
                   email: payload.email,
+                  department: payload.department, // Agregar el departamento al payload
+                  image: payload.image,
                 });
                 setauthCookie(token || cookieToken);
                 setIsLoggedIn(true);

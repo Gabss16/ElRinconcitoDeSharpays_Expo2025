@@ -41,27 +41,20 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!name || !email || !password) {
       ErrorAlert("Todos los campos son obligatorios");
-    }
-    else if(name.length <= 2)
-    {
-      ErrorAlert("El nombre es muy corto")
-    }
-    else if(password.length <= 8)
-    {
-      ErrorAlert("La contraseña debe ser mínimo de 8 carácteres")
-    }
-    else {
+    } else if (name.length <= 2) {
+      ErrorAlert("El nombre es muy corto");
+    } else if (password.length <= 8) {
+      ErrorAlert("La contraseña debe ser mínimo de 8 carácteres");
+    } else {
       const success = await registerCustomer({ name, email, password, department, address });
-      console.log(department)
-
       if (success) {
+        SuccessAlert("Registro exitoso");
         navigate("/login");
       }
     }
-
   };
 
   return (

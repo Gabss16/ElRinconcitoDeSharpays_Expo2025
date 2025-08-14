@@ -14,6 +14,8 @@ const CardPersonalInformation = () => {
   const { user } = useAuth();
   const data = useDataCustomer();
 
+  console.log(data, "valor de data")
+
   const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
