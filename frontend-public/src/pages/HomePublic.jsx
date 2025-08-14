@@ -4,7 +4,6 @@ import GradientText from "../components/reactBits/GradientText.jsx";
 import TextType from "../components/reactBits/TextType.jsx";
 import ScrollFloat from "../components/reactBits/ScrollFloat.jsx";
 import EmprendimientosCard from "../components/EmprendimientosCard.jsx";
-import BallPit from "../components/reactBits/BallPit.jsx";
 
 const HomePublic = () => {
   return (
@@ -61,28 +60,10 @@ const HomePublic = () => {
             Nuestros emprendimientos
           </ScrollFloat>
         </div>
-
-        <div
-          style={{
-            position: "relative",
-            overflow: "hidden",
-            minHeight: "500px",
-            maxHeight: "500px",
-            width: "100%",
-          }}
-        >
-          <BallPit
-            count={50}
-            gravity={1}
-            friction={0.835}
-            wallBounce={0.95}
-            followCursor={false}
-            size={.5}
-            colors={['#ff73da', '#ff00bc','#ffa8e8']}
-          />
+        <div className="d-flex justify-content-between p-5">
+        <EmprendimientosCard/>
         </div>
 
-        <EmprendimientosCard />
       </div>
     </>
   );
