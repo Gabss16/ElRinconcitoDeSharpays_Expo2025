@@ -6,14 +6,54 @@ import SuccessAlert from "../components/SuccessAlert.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
 import "../styles/checkOut.css";
 import useDataCustomer from "../components/customer/hook/useDataCustomer.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+
+import PaymentMethod from "../components/PaymentMethod.jsx";
+import useDataShoppingCart from "../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 
 const CheckoutPage = () => {
+
+  const {
+    cartItems,
+    total,
+    createOrderFromCart,
+    clearCart,
+    moveCartToOrderDetail,
+  } = useDataShoppingCart();
+
+  const subtotal = total;
+  const deliveryFee = 0;
+  const finalTotal = subtotal + deliveryFee;
+
+  const { user, isLoggedIn } = useAuth();
+  const customerId = user?._id || user?.id;
+
+  const handleCreateOrder = (paymentMethod) => {
+  if (!isLoggedIn) {
+    ErrorAlert("Debes iniciar sesión para crear una orden");
+    return;
+  }
+
+  if (cartItems.length === 0) return;
+
+  const orderDetail = {
+    items: cartItems,
+    total,
+    paymentMethod,
+    customerId,
+  };
+
+  localStorage.setItem("OrderDetail", JSON.stringify(orderDetail));
+  navigate("/checkOut");
+};
+
+
   const navigate = useNavigate();
 
-  const {fetchCustomerById,name,email,department} = useDataCustomer();
+  const { fetchCustomerById, name, email, department } = useDataCustomer();
 
   const [formData, setFormData] = useState({
-    firstName: name ||"",
+    firstName: name || "",
     phone: "",
     email: email || "",
     municipality: department || "",
@@ -28,7 +68,7 @@ const CheckoutPage = () => {
     const stored = localStorage.getItem("OrderDetail");
 
     if (!stored) {
-      ErrorAlert("No hay ninguna orden activa.");
+      ErrorAlert("No hay ninguna orden activa");
       setTimeout(() => navigate("/"), 3000);
     } else {
       setOrderDetail(JSON.parse(stored));
@@ -132,7 +172,6 @@ const CheckoutPage = () => {
             image: finalImage || null,
             quantity: item.quantity,
             totalPrice: item.product.price * item.quantity,
-            discount: 0,
             customDesign,
             duaData, // 🔹 Enviamos el DUA actualizado con URLs
           };
@@ -201,15 +240,13 @@ const CheckoutPage = () => {
                       type="text"
                       name="firstName"
                       placeholder="Nombre"
-                      value={formData.firstName}
+                      value={user?.name || formData.firstName}
                       onChange={handleInputChange}
                       className="form-input"
                       required
                     />
                   </div>
-                  <div className="form-group">
-                   
-                  </div>
+                  <div className="form-group"></div>
                 </div>
 
                 <div className="form-row">
@@ -229,7 +266,7 @@ const CheckoutPage = () => {
                       type="email"
                       name="email"
                       placeholder="Correo Electrónico"
-                      value={formData.email}
+                      value={user?.email || formData.email}
                       onChange={handleInputChange}
                       className="form-input"
                       required
@@ -241,8 +278,8 @@ const CheckoutPage = () => {
                   <input
                     type="text"
                     name="municipality"
-                    placeholder="Municipio"
-                    value={formData.municipality}
+                    placeholder="Departamento"
+                    value={user?.department || formData.municipality}
                     onChange={handleInputChange}
                     className="form-input"
                     required
@@ -260,31 +297,6 @@ const CheckoutPage = () => {
                     required
                   />
                 </div>
-
-                <div className="form-row">
-                  <div className="form-group">
-                    
-                  </div>
-                  <div className="form-group">
-                    
-                  </div>
-                </div>
-
-                <div className="form-group full-width">
-                  <label>Método de pago:</label>
-                  <select
-                    value={paymentMethod}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    className="form-input"
-                  >
-                    <option value="otro">Otro</option>
-                    <option value="paypal">PayPal (+5.5%)</option>
-                  </select>
-                </div>
-
-                <p className="location-helper">
-                  Selecciona una ubicación cercana a ti.
-                </p>
 
                 <button
                   type="submit"
@@ -305,11 +317,16 @@ const CheckoutPage = () => {
                   <span>Total</span>
                   <span>${orderDetail?.total.toFixed(2)}</span>
                 </div>
+                <div className="payment-section">
+                  <PaymentMethod
+                    subtotal={subtotal}
+                    deliveryFee={deliveryFee}
+                    total={finalTotal}
+                    onCreateOrder={handleCreateOrder}
+                    loading={loading}
+                  />
+                </div>
               </div>
-
-              <p className="location-helper">
-                Verifica los datos antes de pagar
-              </p>
             </div>
           </div>
         </div>

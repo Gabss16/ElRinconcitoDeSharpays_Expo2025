@@ -2,51 +2,49 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import useDataShoppingCart from "../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 import ProductCartItem from "../components/productCardItem.jsx";
-import PaymentMethod from "../components/PaymentMethod.jsx";
 import CircularGallery from "../components/reactBits/CircularGallery.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import CheckoutPage from "./CheckOut.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
 import "../styles/ShoppingCart.css";
+import { Link } from "react-router-dom";
 
 const ShoppingCartPage = () => {
+  const navigate = useNavigate();
+
   const {
     cartItems,
     total,
     createOrderFromCart,
     clearCart,
-    loading,
     moveCartToOrderDetail,
   } = useDataShoppingCart();
 
-  const { user, isLoggedIn } = useAuth();
-  const customerId = user?._id || user?.id;
-  const navigate = useNavigate();
-
- const handleCreateOrder = (paymentMethod) => {
-  if (!isLoggedIn) {
-    ErrorAlert("Debes iniciar sesión para crear una orden");
-    return;
-  }
-
-  if (cartItems.length === 0) return;
-
-  const orderDetail = {
-    items: cartItems,
-    total,
-    paymentMethod,
-    customerId,
-  };
-
-  localStorage.setItem("OrderDetail", JSON.stringify(orderDetail));
-  navigate("/checkOut");
-};
-
-
   const subtotal = total;
   const deliveryFee = 0;
-  const discount = 0;
-  const finalTotal = subtotal + deliveryFee - discount;
+  const finalTotal = subtotal + deliveryFee;
+
+  const { user, isLoggedIn } = useAuth();
+  const customerId = user?._id || user?.id;
+
+  const handleCreateOrder = () => {
+    if (!isLoggedIn) {
+      ErrorAlert("Debes iniciar sesión para crear una orden");
+      return;
+    }
+
+    if (cartItems.length === 0) return;
+
+    const orderDetail = {
+      items: cartItems,
+      total,
+      customerId,
+    };
+
+    localStorage.setItem("OrderDetail", JSON.stringify(orderDetail));
+    console.log("das")
+    navigate("/checkOut");
+  };
 
   return (
     <div className="shopping-cart-page">
@@ -69,19 +67,11 @@ const ShoppingCartPage = () => {
               </div>
             </div>
 
-            <div className="payment-section">
-              <PaymentMethod
-                subtotal={subtotal}
-                deliveryFee={deliveryFee}
-                discount={discount}
-                total={finalTotal}
-                onCreateOrder={handleCreateOrder}
-                loading={loading}
-               
-              />
-            </div>
           </div>
         )}
+        {cartItems.length > 0 ? (<Link type="submit" className="purchase-button text-center text-decoration-none" to={"/checkOut"} onClick={handleCreateOrder}>
+              Comprar
+            </Link> ) : null}
       </div>
     </div>
   );
