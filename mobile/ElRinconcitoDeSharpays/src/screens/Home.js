@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,10 @@ import {
   TouchableOpacity,
   Image,
   StatusBar,
-  Alert
+  Alert,
+  Modal,
+  Animated,
+  Easing
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -24,6 +27,10 @@ export default function Home() {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const navigation = useNavigation();
+
+  // Modal state
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const modalAnim = useRef(new Animated.Value(0)).current;
 
   // Refresca datos cada vez que la pantalla recibe el foco
   useFocusEffect(
@@ -73,103 +80,128 @@ export default function Home() {
     }
   };
 
-  // Filtrar órdenes por categoría
   const filteredOrders = selectedCategory
     ? orders.filter(o => o.categoryId?.category === selectedCategory)
     : orders;
 
+  const openOrderDetail = (order) => {
+    setSelectedOrder(order);
+    modalAnim.setValue(0);
+    Animated.timing(modalAnim, {
+      toValue: 1,
+      duration: 300,
+      easing: Easing.out(Easing.cubic),
+      useNativeDriver: true
+    }).start();
+  };
+
+  const closeOrderDetail = () => {
+    Animated.timing(modalAnim, {
+      toValue: 0,
+      duration: 200,
+      easing: Easing.in(Easing.cubic),
+      useNativeDriver: true
+    }).start(() => setSelectedOrder(null));
+  };
+
+  const modalScale = modalAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.8, 1]
+  });
+
+  const modalOpacity = modalAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1]
+  });
+
   return (
-    <ScrollView style={styles.container}>
-      <StatusBar barStyle="dark-content" />
+    <View style={{ flex: 1 }}>
+      <ScrollView style={styles.container}>
+        <StatusBar barStyle="dark-content" />
 
-      {/* Top Bar */}
-      <View style={styles.topBar}>
-        <TouchableOpacity onPress={handleLogout} style={{ padding: 5 }}>
-          <FontAwesome name="sign-out" size={26} color="#FE3F8D" />
-        </TouchableOpacity>
+        {/* Top Bar */}
+        <View style={styles.topBar}>
+          <TouchableOpacity onPress={handleLogout} style={{ padding: 5 }}>
+            <FontAwesome name="sign-out" size={26} color="#FE3F8D" />
+          </TouchableOpacity>
 
-        <View style={{ flex: 1, alignItems: 'center' }}>
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Image
+              source={require('../../assets/SharpayLogo.png')}
+              style={styles.appLogo}
+              resizeMode="contain"
+            />
+          </View>
+
+          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+            <Image
+              source={{ uri: employee?.image || 'https://via.placeholder.com/150' }}
+              style={styles.topProfileImage}
+              defaultSource={require('../../assets/placeholder.png')}
+            />
+          </TouchableOpacity>
+        </View>
+
+        {/* Search */}
+        <View style={styles.searchContainer}>
+          <FontAwesome name="search" size={18} color="#000" style={{ marginRight: 10 }} />
+          <TextInput placeholder="Buscar" style={styles.searchInput} />
+        </View>
+
+        {/* Greeting Card */}
+        <View style={styles.greetingCard}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.greetingText}>
+              <Text style={styles.bold}>Buenos días! </Text>
+              <Text style={styles.highlight}>{employee?.name || 'Usuario'}</Text>
+            </Text>
+            <Text style={styles.subText}>Gestiona tus ordenes con confianza y claridad</Text>
+            <Text style={styles.pending}>
+              {orders?.filter(o => o.status === "pendiente").length || 0} ordenes pendientes el día de hoy
+            </Text>
+          </View>
           <Image
-            source={require('../../assets/SharpayLogo.png')}
-            style={styles.appLogo}
-            resizeMode="contain"
+            source={require('../../assets/SharpayLogoWhite.png')}
+            style={styles.greetingImage}
           />
         </View>
 
-        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-          <Image
-            source={{ uri: employee?.image || 'https://via.placeholder.com/150' }}
-            style={styles.topProfileImage}
-            defaultSource={require('../../assets/placeholder.png')}
-          />
-        </TouchableOpacity>
-      </View>
-
-      {/* Search */}
-      <View style={styles.searchContainer}>
-        <FontAwesome name="search" size={18} color="#000" style={{ marginRight: 10 }} />
-        <TextInput placeholder="Buscar" style={styles.searchInput} />
-      </View>
-
-      {/* Greeting Card */}
-      <View style={styles.greetingCard}>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.greetingText}>
-            <Text style={styles.bold}>Buenos días! </Text>
-            <Text style={styles.highlight}>{employee?.name || 'Usuario'}</Text>
-          </Text>
-          <Text style={styles.subText}>Gestiona tus ordenes con confianza y claridad</Text>
-          <Text style={styles.pending}>
-            {orders?.filter(o => o.status === "pendiente").length || 0} ordenes pendientes el día de hoy
-          </Text>
-        </View>
-        <Image
-          source={require('../../assets/SharpayLogoWhite.png')}
-          style={styles.greetingImage}
-        />
-      </View>
-
-      {/* Categories */}
-      <ScrollView horizontal style={styles.categoryContainer} showsHorizontalScrollIndicator={false}>
-        <TouchableOpacity
-          style={[styles.categoryButton, selectedCategory === null && styles.selectedCategory]}
-          onPress={() => setSelectedCategory(null)}
-        >
-          <Text style={[styles.categoryText, selectedCategory === null && styles.selectedCategoryText]}>
-            Todo
-          </Text>
-        </TouchableOpacity>
-
-        {categories.map((cat) => (
+        {/* Categories */}
+        <ScrollView horizontal style={styles.categoryContainer} showsHorizontalScrollIndicator={false}>
           <TouchableOpacity
-            key={cat._id}
-            style={[styles.categoryButton, selectedCategory === cat.category && styles.selectedCategory]}
-            onPress={() => setSelectedCategory(cat.category)}
+            style={[styles.categoryButton, selectedCategory === null && styles.selectedCategory]}
+            onPress={() => setSelectedCategory(null)}
           >
-            <Text style={[styles.categoryText, selectedCategory === cat.category && styles.selectedCategoryText]}>
-              {cat.category}
+            <Text style={[styles.categoryText, selectedCategory === null && styles.selectedCategoryText]}>
+              Todo
             </Text>
           </TouchableOpacity>
-        ))}
-      </ScrollView>
 
-      <View style={styles.divider} />
+          {categories.map((cat) => (
+            <TouchableOpacity
+              key={cat._id}
+              style={[styles.categoryButton, selectedCategory === cat.category && styles.selectedCategory]}
+              onPress={() => setSelectedCategory(cat.category)}
+            >
+              <Text style={[styles.categoryText, selectedCategory === cat.category && styles.selectedCategoryText]}>
+                {cat.category}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
 
-      {/* Recent Orders */}
-      <Text style={styles.sectionTitle}>Pedidos recientes</Text>
-      <View style={styles.orderList}>
-        {loading ? (
-          <Text>Cargando órdenes...</Text>
-        ) : filteredOrders.length === 0 ? (
-          <Text>No hay órdenes recientes</Text>
-        ) : (
-          filteredOrders.map((order, i) => {
-            // Aquí hacemos console.log para ver la imagen
-            console.log('Imagen de la categoría:', order.categoryId?.image ?? 'Sin categoría');
+        <View style={styles.divider} />
 
-
-            return (
-              <View key={order._id || i} style={styles.orderItem}>
+        {/* Recent Orders */}
+        <Text style={styles.sectionTitle}>Pedidos recientes</Text>
+        <View style={styles.orderList}>
+          {loading ? (
+            <Text>Cargando órdenes...</Text>
+          ) : filteredOrders.length === 0 ? (
+            <Text>No hay órdenes recientes</Text>
+          ) : (
+            filteredOrders.map((order, i) => (
+              <TouchableOpacity key={order._id || i} style={styles.orderItem} onPress={() => openOrderDetail(order)}>
                 <Image
                   source={
                     order.categoryId?.image
@@ -190,12 +222,36 @@ export default function Home() {
                   </Text>
                 </View>
                 <View style={[styles.dot, { backgroundColor: getStatusColor(order.status) }]} />
-              </View>
-            );
-          })
-        )}
-      </View>
-    </ScrollView>
+              </TouchableOpacity>
+            ))
+          )}
+        </View>
+      </ScrollView>
+
+      {/* Modal de detalle */}
+      <Modal transparent visible={!!selectedOrder} animationType="none">
+        <View style={styles.modalBackground}>
+          <Animated.View style={[styles.modalCard, { transform: [{ scale: modalScale }], opacity: modalOpacity }]}>
+            <ScrollView>
+              <Text style={styles.modalTitle}>Detalle de la orden</Text>
+              <Text style={styles.modalCategory}>Categoría: {selectedOrder?.categoryId?.category}</Text>
+              <Text>Fecha: {new Date(selectedOrder?.createdAt).toLocaleString()}</Text>
+              <Text>Total: ${selectedOrder?.total.toFixed(2)}</Text>
+              <Text style={{ marginTop: 10, fontWeight: 'bold' }}>Productos:</Text>
+              {selectedOrder?.orderDetails.map((item, idx) => (
+                <View key={idx} style={{ marginVertical: 5 }}>
+                  <Text>{item.productName} x {item.quantity}</Text>
+                  <Text>${item.price.toFixed(2)}</Text>
+                </View>
+              ))}
+              <TouchableOpacity style={styles.closeButton} onPress={closeOrderDetail}>
+                <Text style={{ color: '#fff', fontWeight: 'bold' }}>Cerrar</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </Animated.View>
+        </View>
+      </Modal>
+    </View>
   );
 }
 
@@ -226,5 +282,10 @@ const styles = StyleSheet.create({
   orderTitle: { fontWeight: 'bold', fontSize: 14 },
   orderInfo: { fontSize: 12, color: '#555', marginTop: 2 },
   orderSub: { fontSize: 11, color: '#aaa', marginTop: 2 },
-  dot: { width: 10, height: 10, borderRadius: 50, marginLeft: 10 }
+  dot: { width: 10, height: 10, borderRadius: 50, marginLeft: 10 },
+  modalBackground: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 20 },
+  modalCard: { backgroundColor: '#fff', borderRadius: 16, padding: 20, width: '100%', maxHeight: '80%' },
+  modalTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10 },
+  modalCategory: { fontSize: 14, marginBottom: 6 },
+  closeButton: { marginTop: 20, backgroundColor: '#FE3F8D', padding: 12, borderRadius: 10, alignItems: 'center' }
 });
