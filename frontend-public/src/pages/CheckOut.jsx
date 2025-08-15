@@ -76,17 +76,6 @@ const CheckoutPage = () => {
     }
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "expiry") {
-      value = value.slice(0, 2) + "/" + value.slice(2);
-    }
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   const uploadToCloudinary = async (base64Image) => {
     if (!base64Image) return null;
 
@@ -225,12 +214,12 @@ const CheckoutPage = () => {
     name: "",
     focus: "",
   });
-
-  const handleChangeInput = (evt) => {
+  
+  const handleInputChange = (evt) => {
     const { name, value } = evt.target;
-
+    
     setState((prev) => ({ ...prev, [name]: value }));
-  };
+  }
 
   const handleInputFocus = (evt) => {
     setState((prev) => ({ ...prev, focus: evt.target.name }));
@@ -261,7 +250,6 @@ const CheckoutPage = () => {
                       name="firstName"
                       placeholder="Nombre"
                       value={user?.name || formData.firstName}
-                      onChange={handleInputChange}
                       className="form-input"
                       required
                     />
@@ -276,7 +264,6 @@ const CheckoutPage = () => {
                       name="phone"
                       placeholder="Teléfono"
                       value={formData.phone}
-                      onChange={handleInputChange}
                       className="form-input"
                       required
                     />
@@ -287,7 +274,6 @@ const CheckoutPage = () => {
                       name="email"
                       placeholder="Correo Electrónico"
                       value={user?.email || formData.email}
-                      onChange={handleInputChange}
                       className="form-input"
                       required
                     />
@@ -300,7 +286,6 @@ const CheckoutPage = () => {
                     name="municipality"
                     placeholder="Departamento"
                     value={user?.department || formData.municipality}
-                    onChange={handleInputChange}
                     className="form-input"
                     required
                   />
@@ -312,7 +297,6 @@ const CheckoutPage = () => {
                     name="houseNumber"
                     placeholder="Número de casa, Apt #"
                     value={formData.houseNumber}
-                    onChange={handleInputChange}
                     className="form-input"
                     required
                   />
@@ -339,7 +323,7 @@ const CheckoutPage = () => {
                       type="text"
                       name="name"
                       placeholder="Nombre del titular"
-                      onChange={handleChangeInput}
+                      onChange={handleInputChange}
                       onFocus={handleInputFocus}
                       className="form-input"
                       required
@@ -352,7 +336,7 @@ const CheckoutPage = () => {
                       name="number"
                       placeholder="Número de la tarjeta"
                       maxLength={16}
-                      onChange={handleChangeInput}
+                      onChange={handleInputChange}
                       onFocus={handleInputFocus}
                       className="form-input"
                       required
@@ -367,7 +351,7 @@ const CheckoutPage = () => {
                       name="expiry"
                       maxLength={4}
                       placeholder="Fecha de vencimiento (Mes/Año)"
-                      onChange={handleChangeInput}
+                      onChange={handleInputChange}
                       onFocus={handleInputFocus}
                       className="form-input"
                       required
@@ -380,7 +364,7 @@ const CheckoutPage = () => {
                       name="cvc"
                       placeholder="CVC"
                       maxLength={3}
-                      onChange={handleChangeInput}
+                      onChange={handleInputChange}
                       onFocus={handleInputFocus}
                       className="form-input"
                       required
