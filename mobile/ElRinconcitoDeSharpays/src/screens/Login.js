@@ -45,14 +45,15 @@ export default function Login() {
   if (!fonts) return null;
 
   const handleLogin = async () => {
-    if(!email || !password)
+    const cleanedEmail = email.trim().toLowerCase();
+    if(!cleanedEmail || !password)
     {
       Alert.alert("Complete los campos");
       return;
     }
     else
     {
-      const success = await login(email, password);
+      const success = await login(cleanedEmail, password);
       if (success) {
         navigation.replace("Home");
       }

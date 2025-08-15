@@ -8,34 +8,32 @@ const loginController = {};
 
 // LOGIN PRIVATE - Only Employees
 loginController.loginPrivate = async (req, res) => {
-  const { email, password } = req.body;
+  let { email, password } = req.body;
+
+  // Normalizamos el correo
+  email = email?.trim().toLowerCase();
 
   try {
-    // 1. Admin, 2. Empleado, 3. Cliente
-
     let userFound;
     let userType;
 
-    //1. Admin
+    // 1. Admin
     if (
-      email === config.ADMIN.emailAdmin &&
+      email === config.ADMIN.emailAdmin.toLowerCase() &&
       password === config.ADMIN.password
     ) {
       userType = "admin";
       userFound = { _id: "admin" };
     } else {
-      //2. Empleados
+      // 2. Empleados
       userFound = await employeesModel.findOne({ email });
       userType = "employee";
     }
 
-    //Si no encontramos a ningun usuario con esas credenciales
     if (!userFound) {
       return res.status(400).json({ message: "User not found" });
     }
 
-    // Validar la contraseña
-    // SOLO SI NO ES ADMIN
     if (userType !== "admin") {
       const isMatch = await bcryptjs.compare(password, userFound.password);
       if (!isMatch) {
@@ -43,8 +41,6 @@ loginController.loginPrivate = async (req, res) => {
       }
     }
 
-
-    // Generar token
     jsonwebtoken.sign(
       {
         id: userFound._id,
