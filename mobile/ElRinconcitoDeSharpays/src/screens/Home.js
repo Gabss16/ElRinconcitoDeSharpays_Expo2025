@@ -11,20 +11,24 @@ import {
   Alert
 } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
 import { useEmployee } from '../hooks/profile/useEmployee';
 import { useOrders } from '../hooks/orders/useOrders';
 
 export default function Home() {
   const { logout } = React.useContext(AuthContext);
-  const { employee } = useEmployee();
+  const { employee, getEmployee } = useEmployee();
   const { orders, loading, getOrders } = useOrders();
   const navigation = useNavigation();
 
-  useEffect(() => {
-    getOrders();
-  }, [getOrders]);
+  // Refresca datos cada vez que la pantalla recibe el foco
+  useFocusEffect(
+    React.useCallback(() => {
+      getEmployee();
+      getOrders();
+    }, [getEmployee, getOrders])
+  );
 
   const handleLogout = () => {
     Alert.alert(

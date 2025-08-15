@@ -36,19 +36,42 @@ export const useEmployee = () => {
     }
   }, [userId, authToken]);
 
-  const saveEmployee = useCallback(
+  const updateEmployee = useCallback(
     async (employeeData) => {
       if (!userId) return false;
 
       setLoading(true);
       try {
-        const response = await fetch(`${API_URL}/employees/${userId}`, {
-          method: "PUT",
-          headers: {
+        let body;
+        let headers;
+
+        // Si la imagen es local, usa FormData
+        if (employeeData.image && employeeData.image.startsWith('file://')) {
+          body = new FormData();
+          body.append('name', employeeData.name);
+          body.append('email', employeeData.email);
+          body.append('image', {
+            uri: employeeData.image,
+            name: 'profile.jpg',
+            type: 'image/jpeg',
+          });
+          headers = {
+            Authorization: `Bearer ${authToken}`,
+            // No pongas Content-Type, React Native lo pone automáticamente para FormData
+          };
+        } else {
+          // Si no hay imagen nueva, manda JSON normal
+          body = JSON.stringify(employeeData);
+          headers = {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify(employeeData),
+          };
+        }
+
+        const response = await fetch(`${API_URL}/employees/${userId}`, {
+          method: "PUT",
+          headers,
+          body,
         });
 
         const data = await response.json();
@@ -58,7 +81,7 @@ export const useEmployee = () => {
         }
 
         setEmployee(data);
-        Alert.alert("Perfil actualizado correctamente");
+        Alert.alert('Perfil actualizado', 'Tus cambios han sido guardados.');
         return true;
       } catch (error) {
         console.error("Error updating employee:", error);
@@ -75,5 +98,5 @@ export const useEmployee = () => {
     getEmployee();
   }, [getEmployee]);
 
-  return { employee, loading, getEmployee, saveEmployee };
+  return { employee, loading, getEmployee, updateEmployee };
 };
