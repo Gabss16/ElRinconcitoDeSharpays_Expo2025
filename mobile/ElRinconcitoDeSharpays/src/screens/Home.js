@@ -14,7 +14,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
 import { useEmployee } from '../hooks/profile/useEmployee';
-import { useOrders } from '../hooks/orders/useOrders';
+import  useOrders  from '../hooks/orders/useOrders';
 
 export default function Home() {
   const { logout } = React.useContext(AuthContext);
