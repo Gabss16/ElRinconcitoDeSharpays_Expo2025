@@ -3,6 +3,22 @@ import { useEffect, useRef } from 'react';
 const TShirtView = ({ tshirtColor, canvasRef }) => {
   const colorLayerRef = useRef(null);
   const containerRef = useRef(null);
+  useEffect(() => {
+  const canvas = canvasRef.current;
+  if (!canvas) return;
+
+  const resizeCanvas = () => {
+    const parent = canvas.parentElement;
+    canvas.width = parent.offsetWidth;
+    canvas.height = parent.offsetHeight;
+  };
+
+  resizeCanvas();
+
+  window.addEventListener('resize', resizeCanvas);
+  return () => window.removeEventListener('resize', resizeCanvas);
+}, []);
+
 
   // Imagen de camisetas duales (frente y atrás)
   const dualImage = '/images/dualchemis.png';
@@ -44,6 +60,8 @@ const TShirtView = ({ tshirtColor, canvasRef }) => {
         <canvas 
           ref={canvasRef}
           className="design-canvas"
+
+          
         />
       </div>
     </div>
