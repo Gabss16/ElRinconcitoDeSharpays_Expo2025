@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
     const loadStoredData = async () => {
       try {
         const token = await AsyncStorage.getItem("token");
+        
         const storedUserId = await AsyncStorage.getItem("userId");
 
         if (token && token !== "undefined") setAuthToken(token);
