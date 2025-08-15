@@ -1,14 +1,9 @@
 import { useState, useEffect } from "react";
 import { Platform } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_URL } from "../config";
 
-const LOCAL_IP = "192.168.56.1"; // Cambiar por tu IP
-const API_HOST =
-  Platform.OS === "android"
-    ? "http://10.10.4.21:4000"
-    : `http://${LOCAL_IP}:4000`;
-
-const API = `${API_HOST}/api/recoveryPassword`;
+const API = `${API_URL}/recoveryPassword`;
 
 const useRecoveryPassword = () => {
   const [email, setEmail] = useState("");
@@ -101,15 +96,15 @@ const useRecoveryPassword = () => {
         setCode("");
         setNewPassword("");
         setConfirmPassword("");
-        return true; // <--- RETORNAR TRUE SI FUE EXITOSO
+        return true;
       } else {
         alert(data.message || "Error");
-        return false; // <--- RETORNAR FALSE SI FALLÓ
+        return false;
       }
     } catch (err) {
       console.error(err);
       alert("Error al establecer la nueva contraseña");
-      return false; // <--- RETORNAR FALSE SI FALLÓ
+      return false;
     }
   };
 

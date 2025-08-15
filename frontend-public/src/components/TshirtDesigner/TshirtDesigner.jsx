@@ -197,34 +197,65 @@ const TShirtDesigner = ( { product }) => {
  
   // Exporta el diseño combinado camiseta + canvas como PNG
   const exportDesign = useCallback(() => {
-    return new Promise((resolve) => {
-      if (!canvas) return resolve(null);
- 
-      const tempCanvas = document.createElement('canvas');
-      tempCanvas.width = canvas.getWidth();
-      tempCanvas.height = canvas.getHeight();
-      const ctx = tempCanvas.getContext('2d');
- 
-      const shirtImage = new Image();
-      shirtImage.src = dualImage;
-      shirtImage.crossOrigin = 'anonymous';
- 
-      shirtImage.onload = () => {
-        ctx.drawImage(shirtImage, 0, 0, tempCanvas.width, tempCanvas.height);
- 
-        const designData = canvas.toDataURL('image/png');
-        const designImage = new Image();
-        designImage.src = designData;
-        designImage.crossOrigin = 'anonymous';
- 
-        designImage.onload = () => {
-          ctx.drawImage(designImage, 0, 0);
-          const finalImage = tempCanvas.toDataURL('image/png');
-          resolve(finalImage);
-        };
+  return new Promise((resolve) => {
+    if (!canvas) return resolve(null);
+
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = canvas.getWidth();
+    tempCanvas.height = canvas.getHeight();
+    const ctx = tempCanvas.getContext('2d');
+
+    const shirtImage = new Image();
+    shirtImage.src = dualImage;
+    shirtImage.crossOrigin = 'anonymous';
+
+    shirtImage.onload = () => {
+      // 1. Dibuja imagen base
+      ctx.drawImage(shirtImage, 0, 0, tempCanvas.width, tempCanvas.height);
+
+      // 2. Dibuja el diseño
+      const designData = canvas.toDataURL('image/png');
+      const designImage = new Image();
+      designImage.src = designData;
+      designImage.crossOrigin = 'anonymous';
+
+      designImage.onload = () => {
+        ctx.drawImage(designImage, 0, 0);
+
+        // 3. Círculo de color
+        const circleRadius = 20;
+        const padding = 10;
+
+        const circleX = tempCanvas.width - circleRadius - padding;
+        const circleY = tempCanvas.height - circleRadius - padding;
+
+        ctx.beginPath();
+        ctx.arc(circleX, circleY, circleRadius, 0, 2 * Math.PI);
+        ctx.fillStyle = tshirtColor;
+        ctx.fill();
+
+        ctx.strokeStyle = '#00000066';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // 4. Texto al lado del círculo
+        const text = 'Color de camisa';
+        ctx.font = '16px Arial';
+        ctx.fillStyle = '#000';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+
+        // Dibuja texto a la izquierda del círculo
+        ctx.fillText(text, circleX - circleRadius - 8, circleY);
+
+        // 5. Exporta
+        const finalImage = tempCanvas.toDataURL('image/png');
+        resolve(finalImage);
       };
-    });
-  }, [canvas]);
+    };
+  });
+}, [canvas, tshirtColor]);
+
  
   // 🔹 Función para agregar camiseta personalizada al carrito
   const handleAddToCart = useCallback(async () => {

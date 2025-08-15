@@ -1,19 +1,19 @@
 import { useState, useEffect, useContext, useCallback } from "react";
-import { AuthContext } from "../../context/AuthContext"; // Ajusta la ruta según tu proyecto
+import { AuthContext } from "../../context/AuthContext";
 import { Alert } from "react-native";
+import { API_URL } from "../../config"; 
 
 export const useEmployee = () => {
-  const { userId, authToken, API } = useContext(AuthContext);
+  const { userId, authToken } = useContext(AuthContext); // 👈 Quitamos API
   const [employee, setEmployee] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Función para obtener los datos del empleado
   const getEmployee = useCallback(async () => {
     if (!userId) return;
 
     setLoading(true);
     try {
-      const response = await fetch(`${API}/employees/${userId}`, {
+      const response = await fetch(`${API_URL}/employees/${userId}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -34,17 +34,16 @@ export const useEmployee = () => {
     } finally {
       setLoading(false);
     }
-  }, [userId, authToken, API]);
+  }, [userId, authToken]);
 
-  // Función para actualizar el empleado (PUT)
   const saveEmployee = useCallback(
     async (employeeData) => {
       if (!userId) return false;
 
       setLoading(true);
       try {
-        const response = await fetch(`${API}/employees/${userId}`, {
-          method: "PUT", // Cambiado a PUT
+        const response = await fetch(`${API_URL}/employees/${userId}`, {
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${authToken}`,
@@ -69,10 +68,9 @@ export const useEmployee = () => {
         setLoading(false);
       }
     },
-    [userId, authToken, API]
+    [userId, authToken]
   );
 
-  // Cargar el empleado automáticamente cuando cambia el userId
   useEffect(() => {
     getEmployee();
   }, [getEmployee]);

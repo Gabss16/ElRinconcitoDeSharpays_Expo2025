@@ -1,15 +1,15 @@
 import React, { createContext, useState, useCallback, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert } from "react-native";
+import { API_URL } from "../config";
 
 const AuthContext = createContext(null);
 export { AuthContext };
 
 export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(null);
-  const [userId, setUserId] = useState(null); // Solo id
+  const [userId, setUserId] = useState(null);
   const [loading, setLoading] = useState(false);
-  const API_URL = "http://10.10.4.195:8081/api";
 
   useEffect(() => {
     const loadStoredData = async () => {
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
       await clearSession();
       Alert.alert("Sesión cerrada correctamente");
     }
-  }, [API_URL]);
+  }, []);
 
   const login = async (email, password) => {
     try {
