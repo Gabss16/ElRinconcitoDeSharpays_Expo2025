@@ -838,3 +838,39 @@ select:focus {
     font-size: 14px;
   }
 }
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.tshirt-wrapper {
+  max-width: 100%;
+  min-width: auto !important;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .tshirt-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: auto !important;
+  }
+
+  .header-section {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .text-controls-header {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
