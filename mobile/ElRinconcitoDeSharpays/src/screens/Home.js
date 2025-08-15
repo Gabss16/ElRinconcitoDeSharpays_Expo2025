@@ -215,8 +215,9 @@ export default function Home() {
                     {order.categoryId?.category || "Sin categoría"}
                   </Text>
                   <Text style={styles.orderInfo}>
-                    {new Date(order.createdAt).toLocaleDateString()} · ${order.total.toFixed(2)} · {order.orderDetails.length} items
+                    {new Date(order.createdAt).toLocaleDateString()} · ${(order.total || 0).toFixed(2)} · {order.orderDetails.length} items
                   </Text>
+
                   <Text style={styles.orderSub}>
                     {order.orderDetails.map(p => p.productName).join(", ")}
                   </Text>
