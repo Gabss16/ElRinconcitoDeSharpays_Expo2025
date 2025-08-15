@@ -44,10 +44,18 @@ orderController.createOrder = async (req, res) => {
 // Obtener todas las órdenes con info del cliente y tienda
 orderController.getOrders = async (req, res) => {
   try {
-    const orders = await Order.find()
+    let orders = await Order.find()
       .populate("customerId", "name email")
-      .populate("categoryId", "category") // <- Mostrar el nombre de la tienda
+      .populate("categoryId", "category image")
       .populate("orderDetails.productId", "name price");
+
+    // Agregar URL absoluta para las imágenes
+    orders = orders.map(order => {
+      if (order.categoryId?.image && !order.categoryId.image.startsWith('http')) {
+        order.categoryId.image = `${process.env.API_URL}/${order.categoryId.image}`;
+      }
+      return order;
+    });
 
     res.json(orders);
   } catch (error) {
@@ -55,17 +63,18 @@ orderController.getOrders = async (req, res) => {
   }
 };
 
+
 // Obtener orden por ID
 orderController.getOrderById = async (req, res) => {
   try {
     const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {  
       return res.status(400).json({ message: "ID de orden no válido" });
     }
 
     const order = await Order.findById(id)
       .populate("customerId", "name email")
-      .populate("categoryId", "category")
+      .populate("categoryId", "category image")
       .populate("orderDetails.productId", "name price");
 
     if (!order) return res.status(404).json({ message: "Orden no encontrada" });
