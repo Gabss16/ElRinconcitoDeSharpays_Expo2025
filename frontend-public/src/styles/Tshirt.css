@@ -80,95 +80,58 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 10px;
+  height: 60vh; /* altura responsive, ocupa 60% de la ventana */
+  max-height: 600px; /* tamaño máximo de alto */
+  position: relative;
+  background: #f5f5f5; /* opcional */
 }
 
 .tshirt-wrapper {
   position: relative;
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  aspect-ratio: 5/3;
-  background: linear-gradient(145deg, #f0f0f0, #ffffff);
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-  overflow: hidden;
-  border: 2px solid var(--border-gray);
-  margin: 0 auto;
+  width: 80vw;    /* ancho responsive: 80% de la ventana */
+  max-width: 480px; /* ancho máximo */
+  height: 100%;
+  max-height: 600px; /* altura máxima */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Responsive para tshirt-wrapper */
-@media (min-width: 480px) {
-  .tshirt-wrapper {
-    max-width: 450px;
-    border-radius: 18px;
-  }
-}
-
-@media (min-width: 768px) {
-  .tshirt-wrapper {
-    max-width: 600px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-  }
-}
-
-@media (min-width: 992px) {
-  .tshirt-wrapper {
-    max-width: 700px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .tshirt-wrapper {
-    max-width: 800px;
-  }
-}
-
-@media (min-width: 1400px) {
-  .tshirt-wrapper {
-    max-width: 1000px;
-  }
-}
-
-/* ===== ELEMENTOS DE CAMISETA ===== */
 .tshirt-color-layer {
   position: absolute;
   width: 100%;
   height: 100%;
-  mask-size: contain;
-  -webkit-mask-size: contain;
+  top: 0;
+  left: 0;
   mask-repeat: no-repeat;
   -webkit-mask-repeat: no-repeat;
   mask-position: center;
   -webkit-mask-position: center;
-  z-index: 1;
-  transition: background-color 0.3s ease;
-}
-
-.tshirt-base-image {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  z-index: 2;
-  mix-blend-mode: multiply;
-  opacity: 0.8;
-  pointer-events: none;
+  mask-size: contain;
+  -webkit-mask-size: contain;
 }
 
 .design-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
+  width: 70% !important;
+  height: 0% !important;
+}
+
+.tshirt-base-image {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+}
+
+
+.design-canvas {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  z-index: 10;
-  pointer-events: auto;
-  background-color: transparent;
-  transform-origin: top left;
+  z-index: 5 !important;
+  pointer-events: auto !important;
+  background-color: transparent !important;
 }
 
 /* ===== CONTROLES DE TEXTO RESPONSIVE ===== */
@@ -794,7 +757,7 @@ body {
   }
 }
 
-/* ===== CANVAS RESPONSIVO Y FABRIC.JS FIXES ===== */
+/* ===== CANVAS RESPONSIVO Y FABRIC.JS FIXES - CORREGIDO ===== */
 .canvas-container {
   position: relative;
   width: 100%;
@@ -802,7 +765,7 @@ body {
   overflow: visible;
 }
 
-/* Fabric.js responsive fixes */
+/* Fabric.js canvas styling */
 .upper-canvas {
   position: absolute !important;
   top: 0 !important;
@@ -810,7 +773,8 @@ body {
   width: 100% !important;
   height: 100% !important;
   pointer-events: auto !important;
-  z-index: 15 !important;
+  z-index: 8 !important;
+  background: transparent !important;
 }
 
 .lower-canvas {
@@ -819,7 +783,8 @@ body {
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
-  z-index: 12 !important;
+  z-index: 6 !important;
+  background: transparent !important;
 }
 
 /* Contenedor del canvas de Fabric.js */
@@ -829,16 +794,22 @@ body {
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
+  background: transparent !important;
 }
 
-/* Asegurar que los elementos de Fabric.js sean visibles */
+/* Elementos de Fabric.js visibles y controlables */
 .fabric-object {
   pointer-events: auto !important;
 }
 
-/* Controles de Fabric.js personalizados */
-.fabric-object-controls {
+/* Controles de Fabric.js con colores personalizados */
+.canvas-container .fabric-object {
   border-color: var(--primary-pink) !important;
+}
+
+/* Asegurar que los controles estén visibles */
+.fabric-object-controls {
+  z-index: 12 !important;
 }
 
 /* Canvas wrapper específico para mantener aspect ratio */
@@ -849,7 +820,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: visible;
-  z-index: 10;
+  z-index: 5;
 }
 
 /* Viewport meta fix para móviles */
@@ -861,6 +832,11 @@ body {
   .upper-canvas,
   .lower-canvas {
     touch-action: manipulation !important;
+  }
+  
+  /* Mejorar la selección en móviles */
+  .fabric-object {
+    touch-action: none !important;
   }
 }
 
