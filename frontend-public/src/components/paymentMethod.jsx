@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import visaLogo from "../assets/visaLogo.png"
-import paypalLogo from "../assets/paypalLogo.png"
 import bacLogo from "../assets/bacLogo.png"
 
 import agricolaLogo from "../assets/agricolaLogo.png"
+import cash from "../assets/cash.png"
 
 const PaymentMethod = ({ 
   subtotal, 
@@ -67,9 +67,9 @@ const PaymentMethod = ({
               />
             </div>
             <div className="payment-info">
-              <span className="payment-name">PayPal</span>
-              <div className="payment-logos">
-                <img src={paypalLogo} alt="PayPal" className="payment-logo" />
+              <span className="payment-name">Efectivo</span>
+              <div className="cash-logo">
+                <img src={cash} width={60} alt="Efectivo"/>
               </div>
             </div>
           </div>
@@ -108,10 +108,9 @@ const PaymentMethod = ({
       </button>
 
       <div className="security-info">
-        <p>Garantía de 30 días de devolución de dinero</p>
         <div className="security-badges">
-          <span className="security-badge">🔒 Pago Seguro</span>
-          <span className="security-badge">✓ SSL Encriptado</span>
+          <span className="security-badge">Pago Seguro</span>
+          <span className="security-badge">SSL Encriptado</span>
         </div>
       </div>
     </div>
