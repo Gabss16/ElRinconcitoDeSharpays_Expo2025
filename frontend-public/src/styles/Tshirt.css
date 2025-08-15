@@ -35,14 +35,13 @@ body {
 
 /* ===== LAYOUT PRINCIPAL RESPONSIVE ===== */
 .app-container {
-  width: 100%;
-  max-width: 100%;
-  min-height: 100vh;
-  margin: 0 auto;
+  width: 100vw;
+  height: 100%;
   padding: 20px;
   display: flex;
+  overflow-y: none;
   flex-direction: column;
-  overflow-x: hidden;
+
 }
 
 /* ===== HEADER SECTION RESPONSIVE ===== */
@@ -381,6 +380,7 @@ body {
   padding: 20px;
   box-shadow: var(--shadow);
   margin-bottom: 20px;
+
 }
 
 @media (min-width: 768px) {
@@ -953,13 +953,14 @@ select:focus {
 /* Desktop grande (1400px+) */
 @media (min-width: 1400px) {
   .app-container {
-    max-width: 1600px;
+    width: 100vw;
     padding: 40px;
   }
   
   .header-section {
-    grid-template-columns: 1fr 450px;
+    grid-template-columns: 1fr 500px;
     gap: 50px;
+    
   }
   
   .controls-row {
@@ -967,7 +968,7 @@ select:focus {
   }
   
   .tshirt-wrapper {
-    max-width: 1200px;
+    max-width: 800px;
   }
 }
 
