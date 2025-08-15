@@ -33,7 +33,7 @@ const ShoppingCartPage = () => {
       return;
     }
 
-    if (cartItems.length === 0) return;
+    if (cartItems.length > 0) return;
 
     const orderDetail = {
       items: cartItems,
@@ -69,7 +69,7 @@ const ShoppingCartPage = () => {
 
           </div>
         )}
-        {!cartItems ? <Link type="submit" className="purchase-button text-center text-decoration-none" to={"/checkOut"}>
+        {cartItems.length > 0? <Link type="submit" className="purchase-button text-center text-decoration-none" to={"/checkOut"}>
               Comprar
             </Link> : null}
       </div>
