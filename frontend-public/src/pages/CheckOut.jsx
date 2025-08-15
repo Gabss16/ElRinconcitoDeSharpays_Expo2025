@@ -11,8 +11,10 @@ import { useAuth } from "../context/AuthContext.jsx";
 import PaymentMethod from "../components/PaymentMethod.jsx";
 import useDataShoppingCart from "../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 
-const CheckoutPage = () => {
+import Cards from "react-credit-cards-2";
+import 'react-credit-cards-2/dist/es/styles-compiled.css';
 
+const CheckoutPage = () => {
   const {
     cartItems,
     total,
@@ -29,24 +31,23 @@ const CheckoutPage = () => {
   const customerId = user?._id || user?.id;
 
   const handleCreateOrder = (paymentMethod) => {
-  if (!isLoggedIn) {
-    ErrorAlert("Debes iniciar sesión para crear una orden");
-    return;
-  }
+    if (!isLoggedIn) {
+      ErrorAlert("Debes iniciar sesión para crear una orden");
+      return;
+    }
 
-  if (cartItems.length === 0) return;
+    if (cartItems.length === 0) return;
 
-  const orderDetail = {
-    items: cartItems,
-    total,
-    paymentMethod,
-    customerId,
+    const orderDetail = {
+      items: cartItems,
+      total,
+      paymentMethod,
+      customerId,
+    };
+
+    localStorage.setItem("OrderDetail", JSON.stringify(orderDetail));
+    navigate("/checkOut");
   };
-
-  localStorage.setItem("OrderDetail", JSON.stringify(orderDetail));
-  navigate("/checkOut");
-};
-
 
   const navigate = useNavigate();
 
@@ -214,6 +215,24 @@ const CheckoutPage = () => {
     }
   };
 
+  const [state, setState] = useState({
+    number: '',
+    expiry: '',
+    cvc: '',
+    name: '',
+    focus: '',
+  });
+
+  const handleChangeInput = (evt) => {
+    const { name, value } = evt.target;
+    
+    setState((prev) => ({ ...prev, [name]: value }));
+  }
+
+  const handleInputFocus = (evt) => {
+    setState((prev) => ({ ...prev, focus: evt.target.name }));
+  }
+
   return (
     <div className="shopping-cart-page">
       <div className="carousel-wrapper">
@@ -221,10 +240,17 @@ const CheckoutPage = () => {
       </div>
 
       <div className="cart-content">
-        <h2 className="cart-title-main">Checkout</h2>
+        <h2 className="cart-title-main">Proceso de Pago</h2>
 
         <div className="cart-layout">
-          {/* Formulario */}
+          <Cards
+            number={state.number}
+            expiry={state.expiry}
+            cvc={state.cvc}
+            name={state.name}
+            focused={state.focus}
+          />
+
           <div className="cart-items-section">
             <div className="form-section">
               <h2 className="section-title">
@@ -311,23 +337,13 @@ const CheckoutPage = () => {
 
           {/* Resumen de compra */}
           <div className="payment-section">
-            <div className="payment-method-container">
-              <div className="payment-summary">
-                <div className="summary-row">
-                  <span>Total</span>
-                  <span>${orderDetail?.total.toFixed(2)}</span>
-                </div>
-                <div className="payment-section">
-                  <PaymentMethod
+              <PaymentMethod
                     subtotal={subtotal}
                     deliveryFee={deliveryFee}
                     total={finalTotal}
                     onCreateOrder={handleCreateOrder}
                     loading={loading}
                   />
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

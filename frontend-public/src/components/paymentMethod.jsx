@@ -27,13 +27,13 @@ const PaymentMethod = ({
     <div className="payment-method-container">
       <div className="payment-summary">
         <div className="summary-row">
-          <span>Subtotal</span>
+          <span>Total</span>
           <span>${subtotal.toFixed(2)}</span>
         </div>
         
         <div className="summary-row">
           <span>Envío/Entrega</span>
-          <span>{deliveryFee > 0 ? `$${deliveryFee.toFixed(2)}` : "Free"}</span>
+          <span style={{color: '#e65c95ff'}}>$3.39</span>
         </div>
         
         <div className="summary-row">
