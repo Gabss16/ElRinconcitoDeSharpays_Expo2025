@@ -63,7 +63,6 @@ const CheckoutPage = () => {
 
   const [orderDetail, setOrderDetail] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("otro");
 
   useEffect(() => {
     const stored = localStorage.getItem("OrderDetail");
@@ -250,6 +249,7 @@ const CheckoutPage = () => {
                       name="firstName"
                       placeholder="Nombre"
                       value={user?.name || formData.firstName}
+                      onChange={(e) => setFormData.firstName(e.target.value)}
                       className="form-input"
                       required
                     />
@@ -264,6 +264,7 @@ const CheckoutPage = () => {
                       name="phone"
                       placeholder="Teléfono"
                       value={formData.phone}
+                      onChange={(e) => setFormData.phone(e.target.value)}
                       className="form-input"
                       required
                     />
@@ -274,6 +275,7 @@ const CheckoutPage = () => {
                       name="email"
                       placeholder="Correo Electrónico"
                       value={user?.email || formData.email}
+                      onChange={(e) => setFormData.email(e.target.value)}
                       className="form-input"
                       required
                     />
@@ -286,6 +288,7 @@ const CheckoutPage = () => {
                     name="municipality"
                     placeholder="Departamento"
                     value={user?.department || formData.municipality}
+                    onChange={(e) => setFormData.deparment(e.target.value)}
                     className="form-input"
                     required
                   />
@@ -297,18 +300,18 @@ const CheckoutPage = () => {
                     name="houseNumber"
                     placeholder="Número de casa, Apt #"
                     value={formData.houseNumber}
+                    onChange={(e) => setFormData.houseNumber(e.target.value)}
                     className="form-input"
                     required
                   />
                 </div>
 
                 {/* Credit card information */}
-
                 <h2 className="section-title">
                   <FaCreditCard size={20} />
                   Datos de la tarjeta
                 </h2>
-
+                <div className="card-model">
                 <Cards
                   number={state.number}
                   expiry={state.expiry}
@@ -316,6 +319,7 @@ const CheckoutPage = () => {
                   name={state.name}
                   focused={state.focus}
                 />
+                </div>
 
                 <div className="form-row pt-4">
                   <div className="form-group">
