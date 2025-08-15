@@ -27,22 +27,22 @@ const ShoppingCartPage = () => {
   const { user, isLoggedIn } = useAuth();
   const customerId = user?._id || user?.id;
 
-  const handleCreateOrder = (paymentMethod) => {
+  const handleCreateOrder = () => {
     if (!isLoggedIn) {
       ErrorAlert("Debes iniciar sesión para crear una orden");
       return;
     }
 
-    if (cartItems.length > 0) return;
+    if (cartItems.length === 0) return;
 
     const orderDetail = {
       items: cartItems,
       total,
-      paymentMethod,
       customerId,
     };
 
     localStorage.setItem("OrderDetail", JSON.stringify(orderDetail));
+    console.log("das")
     navigate("/checkOut");
   };
 
@@ -69,9 +69,9 @@ const ShoppingCartPage = () => {
 
           </div>
         )}
-        {cartItems.length > 0? <Link type="submit" className="purchase-button text-center text-decoration-none" to={"/checkOut"}>
+        {cartItems.length > 0 ? (<Link type="submit" className="purchase-button text-center text-decoration-none" to={"/checkOut"} onClick={handleCreateOrder}>
               Comprar
-            </Link> : null}
+            </Link> ) : null}
       </div>
     </div>
   );

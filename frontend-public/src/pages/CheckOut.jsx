@@ -68,7 +68,7 @@ const CheckoutPage = () => {
     const stored = localStorage.getItem("OrderDetail");
 
     if (!stored) {
-      ErrorAlert("No hay ninguna orden activa.");
+      ErrorAlert("No hay ninguna orden activa");
       setTimeout(() => navigate("/"), 3000);
     } else {
       setOrderDetail(JSON.parse(stored));
