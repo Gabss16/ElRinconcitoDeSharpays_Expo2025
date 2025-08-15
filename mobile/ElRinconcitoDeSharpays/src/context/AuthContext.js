@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState(null);
   const [userId, setUserId] = useState(null); // Solo id
   const [loading, setLoading] = useState(false);
-  const API_URL = "http://10.10.4.21:4000/api";
+  const API_URL = "http://10.10.4.195:8081/api";
 
   useEffect(() => {
     const loadStoredData = async () => {

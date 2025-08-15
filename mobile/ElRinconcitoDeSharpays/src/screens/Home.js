@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -13,12 +13,18 @@ import {
 import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../context/AuthContext';
-import { useEmployee } from '../hooks/profile/useEmployee'; // Ajusta la ruta según tu proyecto
+import { useEmployee } from '../hooks/profile/useEmployee';
+import { useOrders } from '../hooks/orders/useOrders';
 
 export default function Home() {
   const { logout } = React.useContext(AuthContext);
   const { employee } = useEmployee();
+  const { orders, loading, getOrders } = useOrders();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    getOrders();
+  }, [getOrders]);
 
   const handleLogout = () => {
     Alert.alert(
@@ -30,18 +36,30 @@ export default function Home() {
           text: "Sí",
           onPress: async () => {
             await logout();
-            navigation.replace("Login"); // Ajusta el nombre de la pantalla de login
+            navigation.replace("Login");
           }
         }
       ]
     );
   };
 
+  // Función para obtener color del dot según status
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "pendiente": return "#FFD93D"; // amarillo
+      case "pagado": return "#77DD77"; // verde claro
+      case "entregado": return "#87CEEB"; // azul
+      case "completado": return "#4CAF50"; // verde
+      case "cancelado": return "#FF6961"; // rojo
+      default: return "#ccc";
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       <StatusBar barStyle="dark-content" />
 
-      {/* Top Bar con perfil y logout */}
+      {/* Top Bar */}
       <View style={styles.topBar}>
         <TouchableOpacity onPress={handleLogout} style={{ padding: 5 }}>
           <FontAwesome name="sign-out" size={26} color="#FE3F8D" />
@@ -57,7 +75,7 @@ export default function Home() {
 
         <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
           <Image
-            source={{ uri: employee?.image || 'https://via.placeholder.com/150' }} // URL de Cloudinary o placeholder
+            source={{ uri: employee?.image || 'https://via.placeholder.com/150' }}
             style={styles.topProfileImage}
             defaultSource={require('../../assets/placeholder.png')}
           />
@@ -78,7 +96,9 @@ export default function Home() {
             <Text style={styles.highlight}>{employee?.name || 'Usuario'}</Text>
           </Text>
           <Text style={styles.subText}>Gestiona tus ordenes con confianza y claridad</Text>
-          <Text style={styles.pending}>12 ordenes pendientes el día de hoy</Text>
+          <Text style={styles.pending}>
+            {orders?.filter(o => o.status === "pendiente").length || 0} ordenes pendientes el día de hoy
+          </Text>
         </View>
         <Image
           source={require('../../assets/SharpayLogoWhite.png')}
@@ -104,55 +124,42 @@ export default function Home() {
         ))}
       </View>
 
-      {/* Divider */}
       <View style={styles.divider} />
 
       {/* Recent Orders */}
       <Text style={styles.sectionTitle}>Pedidos recientes</Text>
       <View style={styles.orderList}>
-        {[
-          {
-            logo: require('../../assets/SharpayLogoWhite.png'),
-            name: 'El Paraíso de Dios',
-            date: '5 May',
-            total: '$10.00',
-            items: '1 item',
-            placeholder: 'PlaceHolder',
-            dotColor: '#FFD93D'
-          },
-          {
-            logo: require('../../assets/SharpayLogoWhite.png'),
-            name: 'Frosty Bites',
-            date: '3 May',
-            total: '$6.00',
-            items: '2 items',
-            placeholder: 'PlaceHolder',
-            dotColor: '#FFD93D'
-          },
-          {
-            logo: require('../../assets/SharpayLogoWhite.png'),
-            name: 'Frosty Bites',
-            date: '28 Apr',
-            total: '$9.00',
-            items: '3 items',
-            placeholder: 'PlaceHolder, PlaceHolder',
-            dotColor: '#77DD77'
-          }
-        ].map((order, i) => (
-          <View key={i} style={styles.orderItem}>
-            <Image source={order.logo} style={styles.orderLogo} />
-            <View style={{ flex: 1 }}>
-              <Text style={styles.orderTitle}>{order.name}</Text>
-              <Text style={styles.orderInfo}>{`${order.date} · ${order.total} · ${order.items}`}</Text>
-              <Text style={styles.orderSub}>{order.placeholder}</Text>
+        {loading ? (
+          <Text>Cargando órdenes...</Text>
+        ) : orders.length === 0 ? (
+          <Text>No hay órdenes recientes</Text>
+        ) : (
+          orders.map((order, i) => (
+            <View key={order._id || i} style={styles.orderItem}>
+              <Image
+                source={require('../../assets/SharpayLogoWhite.png')}
+                style={styles.orderLogo}
+              />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.orderTitle}>
+                  {order.categoryId?.category || "Sin categoría"}
+                </Text>
+                <Text style={styles.orderInfo}>
+                  {new Date(order.createdAt).toLocaleDateString()} · ${order.total.toFixed(2)} · {order.orderDetails.length} items
+                </Text>
+                <Text style={styles.orderSub}>
+                  {order.orderDetails.map(p => p.productName).join(", ")}
+                </Text>
+              </View>
+              <View style={[styles.dot, { backgroundColor: getStatusColor(order.status) }]} />
             </View>
-            <View style={[styles.dot, { backgroundColor: order.dotColor }]} />
-          </View>
-        ))}
+          ))
+        )}
       </View>
     </ScrollView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
