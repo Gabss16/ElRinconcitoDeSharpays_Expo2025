@@ -89,59 +89,61 @@ body {
 .tshirt-view-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
-  padding: 1rem;
-  box-sizing: border-box;
+  max-width: 1200px;  /* Aumentado de 1000px */
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .tshirt-wrapper {
   position: relative;
   width: 100%;
-  max-width: 700px; /* Ajusta a tu diseño */
-  aspect-ratio: 16 / 9; /* Puedes usar 4/5 o 3/4 si se adapta mejor */
-  margin: 0 auto;
+  max-width: 1000px;  /* Aumentado de 900px */
+  min-width: 800px;
+  aspect-ratio: 5/3;
+  background: linear-gradient(145deg, #f0f0f0, #ffffff);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  overflow: hidden;
+  border: 3px solid var(--border-gray);
 }
 
 .tshirt-color-layer {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  background-color: transparent;
-  mask-image: url('/images/dualchemis.png');
-  mask-repeat: no-repeat;
-  mask-position: center;
   mask-size: contain;
-
-  -webkit-mask-image: url('/images/dualchemis.png');
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
   -webkit-mask-size: contain;
-
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: center;
+  -webkit-mask-position: center;
   z-index: 1;
+  transition: background-color 0.3s ease;
 }
 
 .tshirt-base-image {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  z-index: 0;
+  z-index: 2;
+  mix-blend-mode: multiply;
+  opacity: 0.8;
+  pointer-events: none;
 }
 
 .design-canvas {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  pointer-events: none; /* o auto si quieres interactividad */
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 10;
+  pointer-events: auto;
+  background-color: transparent;
 }
-
 
 /* ===== CONTROLES DE TEXTO (AHORA EN HEADER) ===== */
 .text-controls-header h3,
@@ -834,42 +836,5 @@ select:focus {
   .delete-button {
     padding: 10px;
     font-size: 14px;
-  }
-}
-/* === FIX DE RESPONSIVE GENERAL === */
-html, body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-.app-container {
-  width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
-.tshirt-wrapper {
-  max-width: 100%;
-  min-width: auto !important;
-  width: 100%;
-}
-
-@media (max-width: 768px) {
-  .tshirt-wrapper {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: auto !important;
-  }
-
-  .header-section {
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  .text-controls-header {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding-left: 10px;
-    padding-right: 10px;
   }
 }
