@@ -219,10 +219,31 @@ const CheckoutPage = () => {
   });
 
   const handleInputChange = (evt) => {
-    const { name, value } = evt.target;
+  let { name, value } = evt.target;
 
-    setState((prev) => ({ ...prev, [name]: value }));
+  if (name === "number") {
+    // Remove all non-digits
+    value = value.replace(/\D/g, "");
+    // Limit to 16 digits
+    value = value.substring(0, 16);
+    // Add space every 4 digits
+    value = value.replace(/(\d{4})(?=\d)/g, "$1 ");
   }
+
+  if (name === "expiry") {
+    // Remove non-digits
+    value = value.replace(/\D/g, "");
+    // Limit to 4 digits (MMYY)
+    value = value.substring(0, 4);
+    // Add slash after 2 digits
+    if (value.length > 2) {
+      value = value.replace(/(\d{2})(\d{1,2})/, "$1/$2");
+    }
+  }
+
+  setState((prev) => ({ ...prev, [name]: value }));
+};
+
 
   const handleInputFocus = (evt) => {
     setState((prev) => ({ ...prev, focus: evt.target.name }));
@@ -359,7 +380,8 @@ const CheckoutPage = () => {
                                 type="text"
                                 name="number"
                                 placeholder="Número de la tarjeta"
-                                maxLength={16}
+                                maxLength={19}
+                                value={state.number}
                                 onChange={handleInputChange}
                                 onFocus={handleInputFocus}
                                 className="form-input"
@@ -373,8 +395,9 @@ const CheckoutPage = () => {
                               <input
                                 type="text"
                                 name="expiry"
-                                maxLength={4}
                                 placeholder="Fecha de vencimiento (Mes/Año)"
+                                maxLength={5}
+                                value={state.expiry}
                                 onChange={handleInputChange}
                                 onFocus={handleInputFocus}
                                 className="form-input"
