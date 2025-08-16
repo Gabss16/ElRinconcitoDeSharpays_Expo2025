@@ -7,23 +7,15 @@ import cash from "../assets/cash.png";
 
 const PaymentMethod = ({
   subtotal,
-  discount = 0,
   total,
   onCreateOrder,
   loading,
+  selectedPayment,
+  onPaymentChange
 }) => {
-  const [selectedPayment, setSelectedPayment] = useState("card");
 
   const handlePaymentChange = (method) => {
-    if(method === 'cash')
-    {
-      
-    }
-    else
-    {
-      console.log('credit card')
-    }
-    setSelectedPayment(method);
+    onPaymentChange(method);
   };
 
   const handlePurchase = () => {
@@ -34,7 +26,7 @@ const PaymentMethod = ({
     <div className="payment-method-container">
       <div className="payment-summary">
         <div className="summary-row">
-          <span>Total</span>
+          <span>SubTotal</span>
           <span>${subtotal.toFixed(2)}</span>
         </div>
 
@@ -47,13 +39,6 @@ const PaymentMethod = ({
           <span>Estimado Total</span>
           <span className="total-amount">${total.toFixed(2)}</span>
         </div>
-
-        {discount > 0 && (
-          <div className="summary-row discount-row">
-            <span>Descuento</span>
-            <span>-${discount.toFixed(2)}</span>
-          </div>
-        )}
       </div>
 
       <div className="payment-methods">

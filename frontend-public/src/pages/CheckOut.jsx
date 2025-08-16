@@ -13,6 +13,8 @@ import useDataShoppingCart from "../components/shoppingCart/hooks/useDataShoppin
 
 import Cards from "react-credit-cards-2";
 import "react-credit-cards-2/dist/es/styles-compiled.css";
+//Animation for showing or hidding content
+import { motion, AnimatePresence } from "framer-motion";
 
 const CheckoutPage = () => {
   const {
@@ -24,11 +26,13 @@ const CheckoutPage = () => {
   } = useDataShoppingCart();
 
   const subtotal = total;
-  const deliveryFee = 0;
-  const finalTotal = subtotal + deliveryFee;
+  const delivery = 3.49;
+  const finalTotal = subtotal + delivery;
 
   const { user, isLoggedIn } = useAuth();
   const customerId = user?._id || user?.id;
+
+  const [paymentMethod, setPaymentMethod] = useState("card");
 
   const handleCreateOrder = (paymentMethod) => {
     if (!isLoggedIn) {
@@ -213,10 +217,10 @@ const CheckoutPage = () => {
     name: "",
     focus: "",
   });
-  
+
   const handleInputChange = (evt) => {
     const { name, value } = evt.target;
-    
+
     setState((prev) => ({ ...prev, [name]: value }));
   }
 
@@ -306,75 +310,97 @@ const CheckoutPage = () => {
                   />
                 </div>
 
+
                 {/* Credit card information */}
-                <h2 className="section-title">
-                  <FaCreditCard size={20} />
-                  Datos de la tarjeta
-                </h2>
-                <div className="card-model">
-                <Cards
-                  number={state.number}
-                  expiry={state.expiry}
-                  cvc={state.cvc}
-                  name={state.name}
-                  focused={state.focus}
-                />
-                </div>
 
-                <div className="form-row pt-4">
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="Nombre del titular"
-                      onChange={handleInputChange}
-                      onFocus={handleInputFocus}
-                      className="form-input"
-                      required
-                    />
-                  </div>
+                <AnimatePresence>
+                    {paymentMethod === 'card' &&
+                      (
+                        <>
+                        <motion.div
+                    key="card-form"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    style={{ overflow: "hidden" }}
+                  >
 
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      name="number"
-                      placeholder="Número de la tarjeta"
-                      maxLength={16}
-                      onChange={handleInputChange}
-                      onFocus={handleInputFocus}
-                      className="form-input"
-                      required
-                    />
-                  </div>
-                </div>
+                          <h2 className="section-title">
+                            <FaCreditCard size={20} />
+                            Datos de la tarjeta
+                          </h2>
 
-                <div className="form-row">
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      name="expiry"
-                      maxLength={4}
-                      placeholder="Fecha de vencimiento (Mes/Año)"
-                      onChange={handleInputChange}
-                      onFocus={handleInputFocus}
-                      className="form-input"
-                      required
-                    />
-                  </div>
+                          <div className="card-model">
+                            <Cards
+                              number={state.number}
+                              expiry={state.expiry}
+                              cvc={state.cvc}
+                              name={state.name}
+                              focused={state.focus}
+                            />
+                          </div>
+                          <div className="checkout-form">
+                          <div className="form-row pt-4">
+                            <div className="form-group">
+                              <input
+                                type="text"
+                                name="name"
+                                placeholder="Nombre del titular"
+                                onChange={handleInputChange}
+                                onFocus={handleInputFocus}
+                                className="form-input"
+                                required
+                              />
+                            </div>
 
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      name="cvc"
-                      placeholder="CVC"
-                      maxLength={3}
-                      onChange={handleInputChange}
-                      onFocus={handleInputFocus}
-                      className="form-input"
-                      required
-                    />
-                  </div>
-                </div>
+                            <div className="form-group">
+                              <input
+                                type="text"
+                                name="number"
+                                placeholder="Número de la tarjeta"
+                                maxLength={16}
+                                onChange={handleInputChange}
+                                onFocus={handleInputFocus}
+                                className="form-input"
+                                required
+                              />
+                            </div>
+                          </div>
+
+                          <div className="form-row">
+                            <div className="form-group">
+                              <input
+                                type="text"
+                                name="expiry"
+                                maxLength={4}
+                                placeholder="Fecha de vencimiento (Mes/Año)"
+                                onChange={handleInputChange}
+                                onFocus={handleInputFocus}
+                                className="form-input"
+                                required
+                              />
+                            </div>
+
+                            <div className="form-group">
+                              <input
+                                type="text"
+                                name="cvc"
+                                placeholder="CVC"
+                                maxLength={3}
+                                onChange={handleInputChange}
+                                onFocus={handleInputFocus}
+                                className="form-input"
+                                required
+                              />
+                            </div>
+                          </div>
+                          </div>
+                  </motion.div>
+                        </>
+                      )
+                    }
+                </AnimatePresence>
 
                 <button
                   type="submit"
@@ -390,10 +416,11 @@ const CheckoutPage = () => {
           <div className="payment-section">
             <PaymentMethod
               subtotal={subtotal}
-              deliveryFee={deliveryFee}
               total={finalTotal}
               onCreateOrder={handleCreateOrder}
               loading={loading}
+              selectedPayment={paymentMethod}
+              onPaymentChange={setPaymentMethod}
             />
           </div>
         </div>
