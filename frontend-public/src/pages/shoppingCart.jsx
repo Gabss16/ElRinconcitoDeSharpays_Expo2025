@@ -69,7 +69,7 @@ const ShoppingCartPage = () => {
 
           </div>
         )}
-        {cartItems.length > 0 ? (<Link type="submit" className="purchase-button text-center text-decoration-none" to={"/checkOut"} onClick={handleCreateOrder}>
+        {cartItems.length > 0 ? (<Link type="submit" className="purchase-button text-center text-decoration-none text-white" to={"/checkOut"} onClick={handleCreateOrder}>
               Comprar
             </Link> ) : null}
       </div>
