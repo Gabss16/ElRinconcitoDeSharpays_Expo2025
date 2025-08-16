@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaMapMarkerAlt, FaCreditCard } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import CircularGallery from "../components/reactBits/CircularGallery.jsx";
 import SuccessAlert from "../components/SuccessAlert.jsx";
@@ -12,7 +12,7 @@ import PaymentMethod from "../components/PaymentMethod.jsx";
 import useDataShoppingCart from "../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 
 import Cards from "react-credit-cards-2";
-import 'react-credit-cards-2/dist/es/styles-compiled.css';
+import "react-credit-cards-2/dist/es/styles-compiled.css";
 
 const CheckoutPage = () => {
   const {
@@ -63,7 +63,6 @@ const CheckoutPage = () => {
 
   const [orderDetail, setOrderDetail] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState("otro");
 
   useEffect(() => {
     const stored = localStorage.getItem("OrderDetail");
@@ -75,14 +74,6 @@ const CheckoutPage = () => {
       setOrderDetail(JSON.parse(stored));
     }
   }, []);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
   const uploadToCloudinary = async (base64Image) => {
     if (!base64Image) return null;
@@ -208,7 +199,7 @@ const CheckoutPage = () => {
       localStorage.removeItem("OrderDetail");
       localStorage.removeItem("shoppingCart");
     } catch (err) {
-      console.error("❌ Error al procesar la orden:", err);
+      console.error("Error al procesar la orden:", err);
       ErrorAlert(err.message || "Error al procesar la orden");
     } finally {
       setLoading(false);
@@ -216,14 +207,14 @@ const CheckoutPage = () => {
   };
 
   const [state, setState] = useState({
-    number: '',
-    expiry: '',
-    cvc: '',
-    name: '',
-    focus: '',
+    number: "",
+    expiry: "",
+    cvc: "",
+    name: "",
+    focus: "",
   });
-
-  const handleChangeInput = (evt) => {
+  
+  const handleInputChange = (evt) => {
     const { name, value } = evt.target;
     
     setState((prev) => ({ ...prev, [name]: value }));
@@ -231,7 +222,7 @@ const CheckoutPage = () => {
 
   const handleInputFocus = (evt) => {
     setState((prev) => ({ ...prev, focus: evt.target.name }));
-  }
+  };
 
   return (
     <div className="shopping-cart-page">
@@ -243,14 +234,6 @@ const CheckoutPage = () => {
         <h2 className="cart-title-main">Proceso de Pago</h2>
 
         <div className="cart-layout">
-          <Cards
-            number={state.number}
-            expiry={state.expiry}
-            cvc={state.cvc}
-            name={state.name}
-            focused={state.focus}
-          />
-
           <div className="cart-items-section">
             <div className="form-section">
               <h2 className="section-title">
@@ -259,7 +242,6 @@ const CheckoutPage = () => {
               </h2>
 
               <form onSubmit={handleSubmit} className="checkout-form">
-                {/* Campos completos como tenías */}
                 <div className="form-group full-width">
                   <div className="form-group">
                     <input
@@ -267,7 +249,7 @@ const CheckoutPage = () => {
                       name="firstName"
                       placeholder="Nombre"
                       value={user?.name || formData.firstName}
-                      onChange={handleInputChange}
+                      onChange={(e) => setFormData.firstName(e.target.value)}
                       className="form-input"
                       required
                     />
@@ -282,7 +264,7 @@ const CheckoutPage = () => {
                       name="phone"
                       placeholder="Teléfono"
                       value={formData.phone}
-                      onChange={handleInputChange}
+                      onChange={(e) => setFormData.phone(e.target.value)}
                       className="form-input"
                       required
                     />
@@ -293,7 +275,7 @@ const CheckoutPage = () => {
                       name="email"
                       placeholder="Correo Electrónico"
                       value={user?.email || formData.email}
-                      onChange={handleInputChange}
+                      onChange={(e) => setFormData.email(e.target.value)}
                       className="form-input"
                       required
                     />
@@ -306,7 +288,7 @@ const CheckoutPage = () => {
                     name="municipality"
                     placeholder="Departamento"
                     value={user?.department || formData.municipality}
-                    onChange={handleInputChange}
+                    onChange={(e) => setFormData.deparment(e.target.value)}
                     className="form-input"
                     required
                   />
@@ -318,10 +300,80 @@ const CheckoutPage = () => {
                     name="houseNumber"
                     placeholder="Número de casa, Apt #"
                     value={formData.houseNumber}
-                    onChange={handleInputChange}
+                    onChange={(e) => setFormData.houseNumber(e.target.value)}
                     className="form-input"
                     required
                   />
+                </div>
+
+                {/* Credit card information */}
+                <h2 className="section-title">
+                  <FaCreditCard size={20} />
+                  Datos de la tarjeta
+                </h2>
+                <div className="card-model">
+                <Cards
+                  number={state.number}
+                  expiry={state.expiry}
+                  cvc={state.cvc}
+                  name={state.name}
+                  focused={state.focus}
+                />
+                </div>
+
+                <div className="form-row pt-4">
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder="Nombre del titular"
+                      onChange={handleInputChange}
+                      onFocus={handleInputFocus}
+                      className="form-input"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      name="number"
+                      placeholder="Número de la tarjeta"
+                      maxLength={16}
+                      onChange={handleInputChange}
+                      onFocus={handleInputFocus}
+                      className="form-input"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      name="expiry"
+                      maxLength={4}
+                      placeholder="Fecha de vencimiento (Mes/Año)"
+                      onChange={handleInputChange}
+                      onFocus={handleInputFocus}
+                      className="form-input"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      name="cvc"
+                      placeholder="CVC"
+                      maxLength={3}
+                      onChange={handleInputChange}
+                      onFocus={handleInputFocus}
+                      className="form-input"
+                      required
+                    />
+                  </div>
                 </div>
 
                 <button
@@ -335,15 +387,14 @@ const CheckoutPage = () => {
             </div>
           </div>
 
-          {/* Resumen de compra */}
           <div className="payment-section">
-              <PaymentMethod
-                    subtotal={subtotal}
-                    deliveryFee={deliveryFee}
-                    total={finalTotal}
-                    onCreateOrder={handleCreateOrder}
-                    loading={loading}
-                  />
+            <PaymentMethod
+              subtotal={subtotal}
+              deliveryFee={deliveryFee}
+              total={finalTotal}
+              onCreateOrder={handleCreateOrder}
+              loading={loading}
+            />
           </div>
         </div>
       </div>
