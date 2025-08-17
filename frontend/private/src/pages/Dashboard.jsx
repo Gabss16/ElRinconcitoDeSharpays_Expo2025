@@ -26,8 +26,8 @@ const Dashboard = () => {
   const dataCategories = useDataCategory(); //Stores
 
   useEffect(() => {
-      dataProducts.fetchData();
-      dataEmployees.fetchEmployeesById(user?.id);
+    dataProducts.fetchData();
+    dataEmployees.fetchEmployeesById(user?.id);
   }, [user?.id]);
 
   return (
@@ -54,8 +54,9 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <hr style={{width: '100%'}}/>
+            <hr style={{ width: '100%' }} />
 
+              {/*
             <div className="grahpics d-flex justify-content-around">
               <div className="bar-chart">
                 <h4>Productos más vendidos</h4>
@@ -83,7 +84,8 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-
+              */}
+            <h4>Negocios</h4>
             <div className="d-flex justify-content-around store-card-section">
               {dataCategories.categories.map((cat) => (
                 <StoreCard
@@ -101,7 +103,7 @@ const Dashboard = () => {
                 <ProductsTable {...dataProducts} isEditable={false} />
               </div>
               <div className="sales-by-shop">
-                <h4>Ventas por negocio</h4>
+                <h4>Productos por negocio</h4>
                 <Doughnut />
               </div>
             </div>

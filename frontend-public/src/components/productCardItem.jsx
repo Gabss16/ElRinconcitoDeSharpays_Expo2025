@@ -14,9 +14,7 @@ const ProductCartItem = ({ item, removeFromCart, updateQuantity }) => {
 
   // +/- buttons
   const incrementQuantity = () => updateQuantity(item, quantity + 1);
-  const decrementQuantity = () => {
-    if (quantity > 1) updateQuantity(item, quantity - 1);
-  };
+  const decrementQuantity = () => {if (quantity > 1) updateQuantity(item, quantity - 1);};
 
   return (
     <>
