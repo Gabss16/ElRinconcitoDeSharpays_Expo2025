@@ -20,6 +20,10 @@ const ProductCartItem = ({ item }) => {
     duaData,
   } = product;
 
+   const handleRemove = () => {
+    removeFromCart(_id);
+  };
+
   // Determinar la imagen a mostrar
   const productImage =
     duaData?.carnetImage ||
@@ -33,12 +37,20 @@ const ProductCartItem = ({ item }) => {
   return (
     <>
       <div className="cart-card">
+        {/* Botón eliminar arriba derecha */}
+        <button
+          className="remove-btn"
+         onClick={() => removeFromCart(item.key)}
+        >
+          <img src={trashIcon} alt="Eliminar" />
+        </button>
+
         <div className="cart-image">
           <img
             src={productImage}
             alt={name}
             onClick={togglePreview}
-            style={{ cursor: "pointer" }} // para que se note que es clickeable
+            style={{ cursor: "pointer" }}
           />
         </div>
 
@@ -57,8 +69,19 @@ const ProductCartItem = ({ item }) => {
           )}
 
           <div className="cart-qty-price">
-            <div className="cart-price">${(price * quantity).toFixed(2)}</div>
+            <div className="cart-quantity">
+              <span>Cantidad: </span>
+              <input
+                type="text"
+                min="1"
+                value={quantity}
+                onChange={(e) => updateQuantity(item, parseInt(e.target.value, 10) || 1)}
+                className="qty-input"
+              />
+            </div>
           </div>
+          <div className="cart-price">
+              ${(price * quantity).toFixed(2)}</div>
         </div>
       </div>
 

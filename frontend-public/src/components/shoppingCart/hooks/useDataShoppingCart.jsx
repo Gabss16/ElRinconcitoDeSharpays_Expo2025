@@ -34,6 +34,14 @@ const useDataShoppingCart = () => {
     saveToLocalStorage(updatedCart);
   };
 
+  // 🔹 NUEVO: actualizar cantidad
+  const updateQuantity = (item, newQuantity) => {
+    if (newQuantity < 1) return;
+    const updatedCart = cartItems.map(ci => ci.key === item.key ? { ...ci, quantity: newQuantity } : ci);
+    setCartItems(updatedCart);
+    saveToLocalStorage(updatedCart);
+  };
+
   const clearCart = () => {
     setCartItems([]);
     localStorage.removeItem("shoppingCart");
@@ -41,19 +49,17 @@ const useDataShoppingCart = () => {
 
   const total = cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
 
-  // 🔹 Crear orden desde el carrito (el backend sube las imágenes)
   const createOrderFromCart = async (customerId, shippingAddress, status = "pendiente") => {
     setLoading(true);
     setError(null);
-  
+
     try {
       const products = cartItems.map(item => {
-        // Si es DUA, usar carnetImage como image
         let imageUrl = item.product.image;
         if (item.product.duaData) {
           imageUrl = item.product.duaData.carnetImage || item.product.customDesign || null;
         }
-  
+
         return {
           productId: item.product._id.startsWith("custom-") ? null : item.product._id,
           categoryId: item.product.categoryId?._id || null,
@@ -67,20 +73,20 @@ const useDataShoppingCart = () => {
           discount: 0
         };
       });
-  
+
       const payload = { customerId, products, shippingAddress, status };
-  
+
       const res = await fetch(API_CREATE_ORDER, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-  
+
       if (!res.ok) {
         const errData = await res.json();
         throw new Error(errData.message || "Error al crear la orden desde el carrito");
       }
-  
+
       const data = await res.json();
       clearCart();
       return data;
@@ -92,7 +98,6 @@ const useDataShoppingCart = () => {
       setLoading(false);
     }
   };
-  
 
   return {
     cartItems,
@@ -101,6 +106,7 @@ const useDataShoppingCart = () => {
     error,
     addToCart,
     removeFromCart,
+    updateQuantity, 
     clearCart,
     createOrderFromCart
   };
