@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import ErrorAlert from "../../ErrorAlert";
+import SuccessAlert from "../../SuccessAlert";
 
 
 const API_ORDERS = "http://localhost:4000/api/orders";
@@ -17,17 +19,18 @@ const useOrdersWithCategories = () => {
         fetch(API_ORDERS),
         fetch(API_CATEGORIES),
       ]);
-    
+
       const [ordersData, categoriesData] = await Promise.all([
         resOrders.json(),
         resCat.json(),
       ]);
+
       setOrders(ordersData);
       setCategories(categoriesData);
       setError(null);
     } catch (err) {
       setError(err.message);
-      toast.error("Error cargando pedidos o categorías");
+      ErrorAlert("Error cargando pedidos o categorías");
     } finally {
       setLoading(false);
     }
@@ -41,8 +44,6 @@ const useOrdersWithCategories = () => {
         body: JSON.stringify(updatedFields),
       });
 
-
-
       const updatedOrder = await res.json();
 
       setOrders((prevOrders) =>
@@ -51,10 +52,10 @@ const useOrdersWithCategories = () => {
         )
       );
 
-      toast.success("Orden actualizada");
+      SuccessAlert("Orden actualizada");
     } catch (err) {
       setError(err.message);
-      toast.error("Error al actualizar orden");
+      ErrorAlert("Error al actualizar orden");
     }
   };
 

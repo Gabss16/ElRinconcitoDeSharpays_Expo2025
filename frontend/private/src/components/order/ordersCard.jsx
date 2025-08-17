@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import CustomButton from "../CustomButton";
+import SuccessAlert from "../SuccessAlert";
+import ErrorAlert from "../ErrorAlert";
 
 const OrderCard = ({ order, updateOrder }) => {
   const { orderDetails, total, customerId, _id } = order;
@@ -9,9 +11,17 @@ const OrderCard = ({ order, updateOrder }) => {
   const [previewImage, setPreviewImage] = useState(null);
 
   const markAsDelivered = async () => {
-    const updatedStatus = "completado";
-    setStatus(updatedStatus);
-    await updateOrder(_id, { status: updatedStatus });
+    try {
+      const updatedStatus = "completado";
+      setStatus(updatedStatus);
+      await updateOrder(_id, { status: updatedStatus });
+
+      // Alerta de éxito
+      SuccessAlert("Orden marcada como entregada");
+    } catch (err) {
+      console.error(err);
+      ErrorAlert("No se pudo actualizar el estado de la orden");
+    }
   };
 
   return (
@@ -80,69 +90,65 @@ const OrderCard = ({ order, updateOrder }) => {
 
       {/* Modal de imagen */}
       {previewImage && (
-  <div
-    style={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      background: "rgba(0,0,0,0.6)",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 9999,
-      flexDirection: "column"
-    }}
-    onClick={(e) => {
-      if (e.target === e.currentTarget) setPreviewImage(null);
-    }}
-  >
-    {/* Botón de descarga */}
-    <a
-      href={previewImage}
-      download={`orden-${_id}.jpg`}
-      style={{
-        position: "absolute",
-        top: "20px",
-        right: "20px",
-        background: "#fff",
-        borderRadius: "50%",
-        padding: "8px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        cursor: "pointer",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.3)"
-      }}
-      onClick={(e) => e.stopPropagation()}
-    >
-      {/* Ícono de descarga */}
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        fill="black"
-        viewBox="0 0 24 24"
-      >
-        <path d="M5 20h14v-2H5v2zm7-18v12l4-4h-3V4h-2v6H8l4 4z" />
-      </svg>
-    </a>
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "rgba(0,0,0,0.6)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+            flexDirection: "column"
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setPreviewImage(null);
+          }}
+        >
+          <a
+            href={previewImage}
+            download={`orden-${_id}.jpg`}
+            style={{
+              position: "absolute",
+              top: "20px",
+              right: "20px",
+              background: "#fff",
+              borderRadius: "50%",
+              padding: "8px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.3)"
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="black"
+              viewBox="0 0 24 24"
+            >
+              <path d="M5 20h14v-2H5v2zm7-18v12l4-4h-3V4h-2v6H8l4 4z" />
+            </svg>
+          </a>
 
-    {/* Imagen */}
-    <img
-      src={previewImage}
-      alt="Vista previa"
-      style={{
-        maxWidth: "90%",
-        maxHeight: "90%",
-        borderRadius: "8px",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.3)"
-      }}
-    />
-  </div>
-)}
-
+          <img
+            src={previewImage}
+            alt="Vista previa"
+            style={{
+              maxWidth: "90%",
+              maxHeight: "90%",
+              borderRadius: "8px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.3)"
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };
