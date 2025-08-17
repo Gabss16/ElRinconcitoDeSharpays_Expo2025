@@ -19,11 +19,12 @@ import { AuthContext } from '../context/AuthContext';
 import { useEmployee } from '../hooks/profile/useEmployee';
 import useOrders from '../hooks/orders/useOrders';
 import { API_URL } from '../config';
+import purchaseOrderIMG from '../../assets/purchaseOrder.png'
 
 export default function Home() {
   const { logout } = React.useContext(AuthContext);
   const { employee, getEmployee } = useEmployee();
-  const { orders, loading, getOrders } = useOrders();
+  const { orders, loading, getOrders, updateOrder} = useOrders();
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const navigation = useNavigation();
@@ -236,28 +237,146 @@ export default function Home() {
         </View>
       </ScrollView>
 
+
       {/* Modal de detalle */}
       <Modal transparent visible={!!selectedOrder} animationType="none">
         <View style={styles.modalBackground}>
-          <Animated.View style={[styles.modalCard, { transform: [{ scale: modalScale }], opacity: modalOpacity }]}>
+          <Animated.View
+            style={[
+              styles.modalCard,
+              { transform: [{ scale: modalScale }], opacity: modalOpacity }
+            ]}
+          >
             <ScrollView>
-              <Text style={styles.modalCategory}>{selectedOrder?.categoryId?.category}</Text>
-              <Text>Fecha: {new Date(selectedOrder?.createdAt).toLocaleString()}</Text>
-              <Text>Total: ${(selectedOrder?.total ?? 0).toFixed(2)}</Text>
-              <Text style={{ marginTop: 10, fontWeight: 'bold' }}>Productos:</Text>
-              {selectedOrder?.orderDetails.map((item, idx) => (
-                <View key={idx} style={{ marginVertical: 5 }}>
-                  <Text>{item.productName} x {item.quantity}</Text>
-                </View>
-              ))}
+              {/* Encabezado con logo y datos */}
+              <View style={{ alignItems: "center", marginBottom: 20 }}>
+                <Image
+                  source={require("../../assets/SharpayLogo.png")}
+                  style={{ width: 100, height: 100, borderRadius: 50 }}
+                />
+                <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 10 }}>
+                  {selectedOrder?.categoryId?.category || "Sin categoría"}
+                </Text>
+                <Text style={{ color: "#555" }}>
+                  {selectedOrder?.customerId?.name || "Cliente desconocido"}
+                </Text>
+                <Text style={{ fontSize: 12, color: "#999" }}>
+                  {new Date(selectedOrder?.createdAt).toLocaleString()}
+                </Text>
+              </View>
 
-              <TouchableOpacity style={styles.closeButton} onPress={closeOrderDetail}>
-                <Text style={{ color: '#fff', fontWeight: 'bold' }}>Cerrar</Text>
+              {/* Lista de productos */}
+              <View style={{ marginBottom: 15 }}>
+                <Text style={{ fontWeight: "bold", marginBottom: 8 }}>
+                  Orden de {selectedOrder?.customerName || "Cliente"}
+                </Text>
+                <Text style={{ fontWeight: "bold", marginBottom: 8 }}>
+                  Estado: {selectedOrder?.status || "Pendiente"}
+                </Text>
+                {selectedOrder?.orderDetails.map((item, idx) => (
+                  <View
+                    key={idx}
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      marginVertical: 5
+                    }}
+                  >
+                    <Text style={{ flex: 1 }}>
+                      {item.quantity} x {item.productName}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+
+              {/* Total */}
+              <View
+                style={{
+                  borderTopWidth: 1,
+                  borderTopColor: "#ddd",
+                  paddingTop: 10,
+                  flexDirection: "row",
+                  justifyContent: "space-between"
+                }}
+              >
+                <Text style={{ fontWeight: "bold", fontSize: 16 }}>Total:</Text>
+                <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                  ${(selectedOrder?.total ?? 0).toFixed(2)}
+                </Text>
+              </View>
+
+              {/* Botones */}
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginTop: 20
+                }}
+              >
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    marginRight: 10,
+                    backgroundColor: "#FF6961",
+                    padding: 12,
+                    borderRadius: 10,
+                    alignItems: "center"
+                  }}
+                  onPress={() => Alert.alert("Cancelar pedido")}
+                >
+                  <Text style={{ color: "#fff", fontWeight: "bold", textAlign: "center"}}>
+                    Cancelar Pedido
+                  </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    marginLeft: 10,
+                    backgroundColor: "#4CAF50",
+                    padding: 12,
+                    borderRadius: 10,
+                  }}
+                  onPress={() =>
+                    Alert.alert(
+                      "Confirmación",
+                      "¿Deseas marcar la orden como entregada?",
+                      [
+                        { text: "Cancelar", style: "cancel"},
+                        {
+                          text: "Sí",
+                          onPress: () => {
+                           updateOrder(selectedOrder._id, { status: "entregado" });
+                            closeOrderDetail(); 
+                          }
+                        }
+                      ]
+                    )
+                  }
+                >
+                  <Text style={{ color: "#fff", fontWeight: "bold",  textAlign: "center"}}>
+                    Marcar como entregado
+                  </Text>
+                </TouchableOpacity>
+
+              </View>
+
+              {/* Cerrar */}
+              <TouchableOpacity
+                style={{
+                  marginTop: 15,
+                  padding: 10,
+                  alignItems: "center"
+                }}
+                onPress={closeOrderDetail}
+              >
+                <Text style={{ color: "#FE3F8D", fontWeight: "bold" }}>Cerrar</Text>
               </TouchableOpacity>
             </ScrollView>
           </Animated.View>
         </View>
       </Modal>
+
     </View>
   );
 }
@@ -293,10 +412,10 @@ const styles = StyleSheet.create({
   modalBackground: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 20 },
   modalCard: { backgroundColor: '#fff', borderRadius: 16, padding: 20, width: '100%', maxHeight: '80%' },
   modalTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10 },
-  modalCategory: { fontSize: 30, marginBottom: 6, color: '#FE3F8D'},
+  modalCategory: { fontSize: 30, marginBottom: 6, color: '#FE3F8D' },
   closeButton: { marginTop: 20, backgroundColor: '#FE3F8D', padding: 12, borderRadius: 10, alignItems: 'center' },
   categoryButton: {
-    flexDirection: 'row',   
+    flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 6,
     paddingHorizontal: 12,
