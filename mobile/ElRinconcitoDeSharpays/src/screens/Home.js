@@ -183,11 +183,18 @@ export default function Home() {
               style={[styles.categoryButton, selectedCategory === cat.category && styles.selectedCategory]}
               onPress={() => setSelectedCategory(cat.category)}
             >
+              {cat.image && (
+                <Image
+                  source={{ uri: cat.image }}
+                  style={styles.categoryImage}
+                />
+              )}
               <Text style={[styles.categoryText, selectedCategory === cat.category && styles.selectedCategoryText]}>
                 {cat.category}
               </Text>
             </TouchableOpacity>
           ))}
+
         </ScrollView>
 
         <View style={styles.divider} />
@@ -234,17 +241,16 @@ export default function Home() {
         <View style={styles.modalBackground}>
           <Animated.View style={[styles.modalCard, { transform: [{ scale: modalScale }], opacity: modalOpacity }]}>
             <ScrollView>
-              <Text style={styles.modalTitle}>Detalle de la orden</Text>
-              <Text style={styles.modalCategory}>Categoría: {selectedOrder?.categoryId?.category}</Text>
+              <Text style={styles.modalCategory}>{selectedOrder?.categoryId?.category}</Text>
               <Text>Fecha: {new Date(selectedOrder?.createdAt).toLocaleString()}</Text>
-              <Text>Total: ${selectedOrder?.total.toFixed(2)}</Text>
+              <Text>Total: ${(selectedOrder?.total ?? 0).toFixed(2)}</Text>
               <Text style={{ marginTop: 10, fontWeight: 'bold' }}>Productos:</Text>
               {selectedOrder?.orderDetails.map((item, idx) => (
                 <View key={idx} style={{ marginVertical: 5 }}>
                   <Text>{item.productName} x {item.quantity}</Text>
-                  <Text>${item.price.toFixed(2)}</Text>
                 </View>
               ))}
+
               <TouchableOpacity style={styles.closeButton} onPress={closeOrderDetail}>
                 <Text style={{ color: '#fff', fontWeight: 'bold' }}>Cerrar</Text>
               </TouchableOpacity>
@@ -288,5 +294,23 @@ const styles = StyleSheet.create({
   modalCard: { backgroundColor: '#fff', borderRadius: 16, padding: 20, width: '100%', maxHeight: '80%' },
   modalTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10 },
   modalCategory: { fontSize: 14, marginBottom: 6 },
-  closeButton: { marginTop: 20, backgroundColor: '#FE3F8D', padding: 12, borderRadius: 10, alignItems: 'center' }
+  closeButton: { marginTop: 20, backgroundColor: '#FE3F8D', padding: 12, borderRadius: 10, alignItems: 'center' },
+  categoryButton: {
+    flexDirection: 'row',   
+    alignItems: 'center',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginRight: 8,
+    backgroundColor: '#fff'
+  },
+  categoryImage: {
+    width: 20,   // 👈 pequeña
+    height: 20,
+    borderRadius: 5,
+    marginRight: 6
+  },
+
 });
