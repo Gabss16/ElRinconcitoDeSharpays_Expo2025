@@ -4,7 +4,6 @@ import useDataShoppingCart from "../components/shoppingCart/hooks/useDataShoppin
 import ProductCartItem from "../components/productCardItem.jsx";
 import CircularGallery from "../components/reactBits/CircularGallery.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
-import CheckoutPage from "./CheckOut.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
 import "../styles/ShoppingCart.css";
 import { Link } from "react-router-dom";
@@ -16,13 +15,14 @@ const ShoppingCartPage = () => {
     cartItems,
     total,
     createOrderFromCart,
+    removeFromCart,
+    updateQuantity,
     clearCart,
     moveCartToOrderDetail,
   } = useDataShoppingCart();
 
   const subtotal = total;
   const deliveryFee = 0;
-  const finalTotal = subtotal + deliveryFee;
 
   const { user, isLoggedIn } = useAuth();
   const customerId = user?._id || user?.id;
@@ -60,9 +60,15 @@ const ShoppingCartPage = () => {
           <div className="cart-layout">
             <div className="cart-items-section">
               <div className="cart-items">
-                {cartItems.map((item) => (
-                  <ProductCartItem key={item.product._id} item={item} />
-                ))}
+                  {cartItems.map((item) => (
+                    <ProductCartItem
+                      key={item.key}
+                      item={item}
+                      removeFromCart={removeFromCart}
+                      updateQuantity={updateQuantity}
+                    />
+                  ))}
+
               </div>
             </div>
 

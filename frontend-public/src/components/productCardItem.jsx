@@ -1,91 +1,57 @@
 import React, { useState } from "react";
 import "../components/productCardItem.css";
-import useDataShoppingCart from "./shoppingCart/hooks/useDataShoppingCart";
-import trashIcon from "../assets/trashIcon.png";
+import { FaTrash } from 'react-icons/fa';
 
-const ProductCartItem = ({ item }) => {
-  const { updateQuantity, removeFromCart } = useDataShoppingCart();
+const ProductCartItem = ({ item, removeFromCart, updateQuantity }) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-
   const { product, quantity } = item;
-  const {
-    _id,
-    name,
-    price,
-    image,
-    description,
-    size,
-    flavor,
-    customDesign,
-    duaData,
-  } = product;
+  const { name, price, image, description, size, flavor, customDesign, duaData } = product;
 
-   const handleRemove = () => {
-    removeFromCart(_id);
-  };
+  const handleRemove = () => removeFromCart(item.key);
 
-  // Determinar la imagen a mostrar
-  const productImage =
-    duaData?.carnetImage ||
-    customDesign ||
-    image ||
-    "https://via.placeholder.com/160x200?text=Sin+Foto";
-
-  // Abrir o cerrar preview
+  const productImage = duaData?.carnetImage || customDesign || image || "https://via.placeholder.com/160x200?text=Sin+Foto";
   const togglePreview = () => setIsPreviewOpen(!isPreviewOpen);
+
+  // +/- buttons
+  const incrementQuantity = () => updateQuantity(item, quantity + 1);
+  const decrementQuantity = () => {
+    if (quantity > 1) updateQuantity(item, quantity - 1);
+  };
 
   return (
     <>
       <div className="cart-card">
-        {/* Botón eliminar arriba derecha */}
-        <button
-          className="remove-btn"
-         onClick={() => removeFromCart(item.key)}
-        >
-          <img src={trashIcon} alt="Eliminar" />
+        <button className="remove-btn" onClick={handleRemove}>
+          <FaTrash size={20} color="#ff6daa" />
         </button>
 
         <div className="cart-image">
-          <img
-            src={productImage}
-            alt={name}
-            onClick={togglePreview}
-            style={{ cursor: "pointer" }}
-          />
+          <img src={productImage} alt={name} onClick={togglePreview} style={{ cursor: "pointer" }} />
         </div>
 
         <div className="cart-info">
           <h4 className="cart-title">{name}</h4>
           {description && <p className="cart-description">{description}</p>}
-          {size && (
-            <p style={{ fontSize: "13px", marginTop: "4px" }}>
-              <strong>Talla:</strong> {size}
-            </p>
-          )}
-          {flavor && (
-            <p style={{ fontSize: "13px", marginTop: "4px" }}>
-              <strong>Sabor:</strong> {flavor}
-            </p>
-          )}
+          {size && <p><strong>Talla:</strong> {size}</p>}
+          {flavor && <p><strong>Sabor:</strong> {flavor}</p>}
 
-          <div className="cart-qty-price">
-            <div className="cart-quantity">
-              <span>Cantidad: </span>
-              <input
-                type="text"
-                min="1"
-                value={quantity}
-                onChange={(e) => updateQuantity(item, parseInt(e.target.value, 10) || 1)}
-                className="qty-input"
-              />
-            </div>
+          <div className="cart-quantity">
+            <span>Cantidad: </span>
+            <button className="custom-btn" onClick={decrementQuantity} style={{ padding: "4px 8px" }}>-</button>
+            <input
+              type="text"
+              min="1"
+              value={quantity}
+              onChange={(e) => updateQuantity(item, parseInt(e.target.value, 10) || 1)}
+              className="qty-input"
+            />
+             <button className="custom-btn" onClick={incrementQuantity} style={{ padding: "4px 8px" }}>+</button>
           </div>
-          <div className="cart-price">
-              ${(price * quantity).toFixed(2)}</div>
+
+          <div className="cart-price">${(price * quantity).toFixed(2)}</div>
         </div>
       </div>
 
-      {/* ✅ Modal de vista previa */}
       {isPreviewOpen && (
         <div
           className="image-preview-overlay"
@@ -96,7 +62,7 @@ const ProductCartItem = ({ item }) => {
             left: 0,
             width: "100vw",
             height: "100vh",
-            backgroundColor: "rgba(0, 0, 0, 0.7)",
+            backgroundColor: "rgba(0,0,0,0.7)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -106,12 +72,7 @@ const ProductCartItem = ({ item }) => {
           <img
             src={productImage}
             alt="Vista previa"
-            style={{
-              maxWidth: "90%",
-              maxHeight: "90%",
-              boxShadow: "0 0 15px rgba(255,255,255,0.4)",
-              borderRadius: "8px",
-            }}
+            style={{ maxWidth: "90%", maxHeight: "90%", borderRadius: "8px", boxShadow: "0 0 15px rgba(255,255,255,0.4)" }}
           />
         </div>
       )}
