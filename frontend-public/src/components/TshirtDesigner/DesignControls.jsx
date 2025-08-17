@@ -1,5 +1,8 @@
 import React from "react";
 import useDataShoppingCart from "../shoppingCart/hooks/useDataShoppingCart";
+import SuccessAlert from "../SuccessAlert";
+import ErrorAlert from "../ErrorAlert";
+import { useNavigate } from "react-router-dom";
 
 const DesignControls = ({
   onImageUpload,
@@ -12,6 +15,7 @@ const DesignControls = ({
   product,
 }) => {
   const { addToCart } = useDataShoppingCart();
+  const navigate = useNavigate();
 
   const handleUploadClick = () => {
     if (!isLoading) fileInputRef.current.click();
@@ -19,11 +23,11 @@ const DesignControls = ({
 
   const handleAddToCart = async () => {
     if (!fabricCanvas || fabricCanvas.getObjects().length === 0) {
-      alert("No hay diseño para agregar.");
+      ErrorAlert("No hay diseño para agregar.");
       return;
     }
     if (!exportDesign) {
-      alert("Función exportDesign no disponible.");
+      ErrorAlert("Función exportDesign no disponible.");
       return;
     }
 
@@ -43,10 +47,11 @@ const DesignControls = ({
       };
 
       addToCart(customProduct, 1);
-      alert("✅ Diseño agregado al carrito");
+      SuccessAlert("Diseño agregado al carrito");
+      navigate("/carrito");
     } catch (err) {
       console.error("Error al exportar el diseño:", err);
-      alert("❌ No se pudo agregar el diseño al carrito");
+      ErrorAlert("No se pudo agregar el diseño al carrito");
     }
   };
 

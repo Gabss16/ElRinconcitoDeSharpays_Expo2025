@@ -1,32 +1,19 @@
 import { useState } from "react";
+import ErrorAlert from "../components/ErrorAlert";
 
-const usePaymentForm = () => {
-  const [data, setData] = useState(null);
-  const [step, setStep] = useState(1);
-  const [accessToken, setAccessToken] = useState(null);
-
-  const [formDataTarjeta, setFormDataTarjeta] = useState({
-    numeroTarjeta: "",
-    cvv: "",
-    mesVencimiento: 0,
-    anioVencimiento: 0,
-  });
-
+const usePaymentFakeForm = () => {
   const [formData, setFormData] = useState({
-    monto: 0.01,
-    urlRedirect: "/inicio",
-    nombre: "",
-    apellido: "",
-    email: "",
-    ciudad: "",
-    direccion: "",
-    idPais: "SV",
-    idRegion: "SV-SS",
-    codigoPostal: "1101",
-    telefono: "",
-  });
+  monto: "",
+  firstName: "",
+  phone: "",
+  email: "",
+  municipality: "",
+  houseNumber: "",
+  tokenTarjeta: null,
+});
 
-  const handleChangeData = (e) => {
+
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -34,70 +21,48 @@ const usePaymentForm = () => {
     }));
   };
 
-  const handleChangeTarjeta = (e) => {
-    const { name, value } = e.target;
-    setFormDataTarjeta((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const limpiarFormulario = () => {
+  const cleanForm = () => {
     setFormData({
-      nombreCliente: "",
-      emailCliente: "",
+      firstName: "",
+      phone: "",
+      email: "",
+      municipality: "",
+      houseNumber: "",
       monto: "",
     });
-    setData(null);
-    setStep(1);
-    setAccessToken(null);
-    setFormDataTarjeta({
-      numeroTarjeta: "",
-      cvv: "",
-      mesVencimiento: 0,
-      anioVencimiento: 0,
-    });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setData(formData);
-    console.log("Datos del formulario:", formData);
-  };
-
-  const handleFirstStep = async () => {
-    alert("Generando token de acceso...");
-
-    // 1. Obtener token del backend
-    const tokenResponse = await fetch("http://localhost:3001/api/token", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!tokenResponse.ok) {
-      const errorText = await tokenResponse.text();
-      throw new Error(`Error al obtener token: ${errorText}`);
-    }
-
-    const tokenData = await tokenResponse.json();
-    setAccessToken(tokenData.access_token);
-
-    alert("Token generado. Enviando pago...");
-    setStep(2);
-  };
-
-  const handleFinishPayment = async () => {
+ const handleFakePayment = async () => {
     try {
+      console.log("Generando token de acceso...");
+      
+      const tokenResponse = await fetch("http://localhost:4000/api/payment/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!tokenResponse.ok) {
+        const errorText = await tokenResponse.text();
+        throw new Error(`Error al obtener token: ${errorText}`);
+      }
+
+      const tokenData = await tokenResponse.json();
+      const accessToken = tokenData.access_token;
+
+      console.log("Token generado. Enviando pago...", accessToken);
+
       const formDataPayment = {
-        ...formData,
-        tarjetaCreditoDebido: formDataTarjeta, // Simulando que no se envía el token de tarjeta
+        monto: formData.monto,
+        nombreCliente: formData.firstName,
+        emailCliente: formData.email,
+        tokenTarjeta: "null", // Simulando que no se envía el token de tarjeta
       };
 
       // 2. Enviar datos de pago al backend, que se encargará de llamar a Wompi
       const paymentResponse = await fetch(
-        "http://localhost:3001/api/payment3ds",
+        "http://localhost:4000/api/payment/paymentProcess",
         {
           method: "POST",
           headers: {
@@ -109,7 +74,6 @@ const usePaymentForm = () => {
           }),
         }
       );
-      console.log(formData);
 
       if (!paymentResponse.ok) {
         const errorText = await paymentResponse.text();
@@ -117,29 +81,21 @@ const usePaymentForm = () => {
       }
 
       const paymentData = await paymentResponse.json();
-      alert("Pago realizado correctamente");
       console.log("Respuesta del pago:", paymentData);
+
     } catch (error) {
       console.error("Error en el proceso de pago:", error);
-      alert(`Error: ${error.message}`);
+      ErrorAlert(`Error: ${error.message}`);
     }
-    setStep(3);
 
-    limpiarFormulario();
+    cleanForm();
   };
 
   return {
     formData,
-    data,
-    handleChangeData,
-    handleChangeTarjeta,
-    formDataTarjeta,
-    handleSubmit,
-    limpiarFormulario,
-    handleFirstStep,
-    handleFinishPayment,
-    step,
-    setStep,
+    handleChange,
+    cleanForm,
+    handleFakePayment,
   };
 };
-export default usePaymentForm;
+export default usePaymentFakeForm;

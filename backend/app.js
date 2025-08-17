@@ -18,6 +18,8 @@ import advertisementsRoutes from "./src/routes/advertisements.js"
 import orders from "./src/routes/order.js"
 import createOrderFromCart from "./src/routes/orderFromCart.js"
 
+import paymentRoutes from "./src/routes/payment.js"
+
 import cors from "cors";
 
 import swagger from "swagger-ui-express";
@@ -61,6 +63,8 @@ app.use("/api/orderDetail", orderDetailRoutes);
 app.use("/api/advertisements", advertisementsRoutes)
 app.use("/api/orders", orders)
 app.use("/api/createOrderFromCart", createOrderFromCart)
+
+app.use("/api/payment", paymentRoutes)
 
 //API Documetation 
 app.use("/api/documentation", swagger.serve, swagger.setup(swaggerDocument));
