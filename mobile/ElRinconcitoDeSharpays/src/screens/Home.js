@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   modalBackground: { flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center', padding: 20 },
   modalCard: { backgroundColor: '#fff', borderRadius: 16, padding: 20, width: '100%', maxHeight: '80%' },
   modalTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10 },
-  modalCategory: { fontSize: 14, marginBottom: 6 },
+  modalCategory: { fontSize: 30, marginBottom: 6, color: '#FE3F8D'},
   closeButton: { marginTop: 20, backgroundColor: '#FE3F8D', padding: 12, borderRadius: 10, alignItems: 'center' },
   categoryButton: {
     flexDirection: 'row',   
