@@ -10,7 +10,7 @@ payment.Token = async (req, res) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        grant_type: config.wompi.grand_type,
+        grand_type: config.wompi.grand_type,
         client_id: config.wompi.client_id,
         client_secret: config.wompi.client_secret,
         audience: config.wompi.audience,

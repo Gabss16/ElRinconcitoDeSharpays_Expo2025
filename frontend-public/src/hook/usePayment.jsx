@@ -33,33 +33,62 @@ const usePaymentFakeForm = () => {
     });
   };
 
-  const handleFakePayment = async () => {
-  try {
-    SuccessAlert("Generando token de acceso...");
+ const handleFakePayment = async () => {
+    try {
+      console.log("Generando token de acceso...");
+      
+      const tokenResponse = await fetch("http://localhost:4000/api/payment/token", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    const tokenResponse = await fetch("http://localhost:4000/api/payment/token", { method: "POST", headers: { "Content-Type": "application/json" } });
-    if (!tokenResponse.ok) throw new Error(await tokenResponse.text());
-    const { access_token } = await tokenResponse.json();
+      if (!tokenResponse.ok) {
+        const errorText = await tokenResponse.text();
+        throw new Error(`Error al obtener token: ${errorText}`);
+      }
 
-    SuccessAlert("Enviando pago...");
-    const paymentResponse = await fetch("http://localhost:4000/api/payment/paymentProcess", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: access_token, formData: { ...formData, tokenTarjeta: null } }),
-    });
+      const tokenData = await tokenResponse.json();
+      const accessToken = tokenData.access_token;
 
-    if (!paymentResponse.ok) throw new Error(await paymentResponse.text());
+      console.log("Token generado. Enviando pago...", accessToken);
 
-    const paymentData = await paymentResponse.json();
-    console.log("Respuesta del pago:", paymentData);
-    
-  } catch (err) {
-    console.error(err);
-    ErrorAlert("Hubo un error al procesar el pago.");
-  }
+      const formDataPayment = {
+        ...formData,
+        tokenTarjeta: "null", // Simulando que no se envía el token de tarjeta
+      };
 
-  cleanForm();
-};
+      // 2. Enviar datos de pago al backend, que se encargará de llamar a Wompi
+      const paymentResponse = await fetch(
+        "http://localhost:4000/api/payment/paymentProcess",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: accessToken,
+            formData: formDataPayment,
+          }),
+        }
+      );
+      console.log(formData);
+
+      if (!paymentResponse.ok) {
+        const errorText = await paymentResponse.text();
+        throw new Error(`Error al procesar pago: ${errorText}`);
+      }
+
+      const paymentData = await paymentResponse.json();
+      console.log("Respuesta del pago:", paymentData);
+    } catch (error) {
+      console.error("Error en el proceso de pago:", error);
+      ErrorAlert(`Error: ${error.message}`);
+    }
+
+    cleanForm();
+  };
 
   return {
     formData,
