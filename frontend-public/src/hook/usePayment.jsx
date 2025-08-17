@@ -1,5 +1,4 @@
 import { useState } from "react";
-import SuccessAlert from "../components/SuccessAlert";
 import ErrorAlert from "../components/ErrorAlert";
 
 const usePaymentFakeForm = () => {
@@ -55,7 +54,9 @@ const usePaymentFakeForm = () => {
       console.log("Token generado. Enviando pago...", accessToken);
 
       const formDataPayment = {
-        ...formData,
+        monto: formData.monto,
+        nombreCliente: formData.firstName,
+        emailCliente: formData.email,
         tokenTarjeta: "null", // Simulando que no se envía el token de tarjeta
       };
 
@@ -73,7 +74,6 @@ const usePaymentFakeForm = () => {
           }),
         }
       );
-      console.log(formData);
 
       if (!paymentResponse.ok) {
         const errorText = await paymentResponse.text();
@@ -82,6 +82,7 @@ const usePaymentFakeForm = () => {
 
       const paymentData = await paymentResponse.json();
       console.log("Respuesta del pago:", paymentData);
+
     } catch (error) {
       console.error("Error en el proceso de pago:", error);
       ErrorAlert(`Error: ${error.message}`);

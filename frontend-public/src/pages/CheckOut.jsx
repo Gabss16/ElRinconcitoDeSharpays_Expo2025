@@ -67,22 +67,6 @@ const CheckoutPage = () => {
   const [orderDetail, setOrderDetail] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const stored = localStorage.getItem("OrderDetail");
-
-    if (!stored) {
-      ErrorAlert("No hay ninguna orden activa");
-      setTimeout(() => navigate("/"), 3000);
-    } else {
-      setOrderDetail(JSON.parse(stored));
-    }
-
-    if (user?.id) {
-      data.fetchCustomerById(user?.id);
-    }
-
-  }, [user?.id]);
-
   const uploadToCloudinary = async (base64Image) => {
     if (!base64Image) return null;
 
@@ -159,6 +143,39 @@ const CheckoutPage = () => {
     cleanForm,
     handleFakePayment,
   } = usePayment();
+
+  useEffect(() => {
+    const stored = localStorage.getItem("OrderDetail");
+
+    if (!stored) {
+      ErrorAlert("No hay ninguna orden activa");
+      setTimeout(() => navigate("/"), 3000);
+    } else {
+      setOrderDetail(JSON.parse(stored));
+    }
+
+    if (user?.id) {
+      data.fetchCustomerById(user?.id);
+    }
+
+
+  }, [user?.id]);
+  
+  useEffect(() => {
+  if (data) {
+
+    if (!formData.firstName) {
+      handleChange({ target: { name: "firstName", value: data.name } });
+    }
+    if (!formData.email) {
+      handleChange({ target: { name: "email", value: data.email } });
+    }
+    if (!formData.municipality) {
+      handleChange({ target: { name: "municipality", value: data.department } });
+    }
+  }
+}, [data]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -272,13 +289,10 @@ const CheckoutPage = () => {
         SuccessAlert("Su pedido se creó con éxito");
       }
       else if (handleFakePayment) {
-        const paymentData = await handleFakePayment();
-        console.log("Payment data: ", paymentData)
-
-        if (paymentData?.success) {
-          createOrder();
-          SuccessAlert("Su pago se realizo con éxito, su pedido está en curso.");
-        }
+        formData.monto = parseFloat(finalTotal);
+        await handleFakePayment();
+        SuccessAlert("Su pago se realizo con éxito, su pedido está en curso.");
+        createOrder();
       }
 
 
@@ -314,7 +328,7 @@ const CheckoutPage = () => {
                       type="text"
                       name="firstName"
                       placeholder="Nombre"
-                      value={formData.firstName || data?.name}
+                      value={formData?.firstName || data?.name}
                       onChange={handleChange}
                       className="form-input"
                       required
@@ -340,7 +354,7 @@ const CheckoutPage = () => {
                       type="email"
                       name="email"
                       placeholder="Correo Electrónico"
-                      value={formData.email || data?.email}
+                      value={formData?.email || data?.email}
                       onChange={handleChange}
                       className="form-input"
                       required

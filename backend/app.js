@@ -64,7 +64,7 @@ app.use("/api/advertisements", advertisementsRoutes)
 app.use("/api/orders", orders)
 app.use("/api/createOrderFromCart", createOrderFromCart)
 
-app.use("api/payment", paymentRoutes)
+app.use("/api/payment", paymentRoutes)
 
 //API Documetation 
 app.use("/api/documentation", swagger.serve, swagger.setup(swaggerDocument));

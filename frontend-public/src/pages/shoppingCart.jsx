@@ -68,9 +68,21 @@ const ShoppingCartPage = () => {
 
           </div>
         )}
-        {cartItems.length > 0 ? (<Link type="submit" className="purchase-button text-center text-decoration-none text-white" to={"/checkOut"} onClick={handleCreateOrder}>
-              Comprar
-            </Link> ) : null}
+        {cartItems.length > 0 ? (
+          <>
+          <div className="d-flex justify-content-between align-items-center">
+            <div className="w-50 p-3">
+          <Link type="submit" className="purchase-button text-center text-decoration-none text-white" to={"/checkOut"} onClick={handleCreateOrder}>
+            Comprar
+          </Link>
+            </div>
+
+            <div className="w-50 p-3">
+          <button className="purchase-button bg-black text-white p-3 rounded-3" onClick={clearCart}>Vaciar carrito</button>
+            </div>
+          </div>
+          </>
+          ) : null}
       </div>
     </div>
   );

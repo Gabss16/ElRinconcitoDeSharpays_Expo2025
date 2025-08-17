@@ -28,7 +28,7 @@ export const config = {
   wompi: {
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
-    grand_type: process.env.GRAND_TYPE,
+    grant_type: process.env.GRANT_TYPE,
     audience: process.env.AUDIENCE,
   }
 
