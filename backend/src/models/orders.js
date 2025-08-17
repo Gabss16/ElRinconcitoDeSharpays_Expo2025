@@ -27,10 +27,6 @@ const itemSchema = new Schema({
     type: Number,
     required: true,
   },
-  discount: {
-    type: Number,
-    default: 0,
-  },
   customDesign: {
     type: String,
     default: null,

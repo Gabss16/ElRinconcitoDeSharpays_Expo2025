@@ -6,8 +6,11 @@ import TShirtView from './TshirtView';
 import TextControls from './TextControls';
 import LoadingSpinner from './LoadingSpinner';
 import useDataShoppingCart from '../shoppingCart/hooks/useDataShoppingCart';
+import SuccessAlert from '../SuccessAlert';
+import ErrorAlert from '../ErrorAlert';
 
 const TShirtDesigner = ({ product }) => {
+
   const { addToCart } = useDataShoppingCart();
   const [tshirtColor, setTshirtColor] = useState('#ffffff');
   const [viewSide, setViewSide] = useState('front');
@@ -123,12 +126,12 @@ const TShirtDesigner = ({ product }) => {
       if (!file || !canvas) return;
 
       if (!['image/jpeg', 'image/png', 'image/svg+xml', 'image/gif'].includes(file.type)) {
-        alert('Por favor, sube solo imágenes JPG, PNG, SVG o GIF');
+        ErrorAlert('Por favor, sube solo imágenes JPG, PNG, SVG o GIF');
         return;
       }
 
       if (file.size > 10 * 1024 * 1024) {
-        alert('La imagen es muy grande. Máximo 10MB');
+        ErrorAlert('La imagen es muy grande. Máximo 10MB');
         return;
       }
 
@@ -187,7 +190,7 @@ const TShirtDesigner = ({ product }) => {
       } catch (error) {
         console.error('Error en handleImageUpload:', error);
         setIsLoading(false);
-        alert('Error al cargar la imagen');
+        ErrorAlert('Error al cargar la imagen');
       }
     },
     [canvas, saveState]
@@ -303,7 +306,7 @@ const TShirtDesigner = ({ product }) => {
 
   const handleAddToCart = useCallback(async () => {
     if (!canvas || canvas.getObjects().length === 0) {
-      alert('No hay diseño para agregar.');
+      ErrorAlert('No hay diseño para agregar.');
       return;
     }
     
@@ -330,10 +333,11 @@ const TShirtDesigner = ({ product }) => {
       };
       
       addToCart(customProduct, 1);
-      alert('✅ Diseño agregado al carrito');
+      SuccessAlert('Diseño agregado al carrito');
     } catch (err) {
       console.error('Error al agregar al carrito:', err);
-      alert('❌ No se pudo agregar el diseño al carrito');
+      ErrorAlert('No se pudo agregar el diseño al carrito');
+
     } finally {
       setIsLoading(false);
     }

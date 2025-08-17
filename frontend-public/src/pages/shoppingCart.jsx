@@ -42,7 +42,6 @@ const ShoppingCartPage = () => {
     };
 
     localStorage.setItem("OrderDetail", JSON.stringify(orderDetail));
-    console.log("das")
     navigate("/checkOut");
   };
 

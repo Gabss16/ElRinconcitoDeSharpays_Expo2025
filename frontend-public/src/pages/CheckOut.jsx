@@ -16,7 +16,14 @@ import "react-credit-cards-2/dist/es/styles-compiled.css";
 //Animation for showing or hidding content
 import { motion, AnimatePresence } from "framer-motion";
 
+import usePayment from "../hook/usePayment.jsx";
+
+import Departments from "../utils/apiDepartmentsSV"; // API para obtener los departamentos
+
 const CheckoutPage = () => {
+
+  const depa = Departments();
+
   const {
     cartItems,
     total,
@@ -55,15 +62,7 @@ const CheckoutPage = () => {
 
   const navigate = useNavigate();
 
-  const { fetchCustomerById, name, email, department } = useDataCustomer();
-
-  const [formData, setFormData] = useState({
-    firstName: name || "",
-    phone: "",
-    email: email || "",
-    municipality: department || "",
-    houseNumber: "",
-  });
+  const data = useDataCustomer();
 
   const [orderDetail, setOrderDetail] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -77,7 +76,12 @@ const CheckoutPage = () => {
     } else {
       setOrderDetail(JSON.parse(stored));
     }
-  }, []);
+
+    if (user?.id) {
+      data.fetchCustomerById(user?.id);
+    }
+
+  }, [user?.id]);
 
   const uploadToCloudinary = async (base64Image) => {
     if (!base64Image) return null;
@@ -109,13 +113,72 @@ const CheckoutPage = () => {
     }
   };
 
+  const [state, setState] = useState({
+    number: "",
+    expiry: "",
+    cvc: "",
+    name: "",
+    focus: "",
+  });
+
+  const handleInputChange = (evt) => {
+    let { name, value } = evt.target;
+
+    if (name === "number") {
+      // Remove all non-digits
+      value = value.replace(/\D/g, "");
+      // Limit to 16 digits
+      value = value.substring(0, 16);
+      // Add space every 4 digits
+      value = value.replace(/(\d{4})(?=\d)/g, "$1 ");
+    }
+
+    if (name === "expiry") {
+      // Remove non-digits
+      value = value.replace(/\D/g, "");
+      // Limit to 4 digits (MMYY)
+      value = value.substring(0, 4);
+      // Add slash after 2 digits
+      if (value.length > 2) {
+        value = value.replace(/(\d{2})(\d{1,2})/, "$1/$2");
+      }
+    }
+
+    setState((prev) => ({ ...prev, [name]: value }));
+  };
+
+
+  const handleInputFocus = (evt) => {
+    setState((prev) => ({ ...prev, focus: evt.target.name }));
+  };
+
+  //Credit card payment process
+  const {
+    formData,
+    handleChange,
+    cleanForm,
+    handleFakePayment,
+  } = usePayment();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!orderDetail) return;
 
+    if (state.expiry) {
+      const parts = state.expiry.split("/");
+      const monthNum = parseInt(parts[0], 10);
+      const yearNum = parseInt(parts[1], 10);
+      const today = new Date();
+      const currentYear = today.getFullYear() % 100;
+      const currentMonth = today.getMonth() + 1;
+
+      if (yearNum < currentYear || (yearNum === currentYear && monthNum < currentMonth)) {
+        return ErrorAlert("La fecha de vencimiento no es válida");
+      }
+    }
     const shippingAddress = {
-      address: `${formData.houseNumber}, CP: ${formData.postalCode}`,
-      city: formData.municipality,
+      address: formData.houseNumber,
+      city: data?.department || (formData.municipality)
     };
 
     try {
@@ -183,70 +246,48 @@ const CheckoutPage = () => {
 
       console.log("Payload final a enviar:", payload);
 
-      const res = await fetch(
-        "http://localhost:4000/api/createOrderFromCart/create-from-cart",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
+      const createOrder = async () => {
+        const res = await fetch(
+          "http://localhost:4000/api/createOrderFromCart/create-from-cart",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          }
+        );
 
-      if (!res.ok) {
-        const errorData = await res.json();
-        console.error("Backend error:", errorData);
-        throw new Error(errorData.message || "Error al crear la orden");
+        if (!res.ok) {
+          const errorData = await res.json();
+          console.error("Backend error:", errorData);
+          throw new Error(errorData.message || "Error al crear la orden");
+        }
+        navigate("/inicio");
+        localStorage.removeItem("OrderDetail");
+        localStorage.removeItem("shoppingCart");
+      };
+
+
+      if (paymentMethod === 'cash') {
+        createOrder();
+        SuccessAlert("Su pedido se creó con éxito");
+      }
+      else if (handleFakePayment) {
+        const paymentData = await handleFakePayment();
+        console.log("Payment data: ", paymentData)
+
+        if (paymentData?.success) {
+          createOrder();
+          SuccessAlert("Su pago se realizo con éxito, su pedido está en curso.");
+        }
       }
 
-      SuccessAlert("¡Orden creada exitosamente!");
-      navigate("/inicio");
-      localStorage.removeItem("OrderDetail");
-      localStorage.removeItem("shoppingCart");
+
     } catch (err) {
       console.error("Error al procesar la orden:", err);
       ErrorAlert(err.message || "Error al procesar la orden");
     } finally {
       setLoading(false);
     }
-  };
-
-  const [state, setState] = useState({
-    number: "",
-    expiry: "",
-    cvc: "",
-    name: "",
-    focus: "",
-  });
-
-  const handleInputChange = (evt) => {
-  let { name, value } = evt.target;
-
-  if (name === "number") {
-    // Remove all non-digits
-    value = value.replace(/\D/g, "");
-    // Limit to 16 digits
-    value = value.substring(0, 16);
-    // Add space every 4 digits
-    value = value.replace(/(\d{4})(?=\d)/g, "$1 ");
-  }
-
-  if (name === "expiry") {
-    // Remove non-digits
-    value = value.replace(/\D/g, "");
-    // Limit to 4 digits (MMYY)
-    value = value.substring(0, 4);
-    // Add slash after 2 digits
-    if (value.length > 2) {
-      value = value.replace(/(\d{2})(\d{1,2})/, "$1/$2");
-    }
-  }
-
-  setState((prev) => ({ ...prev, [name]: value }));
-};
-
-
-  const handleInputFocus = (evt) => {
-    setState((prev) => ({ ...prev, focus: evt.target.name }));
   };
 
   return (
@@ -273,8 +314,8 @@ const CheckoutPage = () => {
                       type="text"
                       name="firstName"
                       placeholder="Nombre"
-                      value={user?.name || formData.firstName}
-                      onChange={(e) => setFormData.firstName(e.target.value)}
+                      value={formData.firstName || data?.name}
+                      onChange={handleChange}
                       className="form-input"
                       required
                     />
@@ -289,7 +330,7 @@ const CheckoutPage = () => {
                       name="phone"
                       placeholder="Teléfono"
                       value={formData.phone}
-                      onChange={(e) => setFormData.phone(e.target.value)}
+                      onChange={handleChange}
                       className="form-input"
                       required
                     />
@@ -299,8 +340,8 @@ const CheckoutPage = () => {
                       type="email"
                       name="email"
                       placeholder="Correo Electrónico"
-                      value={user?.email || formData.email}
-                      onChange={(e) => setFormData.email(e.target.value)}
+                      value={formData.email || data?.email}
+                      onChange={handleChange}
                       className="form-input"
                       required
                     />
@@ -308,15 +349,20 @@ const CheckoutPage = () => {
                 </div>
 
                 <div className="form-group full-width">
-                  <input
-                    type="text"
-                    name="municipality"
-                    placeholder="Departamento"
-                    value={user?.department || formData.municipality}
-                    onChange={(e) => setFormData.deparment(e.target.value)}
+                  <select
                     className="form-input"
+                    name="municipality"
+                    value={formData?.municipality || data?.department}
+                    onChange={handleChange}
                     required
-                  />
+                  >
+                    <option value="">Selecciona un departamento</option>
+                    {depa && depa.map((dep) => (
+                      <option key={dep.value} value={dep.value}>
+                        {dep.label}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="form-group full-width">
@@ -325,7 +371,7 @@ const CheckoutPage = () => {
                     name="houseNumber"
                     placeholder="Número de casa, Apt #"
                     value={formData.houseNumber}
-                    onChange={(e) => setFormData.houseNumber(e.target.value)}
+                    onChange={handleChange}
                     className="form-input"
                     required
                   />
@@ -335,17 +381,17 @@ const CheckoutPage = () => {
                 {/* Credit card information */}
 
                 <AnimatePresence>
-                    {paymentMethod === 'card' &&
-                      (
-                        <>
+                  {paymentMethod === 'card' &&
+                    (
+                      <>
                         <motion.div
-                    key="card-form"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    style={{ overflow: "hidden" }}
-                  >
+                          key="card-form"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          style={{ overflow: "hidden" }}
+                        >
 
                           <h2 className="section-title">
                             <FaCreditCard size={20} />
@@ -359,70 +405,72 @@ const CheckoutPage = () => {
                               cvc={state.cvc}
                               name={state.name}
                               focused={state.focus}
+                              locale={{ valid: 'Válido hasta' }}
+                              placeholders={{ name: 'Nombre' }}
                             />
                           </div>
                           <div className="checkout-form">
-                          <div className="form-row pt-4">
-                            <div className="form-group">
-                              <input
-                                type="text"
-                                name="name"
-                                placeholder="Nombre del titular"
-                                onChange={handleInputChange}
-                                onFocus={handleInputFocus}
-                                className="form-input"
-                                required
-                              />
+                            <div className="form-row pt-4">
+                              <div className="form-group">
+                                <input
+                                  type="text"
+                                  name="name"
+                                  placeholder="Nombre del titular"
+                                  onChange={handleInputChange}
+                                  onFocus={handleInputFocus}
+                                  className="form-input"
+                                  required
+                                />
+                              </div>
+
+                              <div className="form-group">
+                                <input
+                                  type="text"
+                                  name="number"
+                                  placeholder="Número de la tarjeta"
+                                  maxLength={19}
+                                  value={state.number}
+                                  onChange={handleInputChange}
+                                  onFocus={handleInputFocus}
+                                  className="form-input"
+                                  required
+                                />
+                              </div>
                             </div>
 
-                            <div className="form-group">
-                              <input
-                                type="text"
-                                name="number"
-                                placeholder="Número de la tarjeta"
-                                maxLength={19}
-                                value={state.number}
-                                onChange={handleInputChange}
-                                onFocus={handleInputFocus}
-                                className="form-input"
-                                required
-                              />
-                            </div>
-                          </div>
+                            <div className="form-row">
+                              <div className="form-group">
+                                <input
+                                  type="text"
+                                  name="expiry"
+                                  placeholder="Fecha de vencimiento (Mes/Año)"
+                                  maxLength={5}
+                                  value={state.expiry}
+                                  onChange={handleInputChange}
+                                  onFocus={handleInputFocus}
+                                  className="form-input"
+                                  required
+                                />
+                              </div>
 
-                          <div className="form-row">
-                            <div className="form-group">
-                              <input
-                                type="text"
-                                name="expiry"
-                                placeholder="Fecha de vencimiento (Mes/Año)"
-                                maxLength={5}
-                                value={state.expiry}
-                                onChange={handleInputChange}
-                                onFocus={handleInputFocus}
-                                className="form-input"
-                                required
-                              />
-                            </div>
-
-                            <div className="form-group">
-                              <input
-                                type="text"
-                                name="cvc"
-                                placeholder="CVC"
-                                maxLength={3}
-                                onChange={handleInputChange}
-                                onFocus={handleInputFocus}
-                                className="form-input"
-                                required
-                              />
+                              <div className="form-group">
+                                <input
+                                  type="text"
+                                  name="cvc"
+                                  placeholder="CVC"
+                                  maxLength={3}
+                                  onChange={handleInputChange}
+                                  onFocus={handleInputFocus}
+                                  className="form-input"
+                                  required
+                                />
+                              </div>
                             </div>
                           </div>
-                          </div>
-                  </motion.div>
-                        </>
-                      )
-                    }
+                        </motion.div>
+                      </>
+                    )
+                  }
                 </AnimatePresence>
 
                 <button

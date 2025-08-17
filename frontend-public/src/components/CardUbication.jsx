@@ -48,7 +48,6 @@ export default function CardUbication() {
       if (success) {
         const departmentName = getDepartmentNameByCode(newDepartment); // Mapear el nombre
         setDepartment(departmentName); // Actualizamos el nombre del departamento localmente
-        alert("Ubicación actualizada con éxito");
         setIsEditable(false); // Deshabilitamos la edición
       } else {
         alert("Ocurrió un error al actualizar la ubicación");

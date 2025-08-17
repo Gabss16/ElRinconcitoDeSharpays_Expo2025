@@ -103,14 +103,6 @@ const PaymentMethod = ({
         </div>
       </div>
 
-      <button
-        className="purchase-button"
-        onClick={handlePurchase}
-        disabled={loading}
-      >
-        {loading ? "Procesando..." : "Comprar"}
-      </button>
-
       <div className="security-info">
         <div className="security-badges">
           <span className="security-badge">Pago Seguro</span>
