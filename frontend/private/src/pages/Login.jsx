@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import GlassBox from "../components/GlassBox.jsx";
 
 //Animaciones
-import LightsAnimation from "../components/lightsAnimation.jsx";
+import LightsAnimation from "../components/LightsAnimations.jsx";
 
 //Componentes utilizados en el login-container
 import LogoLogin from "../components/LogoLogin.jsx";

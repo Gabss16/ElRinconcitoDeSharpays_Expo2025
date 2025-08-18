@@ -2,7 +2,7 @@ import "../styles/RecoveryPassword.css";
 import { useState } from "react";
 
 // Animaciones
-import LightsAnimation from "../components/LightsAnimation.jsx";
+import LightsAnimation from "../components/LightsAnimations.jsx";
 import ShapesAnimation from "../components/ShapesAnimation.jsx";
 
 // Componentes
