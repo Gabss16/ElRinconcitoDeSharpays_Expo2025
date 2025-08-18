@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "El rinconcito de Sharpays",
-    "description": "La documentación API para el sistema web y aplicación móvil de El rinconcito de Sharpays ©.",
+    "description": "Documentación completa de la API de El Rincóncito de Sharpays. Contiene todos los endpoints para autenticación, gestión de empleados, clientes, productos, categorías, subcategorías, carrito de compras, pedidos, detalles de pedido, eventos, valoraciones, descuentos y ventas. Cada endpoint incluye descripciones detalladas, parámetros, request bodies y códigos de respuesta, asegurando integración completa y segura para desarrolladores.",
     "version": "1.0.0"
   },
   "servers": [
@@ -18,12 +18,13 @@
           "Inicio de sesión"
         ],
         "summary": "Iniciar sesión",
-        "description": "Verifica la existencia de un usuario mediante los parámetros.",
+        "description": "Permite que un usuario registrado inicie sesión mediante correo y contraseña. \r\nEste proceso asegura que solo usuarios válidos puedan acceder a funcionalidades protegidas. \r\nAl iniciar sesión correctamente, se genera un token que autoriza futuras solicitudes. \r\nEs fundamental mantener la confidencialidad de la contraseña y del token para garantizar la seguridad.",
         "operationId": "post-api-login",
         "parameters": [
           {
             "name": "email",
             "in": "query",
+            "description": "Correo electrónico del usuario.",
             "required": false,
             "schema": {
               "type": "string"
@@ -32,33 +33,28 @@
           {
             "name": "password",
             "in": "query",
+            "description": "Contraseña definida por el usuario anteriormente.",
             "required": false,
             "schema": {
               "type": "string"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_login_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Sesión iniciada correctamente. Se devuelve token de sesión"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitud inválida, faltan parámetros o son incorrectos"
+          },
+          "401": {
+            "description": "Credenciales incorrectas"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Usuario no encontrado."
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
@@ -69,17 +65,17 @@
           "Cerrar sesión"
         ],
         "summary": "Cerrar sesión",
-        "description": "Su función limpiar el token de inicio de sesión, o en otras palabras cerrar la sesión del usuario.",
+        "description": "Cierra la sesión activa del usuario, invalidando el token de autenticación. \r\nEsta operación protege la cuenta en dispositivos compartidos o públicos. \r\nUna sesión cerrada correctamente impide realizar operaciones protegidas sin reautenticación. \r\nRecomendado integrar en un botón de cierre de sesión visible en la interfaz de usuario.",
         "operationId": "post-api-logOut",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OKSesión cerrada correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitud inválida"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
@@ -90,39 +86,31 @@
           "Restablecimiento de contraseña"
         ],
         "summary": "Solicitar cambio de contraseña",
-        "description": " Su función es enviar la petición de cambio de contraseña, verifica que el correo ingresado por el usuario sea válido.",
+        "description": "Inicia el proceso de recuperación de contraseña enviando un código de verificación al correo electrónico del usuario.\r\nVerifica que el correo proporcionado esté registrado en el sistema antes de enviar el código.\r\nEl código tiene un tiempo de expiración limitado por seguridad. Este endpoint es el primer paso\r\nen el flujo de recuperación de contraseña de tres pasos.",
         "operationId": "post-api-recoveryPassword",
         "parameters": [
           {
             "name": "email",
             "in": "query",
+            "description": "Correo electrónico de el usuario. ",
             "required": false,
             "schema": {
               "type": "string"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/recoveryPassword_requestCode_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Código de verificación enviado al correo electrónico"
           },
           "400": {
             "description": "Bad Request"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Correo electrónico no encontrado en el sistema"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
@@ -133,36 +121,29 @@
           "Restablecimiento de contraseña"
         ],
         "summary": "Validar código de verificación",
-        "description": "Su función es verificar el código enviado al correo de el usuario.",
+        "description": "Valida el código de verificación enviado al correo del usuario durante el proceso de recuperación.\r\nEste paso intermedio confirma que el usuario tiene acceso al correo registrado.\r\nEl código debe ser exacto y estar dentro del tiempo de validez establecido.\r\nEs el segundo paso del proceso de recuperación de contraseña.",
         "operationId": "post-api-recoveryPassword-verifyCode",
         "parameters": [
           {
             "name": "code",
             "in": "query",
+            "description": "Código de verificación recibido por correo",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "123456"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/recoveryPassword_verifyCode_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Código verificado correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Código inválido o expirado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
@@ -173,36 +154,29 @@
           "Restablecimiento de contraseña"
         ],
         "summary": "Cambiar contraseña",
-        "description": "Su función es actualizar la contraseña del usuario.",
+        "description": "Completa el proceso de recuperación permitiendo al usuario establecer una nueva contraseña.\r\nSolo puede ejecutarse después de verificar exitosamente el código de recuperación.\r\nLa nueva contraseña debe cumplir con los requisitos de seguridad establecidos.\r\nEs el paso final del proceso de recuperación de contraseña.",
         "operationId": "post-api-recoveryPassword-newPassword",
         "parameters": [
           {
             "name": "newPassword",
             "in": "query",
+            "description": "Nueva contraseña del usuario",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "nuevaContraseña456"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/recoveryPassword_newPassword_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Contraseña actualizada correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Contraseña no cumple con los requisitos de seguridad"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
@@ -213,17 +187,20 @@
           "Empleados"
         ],
         "summary": "Obtener todos los empleados",
-        "description": "Su función es obtener todos los empleados registados en la base de datos.",
+        "description": "Recupera la lista completa de empleados registrados en el sistema.\r\nProporciona información básica de cada empleado incluyendo identificador, nombre y correo.\r\nÚtil para generar reportes, asignar tareas o realizar auditorías del personal.\r\nRequiere permisos administrativos para acceder a esta información sensible.",
         "operationId": "get-api-employees",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Lista de empleados obtenida correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitud inválida"
+          },
+          "401": {
+            "description": "No autorizado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
@@ -232,30 +209,22 @@
           "Empleados"
         ],
         "summary": "Actualizar empleado",
-        "description": "Su función es actualizar los datos de un empleado.",
+        "description": "Modifica la información de un empleado existente identificado por su ID.\r\nPermite actualizar datos como nombre, correo y otros campos relevantes.\r\nMantiene la integridad de los datos validando que no se dupliquen correos electrónicos.\r\nRequiere permisos administrativos y el ID del empleado debe existir en el sistema.",
         "operationId": "put-api-employees",
         "parameters": [
           {
             "name": "id",
             "in": "query",
+            "description": "Identificador único del empleado",
             "required": false,
             "schema": {
               "type": "string"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_employees_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Empleado actualizado correctamente"
           },
           "400": {
             "description": "Bad Request"
@@ -273,52 +242,52 @@
           "Empleados"
         ],
         "summary": "Registar un nuevo empleado",
-        "description": "Su función es registrar un nuevo empleado en la base de datos.",
+        "description": "Crea un nuevo registro de empleado en el sistema con la información proporcionada.\r\nValida que el correo electrónico no esté duplicado y que todos los campos requeridos estén presentes.\r\nGenera automáticamente credenciales de acceso y puede enviar notificación al nuevo empleado.",
         "operationId": "post-api-employees",
         "parameters": [
           {
             "name": "name",
             "in": "query",
+            "description": "Nombre del empleado a registrar",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "Daniel Soriano"
             }
           },
           {
             "name": "email",
             "in": "query",
+            "description": "Correo del empleado a registrar",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "daniel@gmail.com"
             }
           },
           {
             "name": "password",
             "in": "query",
+            "description": "Contraseña del empleado a registrar",
             "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "123456"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_employees_body_1"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Empleado registrado correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Datos inválidos o correo ya existe"
+          },
+          "401": {
+            "description": "No autorizado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
@@ -327,12 +296,13 @@
           "Empleados"
         ],
         "summary": "Eliminar un empleado",
-        "description": "Su función es eliminar un empleado de la base de datos, por medio del Id.",
+        "description": "Elimina permanentemente un empleado del sistema usando su identificador único.\r\nEsta operación es irreversible y remueve todos los datos asociados al empleado.\r\nSe recomienda implementar confirmación previa debido a la naturaleza permanente de la acción.\r\nRequiere permisos administrativos máximos para ejecutar esta operación crítica.",
         "operationId": "delete-api-employees",
         "parameters": [
           {
             "name": "id",
             "in": "query",
+            "description": "Identificador único del empleado",
             "required": false,
             "schema": {
               "type": "string"
@@ -341,16 +311,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Empleado eliminado correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "ID inválido"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Empleado no encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del sistesema"
           }
         }
       }
@@ -361,12 +331,13 @@
           "Empleados"
         ],
         "summary": "Crear una cuenta de empleado",
-        "description": "Su función es crear una cuenta desde el Registro de la parte privada del sistema web.",
+        "description": "Permite el registro de nuevos empleados específicamente desde la sección administrativa del sistema web.\r\nFuncionalidad diseñada para el panel de control interno con validaciones específicas.\r\nIncluye verificación de permisos administrativos y envío de credenciales iniciales.\r\nDiferenciado del registro general para mantener flujos de trabajo específicos del área administrativa.",
         "operationId": "post-api-registerEmployee",
         "parameters": [
           {
             "name": "name",
             "in": "query",
+            "description": "Nombre del empleado ",
             "required": false,
             "schema": {
               "type": "string"
@@ -375,6 +346,7 @@
           {
             "name": "email",
             "in": "query",
+            "description": "Correo del empleado",
             "required": false,
             "schema": {
               "type": "string"
@@ -383,30 +355,22 @@
           {
             "name": "password",
             "in": "query",
+            "description": "Contraseña del empleado",
             "required": false,
             "schema": {
               "type": "string"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_registerEmployee_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Empleado registrado correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Datos inválidos o incompletos"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
@@ -417,17 +381,17 @@
           "Categorías"
         ],
         "summary": "Obtener las categorías",
-        "description": "Su función es obtener todas las categorias de la base de datos, son las tiendas registradas de la empresa.",
+        "description": "Recupera la lista completa de categorías de tiendas registradas en el sistema.\r\nCada categoría representa una tienda o departamento específico de la empresa.\r\nIncluye información sobre estado activo/inactivo, descripciones e imágenes asociadas.\r\nEsencial para la navegación y organización de productos en la plataforma.",
         "operationId": "get-api-categories",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Categorias obtenidad correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitud inválida"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
@@ -436,12 +400,13 @@
           "Categorías"
         ],
         "summary": "Actualizar una categoría",
-        "description": "Su función es actualizar una categoría por medio del Id.",
+        "description": "Modifica la información de una categoría existente identificada por su ID.\r\nPermite actualizar nombre, descripción, estado activo e imagen asociada.\r\nMantiene consistencia en la base de datos y valida integridad de referencias.\r\nCambios pueden afectar la visualización de productos asociados a esta categoría.",
         "operationId": "put-api-categories",
         "parameters": [
           {
             "name": "category",
             "in": "query",
+            "description": "Nuevo nombre de la categoría (tienda)",
             "required": false,
             "schema": {
               "type": "string"
@@ -450,6 +415,7 @@
           {
             "name": "description",
             "in": "query",
+            "description": "Nueva descripción de la categoría (tienda)",
             "required": false,
             "schema": {
               "type": "string"
@@ -458,6 +424,7 @@
           {
             "name": "isActive",
             "in": "query",
+            "description": "Nuevo estado de la categoría (tienda)",
             "required": false,
             "schema": {
               "type": "string"
@@ -466,33 +433,34 @@
           {
             "name": "image",
             "in": "query",
+            "description": "Nueva imagen de la categoría (tienda)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "Identificador único de la categoría",
             "required": false,
             "schema": {
               "type": "string"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_categories_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Categoría actualizada correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Datos inválidos"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Categoría no encontrada"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
@@ -501,12 +469,13 @@
           "Categorías"
         ],
         "summary": "Crear una nueva categoría",
-        "description": "Su función es crear una nueva categoría.",
+        "description": "Registra una nueva categoría de tienda en el sistema con toda la información requerida.\r\nPermite definir nombre, descripción, estado activo y imagen representativa.\r\nValida que no existan categorías duplicadas y que todos los campos obligatorios estén presentes.\r\nOperación administrativa que afecta la estructura organizacional de productos.",
         "operationId": "post-api-categories",
         "parameters": [
           {
             "name": "category",
             "in": "query",
+            "description": "Nombre de la categoria (tienda)",
             "required": false,
             "schema": {
               "type": "string"
@@ -515,6 +484,7 @@
           {
             "name": "description",
             "in": "query",
+            "description": "Descripcion de la categoria (tienda)",
             "required": false,
             "schema": {
               "type": "string"
@@ -523,6 +493,7 @@
           {
             "name": "isActive",
             "in": "query",
+            "description": "Este campo define si el estado de la tienda esta activa o esta inactiva",
             "required": false,
             "schema": {
               "type": "string"
@@ -531,6 +502,7 @@
           {
             "name": "image",
             "in": "query",
+            "description": "imagen de la categoria (tienda)",
             "required": false,
             "schema": {
               "type": "string"
@@ -539,13 +511,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Categoria creada correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitud inválida"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
@@ -554,12 +526,13 @@
           "Categorías"
         ],
         "summary": "Eliminar una categoría",
-        "description": "Su función es eliminar una categoría de la base de datos por medio del Id.",
+        "description": "Elimina permanentemente una categoría del sistema usando su identificador único.\r\nVerifica que no existan productos o subcategorías asociadas antes de la eliminación.\r\nOperación crítica que puede afectar la estructura organizacional de la tienda.\r\nRequiere confirmación administrativa debido a su naturaleza irreversible.",
         "operationId": "delete-api-categories",
         "parameters": [
           {
             "name": "id",
             "in": "query",
+            "description": "Identificador único de la categoría",
             "required": false,
             "schema": {
               "type": "string"
@@ -568,16 +541,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Categoría eliminada correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "No se puede eliminar: tiene elementos asociados"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Categoría no encontrada"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
@@ -588,12 +561,13 @@
           "Categorías"
         ],
         "summary": "Obtener una categoría específica",
-        "description": "Su función es obtener una categoría específica, sería una tienda registrada en la base de datos.",
+        "description": "Recupera información detallada de una categoría específica mediante su identificador único.\r\nIncluye todos los datos de la categoría como nombre, descripción, estado e imagen.\r\nÚtil para formularios de edición, visualización detallada o validaciones específicas.\r\nProporciona base para operaciones de actualización o consultas individuales.",
         "operationId": "get-api-categories-:id",
         "parameters": [
           {
             "name": "id",
             "in": "query",
+            "description": "Identificador único de la categoría",
             "required": false,
             "schema": {
               "type": "string"
@@ -602,16 +576,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Información de la categoría obtenida correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "ID inválido"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Categoría no encontrada"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
@@ -622,12 +596,13 @@
           "Empleados"
         ],
         "summary": "Obtener un empleado específico",
-        "description": "Su función es obtener un empleado específico por medio del Id.",
+        "description": "Esta operación permite consultar y recuperar la información completa de un empleado registrado en el sistema utilizando su identificador único (ID). Se obtiene toda la data asociada al empleado, incluyendo nombre, correo electrónico y otros datos relevantes almacenados en la base de datos. Es útil para mostrar detalles individuales, validar permisos, actualizar información o realizar auditorías sobre un empleado específico dentro de la plataforma. En caso de que no exista un empleado con el ID proporcionado, se devolverá un mensaje de error indicando que el recurso no fue encontrado.",
         "operationId": "get-api-employees-:id",
         "parameters": [
           {
             "name": "id",
             "in": "query",
+            "description": "Identificador único del empleado",
             "required": false,
             "schema": {
               "type": "string"
@@ -636,16 +611,13 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
+            "description": "Datos obtenidos con éxito"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Empleado no encontra"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
@@ -656,17 +628,17 @@
           "Clientes"
         ],
         "summary": "Obtener los clientes",
-        "description": "Su función es obtener todos los clientes registrados en la base de datos.",
+        "description": "Esta operación permite recuperar la lista completa de todos los clientes que se encuentran registrados en la base de datos del sistema. Devuelve información detallada de cada cliente, como nombre, correo electrónico, dirección y cualquier otro dato relevante almacenado. Es útil para mostrar la información en paneles administrativos, realizar búsquedas, análisis de usuarios o para procesos de gestión de clientes dentro de la plataforma. En caso de que no existan clientes registrados, la operación devolverá un resultado vacío o un mensaje indicando que no hay datos disponibles.",
         "operationId": "get-api-customer",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Datos obtenidos correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Solicitud inválida"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
@@ -675,12 +647,13 @@
           "Clientes"
         ],
         "summary": "Actualizar un cliente",
-        "description": "Su función es actualizar los datos de un cliente en específico por medio del Id.",
+        "description": "Modifica los datos de un cliente existente incluyendo información personal y de contacto.\r\nPermite actualizar nombre, correo, contraseña, departamento y dirección de envío.\r\nMantiene integridad de datos validando formatos de correo y unicidad de información.\r\nPuede ser utilizado tanto por administradores como por los propios clientes.",
         "operationId": "put-api-customer",
         "parameters": [
           {
             "name": "name",
             "in": "query",
+            "description": "Nombre del cliente",
             "required": false,
             "schema": {
               "type": "string"
@@ -689,6 +662,7 @@
           {
             "name": "email",
             "in": "query",
+            "description": "Correo del cliente",
             "required": false,
             "schema": {
               "type": "string"
@@ -697,6 +671,7 @@
           {
             "name": "password",
             "in": "query",
+            "description": "Contraseña del cliente",
             "required": false,
             "schema": {
               "type": "string"
@@ -705,6 +680,7 @@
           {
             "name": "department",
             "in": "query",
+            "description": "Departamento del cliente",
             "required": false,
             "schema": {
               "type": "string"
@@ -713,33 +689,25 @@
           {
             "name": "address",
             "in": "query",
+            "description": "Dirección del cliente",
             "required": false,
             "schema": {
               "type": "string"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_costumer_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Cliente actualizado correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Datos inválidos"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Cliente no encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
@@ -747,13 +715,14 @@
         "tags": [
           "Clientes"
         ],
-        "summary": "Eliminar una cliente",
-        "description": "Su función es eliminar un cliente específico por medio del Id.",
+        "summary": "Eliminar un cliente",
+        "description": "Elimina permanentemente un cliente del sistema junto con su historial asociado.\r\nOperación crítica que afecta pedidos, carrito de compras y datos relacionados.\r\nRequiere verificación de permisos administrativos máximos debido a su impacto.\r\nSe recomienda implementar políticas de retención antes de eliminación definitiva.",
         "operationId": "delete-api-customer",
         "parameters": [
           {
             "name": "id",
             "in": "query",
+            "description": "Identificador único del cliente",
             "required": false,
             "schema": {
               "type": "string"
@@ -762,16 +731,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Cliente eliminado correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "No se puede eliminar: tiene pedidos asociados"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Cliente no encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
@@ -782,12 +751,13 @@
           "Clientes"
         ],
         "summary": "Obtener un cliente específico",
-        "description": "Su función es obtener un cliente específico por medio del Id.",
+        "description": "Recupera información detallada de un cliente específico mediante su identificador único.\r\nProporciona datos completos incluyendo historial de pedidos y preferencias.\r\nÚtil para soporte al cliente, análisis individual o personalización de servicios.\r\nAcceso controlado según permisos: clientes ven su propia información, administradores ven cualquier cliente.",
         "operationId": "get-api-costumer-:id",
         "parameters": [
           {
             "name": "id",
             "in": "query",
+            "description": "Identificador único del cliente",
             "required": false,
             "schema": {
               "type": "string"
@@ -796,16 +766,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Información del cliente obtenida correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "ID inválido"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Cliente no encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
@@ -816,12 +786,13 @@
           "Clientes"
         ],
         "summary": "Registrar un nuevo cliente",
-        "description": "Su función es registrar un nuevo cliente.",
+        "description": "Permite el registro de nuevos clientes en la plataforma con información completa.\r\nIncluye validación de correo único, formato de datos y confirmación de contraseña.\r\nGenera automáticamente cuenta de cliente con acceso a funcionalidades de compra.\r\nPuede incluir envío de correo de bienvenida y verificación de cuenta inicial.",
         "operationId": "post-api-registerCostumer",
         "parameters": [
           {
             "name": "name",
             "in": "query",
+            "description": "Nombre de cliente",
             "required": false,
             "schema": {
               "type": "string"
@@ -830,6 +801,7 @@
           {
             "name": "email",
             "in": "query",
+            "description": "Correo del cliente",
             "required": false,
             "schema": {
               "type": "string"
@@ -838,6 +810,7 @@
           {
             "name": "password",
             "in": "query",
+            "description": "ontraseña del cliente",
             "required": false,
             "schema": {
               "type": "string"
@@ -846,6 +819,7 @@
           {
             "name": "deparment",
             "in": "query",
+            "description": "Departamento del cliente",
             "required": false,
             "schema": {
               "type": "string"
@@ -854,30 +828,22 @@
           {
             "name": "address",
             "in": "query",
+            "description": "Dirección del cliente",
             "required": false,
             "schema": {
               "type": "string"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_registerCostumer_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Cliente registrado correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Datos inválidos o correo ya existe"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servi"
           }
         }
       }
@@ -888,7 +854,7 @@
           "SubCategorías"
         ],
         "summary": "Obtener todas las subcategorías",
-        "description": "Su función es obtener todas las subcategorías que son las categorías de los productos de la base de datos.",
+        "description": "Este método representa la implementación del endpoint GET /api/subCategory para la recuperación masiva de subcategorías. Se trata de una función asíncrona que actúa como controlador en el patrón MVC (Model-View-Controller), específicamente diseñada para manejar las peticiones HTTP GET dirigidas a obtener el listado completo de subcategorías almacenadas en la base de datos.",
         "operationId": "get-api-subCategory",
         "parameters": [
           {
@@ -920,7 +886,7 @@
           "SubCategorías"
         ],
         "summary": "Actualizar una categoría",
-        "description": "Su función es actualizar una categoría específica por medio del Id.",
+        "description": "Este endpoint está diseñado para realizar actualizaciones completas de subcategorías existentes dentro del sistema. Permite modificar todos los atributos de una subcategoría específica, identificada por su ID único, manteniendo la integridad de las relaciones con las categorías principales y asegurando la consistencia de los datos en toda la estructura organizacional.",
         "operationId": "put-api-subCategory",
         "parameters": [
           {
@@ -948,15 +914,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_subCategory_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -977,7 +934,7 @@
           "SubCategorías"
         ],
         "summary": "Crear una nueva subcategoría",
-        "description": "Su función es crear una nueva subcategoría, se refiere a la categoría de un producto.",
+        "description": "Este endpoint implementa la funcionalidad de creación de nuevas subcategorías dentro del sistema de clasificación jerárquica de productos. Permite a los usuarios autorizados registrar subcategorías que actúan como elementos de clasificación secundaria, vinculadas obligatoriamente a una categoría principal existente. Este proceso es fundamental para mantener una estructura organizacional coherente y facilitar la catalogación detallada de productos o elementos del sistema.",
         "operationId": "post-api-subCategory",
         "parameters": [
           {
@@ -1005,15 +962,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_subCategory_body_1"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -1031,7 +979,7 @@
           "SubCategorías"
         ],
         "summary": "Eliminar una subcategoría",
-        "description": "Su función es eliminar una subcategoría específica.",
+        "description": "Este endpoint proporciona la funcionalidad de eliminación permanente de subcategorías específicas del sistema. Está diseñado para permitir la remoción controlada de elementos de categorización que ya no son necesarios, manteniendo la limpieza y organización del catálogo. La operación es irreversible y requiere identificación precisa del elemento a eliminar mediante su ID único.",
         "operationId": "delete-api-subCategory",
         "parameters": [
           {
@@ -1065,7 +1013,7 @@
           "Productos"
         ],
         "summary": "Obtener todos los productos",
-        "description": "Su función es obtener todos los productos de todas las categorías de la base de datos.",
+        "description": "Este endpoint constituye la funcionalidad principal de consulta masiva del catálogo de productos, diseñado para recuperar la totalidad de productos almacenados en la base de datos junto con su información de categorización completa. Actúa como el punto de acceso centralizado para obtener una vista comprehensiva de todo el inventario disponible, incluyendo las relaciones jerárquicas de clasificación que facilitan la organización y presentación de los datos.",
         "operationId": "get-api-products",
         "responses": {
           "200": {
@@ -1084,7 +1032,7 @@
           "Productos"
         ],
         "summary": "Actualizar un producto",
-        "description": "Su función es actualizar un producto por medio del Id.",
+        "description": "Este endpoint proporciona capacidades completas de actualización para productos existentes, permitiendo modificar cualquier aspecto de un producto previamente registrado en el sistema. La funcionalidad está diseñada para soportar operaciones de mantenimiento integral del catálogo, desde ajustes menores como corrección de precios hasta modificaciones estructurales como reclasificación entre categorías. El sistema implementa un enfoque de actualización completa que reemplaza todos los campos editables del producto identificado por su ID único, incluyendo validación de integridad referencial. Esta operación es crítica para el mantenimiento dinámico del catálogo en entornos comerciales donde los productos experimentan cambios frecuentes.",
         "operationId": "put-api-Products",
         "parameters": [
           {
@@ -1153,15 +1101,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_Products_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -1182,7 +1121,7 @@
           "Productos"
         ],
         "summary": "Registrar un nuevo producto",
-        "description": "Su función es registrar un nuevo producto en la base de datos.",
+        "description": "Este endpoint representa la funcionalidad fundamental de creación de productos dentro del sistema de gestión de catálogos, diseñado para permitir el registro completo de nuevos elementos en el inventario con todos sus atributos descriptivos, comerciales y organizacionales. La operación facilita la incorporación sistemática de productos al catálogo, estableciendo automáticamente las relaciones jerárquicas con categorías y subcategorías, y capturando información detallada que incluye desde datos básicos como nombre y descripción, hasta aspectos comerciales críticos como precios y niveles de stock, así como características específicas variables según el tipo de producto mediante el campo de metadatos flexibles otherFields. Esta funcionalidad es esencial para el crecimiento y mantenimiento del inventario, permitiendo que administradores y gestores de catálogo incorporen nuevos productos de manera estructurada, asegurando que cada elemento cuente con la información completa necesaria para su correcta presentación, clasificación y comercialización dentro del sistema.",
         "operationId": "post-api-Products",
         "parameters": [
           {
@@ -1251,15 +1190,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_Products_body_1"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -1277,7 +1207,7 @@
           "Productos"
         ],
         "summary": "Eliminar un producto",
-        "description": "Su función es eliminar un producto de la base de datos, por medio del Id.",
+        "description": "Este endpoint implementa la funcionalidad de eliminación permanente de productos del sistema de gestión de catálogos, proporcionando una herramienta administrativa para el mantenimiento del inventario. La operación está diseñada para remover productos descontinuados, registrados por error, o que ya no forman parte del catálogo comercial activo. La eliminación es irreversible y remueve permanentemente todos los datos asociados incluyendo relaciones con categorías, información de stock y metadatos específicos. Esta funcionalidad requiere identificación precisa mediante ID único y debe utilizarse con precaución debido a su naturaleza destructiva.",
         "operationId": "delete-api-Products",
         "parameters": [
           {
@@ -1311,7 +1241,7 @@
           "Productos"
         ],
         "summary": "Obtener un producto específico",
-        "description": "Su función es obtener un producto específico por medio del Id.",
+        "description": "Este endpoint proporciona funcionalidad especializada para la recuperación detallada de un producto individual dentro del sistema de gestión de catálogos, utilizando su identificador único como criterio de búsqueda. La operación está diseñada para satisfacer necesidades específicas de consulta donde se requiere acceso a la información completa de un producto particular, incluyendo todos sus atributos descriptivos, comerciales, de clasificación y metadatos asociados.",
         "operationId": "get-api-Products-:id",
         "parameters": [
           {
@@ -1345,7 +1275,7 @@
           "Detalle de orden"
         ],
         "summary": "Obtener los carritos de compras",
-        "description": "SU función es obtener todos los carritos de compras realizados por los usuarios, que están registrados en la base de datos.",
+        "description": "Este endpoint facilita la recuperación completa de todos los carritos de compras que han sido creados y almacenados por los usuarios del sistema, proporcionando una vista administrativa integral de la actividad de compra dentro de la plataforma.",
         "operationId": "get-api-orderDetail",
         "parameters": [],
         "responses": {
@@ -1367,7 +1297,7 @@
           "Detalle de orden"
         ],
         "summary": "Agregar un producto la carrito de compras",
-        "description": "Su función es agregar un nuevo producto al carrito de usuario.",
+        "description": "Este endpoint permite a los usuarios agregar productos específicos a su carrito de compras personal, capturando toda la información necesaria para crear una línea de pedido detallada dentro del sistema de comercio electrónico. La funcionalidad procesa la incorporación de un producto individual al carrito del usuario, registrando no solo la identificación del producto sino también parámetros comerciales específicos como la cantidad deseada, precio unitario al momento de la adición, descuentos aplicables, y opciones de personalización como diseños customizados.",
         "operationId": "post-api-orderDetail-add",
         "parameters": [
           {
@@ -1435,15 +1365,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/orderDetail_add_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -1463,7 +1384,7 @@
           "Detalle de orden"
         ],
         "summary": "Obtener un carrito específico",
-        "description": "Su función es obtenre un producto específico por medio del Id del Cliente, es el carrito de cada Usuario dentro de la base de datos.",
+        "description": "Descripción Comprehensiva\r\nEste endpoint proporciona acceso directo y personalizado al carrito de compras de un cliente específico, utilizando su identificador único como criterio de búsqueda para recuperar toda la información detallada de su carrito personal activo. La funcionalidad está diseñada para permitir que tanto el propio usuario como el personal administrativo autorizado puedan consultar el estado completo del carrito de un cliente particular, incluyendo todos los productos agregados, cantidades seleccionadas, precios aplicados, descuentos activos, personalizaciones solicitadas, y totales calculados.",
         "operationId": "get-api-orderDetails-:customerId",
         "parameters": [
           {
@@ -1497,7 +1418,7 @@
           "Detalle de orden"
         ],
         "summary": "Eliminar un producto del carrito de compra",
-        "description": "Su función es eliminar un producto del carrito del Usuario/Cliente.",
+        "description": "Este endpoint proporciona la funcionalidad esencial para remover productos específicos del carrito de compras de un cliente, permitiendo a los usuarios gestionar dinámicamente el contenido de sus carritos eliminando artículos que ya no desean adquirir. La operación utiliza tanto el identificador del cliente como el identificador del producto para localizar y eliminar precisamente la línea de carrito correspondiente, asegurando que solo se remueva el producto específico sin afectar otros elementos del carrito del mismo usuario. ",
         "operationId": "delete-api-orderDetail-remove",
         "parameters": [
           {
@@ -1539,7 +1460,7 @@
           "Detalle de orden"
         ],
         "summary": "Limpiar el carrito de compras",
-        "description": "Su función es limpiar el carrito de compras del Usuario/Cliente.",
+        "description": "Este endpoint proporciona la funcionalidad de limpieza completa del carrito de compras de un cliente específico, eliminando simultáneamente todos los productos, configuraciones, personalizaciones y datos asociados que el usuario haya acumulado durante su sesión de compra.",
         "operationId": "delete-api-orderDetail-clear",
         "parameters": [
           {
@@ -1573,7 +1494,7 @@
           "Eventos"
         ],
         "summary": "Obtener todos los eventos",
-        "description": "Su función es obtener todos los eventos registrados en la base de datos.",
+        "description": "Este endpoint permite recuperar la lista completa de todos los eventos registrados en el sistema, proporcionando acceso a información detallada de cada evento incluyendo títulos, descripciones, imágenes asociadas, estados de activación, y campos personalizados específicos.",
         "operationId": "get-api-advertisements",
         "responses": {
           "200": {
@@ -1592,7 +1513,7 @@
           "Eventos"
         ],
         "summary": "Actualizar un evento",
-        "description": "Su función es actualizar un evento",
+        "description": "Este endpoint proporciona capacidades de actualización completa para eventos existentes, permitiendo modificar cualquier aspecto del evento incluyendo títulos, descripciones, imágenes promocionales, estados de activación/desactivación, y campos personalizados que contengan información específica del evento.",
         "operationId": "put-api-advertisements",
         "parameters": [
           {
@@ -1637,15 +1558,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_advertisements_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -1666,6 +1578,7 @@
           "Eventos"
         ],
         "summary": "Registrar un nuevo evento",
+        "description": "Este endpoint facilita la creación de nuevos eventos en el sistema, permitiendo registrar información completa como títulos descriptivos, contenido detallado, imágenes promocionales, estados de publicación, y campos personalizados que pueden incluir fechas específicas, ubicaciones, precios, o cualquier atributo relevante para el evento. ",
         "operationId": "post-api-advertisements",
         "responses": {
           "200": {
@@ -1684,7 +1597,7 @@
           "Eventos"
         ],
         "summary": "Eliminar un evento",
-        "description": "Su función es eliminar un evento de la base de datos.",
+        "description": "Este endpoint implementa la funcionalidad de eliminación permanente de eventos específicos del sistema, permitiendo remover completamente registros de eventos que han concluido, fueron cancelados, o ya no son relevantes para la programación actual. ",
         "operationId": "delete-api-advertisements",
         "parameters": [
           {
@@ -1718,7 +1631,7 @@
           "Eventos"
         ],
         "summary": "Cambiar el estado del evento",
-        "description": "Su función es cambiar o actualizar el estado de un evento registrado en la base de datos.",
+        "description": "Endpoint PATCH /api/advertisements/:id/toggle-status - Cambiar Estado del Evento\r\nDescripción Comprehensiva\r\nEste endpoint proporciona funcionalidad especializada para alternar el estado de activación de eventos específicos, permitiendo cambiar rápidamente entre estados activo e inactivo sin necesidad de modificar otros aspectos del evento.",
         "operationId": "patch-api-advertisements-:id-toggle-status",
         "parameters": [
           {
@@ -1752,7 +1665,7 @@
           "Pedidos"
         ],
         "summary": "Obtener todas los pedidos",
-        "description": "Su función es obtener todas los pedidos/ordenes registrados dentro de la base de datos.",
+        "description": "Este endpoint permite recuperar la lista completa de todos los pedidos registrados en el sistema, proporcionando acceso a información detallada de cada orden incluyendo datos del cliente, detalles de productos ordenados, totales calculados, estados de procesamiento, y direcciones de envío. datos.",
         "operationId": "get-api-orders",
         "responses": {
           "200": {
@@ -1771,7 +1684,7 @@
           "Pedidos"
         ],
         "summary": "Actualizar un pedido",
-        "description": "Su función es actualizar un pedido dentro de la base de datos por medio del Id.",
+        "description": "Este endpoint proporciona capacidades de actualización completa para pedidos existentes, permitiendo modificar aspectos críticos como información de cliente, detalles de productos ordenados, totales recalculados, estados de procesamiento, y direcciones de envío según cambios solicitados o correcciones necesarias.",
         "operationId": "put-api-orders",
         "parameters": [
           {
@@ -1831,15 +1744,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_orders_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -1860,7 +1764,7 @@
           "Pedidos"
         ],
         "summary": "Registrar un pedido",
-        "description": "Su función es registrar un pedido dentro de la base de datos.",
+        "description": "Este endpoint facilita la creación de nuevos pedidos en el sistema, convirtiendo carritos de compras en órdenes formales mediante el registro de información completa del cliente, detalles específicos de productos ordenados, totales calculados, estados iniciales de procesamiento, y direcciones de envío designadas.",
         "operationId": "post-api-orders",
         "parameters": [
           {
@@ -1912,15 +1816,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/api_orders_body_1"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -1938,7 +1833,7 @@
           "Pedidos"
         ],
         "summary": "Eliminar un pedido",
-        "description": "Su función es eliminar el pedido de un cliente, por medio de su Id.",
+        "description": "Este endpoint implementa la funcionalidad de eliminación permanente de pedidos específicos del sistema, permitiendo remover completamente órdenes que fueron creadas por error, canceladas por clientes, o que requieren eliminación por razones administrativas o de cumplimiento.",
         "operationId": "delete-api-orders",
         "parameters": [
           {
@@ -1972,7 +1867,7 @@
           "Pedidos"
         ],
         "summary": "Obtener una orden específica",
-        "description": "Su función es obtener un pedido específico por medio del Id.",
+        "description": "Este endpoint proporciona funcionalidad especializada para la recuperación detallada de un pedido individual, utilizando su identificador único para retornar información completa incluyendo datos del cliente, detalles exhaustivos de productos ordenados, cálculos de totales, estado actual de procesamiento, direcciones de envío, y cualquier metadato relevante para el seguimiento.",
         "operationId": "get-api-order-:id",
         "parameters": [
           {
@@ -2058,15 +1953,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/createOrderFromCart_createfromcart_body"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -2082,986 +1968,377 @@
           }
         }
       }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Advertisements": {
-        "title": "Advertisements",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "r7qak69gyblxw"
+    },
+    "/api/payment/token": {
+      "post": {
+        "tags": [
+          "Pagos"
+        ],
+        "summary": "Generar el token de pago",
+        "description": "Perfecto! Veo que tu endpoint es para obtener el token de autenticación OAuth2 de Wompi (no el token de tarjeta). Te ayudo con la descripción para documentarlo en Swagger:\r\nEndpoint de Autenticación OAuth2 - Token de Acceso\r\nEste endpoint se encarga de obtener el token de acceso OAuth2 requerido para autenticar las peticiones posteriores a la API de Wompi. Utiliza el flujo de credenciales de cliente (client_credentials) donde se envían las credenciales configuradas (client_id, client_secret, grant_type y audience) al servidor de identidad de Wompi para recibir un access_token válido.",
+        "operationId": "post-api-payment",
+        "parameters": [
+          {
+            "name": "grant_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           },
-          "status": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "lzmbozec3kr9x"
+          {
+            "name": "client_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           },
-          "title": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "3uc89hy5dx3kf"
+          {
+            "name": "client_secret",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           },
-          "image": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "rok4atrc89fig"
-            }
-          }
-        }
-      },
-      "Category": {
-        "title": "Category",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "1uab6a6i5xm05"
-            }
-          },
-          "category": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "x77xxeyz8nxad"
-            }
-          },
-          "image": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "iz28hk0vp2dp5"
-            }
-          },
-          "isActive": {
-            "type": "boolean",
-            "x-stoplight": {
-              "id": "9b1mlbyw023q3"
+          {
+            "name": "audience",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
             }
           }
-        }
-      },
-      "Costumer": {
-        "title": "Costumer",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "ikv1wr86t0t4n"
-            }
-          },
-          "email": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "ujlfnun7oo7ap"
-            }
-          },
-          "password": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "jm7laxzrvjoxs"
-            }
-          },
-          "address": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "lj0musby9hheu"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/payment_token_body"
+              }
             }
           }
-        }
-      },
-      "Employee": {
-        "title": "Employee",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           },
-          "name": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "howvey3dq7393"
-            }
+          "400": {
+            "description": "Bad Request"
           },
-          "email": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "huq4nmqi0d83m"
-            }
+          "401": {
+            "description": "Unauthorized"
           },
-          "password": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "n656s2obmo6va"
-            }
+          "403": {
+            "description": "Forbidden"
           },
-          "image": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "u6gdaswoippqi"
-            }
-          }
-        }
-      },
-      "OrderDetail-Item": {
-        "title": "OrderDetail-Item",
-        "type": "object",
-        "properties": {
-          "productId": {
-            "type": "string"
-          },
-          "productName": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "355cm54jxpdag"
-            }
-          },
-          "unitPrice": {
-            "type": "number",
-            "x-stoplight": {
-              "id": "60571klqeg7ee"
-            }
-          },
-          "image": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "gwsbnk16x2qpf"
-            }
-          },
-          "quantity": {
-            "type": "number",
-            "x-stoplight": {
-              "id": "95byijp2z26iz"
-            }
-          },
-          "customDesign": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "yonls5f8d5ii1"
-            }
-          },
-          "totalPrice": {
-            "type": "number",
-            "x-stoplight": {
-              "id": "szsgje33z3n6b"
-            }
-          }
-        }
-      },
-      "OrderDetail": {
-        "title": "OrderDetail",
-        "type": "object",
-        "properties": {
-          "customerId": {
-            "type": "string"
-          },
-          "items": {
-            "type": "array",
-            "x-stoplight": {
-              "id": "d0oojbu0hrgjl"
-            },
-            "items": {}
-          },
-          "totalCartPrice": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "ek7ep7ajsy40f"
-            }
-          }
-        }
-      },
-      "Orders-item": {
-        "title": "Orders",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "productId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "jdu2zknnr0lx1"
-            }
-          },
-          "productName": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "mox5r7k88tfwk"
-            }
-          },
-          "unitPrice": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "cfvrs8wyvxmxb"
-            }
-          },
-          "image": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "i6tw9tfenxhn6"
-            }
-          },
-          "quantity": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "lavdlmvxe0aaa"
-            }
-          },
-          "totalPrice": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "darxu00ioplpt"
-            }
-          },
-          "discount": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "vvrwn052n0z3w"
-            }
-          },
-          "customDesign": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "qu69cj8tvlbg7"
-            }
-          }
-        }
-      },
-      "ShippingAddress": {
-        "title": "ShippingAddress",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "address": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "k8gjz8rcimaql"
-            }
-          },
-          "city": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "5yrq3laxq0zhq"
-            }
-          }
-        }
-      },
-      "Orders": {
-        "title": "Orders",
-        "type": "object",
-        "properties": {
-          "customerId": {
-            "type": "string"
-          },
-          "categoryId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "yoihyxplg3yvv"
-            }
-          },
-          "orderDetails": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "93j12ya1ignzk"
-            }
-          },
-          "total": {
-            "type": "number",
-            "x-stoplight": {
-              "id": "o2lmpwkq1nzuu"
-            }
-          },
-          "status": {
-            "type": "boolean",
-            "x-stoplight": {
-              "id": "lo21crpdmklku"
-            }
-          },
-          "shippingAddress": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "d1p1hjpzoj3ot"
-            }
-          }
-        }
-      },
-      "Products": {
-        "title": "Products",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "d4v3e1iddlvre"
-            }
-          },
-          "description": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "tzrmh0hch6a5m"
-            }
-          },
-          "stock": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "j7w90rea9kzm1"
-            }
-          },
-          "price": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "zqubp962ow2z0"
-            }
-          },
-          "image": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "clqt6tq8n66vz"
-            }
-          },
-          "categoryId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "9zyddzeksh29m"
-            }
-          },
-          "subCategoryId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "zprtfa7xa059s"
-            }
-          }
-        }
-      },
-      "SubCategory": {
-        "title": "SubCategory",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "km36qorwbx6lj"
-            }
-          },
-          "categoryId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "6djtnho4h46jj"
-            }
-          },
-          "description": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "7adyqi136vzto"
-            }
-          }
-        }
-      },
-      "api_login_body": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "8hlkjtpfpsump"
-            }
-          },
-          "password": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "i3klbnpdjqsmk"
-            }
-          }
-        }
-      },
-      "recoveryPassword_requestCode_body": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "h8stbh4ablben"
-            }
-          }
-        }
-      },
-      "recoveryPassword_verifyCode_body": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "xkkohvzeekyo1"
-            }
-          }
-        }
-      },
-      "recoveryPassword_newPassword_body": {
-        "type": "object",
-        "properties": {
-          "password": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "da9cjpd12obaa"
-            }
-          }
-        }
-      },
-      "api_employees_body": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "sn7m354pjqwe5"
-            }
-          },
-          "email": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "0076crsj3eeu8"
-            }
-          },
-          "password": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "uhev3vn27ax30"
-            }
-          }
-        }
-      },
-      "api_employees_body_1": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "uch776n7j2cis"
-            }
-          },
-          "email": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "m5w43u5euh6wm"
-            }
-          },
-          "password": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "dv1n40gdxs5sa"
-            }
-          }
-        }
-      },
-      "api_registerEmployee_body": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "1uv1mszw3bzsm"
-            }
-          },
-          "email": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "fun9qo79wl5oo"
-            }
-          },
-          "password": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "z0ld8da42vxdc"
-            }
-          }
-        }
-      },
-      "api_categories_body": {
-        "type": "object",
-        "properties": {
-          "category": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "zdzy68bk17356"
-            }
-          },
-          "description": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "l4cxb8tejc9np"
-            }
-          },
-          "isActive": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "ftt4ahv1v4pod"
-            }
-          },
-          "image": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "h7n7pphreb36g"
-            }
-          }
-        }
-      },
-      "api_costumer_body": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "uleamzmpjbxey"
-            }
-          },
-          "email": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "ynldb5pdo03p1"
-            }
-          },
-          "password": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "w1mj1c9c4hct1"
-            }
-          },
-          "department": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "xvkrb27sx5zxe"
-            }
-          }
-        }
-      },
-      "api_registerCostumer_body": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "eowo8r8yxktrt"
-            }
-          },
-          "email": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "9xw63p5ljpdd8"
-            }
-          },
-          "password": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "0sdsmy1lp0hug"
-            }
-          },
-          "department": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "j4moyqye99qu5"
-            }
-          },
-          "address": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "eg8hykymqmxse"
-            }
-          }
-        }
-      },
-      "api_subCategory_body": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "bihvojgik58gj"
-            }
-          },
-          "description": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "y0qgs6n31j06n"
-            }
-          },
-          "categoryId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "yxi5i0vrwge8r"
-            }
-          }
-        }
-      },
-      "api_subCategory_body_1": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "bihvojgik58gj"
-            }
-          },
-          "description": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "y0qgs6n31j06n"
-            }
-          },
-          "categoryId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "yxi5i0vrwge8r"
-            }
-          }
-        }
-      },
-      "api_Products_body": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "kyc7nxy47sgjl"
-            }
-          },
-          "description": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "68fljcyov9rc9"
-            }
-          },
-          "stock": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "ea9bpijkulenb"
-            }
-          },
-          "price": {
-            "type": "number",
-            "x-stoplight": {
-              "id": "3wvtgyp1ko80m"
-            }
-          },
-          "categoryId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "v0nslzolzcf2z"
-            }
-          },
-          "subCategoryId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "mnmwz46kw882x"
-            }
-          },
-          "image": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "a4dk1o7d9iyo8"
-            }
-          },
-          "otherFields": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "sek9yh7xrn8z9"
-            }
-          }
-        }
-      },
-      "api_Products_body_1": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "kyc7nxy47sgjl"
-            }
-          },
-          "description": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "68fljcyov9rc9"
-            }
-          },
-          "stock": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "ea9bpijkulenb"
-            }
-          },
-          "price": {
-            "type": "number",
-            "x-stoplight": {
-              "id": "3wvtgyp1ko80m"
-            }
-          },
-          "categoryId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "v0nslzolzcf2z"
-            }
-          },
-          "subCategoryId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "mnmwz46kw882x"
-            }
-          },
-          "image": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "a4dk1o7d9iyo8"
-            }
-          },
-          "otherFields": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "sek9yh7xrn8z9"
-            }
-          }
-        }
-      },
-      "orderDetail_add_body": {
-        "type": "object",
-        "properties": {
-          "productId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "xc802v9iogzpj"
-            }
-          },
-          "productoName": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "1fyufcbxk6dyg"
-            }
-          },
-          "unitPrice": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "iyovanmrcvxce"
-            }
-          },
-          "image": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "m9q4fh0bar8f6"
-            }
-          },
-          "quantity": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "v8o9ytsr6b16a"
-            }
-          },
-          "discount": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "6noxghwevz3hb"
-            }
-          },
-          "customDesign": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "nbuc7c7j9fy6c"
-            }
-          },
-          "totalPrice": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "8shjt7ms96did"
-            }
-          }
-        }
-      },
-      "api_advertisements_body": {
-        "type": "object",
-        "properties": {
-          "description": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "muhtqdzv3b7cd"
-            }
-          },
-          "status": {
-            "type": "boolean",
-            "x-stoplight": {
-              "id": "149gc22myfekh"
-            }
-          },
-          "title": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "n3bqpgvivl5vv"
-            }
-          },
-          "image": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "3n2eo01jj5jjh"
-            }
-          },
-          "otherFields": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "zellbbwm8ntut"
-            }
-          }
-        }
-      },
-      "api_orders_body": {
-        "type": "object",
-        "properties": {
-          "customerId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "3shd3ug3casoi"
-            }
-          },
-          "categoryId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "2g0ub6mt3vqhq"
-            }
-          },
-          "orderDetails": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "pt3znbmh4qh01"
-            }
-          },
-          "total": {
-            "type": "number",
-            "x-stoplight": {
-              "id": "fogb6r8baq3cr"
-            }
-          },
-          "status": {
-            "type": "boolean",
-            "x-stoplight": {
-              "id": "0re6oyfk2ll0g"
-            }
-          },
-          "shippingAddress": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "js5bfrja39jom"
-            }
-          },
-          "id": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "6f3qkubu8ws4s"
-            }
-          }
-        }
-      },
-      "api_orders_body_1": {
-        "type": "object",
-        "properties": {
-          "customerId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "3shd3ug3casoi"
-            }
-          },
-          "categoryId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "2g0ub6mt3vqhq"
-            }
-          },
-          "orderDetails": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "pt3znbmh4qh01"
-            }
-          },
-          "total": {
-            "type": "number",
-            "x-stoplight": {
-              "id": "fogb6r8baq3cr"
-            }
-          },
-          "status": {
-            "type": "boolean",
-            "x-stoplight": {
-              "id": "0re6oyfk2ll0g"
-            }
-          },
-          "shippingAddress": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "js5bfrja39jom"
-            }
-          }
-        }
-      },
-      "createOrderFromCart_createfromcart_body": {
-        "type": "object",
-        "properties": {
-          "customerId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "3shd3ug3casoi"
-            }
-          },
-          "categoryId": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "2g0ub6mt3vqhq"
-            }
-          },
-          "orderDetails": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "pt3znbmh4qh01"
-            }
-          },
-          "total": {
-            "type": "number",
-            "x-stoplight": {
-              "id": "fogb6r8baq3cr"
-            }
-          },
-          "status": {
-            "type": "boolean",
-            "x-stoplight": {
-              "id": "0re6oyfk2ll0g"
-            }
-          },
-          "shippingAddress": {
-            "type": "string",
-            "x-stoplight": {
-              "id": "js5bfrja39jom"
-            }
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "responses": {}
+    "/api/payment/paymentProcess": {
+      "post": {
+        "tags": [
+          "Pagos"
+        ],
+        "summary": "Pagar por medio de WOMPI",
+        "description": "Este endpoint procesa transacciones de compra utilizando tarjetas previamente tokenizadas sin requerir autenticación 3D Secure, lo que permite un flujo de pago más rápido y fluido para el usuario. Requiere un token de acceso OAuth2 válido obtenido del endpoint de autenticación y los datos del pago estructurados según las especificaciones de Wompi.",
+        "operationId": "post-api-payment-paymentProcess",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/payment_paymentProcess_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "402": {
+            "description": "Payment Required"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/costumer/:id/updateDepartment": {
+      "put": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Actualizar el departamento del cliente",
+        "description": "Este endpoint permite actualizar específicamente el campo de departamento de un cliente existente mediante su ID único, sin afectar otros datos del perfil del cliente. Utiliza el método PUT y requiere el ID del cliente como parámetro en la URL y el nuevo valor del departamento en el cuerpo de la petición. El endpoint incluye validación para asegurar que el departamento no esté vacío y utiliza Mongoose para realizar la actualización con validadores habilitados, retornando el cliente actualizado en caso de éxito. Es útil para operaciones administrativas donde solo se necesita modificar la ubicación geográfica del cliente sin alterar información más sensible como datos personales o de contacto.",
+        "operationId": "put-api-costumer-:id-updateDepartment",
+        "parameters": [
+          {
+            "name": "deparment",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/id_updateDepartment_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/registerCostumer/verifyAccount": {
+      "post": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Verificar la cuenta del cliente",
+        "description": "Este endpoint completa el proceso de verificación de email del cliente mediante un código de verificación enviado previamente por correo electrónico. Utiliza un token JWT almacenado en cookies que contiene el email del cliente y el código de verificación original, comparándolo con el código proporcionado por el usuario para validar la autenticidad. Una vez verificado correctamente, actualiza el campo isVerified del cliente a true en la base de datos y limpia la cookie de verificación para completar el proceso de activación de cuenta. Es un paso crucial en el flujo de registro que garantiza que el cliente tenga acceso a un email válido antes de poder utilizar completamente los servicios de la aplicación.",
+        "operationId": "post-api-registerCostumer-verifyAccount",
+        "parameters": [
+          {
+            "name": "verificationCode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registerCostumer_verifyAccount_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/registerCostumer/resendVerificationCode": {
+      "post": {
+        "tags": [
+          "Clientes"
+        ],
+        "summary": "Reenviar el código de verificación de la cuenta del cliente",
+        "description": "Este endpoint permite reenviar un nuevo código de verificación al email del cliente cuando el código original ha expirado o se ha perdido durante el proceso de registro. Requiere el ID del usuario para validar que existe en la base de datos y genera un nuevo código hexadecimal de 6 caracteres utilizando crypto para garantizar su unicidad. El código se encapsula en un JWT con expiración de 2 horas que se almacena tanto en cookies seguras como se retorna en la respuesta, y posteriormente se envía por correo electrónico utilizando una plantilla HTML personalizada. Es esencial para mejorar la experiencia del usuario en casos donde el proceso de verificación inicial falla, permitiendo completar el registro sin tener que comenzar desde cero.",
+        "operationId": "post-api-registerCostumer-resendVerificationCode",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registerCostumer_resendVerificationCode_body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/Products/by-category": {
+      "get": {
+        "tags": [
+          "Productos"
+        ],
+        "summary": "Obtener los productos por categoría",
+        "description": "Este endpoint proporciona estadísticas de productos organizados por categoría, devolviendo el conteo total de productos disponibles en cada categoría del catálogo. Utiliza MongoDB aggregation pipeline para agrupar eficientemente los productos por su categoryId y calcular la cantidad de productos en cada grupo, posteriormente resolviendo los nombres legibles de las categorías mediante consultas adicionales a la colección de categorías. La respuesta incluye tanto el nombre de la categoría como el número de productos asociados, siendo útil para dashboards administrativos, análisis de inventario y generación de reportes de distribución de productos. En caso de categorías eliminadas o inexistentes, muestra \"Others\" como categoría por defecto para mantener la integridad de los datos mostrados.",
+        "operationId": "get-api-Products-by-category",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/documentation": {
+      "get": {
+        "tags": [
+          "Documentación de la API"
+        ],
+        "summary": "Documentación de la API",
+        "description": "Este endpoint sirve como punto de acceso principal para la documentación interactiva de la API, implementada utilizando Swagger UI. No es un endpoint de datos tradicional, sino una interfaz web completa que proporciona una experiencia visual y interactiva para explorar, entender y probar todos los endpoints disponibles en la aplicación.",
+        "operationId": "get-api-documentation",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "payment_token_body": {
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "jr6r0louf26t9"
+            }
+          },
+          "client_id": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "pdzsfgm4pht41"
+            }
+          },
+          "client_secret": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "n4iv0h5vbalym"
+            }
+          },
+          "audience": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "p97id16ze0gx5"
+            }
+          }
+        }
+      },
+      "payment_paymentProcess_body": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "oxqkd44gdsn5s"
+            }
+          },
+          "monto": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "jr4vwq6sfaace"
+            }
+          },
+          "emailCliente": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "7n5uliuo1rjue"
+            }
+          },
+          "nombreCliente": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "7xnjwy9jyqn41"
+            }
+          }
+        }
+      },
+      "id_updateDepartment_body": {
+        "type": "object",
+        "properties": {
+          "deparment": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "4mwd8ctyc3y8g"
+            }
+          }
+        }
+      },
+      "registerCostumer_verifyAccount_body": {
+        "type": "object",
+        "properties": {
+          "verificationCode": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "wpsu6anmppk54"
+            }
+          }
+        }
+      },
+      "registerCostumer_resendVerificationCode_body": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "lvo7mz8dguqxn"
+            }
+          },
+          "userId": {
+            "type": "string",
+            "x-stoplight": {
+              "id": "nubyxw52uufl9"
+            }
+          }
+        }
+      }
+    }
   }
 }
