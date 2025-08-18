@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import GlassBox from "../components/GlassBox.jsx";
 
 //Animaciones
-import LightsAnimation from "../components/LightsAnimation.jsx"
+import LightsAnimation from "../components/LightsAnimations.jsx"
 
 //Componentes utilizados en el login-container
 import LogoLogin from "../components/LogoLogin.jsx";
