@@ -62,7 +62,7 @@ const usePaymentFakeForm = () => {
 
       // 2. Enviar datos de pago al backend, que se encargará de llamar a Wompi
       const paymentResponse = await fetch(
-        "http://localhost:4000/api/payment/paymentProcess",
+        "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/payment/paymentProcess",
         {
           method: "POST",
           headers: {

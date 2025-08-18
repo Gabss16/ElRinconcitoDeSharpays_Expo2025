@@ -37,7 +37,7 @@ const useDataCustomer = () => {
   // Registrar un cliente
   const registerCustomer = async ({ name, email, password, department }) => {
     try {
-      const res = await fetch("http://localhost:4000/api/registerCostumer", {
+      const res = await fetch("https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/registerCostumer", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -72,7 +72,7 @@ const useDataCustomer = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:4000/api/registerCostumer/verifyAccount", {
+      const res = await fetch("https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/registerCostumer/verifyAccount", {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -98,7 +98,7 @@ const useDataCustomer = () => {
   if (!userId) return;
 
   try {
-    const response = await fetch("http://localhost:4000/api/registerCostumer/resendVerificationCode", {
+    const response = await fetch("https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/registerCostumer/resendVerificationCode", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
