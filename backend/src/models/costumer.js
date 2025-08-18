@@ -72,6 +72,14 @@ const CostumerSchema = new Schema(
     department: {
       type: String,
       required: true,
+    },
+     loginAttemps: {
+      type: Number,
+      default: 0
+    },
+    timeOut: {
+      type: Date,
+      default: null
     }
   },
   {

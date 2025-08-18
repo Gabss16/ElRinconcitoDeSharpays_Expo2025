@@ -32,21 +32,109 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, authCookie } = useAuth();
+  const [isBlocked, setIsBlocked] = useState(false);
+  const [blockTimeRemaining, setBlockTimeRemaining] = useState(0);
+  const { login, authCookie, API } = useAuth();
+
+  // Función para verificar si una cuenta está bloqueada
+  const checkBlockStatus = async (emailToCheck) => {
+    if (!emailToCheck) return;
+    
+    try {
+      const response = await fetch(`${API}/check-block-status`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: emailToCheck }),
+      });
+
+      const data = await response.json();
+      
+      if (response.status === 403 && data.message.includes("Block account")) {
+        const match = data.message.match(/(\d+) minutes/);
+        if (match) {
+          const minutes = parseInt(match[1]);
+          setIsBlocked(true);
+          setBlockTimeRemaining(minutes * 60);
+          
+          // Iniciar contador regresivo
+          const interval = setInterval(() => {
+            setBlockTimeRemaining(prev => {
+              if (prev <= 1) {
+                setIsBlocked(false);
+                clearInterval(interval);
+                return 0;
+              }
+              return prev - 1;
+            });
+          }, 1000);
+        }
+      }
+    } catch (error) {
+      console.error("Error checking block status:", error);
+    }
+  };
+
+  // Verificar bloqueo cuando se escribe el email
+  useEffect(() => {
+    if (email && email.includes('@')) {
+      const timeoutId = setTimeout(() => {
+        checkBlockStatus(email);
+      }, 1000); // Esperar 1 segundo después de que el usuario deje de escribir
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [email]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (isBlocked) {
+      ErrorAlert(`Tu cuenta está bloqueada. Tiempo restante: ${Math.ceil(blockTimeRemaining / 60)} minutos.`);
+      return;
+    }
 
     if (!email || !password) {
       ErrorAlert("Por favor, completa todos los campos.");
       return;
     }
 
-    const success = await login(email, password);
-    if (!success) {
-      ErrorAlert("Credenciales incorrectas.");
-      return;
+    const result = await login(email, password);
+    
+    if (!result.success) {
+      // Verificar si es un mensaje de cuenta bloqueada
+      if (result.message && (result.message.includes("Block account") || result.message.includes("Block Account"))) {
+        ErrorAlert("Tu cuenta ha sido bloqueada por 20 minutos debido a múltiples intentos fallidos.");
+        setIsBlocked(true);
+        setBlockTimeRemaining(1 * 60); // 20 minutos en segundos
+        
+        // Limpiar los campos
+        setEmail("");
+        setPassword("");
+        
+        // Iniciar contador regresivo
+        const interval = setInterval(() => {
+          setBlockTimeRemaining(prev => {
+            if (prev <= 1) {
+              setIsBlocked(false);
+              clearInterval(interval);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+        
+        return;
+      } else {
+        ErrorAlert("Credenciales incorrectas.");
+        // Solo limpiar el campo de contraseña
+        setPassword("");
+        return;
+      }
     }
+    
+    // Solo si el login fue exitoso
     SuccessAlert("Sesión iniciada con éxito");
     navigate("/inicio");
   };
@@ -86,6 +174,8 @@ const Login = () => {
                       onChange={(e) => setEmail(e.target.value)}
                       type={"email"}
                       name={"email"}
+                      value={email}
+                      disabled={isBlocked}
                     />
 
                     <CustomInput
@@ -94,6 +184,8 @@ const Login = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       type={"password"}
                       name={"password"}
+                      value={password}
+                      disabled={isBlocked}
                     />
                     <div style={{ width: "300px", marginTop: "5px" }}>
                       <LinkText
@@ -102,11 +194,12 @@ const Login = () => {
                       />
 
                       <CustomButton
-                        text={"Iniciar Sesión"}
-                        background={"black"}
+                        text={isBlocked ? `Bloqueada (${Math.ceil(blockTimeRemaining / 60)}min)` : "Iniciar Sesión"}
+                        background={isBlocked ? "gray" : "black"}
                         color={"white"}
                         width={"100%"}
                         height={"50px"}
+                        disabled={isBlocked}
                       />
                       <div className="go-to-register text-center mt-5 d-flex">
                         <p className="m-0 ps-3 pe-1 text-white">

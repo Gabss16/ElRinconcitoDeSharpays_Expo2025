@@ -68,15 +68,22 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         setauthCookie(data.token);
-        setUser(data.user); // El objeto 'data.user' debe incluir 'department' si está disponible
+        setUser({
+          id: data.userId,
+          name: data.name,
+          email: data.email,
+          userType: data.userType,
+          image: data.image,
+        });
         setIsLoggedIn(true);
-        return true;
+        return { success: true, message: data.message };
       } else {
-        return false;
+        // No establecer la sesión si hay error
+        return { success: false, message: data.message };
       }
     } catch (error) {
       console.error("Error during login:", error);
-      return false;
+      return { success: false, message: "Error de conexión" };
     }
   };
 

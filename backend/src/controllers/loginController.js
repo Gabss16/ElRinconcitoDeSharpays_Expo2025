@@ -3,8 +3,33 @@ import employeesModel from "../models/employee.js";
 import bcryptjs from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
 import { config } from "../config.js";
+import { sendEmail } from "../utils/mailPasswordRecovery.js"; // Ajusta la ruta según tu estructura
 
 const loginController = {};
+
+// Función para generar el HTML del correo de bloqueo
+const HTMLBlockEmail = () => {
+  return `
+    <table width="100%" height="100%" cellspacing="0" cellpadding="0" style="background-color: #fce4ec; font-family: Arial, sans-serif;">
+      <tr>
+        <td align="center" valign="middle">
+          <table width="500" cellpadding="20" cellspacing="0" style="background-color: #ffffff; border-radius: 10px; border: 1px solid #f8c0d8;">
+            <tr>
+              <td align="center">
+                <img src="https://res.cloudinary.com/devkosnau/image/upload/v1749408388/33_20250412_034441_0000_mmzvs7.png" width="180" alt="Logo" />
+                <h2 style="color: #c54270;">Cuenta Bloqueada</h2>
+                <p style="font-size: 18px; color: #e26e97; font-weight: bold; margin: 20px 0;">Su cuenta ha sido bloqueada por 20 minutos</p>
+                <p style="color: #c54270; font-size: 16px;">Ha superado el máximo de intentos de inicio de sesión permitidos.</p>
+                <hr style="border: none; border-top: 2px solid #f8c0d8; width: 80%; margin: 20px 0;" />
+                <p style="font-size: 14px; color: #c54270;"><em><b>Si no fue usted quien intentó acceder a su cuenta, le recomendamos cambiar su contraseña.</b></em></p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  `;
+};
 
 // LOGIN PRIVATE - Only Employees
 loginController.loginPrivate = async (req, res) => {
@@ -34,11 +59,54 @@ loginController.loginPrivate = async (req, res) => {
       return res.status(400).json({ message: "User not found" });
     }
 
+    // Verificar si la cuenta está bloqueada (solo para empleados)
+    if (userType !== "admin") {
+      if (userFound.timeOut > Date.now()) {
+        const remainingTime = Math.ceil((userFound.timeOut - Date.now()) / 60000);
+        return res.status(403).json({ message: "Block account. Remaining time: " + remainingTime + " minutes" });
+      }
+    }
+
     if (userType !== "admin") {
       const isMatch = await bcryptjs.compare(password, userFound.password);
       if (!isMatch) {
+        // Debug: Ver valores actuales
+        console.log("Intentos actuales:", userFound.loginAttemps);
+        
+        // Si se equivoca en la contraseña, sumamos el intento fallido.
+        userFound.loginAttemps = (userFound.loginAttemps || 0) + 1;
+        
+        console.log("Intentos después de incrementar:", userFound.loginAttemps);
+
+        if (userFound.loginAttemps >= 3) {
+          // Bloqueamos la cuenta por 20 minutos
+          userFound.timeOut = Date.now() + 20 * 60 * 1000;
+          console.log("Bloqueando cuenta...");
+          await userFound.save();
+          console.log("Cuenta guardada exitosamente");
+          
+          // Enviar email de bloqueo
+          try {
+            console.log("Intentando enviar email a:", userFound.email);
+            await sendEmail(userFound.email, "Cuenta Bloqueada - Seguridad", "", HTMLBlockEmail());
+            console.log("Email enviado exitosamente");
+          } catch (emailError) {
+            console.error("Error enviando email:", emailError);
+            // Continúa aunque falle el email
+          }
+          
+          console.log("Enviando respuesta de cuenta bloqueada");
+          return res.status(403).json({ message: "Block Account" });
+        }
+
+        console.log("Guardando intentos fallidos...");
+        await userFound.save();
         return res.status(400).json({ message: "Invalid password" });
       }
+
+      // Si la contraseña es correcta, reiniciamos los intentos
+      userFound.loginAttemps = 0;
+      await userFound.save();
     }
 
     jsonwebtoken.sign(
@@ -83,6 +151,8 @@ loginController.loginPrivate = async (req, res) => {
 // LOGIN PUBLIC - Only Customers
 loginController.loginPublic = async (req, res) => {
   const { email, password } = req.body;
+  console.log("=== LOGIN PUBLIC INICIADO ===");
+  console.log("Email recibido:", email);
 
   try {
     let userFound;
@@ -95,13 +165,25 @@ loginController.loginPublic = async (req, res) => {
     ) {
       userType = "admin";
       userFound = { _id: "admin", name: "Admin", image: "", email, password };
+      console.log("Usuario admin detectado");
     } else {
       // 2. Customer
+      console.log("Buscando customer en base de datos...");
       userFound = await customersModel.findOne({ email });
       userType = "customer";
+      console.log("Customer encontrado:", userFound ? "SÍ" : "NO");
+      if (userFound) {
+        console.log("Datos del usuario:", {
+          id: userFound._id,
+          email: userFound.email,
+          loginAttemps: userFound.loginAttemps,
+          timeOut: userFound.timeOut
+        });
+      }
     }
 
     if (!userFound) {
+      console.log("Usuario no encontrado - enviando error 400");
       return res.status(400).json({ message: "User not found" });
     }
 
@@ -109,11 +191,59 @@ loginController.loginPublic = async (req, res) => {
       return res.status(403).json({ message: "Access denied" });
     }
 
+    // Verificar si la cuenta está bloqueada (solo para customers)
     if (userType !== "admin") {
+      if (userFound.timeOut > Date.now()) {
+        const remainingTime = Math.ceil((userFound.timeOut - Date.now()) / 60000);
+        console.log("Cuenta bloqueada - enviando error 403");
+        return res.status(403).json({ message: "Block account. Remaining time: " + remainingTime + " minutes" });
+      }
+    }
+
+    if (userType !== "admin") {
+      console.log("Verificando contraseña...");
       const isMatch = await bcryptjs.compare(password, userFound.password);
+      console.log("Contraseña correcta:", isMatch);
+      
       if (!isMatch) {
+        // Debug: Ver valores actuales
+        console.log("Intentos actuales:", userFound.loginAttemps);
+        
+        // Si se equivoca en la contraseña, sumamos el intento fallido.
+        userFound.loginAttemps = (userFound.loginAttemps || 0) + 1;
+        
+        console.log("Intentos después de incrementar:", userFound.loginAttemps);
+
+        if (userFound.loginAttemps >= 3) {
+          // Bloqueamos la cuenta por 20 minutos
+          userFound.timeOut = Date.now() + 20 * 60 * 1000;
+          console.log("Bloqueando cuenta...");
+          await userFound.save();
+          console.log("Cuenta guardada exitosamente");
+          
+          // Enviar email de bloqueo
+          try {
+            console.log("Intentando enviar email a:", userFound.email);
+            await sendEmail(userFound.email, "Cuenta Bloqueada - Seguridad", "", HTMLBlockEmail());
+            console.log("Email enviado exitosamente");
+          } catch (emailError) {
+            console.error("Error enviando email:", emailError);
+            // Continúa aunque falle el email
+          }
+          
+          console.log("Enviando respuesta de cuenta bloqueada");
+          return res.status(403).json({ message: "Block Account" });
+        }
+
+        console.log("Guardando intentos fallidos...");
+        await userFound.save();
+        console.log("Enviando error 400 - Invalid password");
         return res.status(400).json({ message: "Invalid password" });
       }
+
+      // Si la contraseña es correcta, reiniciamos los intentos
+      userFound.loginAttemps = 0;
+      await userFound.save();
     }
 
     // Generar token
@@ -152,6 +282,7 @@ loginController.loginPublic = async (req, res) => {
       }
     );
   } catch (error) {
+    console.log("ERROR EN CATCH:", error);
     res.status(500).json({ message: "Error", error: error.message });
   }
 };
