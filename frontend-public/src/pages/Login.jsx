@@ -21,6 +21,7 @@ import paleta from "../assets/paleta.png";
 
 //AuthContext
 import { useAuth } from "../context/AuthContext.jsx";
+import Cookies from "js-cookie";
 
 //Alertas
 import ErrorAlert from "../components/ErrorAlert.jsx";
@@ -101,8 +102,13 @@ const Login = () => {
     }
 
     const result = await login(email, password);
-    
+
     if (!result.success) {
+
+      if (result.message && result.message.includes("Account verification required")) {
+      return;
+    }
+
       // Verificar si es un mensaje de cuenta bloqueada
       if (result.message && (result.message.includes("Block account") || result.message.includes("Block Account"))) {
         ErrorAlert("Tu cuenta ha sido bloqueada por 20 minutos debido a múltiples intentos fallidos.");
@@ -126,9 +132,9 @@ const Login = () => {
         }, 1000);
         
         return;
-      } else {
+      }
+        else {
         ErrorAlert("Credenciales incorrectas.");
-        // Solo limpiar el campo de contraseña
         setPassword("");
         return;
       }
@@ -141,10 +147,12 @@ const Login = () => {
 
   
   useEffect(() => {
-    if (authCookie) {
-    navigate("/inicio");
-    }
-  }, [authCookie]);
+    if (authCookie) navigate("/inicio");
+    const verificationToken = Cookies.get("verificationToken");
+    if (verificationToken) navigate("/verifyAccount");
+  }, [authCookie, navigate]);
+
+
 
   return (
     <>

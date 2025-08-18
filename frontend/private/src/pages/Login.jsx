@@ -56,11 +56,10 @@ const Login = () => {
     const result = await login(email, password);
 
     if (!result.success) {
-      // ❌ Credenciales incorrectas
       setFailedAttempts((prev) => prev + 1);
 
       if (failedAttempts + 1 >= 3) {
-        // ✅ Bloquear después de 3 intentos fallidos
+        //Bloquear después de 3 intentos fallidos
         ErrorAlert(
           "Tu cuenta ha sido bloqueada por 1 minuto debido a múltiples intentos fallidos."
         );
@@ -88,11 +87,8 @@ const Login = () => {
       setPassword("");
       return;
     }
-
-    // ✅ Si login fue exitoso
     SuccessAlert("Sesión iniciada con éxito");
-    setFailedAttempts(0); // Reiniciar al entrar correctamente
-    //navigate("/Dashboard");
+    setFailedAttempts(0); 
   };
 
   useEffect(() => {

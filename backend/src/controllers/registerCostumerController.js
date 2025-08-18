@@ -2,7 +2,6 @@ import Costumer from "../models/costumer.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { config } from "../config.js";
-import nodemailer from "nodemailer"; 
 import crypto from "crypto";
 
 import { sendEmail,  HTMLVerifyAccountEmail} from "../utils/mailPasswordRecovery.js";
@@ -130,5 +129,49 @@ registerCostumerController.verifyAccount = async (req, res) => {
   }
 };
 
+registerCostumerController.resendVerificationCode =  async (req, res) => {
+  const { email, userId } = req.body;
+  if (!userId) return res.status(400).json({ message: "Falta userId" });
+
+  try {
+    const user = await Costumer.findById(userId);
+    if (!user) return res.status(404).json({ message: "Usuario no encontrado" });
+
+    // Generar un código de verificación único
+    const verificationCode = crypto.randomBytes(3).toString("hex");
+
+    // Create JWT
+    const tokenCode = jwt.sign(
+      { email, verificationCode },
+      config.JWT.secret,
+      { expiresIn: "2h" }
+    );
+
+    // Guardar el token en la cookie
+    res.cookie("verificationToken", tokenCode, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 2 * 60 * 60 * 1000,
+      sameSite: "strict",
+    });
+
+    await sendEmail(
+      email,
+      "Código de verificación de cuenta",
+      "Te saludamos de parte del equipo de El Rinconcito de Sharpays",
+      HTMLVerifyAccountEmail(verificationCode)
+    );
+
+    // Enviar una respuesta con el código de verificación
+    res.status(201).json({
+      message:
+        "Código enviado. Porfavor revise su correo electrónico.",
+      token: tokenCode, // Devolver el token para verificación posterior
+    });
+  } catch (error) {
+    console.error("Error resending verification code:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+};
 
 export default registerCostumerController;

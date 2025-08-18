@@ -17,8 +17,6 @@ const VerifyAccount = () => {
 
   const {setVerificationCode, verificationCode, verifyCustomer} = VerifyAcccount();
 
-  const navigate = useNavigate();
-
   return (
     <div className="recovery-password-container d-flex">
       <div className="lights-background">
@@ -39,7 +37,6 @@ const VerifyAccount = () => {
                   type="text"
                   maxLength={6}
                   name="verifyAccount"
-                  //value={accountVerificationCode}
                   onChange={(e) => setVerificationCode(e.target.value)}
                 />
 

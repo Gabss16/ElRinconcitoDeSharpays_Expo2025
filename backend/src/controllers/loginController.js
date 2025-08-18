@@ -163,7 +163,6 @@ loginController.loginPublic = async (req, res) => {
     ) {
       userType = "admin";
       userFound = { _id: "admin", name: "Admin", image: "", email, password };
-      console.log("Usuario admin detectado");
     } else {
       // 2. Customer
       userFound = await customersModel.findOne({ email });
@@ -171,7 +170,6 @@ loginController.loginPublic = async (req, res) => {
     }
 
     if (!userFound) {
-      console.log("Usuario no encontrado");
       return res.status(400).json({ message: "User not found" });
     }
 
@@ -250,6 +248,7 @@ loginController.loginPublic = async (req, res) => {
           name: userFound.name,
           image: userFound.image,
           email: userFound.email,
+          isVerified: userFound.isVerified
         });
       }
     );

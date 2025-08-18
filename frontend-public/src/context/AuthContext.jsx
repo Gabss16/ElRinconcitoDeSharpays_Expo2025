@@ -8,6 +8,8 @@ import React, {
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
+import useDataCustomer from "../components/customer/hook/useDataCustomer";
+
 import ErrorAlert from "../components/ErrorAlert";
 
 // Creamos el contexto
@@ -21,6 +23,8 @@ export const AuthProvider = ({ children }) => {
   const [authCookie, setauthCookie] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const API_URL = "http://localhost:4000/api";
+
+  const {resendVerificationCode} = useDataCustomer();
 
   const navigate = useNavigate();
 
@@ -53,39 +57,47 @@ export const AuthProvider = ({ children }) => {
 
   // Función para iniciar sesión
   const login = async (email, password) => {
-    try {
-      const response = await fetch(`${API_URL}/login/public`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-        credentials: "include",
-      });
+  try {
+    const response = await fetch(`${API_URL}/login/public`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+      credentials: "include",
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (response.ok) {
-        localStorage.setItem("token", data.token);
-        setauthCookie(data.token);
-        setUser({
-          id: data.userId,
-          name: data.name,
-          email: data.email,
-          userType: data.userType,
-          image: data.image,
-        });
-        setIsLoggedIn(true);
-        return { success: true, message: data.message };
-      } else {
-        // No establecer la sesión si hay error
-        return { success: false, message: data.message };
-      }
-    } catch (error) {
-      console.error("Error during login:", error);
-      return { success: false, message: "Error de conexión" };
+    // Revisa si la cuenta está verificada.
+    if (data.isVerified === false) {
+      await resendVerificationCode(data.email, data.userId);
+      ErrorAlert("Debe verificar su cuenta. revise su correo.");
+      navigate("/verifyAccount");
+      return { success: false, message: "Account verification required" };
     }
-  };
+
+    if (!response.ok) {
+      return { success: false, message: data.message };
+    }
+  
+    localStorage.setItem("token", data.token);
+    setauthCookie(data.token);
+    setUser({
+      id: data.userId,
+      name: data.name,
+      email: data.email,
+      userType: data.userType,
+      image: data.image,
+    });
+    setIsLoggedIn(true);
+    return { success: true, message: data.message };
+
+  } catch (error) {
+    console.error("Error during login:", error);
+    return { success: false, message: "Error de conexión" };
+  }
+};
 
   useEffect(() => {
     const checkAuth = async () => {

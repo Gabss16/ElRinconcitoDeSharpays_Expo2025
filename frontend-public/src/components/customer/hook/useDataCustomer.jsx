@@ -20,7 +20,6 @@ const useDataCustomer = () => {
   const [verificationCode, setVerificationCode] = useState("");
 
 
-
   // Obtener todos los clientes
   const fetchCustomers = async () => {
     setLoading(true);
@@ -77,7 +76,7 @@ const useDataCustomer = () => {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ verificationCode}),
+      body: JSON.stringify({ verificationCode }),
     });
 
     const data = await res.json();
@@ -93,6 +92,31 @@ const useDataCustomer = () => {
     ErrorAlert("Hubo un error");
   }
   }
+
+  //Reenviar codigo de verificación
+  const resendVerificationCode = async (email,userId) => {
+  if (!userId) return;
+
+  try {
+    const response = await fetch("http://localhost:4000/api/registerCostumer/resendVerificationCode", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email,userId }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      SuccessAlert("Código de verificación enviado a tu correo.");
+    } else {
+      ErrorAlert(data.message || "Error al enviar el código de verificación");
+    }
+  } catch (error) {
+    console.error("Error sending verification code:", error);
+    ErrorAlert("Error al enviar el código de verificación");
+  }
+};
 
   // Obtener un cliente por su ID
   const fetchCustomerById = async (id) => {
@@ -222,8 +246,9 @@ const updateCustomerDepartment = async (id, newDepartment) => {
     resetForm,
     verificationCode,
     setVerificationCode,
-    verifyCustomer
-  };
+    verifyCustomer,
+    resendVerificationCode
+};
 };
 
 export default useDataCustomer;
