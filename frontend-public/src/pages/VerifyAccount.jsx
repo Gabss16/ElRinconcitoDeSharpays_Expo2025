@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Animaciones
-import LightsAnimation from "../components/LightsAnimation.jsx";
+
 import ShapesAnimation from "../components/ShapesAnimation.jsx";
 
 // Componentes
@@ -20,7 +20,7 @@ const VerifyAccount = () => {
   return (
     <div className="recovery-password-container d-flex">
       <div className="lights-background">
-        <LightsAnimation NUM_LIGHTS={80} />
+        
         <ShapesAnimation NUM_SHAPES={10} />
 
         <GlassBox>
