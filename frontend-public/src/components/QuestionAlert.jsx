@@ -1,4 +1,4 @@
-import Swal from "sweetalert2";
+import Swal from "Sweetalert2";
 
 const QuestionAlert = (title) => {
   return Swal.fire({
