@@ -5,7 +5,7 @@ import ProductCartItem from "../components/productCardItem.jsx";
 import CircularGallery from "../components/reactBits/CircularGallery.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
-import "../styles/ShoppingCart.css";
+import "../styles/shoppingCart.css";
 import { Link } from "react-router-dom";
 
 const ShoppingCartPage = () => {
