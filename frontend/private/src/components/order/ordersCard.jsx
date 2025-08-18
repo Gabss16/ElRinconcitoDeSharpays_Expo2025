@@ -4,19 +4,19 @@ import SuccessAlert from "../SuccessAlert";
 import ErrorAlert from "../ErrorAlert";
 
 const OrderCard = ({ order, updateOrder }) => {
-  const { orderDetails, total, customerId, _id } = order;
+  const { orderDetails, total, customerId, _id, shippingAddress } = order;
   const [status, setStatus] = useState(order.status);
 
-  // Estado para modal
   const [previewImage, setPreviewImage] = useState(null);
+
+  // Estado para modal de envío
+  const [showShipping, setShowShipping] = useState(false);
 
   const markAsDelivered = async () => {
     try {
       const updatedStatus = "completado";
       setStatus(updatedStatus);
       await updateOrder(_id, { status: updatedStatus });
-
-      // Alerta de éxito
       SuccessAlert("Orden marcada como entregada");
     } catch (err) {
       console.error(err);
@@ -77,6 +77,73 @@ const OrderCard = ({ order, updateOrder }) => {
       <div className="order-total">
         <strong>Total:</strong> ${total.toFixed(2)}
       </div>
+
+      {/* Botón para ver detalles de envío */}
+      <div style={{ margin: "10px 0" }}>
+        <button
+          onClick={() => setShowShipping(!showShipping)}
+          style={{
+            background: "none",
+            border: "none",
+            color: "#1b1c1dff",
+            cursor: "pointer",
+            textDecoration: "underline",
+            padding: 0,
+            fontSize: "14px"
+          }}
+        >
+          Ver detalles de envío
+        </button>
+      </div>
+
+      {/* Modal de envío */}
+      {showShipping && shippingAddress && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "rgba(0,0,0,0.6)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowShipping(false);
+          }}
+        >
+          <div
+            style={{
+              background: "#fff",
+              padding: "20px",
+              borderRadius: "8px",
+              minWidth: "300px",
+              maxWidth: "90%"
+            }}
+          >
+            <h3>Información de envío</h3>
+            <p><strong>Dirección:</strong> {shippingAddress.address}</p>
+            <p><strong>Ciudad:</strong> {shippingAddress.city}</p>
+            <button
+              onClick={() => setShowShipping(false)}
+              style={{
+                marginTop: "10px",
+                padding: "6px 12px",
+                background: "#000",
+                color: "#fff",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer"
+              }}
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="order-actions">
         <CustomButton
@@ -152,5 +219,6 @@ const OrderCard = ({ order, updateOrder }) => {
     </div>
   );
 };
+
 
 export default OrderCard;
