@@ -25,7 +25,7 @@ const DoughnutChart = () => {
     // Fetch aggregated products by store
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/products/by-category'); 
+        const response = await fetch('https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/products/by-category'); 
         const data = await response.json();
         setDataByStore(data);
       } catch (error) {

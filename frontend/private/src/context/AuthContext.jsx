@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [authCookie, setauthCookie] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const API_URL = "http://localhost:4000/api";
+  const API_URL = "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api";
 
   const navigate = useNavigate();
 

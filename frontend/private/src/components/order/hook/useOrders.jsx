@@ -3,8 +3,8 @@ import ErrorAlert from "../../ErrorAlert"; // Componente de alerta para mostrar 
 import SuccessAlert from "../../SuccessAlert"; // Componente de alerta para mostrar mensajes de éxito
 
 // Endpoints de la API
-const API_ORDERS = "http://localhost:4000/api/orders"; // API de pedidos
-const API_CATEGORIES = "http://localhost:4000/api/categories"; // API de categorías
+const API_ORDERS = "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/orders"; // API de pedidos
+const API_CATEGORIES = "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/categories"; // API de categorías
 
 // Hook personalizado para manejar pedidos con sus categorías
 const useOrdersWithCategories = () => {

@@ -35,7 +35,7 @@ const app = express();
 
 app.use(
     cors({
-      origin: "http://localhost:5173", // Dominio del cliente
+      origin: "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com", // Dominio del cliente
       credentials: true, // Permitir envío de cookies y credenciales
     })
   );

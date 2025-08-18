@@ -2,7 +2,7 @@ import SuccessAlert from "../components/SuccessAlert.jsx"; // Alerta para mostra
 import ErrorAlert from "../components/ErrorAlert.jsx"; // Alerta para mostrar mensajes de error
 
 // Endpoint de la API para registrar empleados
-const API = "http://localhost:4000/api/registerEmployee";
+const API = "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/registerEmployee";
 
 // Función asíncrona que registra un nuevo empleado
 export const registerEmployee = async ({ name, email, password }) => {

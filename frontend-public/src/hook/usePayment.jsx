@@ -36,7 +36,7 @@ const usePaymentFakeForm = () => {
     try {
       console.log("Generando token de acceso...");
       
-      const tokenResponse = await fetch("http://localhost:4000/api/payment/token", {
+      const tokenResponse = await fetch("https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/payment/token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

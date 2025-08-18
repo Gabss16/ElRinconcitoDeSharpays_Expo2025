@@ -13,7 +13,7 @@ const useRecoveryPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   // URL base de la API para recuperación de contraseñas
-  const API = "http://localhost:4000/api/recoveryPassword";
+  const API = "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/recoveryPassword";
 
   // Función para enviar el código de recuperación al correo
   const sendCode = async (e) => {

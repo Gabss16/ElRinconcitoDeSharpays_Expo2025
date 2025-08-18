@@ -5,7 +5,7 @@ const useDataAdvertisement = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const API_URL = 'http://localhost:4000/api/advertisements';
+  const API_URL = 'https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/advertisements';
 
   // Obtener todos los anuncios
   const fetchAdvertisements = async () => {

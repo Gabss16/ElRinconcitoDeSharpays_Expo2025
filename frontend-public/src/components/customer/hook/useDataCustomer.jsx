@@ -3,7 +3,7 @@ import SuccessAlert from "../../SuccessAlert.jsx";
 import ErrorAlert from "../../ErrorAlert.jsx";
 import { useNavigate } from "react-router-dom";
 
-const API = "http://localhost:4000/api/costumer";
+const API = "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com/api/costumer";
 
 const useDataCustomer = () => {
   
