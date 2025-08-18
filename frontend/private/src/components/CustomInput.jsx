@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+//input personalizado para el formulario de login y registro
 
 const CustomInput = ({
   label,

@@ -33,7 +33,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isBlocked, setIsBlocked] = useState(false);
   const [blockTimeRemaining, setBlockTimeRemaining] = useState(0);
-  const [failedAttempts, setFailedAttempts] = useState(0); // ✅ Intentos fallidos
+  const [failedAttempts, setFailedAttempts] = useState(0); //  Intentos fallidos
   const { login, authCookie } = useAuth();
 
   const handleSubmit = async (e) => {
@@ -122,7 +122,7 @@ const Login = () => {
                 />
 
                 <CustomInput
-                  label={"Correo electrónico"}
+                  label={"Correo Electrónico"}
                   placeholder={"Ejemplo@gmail.com"}
                   onChange={(e) => setEmail(e.target.value)}
                   type={"email"}
@@ -140,9 +140,9 @@ const Login = () => {
                   value={password}
                   disabled={isBlocked}
                 />
-                <div style={{ width: "300px", marginTop: "5px" }}>
+                <div style={{ width: "280px", marginTop: "5px" }}>
                   <LinkText
-                    text={"Olvidé mi contraseña"}
+                    text={"Olvidé Mi Contraseña"}
                     action={"/RecoveryPassword"}
                   />
 

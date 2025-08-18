@@ -9,11 +9,11 @@ import logo2 from "../assets/bougies.png";
 import logo3 from "../assets/frostyBitesWhite.png";
 import logo4 from "../assets/elParaisoDeDios.png";
 import logo5 from "../assets/noLosAtropelles.png";
-import im1 from "../assets/1.png";
-import im2 from "../assets/2.png";
-import im3 from "../assets/3.png";
-import im4 from "../assets/4.png";
-import im5 from "../assets/5.png";
+import im1 from "../assets/1.jpeg";
+import im2 from "../assets/2.jpeg";
+import im3 from "../assets/3.jpeg";
+import im4 from "../assets/4.jpeg";
+import im5 from "../assets/5.jpeg";
 const HomePublic = () => {
   return (
     <>

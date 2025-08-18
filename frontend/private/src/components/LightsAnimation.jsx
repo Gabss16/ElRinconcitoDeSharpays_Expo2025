@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-
+//luces flotantes para la animación de fondo
 const LightsAnimation = ({NUM_LIGHTS}) => {
   
   const randomPosition = () => Math.random() * 100 + "%";

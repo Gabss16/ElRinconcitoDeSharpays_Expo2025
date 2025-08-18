@@ -177,7 +177,7 @@ const Login = () => {
                     />
 
                     <CustomInput
-                      label={"Correo electrónico"}
+                      label={"Correo Electrónico"}
                       placeholder={"Ejemplo@gmail.com"}
                       onChange={(e) => setEmail(e.target.value)}
                       type={"email"}
@@ -197,7 +197,7 @@ const Login = () => {
                     />
                     <div style={{ width: "300px", marginTop: "5px" }}>
                       <LinkText
-                        text={"Olvidé mi contraseña"}
+                        text={"Olvidé mi Contraseña"}
                         action={"/recoveryPassword"}
                       />
 
@@ -211,7 +211,7 @@ const Login = () => {
                       />
                       <div className="go-to-register text-center mt-5 d-flex">
                         <p className="m-0 ps-3 pe-1 text-white">
-                          ¿No tienes cuenta?
+                          ¿No Tienes Cuenta?
                         </p>
                         <LinkText text={"Registrarme"} action={"/register"} />
                       </div>

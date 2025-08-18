@@ -1,6 +1,6 @@
 // src/pages/frostybites.jsx
 import React, { useState, useEffect } from "react";
-import ImageUploadPage from "../components/products/frostyBites/regiterFrostyBites"; // Asegúrate de que el nombre del archivo sea correcto
+import ImageUploadPage from "../components/products/frostyBites/regiterFrostyBites"; 
 import ProductsTable from "../components/products/frostyBites/frostyTable";
 import { Title } from "../components/Typography";
 import "../styles/SharpayPage.css";

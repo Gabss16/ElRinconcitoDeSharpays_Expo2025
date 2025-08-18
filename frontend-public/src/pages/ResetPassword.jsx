@@ -36,18 +36,18 @@ const ResetPassword = () => {
                 <div className="reset-password-content d-flex justify-content-center align-items-center flex-column mt-4 w-100">
                   <CustomTitle
                     style={"text-white fw-bold fs-3 mb-5"}
-                    text={"Restablecer contraseña"}
+                    text={"Restablecer Contraseña"}
                   />
 
                   <CustomInput
-                    label={"Nueva contraseña"}
+                    label={"Nueva Contraseña"}
                     placeholder={"********"}
                     type={"text"}
                     name={"newPassword"}
                   />
 
                   <CustomInput
-                    label={"Confirmar contraseña"}
+                    label={"Confirmar Contraseña"}
                     placeholder={"********"}
                     type={"text"}
                     name={"confirmPassword"}
