@@ -66,36 +66,9 @@ Por otro lado, el equipo administrativo podrá:
 - **Wompi** – Pasarela de pago para ventas en línea.  
 
 ---
-
-## 📦 Dependencias instaladas
-
-
-### **Frontend**
-```bash
-npm install react react-dom
-npm install react-router-dom
-npm install axios
-npm install fabric
-npm install bootstrap
-npm install tailwindcss
-
-
-### 📦 **Backend – Dependencias**
-
-```bash
-npm install express
-npm install mongoose
-npm install bcrypt
-npm install jsonwebtoken
-npm install cors
-npm install morgan
-npm install dotenv
-npm install nodemon --save-dev
-
-
 🚀 Ejecución del proyecto
 1. Clonar el repositorio
-git clone https://github.com/usuario/el-rinconcito-de-sharpay.git
+git clone https://github.com/Gabss16/el-rinconcito-de-sharpay.git
 cd el-rinconcito-de-sharpay
 
 2. Configurar el Backend
@@ -143,6 +116,7 @@ npm run dev
 Frontend: http://localhost:5173
 
 Backend API: http://localhost:4000/api
+---
 
 📝 Nomenclatura utilizada
 
@@ -159,6 +133,7 @@ lowerCamelCase → variables, hooks y funciones.
 UpperCamelCase (PascalCase) → nombres de componentes, páginas y archivos CSS.
 
 Esto asegura legibilidad, mantenibilidad y compatibilidad con JSX.
+---
 
 📊 Datos de importancia
 
@@ -169,3 +144,33 @@ Gestión de dependencias: npm.
 Control de versiones: Git + GitHub.
 
 Entorno de pruebas: Postman para probar la API.
+---
+
+## 📦 Dependencias instaladas
+
+
+
+```bash
+### **Frontend**
+npm install react react-dom
+npm install react-router-dom
+npm install axios
+npm install fabric
+npm install bootstrap
+npm install tailwindcss
+
+
+### 📦 **Backend**
+
+```bash
+npm install express
+npm install mongoose
+npm install bcrypt
+npm install jsonwebtoken
+npm install cors
+npm install morgan
+npm install dotenv
+npm install nodemon --save-dev
+
+
+
