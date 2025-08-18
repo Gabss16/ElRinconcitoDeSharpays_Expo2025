@@ -24,6 +24,7 @@ import NotFound from "./pages/NotFound.jsx";
 import HomePublic from "./pages/HomePublic.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
 import TshirtDesign from "./pages/TshirtDesign.jsx";
+import VerifyAccount from "./pages/VerifyAccount.jsx";
 
 import LoadingAnimation from "./components/LoadingAnimation.jsx";
 
@@ -60,6 +61,7 @@ function App() {
             <Route path="/TshirtDesign" element={<TshirtDesign />} />
             <Route path="/register" element={<Register />} />
             <Route path="/elRinconcitoDeSharpays" element={<HomePublic />} />
+            <Route path="/VerifyAccount" element={<VerifyAccount />} />
             <Route path="/notFound" element={<NotFound />} />
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />} />

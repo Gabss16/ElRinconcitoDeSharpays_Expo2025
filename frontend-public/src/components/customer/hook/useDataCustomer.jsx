@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import SuccessAlert from "../../SuccessAlert.jsx";
 import ErrorAlert from "../../ErrorAlert.jsx";
+import { useNavigate } from "react-router-dom";
 
 const API = "http://localhost:4000/api/costumer";
 
 const useDataCustomer = () => {
+  
+  const navigate = useNavigate();
+
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -13,6 +17,8 @@ const useDataCustomer = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [department, setDepartment] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+
 
 
   // Obtener todos los clientes
@@ -57,6 +63,36 @@ const useDataCustomer = () => {
       return false;
     }
   };
+
+  //Verificar la cuenta de un cliente, recién creada.
+  const verifyCustomer = async (e) => {
+    e.preventDefault();
+    if(!verificationCode) 
+    {
+      ErrorAlert("Ingrese el código.");
+    }
+
+    try {
+      const res = await fetch("http://localhost:4000/api/registerCostumer/verifyAccount", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ verificationCode}),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      SuccessAlert("Se verificó la cuenta con éxito.");
+      navigate("/login");
+    } else {
+      ErrorAlert(data.message || "Hubo un error");
+    }
+
+    } catch (err) {
+    console.error(err);
+    ErrorAlert("Hubo un error");
+  }
+  }
 
   // Obtener un cliente por su ID
   const fetchCustomerById = async (id) => {
@@ -184,6 +220,9 @@ const updateCustomerDepartment = async (id, newDepartment) => {
     updateCustomer,
     deleteCustomer,
     resetForm,
+    verificationCode,
+    setVerificationCode,
+    verifyCustomer
   };
 };
 

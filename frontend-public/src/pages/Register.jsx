@@ -50,8 +50,8 @@ const Register = () => {
     } else {
       const success = await registerCustomer({ name, email, password, department });
       if (success) {
-        SuccessAlert("Registro exitoso");
-        navigate("/login");
+        SuccessAlert("Registro exitoso, verifique su correo.");
+        navigate("/verifyAccount");
       }
     }
   };

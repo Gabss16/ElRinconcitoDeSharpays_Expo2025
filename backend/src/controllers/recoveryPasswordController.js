@@ -47,7 +47,7 @@ passwordRecoveryController.requestCode = async (req, res) => {
       HTMLRecoveryEmail(code) 
     );
 
-    res.json({ message: "Correo enviado", token });
+    res.status(201).json({ message: "Correo enviado", token });
   } catch (error) {
     console.log("error" + error);
     res.status(500).json({ message: "Error interno" });
