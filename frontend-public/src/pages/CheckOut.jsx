@@ -8,7 +8,7 @@ import "../styles/CheckOut.css";
 import useDataCustomer from "../components/customer/hook/useDataCustomer.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
-import PaymentMethod from "../components/PaymentMethod.jsx";
+import PaymentMethod from "../components/PaymentMethods.jsx";
 import useDataShoppingCart from "../components/shoppingCart/hooks/useDataShoppingCart.jsx";
 
 import Cards from "react-credit-cards-2";
