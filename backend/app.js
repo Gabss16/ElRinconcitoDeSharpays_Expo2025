@@ -35,7 +35,7 @@ const app = express();
 
 app.use(
     cors({
-      origin: "https://elrinconcitodesharpays-expo2025-o2f0.onrender.com", // Dominio del cliente
+      origin: "https://el-rinconcito-de-sharpays-expo2025-five.vercel.app/", // Dominio del cliente
       credentials: true, // Permitir envío de cookies y credenciales
     })
   );
