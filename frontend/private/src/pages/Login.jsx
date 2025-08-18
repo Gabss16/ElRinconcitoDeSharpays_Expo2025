@@ -27,34 +27,77 @@ import ErrorAlert from "../components/ErrorAlert.jsx";
 import SuccessAlert from "../components/SuccessAlert.jsx";
 
 const Login = () => {
-
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isBlocked, setIsBlocked] = useState(false);
+  const [blockTimeRemaining, setBlockTimeRemaining] = useState(0);
+  const [failedAttempts, setFailedAttempts] = useState(0); // ✅ Intentos fallidos
   const { login, authCookie } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (isBlocked) {
+      ErrorAlert(
+        `Tu cuenta está bloqueada. Tiempo restante: ${Math.ceil(
+          blockTimeRemaining / 60
+        )} minutos.`
+      );
+      return;
+    }
 
     if (!email || !password) {
       ErrorAlert("Por favor, completa todos los campos.");
       return;
     }
 
-    const success = await login(email, password);
-    if (!success) {
+    const result = await login(email, password);
+
+    if (!result.success) {
+      // ❌ Credenciales incorrectas
+      setFailedAttempts((prev) => prev + 1);
+
+      if (failedAttempts + 1 >= 3) {
+        // ✅ Bloquear después de 3 intentos fallidos
+        ErrorAlert(
+          "Tu cuenta ha sido bloqueada por 1 minuto debido a múltiples intentos fallidos."
+        );
+        setIsBlocked(true);
+        setBlockTimeRemaining(60); // 1 minuto en segundos
+        setFailedAttempts(0); // Reiniciar contador
+        setPassword("");
+
+        // ⏳ Iniciar temporizador
+        const interval = setInterval(() => {
+          setBlockTimeRemaining((prev) => {
+            if (prev <= 1) {
+              setIsBlocked(false);
+              clearInterval(interval);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+
+        return;
+      }
+
       ErrorAlert("Credenciales incorrectas.");
+      setPassword("");
       return;
     }
+
+    // ✅ Si login fue exitoso
     SuccessAlert("Sesión iniciada con éxito");
+    setFailedAttempts(0); // Reiniciar al entrar correctamente
     //navigate("/Dashboard");
   };
 
-  
   useEffect(() => {
     if (authCookie) {
-    navigate("/Dashboard");
+      navigate("/Dashboard");
     }
   }, [authCookie]);
 
@@ -70,48 +113,58 @@ const Login = () => {
           <LightsAnimation NUM_LIGHTS={50} />
 
           <GlassBox>
-            {
-              <>
-                <LogoLogin textStyle={"text-white fw-bold fs-5 pt-2 w-50"} />
+            <>
+              <LogoLogin textStyle={"text-white fw-bold fs-5 pt-2 w-50"} />
 
-                  <form className="login-content d-flex justify-content-center align-items-center flex-column mt-4 w-100" onSubmit={handleSubmit}>
-                    <CustomTitle
-                      style={"text-white fw-bold fs-2 mb-5"}
-                      text={"Iniciar Sesión"}
-                    />
+              <form
+                className="login-content d-flex justify-content-center align-items-center flex-column mt-4 w-100"
+                onSubmit={handleSubmit}
+              >
+                <CustomTitle
+                  style={"text-white fw-bold fs-2 mb-5"}
+                  text={"Iniciar Sesión"}
+                />
 
-                    <CustomInput
-                      label={"Correo electrónico"}
-                      placeholder={"Ejemplo@gmail.com"}
-                      onChange={(e) => setEmail(e.target.value)}
-                      type={"email"}
-                      name={"email"}
-                    />
+                <CustomInput
+                  label={"Correo electrónico"}
+                  placeholder={"Ejemplo@gmail.com"}
+                  onChange={(e) => setEmail(e.target.value)}
+                  type={"email"}
+                  name={"email"}
+                  value={email}
+                  disabled={isBlocked}
+                />
 
-                    <CustomInput
-                      label={"Contraseña"}
-                      placeholder={"********"}
-                      onChange={(e) => setPassword(e.target.value)}
-                      type={"password"}
-                      name={"password"}
-                    />
-                    <div style={{ width: "300px", marginTop: "5px" }}>
-                      <LinkText
-                        text={"Olvidé mi contraseña"}
-                        action={"/RecoveryPassword"}
-                      />
+                <CustomInput
+                  label={"Contraseña"}
+                  placeholder={"********"}
+                  onChange={(e) => setPassword(e.target.value)}
+                  type={"password"}
+                  name={"password"}
+                  value={password}
+                  disabled={isBlocked}
+                />
+                <div style={{ width: "300px", marginTop: "5px" }}>
+                  <LinkText
+                    text={"Olvidé mi contraseña"}
+                    action={"/RecoveryPassword"}
+                  />
 
-                      <CustomButton
-                        text={"Iniciar Sesión"}
-                        background={"black"}
-                        color={"white"}
-                        width={"100%"}
-                        height={"50px"}
-                      />
-                    </div>
-                  </form>
-              </>
-            }
+                  <CustomButton
+                    text={
+                      isBlocked
+                        ? `Bloqueada (${Math.ceil(blockTimeRemaining / 60)}min)`
+                        : "Iniciar Sesión"
+                    }
+                    background={isBlocked ? "gray" : "black"}
+                    color={"white"}
+                    width={"100%"}
+                    height={"50px"}
+                    disabled={isBlocked}
+                  />
+                </div>
+              </form>
+            </>
           </GlassBox>
         </div>
       </div>
