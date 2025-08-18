@@ -9,7 +9,7 @@ import "../styles/NotFound.css"; // Estilos propios de la página NotFound
 import CustomButton from "../components/CustomButton.jsx"; // Botón personalizado
 import { Link } from "react-router-dom"; // Enlace de React Router para navegación
 
-import LightsAnimation from "../components/lightsAnimation.jsx"; // Animación de luces de fondo
+import LightsAnimation from "../components/LightsAnimations.jsx"; // Animación de luces de fondo
 
 const NotFound = () => {
   return (
