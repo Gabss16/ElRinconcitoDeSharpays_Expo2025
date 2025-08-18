@@ -214,7 +214,7 @@ export default function Home() {
                   source={
                     order.categoryId?.image
                       ? { uri: order.categoryId.image }
-                      : require('../../assets/SharpayLogoWhite.png')
+                      : require('../../assets/rinconcitoDeSharpays.png')
                   }
                   style={styles.orderLogo}
                 />
