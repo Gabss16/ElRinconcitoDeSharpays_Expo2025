@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import CircularGallery from "../components/reactBits/CircularGallery.jsx";
 import SuccessAlert from "../components/SuccessAlert.jsx";
 import ErrorAlert from "../components/ErrorAlert.jsx";
-import "../styles/checkOut.css";
+import "../styles/CheckOut.css";
 import useDataCustomer from "../components/customer/hook/useDataCustomer.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
 
