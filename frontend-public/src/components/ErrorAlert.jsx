@@ -1,4 +1,4 @@
-import Swal from "Sweetalert2";
+import Swal from "sweetalert2";
 
 const ErrorAlert = (title) => {
 
