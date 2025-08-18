@@ -24,7 +24,7 @@ import purchaseOrderIMG from '../../assets/purchaseOrder.png'
 export default function Home() {
   const { logout } = React.useContext(AuthContext);
   const { employee, getEmployee } = useEmployee();
-  const { orders, loading, getOrders, updateOrder} = useOrders();
+  const { orders, loading, getOrders, updateOrder } = useOrders();
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const navigation = useNavigation();
@@ -214,13 +214,13 @@ export default function Home() {
                   source={
                     order.categoryId?.image
                       ? { uri: order.categoryId.image }
-                      : require('../../assets/SharpayLogoWhite.png')
+                      : require('../../assets/rinconcitoDeSharpays.png')
                   }
                   style={styles.orderLogo}
                 />
                 <View style={{ flex: 1 }}>
                   <Text style={styles.orderTitle}>
-                    {order.categoryId?.category || "Sin categoría"}
+                    {order.categoryId?.category || "Producto Personalizado"}
                   </Text>
                   <Text style={styles.orderInfo}>
                     {new Date(order.createdAt).toLocaleDateString()} · ${(order.total || 0).toFixed(2)} · {order.orderDetails.length} items
@@ -251,11 +251,15 @@ export default function Home() {
               {/* Encabezado con logo y datos */}
               <View style={{ alignItems: "center", marginBottom: 20 }}>
                 <Image
-                  source={require("../../assets/SharpayLogo.png")}
+                 source={
+                    selectedOrder?.categoryId?.image
+                      ? { uri: selectedOrder.categoryId.image }
+                      : require('../../assets/rinconcitoDeSharpays.png')
+                  }
                   style={{ width: 100, height: 100, borderRadius: 50 }}
                 />
-                <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 10 }}>
-                  {selectedOrder?.categoryId?.category || "Sin categoría"}
+                <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 10, textAlign: "center"}}>
+                  {selectedOrder?.categoryId?.category || "Camisa personalizada o Dua"}
                 </Text>
                 <Text style={{ color: "#555" }}>
                   {selectedOrder?.customerId?.name || "Cliente desconocido"}
@@ -305,61 +309,65 @@ export default function Home() {
                 </Text>
               </View>
 
+
               {/* Botones */}
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginTop: 20
-                }}
-              >
-                <TouchableOpacity
+              {selectedOrder?.status !== "completado" && (
+                <View
                   style={{
-                    flex: 1,
-                    marginRight: 10,
-                    backgroundColor: "#FF6961",
-                    padding: 12,
-                    borderRadius: 10,
-                    alignItems: "center"
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginTop: 20
                   }}
-                  onPress={() => Alert.alert("Cancelar pedido")}
                 >
-                  <Text style={{ color: "#fff", fontWeight: "bold", textAlign: "center"}}>
-                    Cancelar Pedido
-                  </Text>
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      flex: 1,
+                      marginRight: 10,
+                      backgroundColor: "#FF6961",
+                      padding: 12,
+                      borderRadius: 10,
+                      alignItems: "center"
+                    }}
+                    onPress={() => Alert.alert("Cancelar pedido")}
+                  >
+                    <Text style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}>
+                      Cancelar Pedido
+                    </Text>
+                  </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    marginLeft: 10,
-                    backgroundColor: "#4CAF50",
-                    padding: 12,
-                    borderRadius: 10,
-                  }}
-                  onPress={() =>
-                    Alert.alert(
-                      "Confirmación",
-                      "¿Deseas marcar la orden como entregada?",
-                      [
-                        { text: "Cancelar", style: "cancel"},
-                        {
-                          text: "Sí",
-                          onPress: () => {
-                           updateOrder(selectedOrder._id, { status: "entregado" });
-                            closeOrderDetail(); 
+                  <TouchableOpacity
+                    style={{
+                      flex: 1,
+                      marginLeft: 10,
+                      backgroundColor: "#4CAF50",
+                      padding: 12,
+                      borderRadius: 10,
+                    }}
+                    onPress={() =>
+                      Alert.alert(
+                        "Confirmación",
+                        "¿Deseas marcar la orden como entregada?",
+                        [
+                          { text: "Cancelar", style: "cancel" },
+                          {
+                            text: "Sí",
+                            onPress: () => {
+                              updateOrder(selectedOrder._id, { status: "completado" });
+                              closeOrderDetail();
+                            }
                           }
-                        }
-                      ]
-                    )
-                  }
-                >
-                  <Text style={{ color: "#fff", fontWeight: "bold",  textAlign: "center"}}>
-                    Marcar como entregado
-                  </Text>
-                </TouchableOpacity>
+                        ]
+                      )
+                    }
+                  >
+                    <Text style={{ color: "#fff", fontWeight: "bold", textAlign: "center" }}>
+                      Marcar como completado
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
 
-              </View>
+
 
               {/* Cerrar */}
               <TouchableOpacity
