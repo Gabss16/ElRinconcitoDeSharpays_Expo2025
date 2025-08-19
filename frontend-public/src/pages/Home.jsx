@@ -5,7 +5,7 @@ import CardProduct from "../components/shop/CardProduct.jsx";
 import useProductsWithCategories from "../components/home/hooks/useProductsWithCategories.jsx";
 
 // Importa el hook para los anuncios/eventos
-import useDataAdvertisement from "../../../frontend/private/src/components/events/hook/useDataAdvertisement.jsx"; // Ajusta ruta según corresponda
+import useDataAdvertisement from "../components/events/hook/useDataAdvertisement.jsx"; 
 
 // Importa CardSwap y Card
 import CardSwap, { Card } from "../components/reactBits/CardSwap.jsx"; 
