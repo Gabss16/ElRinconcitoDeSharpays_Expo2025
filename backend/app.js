@@ -40,18 +40,21 @@ const allowedOrigins = [
   "http://localhost:5173", // Vite
 ];
 
-app.use(
-    cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true, // Permitir envío de cookies y credenciales
-  })
-);
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true, // Permitir envío de cookies y credenciales
+};
+
+app.use(cors(corsOptions));
+
+// Esto asegura que el preflight (OPTIONS) no falle
+app.options("*", cors(corsOptions));
 
 
   app.use(express.json({ limit: '50mb' }));
