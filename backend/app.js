@@ -34,7 +34,7 @@ const swaggerDocument = JSON.parse(
 const app = express();
 
 const allowedOrigins = [
-  "https://el-rinconcito-de-sharpays-expo2025.vercel.app/",
+  "https://el-rinconcito-de-sharpays-expo2025.vercel.app",
   "https://el-rinconcito-de-sharpays-expo2025-five.vercel.app",
   "https://el-rinconcito-de-sharpays-expo2025-v7m1-objtzhp5a.vercel.app",
   "http://localhost:5173", // Vite
