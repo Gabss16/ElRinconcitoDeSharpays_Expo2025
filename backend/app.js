@@ -48,13 +48,11 @@ const corsOptions = {
       callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true, // Permitir envío de cookies y credenciales
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
-
-// Esto asegura que el preflight (OPTIONS) no falle
-app.options("*", cors(corsOptions));
+app.options("*", cors(corsOptions)); 
 
 
   app.use(express.json({ limit: '50mb' }));
