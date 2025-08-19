@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import orderslogo from "../assets/orderslogoprofile.png";
-import useOrdersWithCategories from "../../../frontend/private/src/components/order/hook/useOrders";
+import useOrdersWithCategories from "../components/order/hook/useOrders";
 import "../styles/CardOrders.css";
 
 const CardOrders = () => {
