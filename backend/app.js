@@ -33,26 +33,14 @@ const swaggerDocument = JSON.parse(
 
 const app = express();
 
-const allowedOrigins = [
-  "https://el-rinconcito-de-sharpays-expo2025.vercel.app",
-  "https://el-rinconcito-de-sharpays-expo2025-five.vercel.app",
-  "https://el-rinconcito-de-sharpays-expo2025-v7m1-objtzhp5a.vercel.app",
-  "http://localhost:5173", // Vite
-];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-};
 
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); 
+app.use(
+    cors({
+      origin: ["https://el-rinconcito-de-sharpays-expo2025.vercel.app/", "https://el-rinconcito-de-sharpays-expo2025-five.vercel.app/"], // Dominio del cliente
+      credentials: true, // Permitir envío de cookies y credenciales
+    })
+  );
 
 
   app.use(express.json({ limit: '50mb' }));
