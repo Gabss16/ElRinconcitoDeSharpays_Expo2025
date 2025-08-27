@@ -24,6 +24,8 @@ const useDataShoppingCart = () => {
         updatedCart = [...prev, newItem];
       }
       saveToLocalStorage(updatedCart);
+      console.log("Agregando al carrito - customProduct:", product);
+
       return updatedCart;
     });
   };
@@ -52,14 +54,24 @@ const useDataShoppingCart = () => {
   const createOrderFromCart = async (customerId, shippingAddress, status = "pendiente") => {
     setLoading(true);
     setError(null);
-
+  
     try {
       const products = cartItems.map(item => {
         let imageUrl = item.product.image;
-        if (item.product.duaData) {
-          imageUrl = item.product.duaData.carnetImage || item.product.customDesign || null;
-        }
 
+
+
+  
+        // ✅ Si no hay image pero sí customDesign, usamos baseImage (taza o camisa)
+        if (!imageUrl && item.product.customDesign) {
+          imageUrl = item.product.baseImage || null;
+        }
+  
+        // ✅ Si hay duaData, usamos esa prioridad
+        if (item.product.duaData) {
+          imageUrl = item.product.duaData.carnetImage || item.product.customDesign || imageUrl;
+        }
+  
         return {
           productId: item.product._id.startsWith("custom-") ? null : item.product._id,
           categoryId: item.product.categoryId?._id || null,
@@ -72,21 +84,24 @@ const useDataShoppingCart = () => {
           totalPrice: item.product.price * item.quantity,
           discount: 0
         };
+
+        
       });
+      console.log("Payload en createOrderFromCart:", payload);
 
       const payload = { customerId, products, shippingAddress, status };
-
+  
       const res = await fetch(API_CREATE_ORDER, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
+  
       if (!res.ok) {
         const errData = await res.json();
         throw new Error(errData.message || "Error al crear la orden desde el carrito");
       }
-
+  
       const data = await res.json();
       clearCart();
       return data;
@@ -98,6 +113,7 @@ const useDataShoppingCart = () => {
       setLoading(false);
     }
   };
+  
 
   return {
     cartItems,

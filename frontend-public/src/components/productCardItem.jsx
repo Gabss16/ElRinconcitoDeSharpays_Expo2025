@@ -9,7 +9,7 @@ const ProductCartItem = ({ item, removeFromCart, updateQuantity }) => {
 
   const handleRemove = () => removeFromCart(item.key);
 
-  const productImage = duaData?.carnetImage || customDesign || image || "https://via.placeholder.com/160x200?text=Sin+Foto";
+  const productImage = duaData?.carnetImage || customDesign || image || product.baseImage || "https://via.placeholder.com/160x200?text=Sin+Foto";
   const togglePreview = () => setIsPreviewOpen(!isPreviewOpen);
 
   // +/- buttons

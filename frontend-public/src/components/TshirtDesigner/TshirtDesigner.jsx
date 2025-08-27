@@ -304,44 +304,49 @@ const TShirtDesigner = ({ product }) => {
 
 
 
-  const handleAddToCart = useCallback(async () => {
-    if (!canvas || canvas.getObjects().length === 0) {
-      ErrorAlert('No hay diseño para agregar.');
-      return;
-    }
-    
-    setIsLoading(true);
-    
-    try {
-      const finalImage = await exportDesign();
-      
-      if (!finalImage) {
-        throw new Error('No se pudo exportar el diseño');
-      }
+const handleAddToCart = useCallback(async () => {
+  if (!canvas || canvas.getObjects().length === 0) {
+    ErrorAlert('No hay diseño para agregar.');
+    return;
+  }
 
-      const customProduct = {
-        _id: `custom-${Date.now()}`,
-        name: "Camiseta Personalizada",
-        price: product?.price || 15.99,
-        image: finalImage,
-        customDesign: finalImage,
-        description: "Diseño único creado en el editor",
-        size: null,
-        flavor: null,
-        isCustom: true,
-        tshirtColor: tshirtColor,
-      };
-      
-      addToCart(customProduct, 1);
-      SuccessAlert('Diseño agregado al carrito');
-    } catch (err) {
-      console.error('Error al agregar al carrito:', err);
-      ErrorAlert('No se pudo agregar el diseño al carrito');
+  setIsLoading(true);
 
-    } finally {
-      setIsLoading(false);
+  try {
+    const finalImage = await exportDesign();
+
+    if (!finalImage) {
+      throw new Error('No se pudo exportar el diseño');
     }
-  }, [canvas, exportDesign, addToCart, tshirtColor, product]);
+
+    const TAZA_SUBCATEGORY_ID = "68af2494a7e54f57647273ab";
+    const isTaza = product?.subCategoryId === TAZA_SUBCATEGORY_ID;
+
+    const customProduct = {
+      _id: `custom-${Date.now()}`,
+      name: product?.name || (isTaza ? "Taza Personalizada" : "Camiseta Personalizada"),
+      price: product?.price || 15.99,
+      image: null, // No debe ser finalImage
+      customDesign: finalImage,
+      baseImage: isTaza ? "/images/Taza.png" : "/images/dualchemis.png", // ✅ Aquí
+      description: product?.description || "Diseño único creado en el editor",
+      size: product?.selectedSize || null,
+      flavor: null,
+      isCustom: true,
+      subCategoryId: product?.subCategoryId || null,
+      tshirtColor: tshirtColor,
+    };
+
+    addToCart(customProduct, 1);
+    SuccessAlert('Diseño agregado al carrito');
+  } catch (err) {
+    console.error('Error al agregar al carrito:', err);
+    ErrorAlert('No se pudo agregar el diseño al carrito');
+  } finally {
+    setIsLoading(false);
+  }
+}, [canvas, exportDesign, addToCart, tshirtColor, product]);
+
 
   return (
     <div className="app-container">

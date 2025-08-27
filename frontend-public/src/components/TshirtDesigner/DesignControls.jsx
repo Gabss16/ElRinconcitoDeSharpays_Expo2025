@@ -1,3 +1,4 @@
+// DesignControls.jsx
 import React from "react";
 import useDataShoppingCart from "../shoppingCart/hooks/useDataShoppingCart";
 import SuccessAlert from "../SuccessAlert";
@@ -31,20 +32,32 @@ const DesignControls = ({
       return;
     }
 
+    
     try {
       const finalImage = await exportDesign();
 
+      const TAZA_SUBCATEGORY_ID = "68af2494a7e54f57647273ab";
+      const isTaza = product?.subCategoryId === TAZA_SUBCATEGORY_ID;
+
+
+      console.log("Producto actual:", product);
+    console.log("isTaza:", isTaza);
+
       const customProduct = {
         _id: `custom-${Date.now()}`,
-        name: product?.name || "Camiseta Personalizada",
+        name: product?.name || (isTaza ? "Taza Personalizada" : "Camiseta Personalizada"),
         price: product?.price || 15.99,
-        image: null,                 // no enviamos URL directa
-        customDesign: finalImage,    // se enviará base64 al backend
+        image: finalImage,
+        customDesign: finalImage, // Base64 del diseño
+        baseImage: isTaza ? "/images/Taza.png" : "/images/dualchemis.png", // ✅ CLAVE
         description: product?.description || "Diseño único creado en el editor",
-        size: null,
+        size: product?.selectedSize || null,
         flavor: null,
         isCustom: true,
+        subCategoryId: product?.subCategoryId || null,
       };
+     
+
 
       addToCart(customProduct, 1);
       SuccessAlert("Diseño agregado al carrito");
@@ -88,14 +101,13 @@ const DesignControls = ({
       </button>
 
       <div className="price-section">
-  <p className="price">
-    Precio: ${product?.price ? product.price.toFixed(2) : "Precio no disponible"}
-  </p>
-  <button className="add-to-cart" onClick={handleAddToCart}>
-    Añadir al carrito
-  </button>
-</div>
-
+        <p className="price">
+          Precio: ${product?.price ? product.price.toFixed(2) : "Precio no disponible"}
+        </p>
+        <button className="add-to-cart" onClick={handleAddToCart}>
+          Añadir al carrito
+        </button>
+      </div>
     </div>
   );
 };
