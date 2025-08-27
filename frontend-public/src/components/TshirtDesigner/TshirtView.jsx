@@ -1,12 +1,25 @@
-// TShirtView.jsx - CORREGIDO
+// TShirtView.jsx - CORREGIDO CON SOPORTE PARA TAZAS
 import { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const TShirtView = ({ tshirtColor, canvasRef }) => {
+  const location = useLocation();
   const colorLayerRef = useRef(null);
   const containerRef = useRef(null);
   
-  // Imagen de camisetas duales (frente y atrás)
-  const dualImage = '/images/dualchemis.png';
+  // IDs de subcategorías
+  const CAMISA_SUBCATEGORY_ID = "6855bf4a8bda3da90eca92c6";
+  const TAZA_SUBCATEGORY_ID = "68af2494a7e54f57647273ab"; 
+  
+  // Obtener datos del producto desde el state de navegación
+  const productData = location.state;
+  
+  // Determinar el tipo de producto basado en el subCategoryId del producto original
+  // Nota: Necesitarás pasar también el subCategoryId en el navigate desde CamisaDetail
+  const isTaza = productData?.subCategoryId === TAZA_SUBCATEGORY_ID;
+  
+  // Seleccionar la imagen apropiada
+  const productImage = isTaza ? '/images/Taza.png' : '/images/dualchemis.png';
   
   // Apply color
   useEffect(() => {
@@ -24,8 +37,8 @@ const TShirtView = ({ tshirtColor, canvasRef }) => {
           className="tshirt-color-layer"
           style={{
             backgroundColor: tshirtColor,
-            maskImage: `url(${dualImage})`,
-            WebkitMaskImage: `url(${dualImage})`,
+            maskImage: `url(${productImage})`,
+            WebkitMaskImage: `url(${productImage})`,
             zIndex: 1
           }}
         />
@@ -47,8 +60,8 @@ const TShirtView = ({ tshirtColor, canvasRef }) => {
         
         {/* Imagen con texturas - ADELANTE PERO TRANSPARENTE */}
         <img
-          src={dualImage}
-          alt="T-Shirt Template"
+          src={productImage}
+          alt={isTaza ? "Mug Template" : "T-Shirt Template"}
           className="tshirt-base-image"
           loading="lazy"
           style={{

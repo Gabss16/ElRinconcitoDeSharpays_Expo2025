@@ -56,6 +56,8 @@ const CamisaDetail = ({ product }) => {
       description: product.description,
       selectedSize: isCamisa ? selectedSize : null,
       quantity,
+      // Agregar el subCategoryId para identificar el tipo de producto
+      subCategoryId: product.subCategoryId?._id || String(product.subCategoryId),
     };
 
     console.log("Enviando datos al navigate:", productData);
