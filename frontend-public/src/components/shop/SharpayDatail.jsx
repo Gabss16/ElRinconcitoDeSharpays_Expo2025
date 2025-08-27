@@ -65,6 +65,8 @@ console.log("Enviando datos al navigate:", productData);
   };
 
   return (
+    <>
+    <div className="camisa-detail-container">
     <div className="camisa-detail-wrapper">
       <div className="camisa-image-container">
         <div
@@ -109,6 +111,8 @@ console.log("Enviando datos al navigate:", productData);
         </div>
       </div>
     </div>
+    </div>
+    </>
   );
 };
 
