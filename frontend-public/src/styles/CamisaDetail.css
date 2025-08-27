@@ -1,13 +1,18 @@
+.camisa-detail-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .camisa-detail-wrapper {
   display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
+  gap: 20px;
   padding: 48px;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 8px 20px rgba(233, 30, 99, 0.08);
   max-width: 1200px;
-  margin: 80px auto 40px auto; /* Aumenta el espacio arriba */
   align-items: flex-start;
   font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
 }

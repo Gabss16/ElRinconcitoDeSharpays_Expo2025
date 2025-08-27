@@ -8,7 +8,7 @@ const Card3D = forwardRef(({ data }, ref) => {
   useEffect(() => {
     if (tiltRef.current) {
       VanillaTilt.init(tiltRef.current, {
-        max: 25,
+        max: 6,
         speed: 400,
         glare: true,
         'max-glare': 0.3,

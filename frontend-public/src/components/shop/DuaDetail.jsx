@@ -103,7 +103,8 @@ const DuasDetail = ({ product }) => {
     }
   };
 
-  return (
+  return (<>
+  <div className="camisa-detail-container">
     <div className="camisa-detail-wrapper container">
       {/* Info del producto */}
       <div className="camisa-info-container">
@@ -125,13 +126,15 @@ const DuasDetail = ({ product }) => {
           <input type="text" name="nacimiento" placeholder="Fecha y lugar de nacimiento" onChange={handleInputChange} />
           <input type="text" name="emergencia" placeholder="En caso de emergencia llamar a" onChange={handleInputChange} />
           <input type="text" name="nacionalidad" placeholder="Nacionalidad" onChange={handleInputChange} />
-          <input type="file" accept="image/*" onChange={handleFileChange} />
+          <input type="file" accept="image/*" onChange={handleFileChange}/>
           <button type="button" onClick={handleAddToCart}>
             Añadir al carrito
           </button>
         </form>
       </div>
     </div>
+  </div>
+  </>
   );
 };
 
