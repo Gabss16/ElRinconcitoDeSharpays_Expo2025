@@ -21,6 +21,7 @@ const TShirtDesigner = ({ product }) => {
   const [canvas, setCanvas] = useState(null);
   const fileInputRef = useRef(null);
   const dualImage = '/images/dualchemis.png';
+  const tazaImage = '/images/Taza.png'
 
   const toggleViewSide = useCallback(() => {
     setViewSide(prev => (prev === 'front' ? 'back' : 'front'));
@@ -248,17 +249,16 @@ const TShirtDesigner = ({ product }) => {
     tempCanvas.height = canvas.getHeight();
     const ctx = tempCanvas.getContext('2d');
 
-    // No rellenar fondo con color, dejamos transparente
+    // elegir imagen base según producto
+    const baseImage = new Image();
+    baseImage.crossOrigin = 'anonymous';
+    const isTaza = product?.subCategoryId === "68af2494a7e54f57647273ab";
+    baseImage.src = isTaza ? tazaImage : dualImage;
 
-    // 1. Dibuja la imagen base de la camiseta (sin transparencia, para que se vea bien)
-    const shirtImage = new Image();
-    shirtImage.crossOrigin = 'anonymous';
-    shirtImage.src = dualImage;
+    baseImage.onload = () => {
+      ctx.drawImage(baseImage, 0, 0, tempCanvas.width, tempCanvas.height);
 
-    shirtImage.onload = () => {
-      ctx.drawImage(shirtImage, 0, 0, tempCanvas.width, tempCanvas.height);
-
-      // 2. Dibuja el diseño encima
+      // dibuja el diseño
       const designData = canvas.toDataURL('image/png', 1.0);
       const designImage = new Image();
       designImage.crossOrigin = 'anonymous';
@@ -267,40 +267,36 @@ const TShirtDesigner = ({ product }) => {
       designImage.onload = () => {
         ctx.drawImage(designImage, 0, 0);
 
-        // 3. Dibuja el círculo con el color de la camiseta
-        const circleRadius = 15;
-        const padding = 10;
-        const circleX = tempCanvas.width - circleRadius - padding;
-        const circleY = tempCanvas.height - circleRadius - padding;
+        // si NO es taza, dibujar el círculo de color
+        if (!isTaza) {
+          const circleRadius = 15;
+          const padding = 10;
+          const circleX = tempCanvas.width - circleRadius - padding;
+          const circleY = tempCanvas.height - circleRadius - padding;
 
-        ctx.beginPath();
-        ctx.arc(circleX, circleY, circleRadius, 0, 2 * Math.PI);
-        ctx.fillStyle = tshirtColor;
-        ctx.fill();
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 2;
-        ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(circleX, circleY, circleRadius, 0, 2 * Math.PI);
+          ctx.fillStyle = tshirtColor;
+          ctx.fill();
+          ctx.strokeStyle = '#000';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
 
-        // 4. Opcional: texto "Color de camisa" si quieres
-
-        // Exporta
         const finalImage = tempCanvas.toDataURL('image/png', 1.0);
         resolve(finalImage);
       };
 
-      designImage.onerror = () => {
-        console.error('Error al cargar el diseño');
-        resolve(null);
-      };
+      designImage.onerror = () => resolve(null);
     };
 
-    shirtImage.onerror = () => {
-      // Si falla la imagen de la camiseta, devuelve solo el diseño sin fondo color
+    baseImage.onerror = () => {
       const designData = canvas.toDataURL('image/png', 1.0);
       resolve(designData);
     };
   });
-}, [canvas, tshirtColor]);
+}, [canvas, tshirtColor, product]);
+
 
 
 
@@ -335,6 +331,7 @@ const handleAddToCart = useCallback(async () => {
       isCustom: true,
       subCategoryId: product?.subCategoryId || null,
       tshirtColor: tshirtColor,
+      isTaza: isTaza,
     };
 
     addToCart(customProduct, 1);

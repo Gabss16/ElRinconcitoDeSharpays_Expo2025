@@ -55,6 +55,7 @@ const DesignControls = ({
         flavor: null,
         isCustom: true,
         subCategoryId: product?.subCategoryId || null,
+        isTaza: isTaza,
       };
      
 
