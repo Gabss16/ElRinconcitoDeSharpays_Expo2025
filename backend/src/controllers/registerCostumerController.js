@@ -150,7 +150,7 @@ registerCostumerController.resendVerificationCode =  async (req, res) => {
     // Guardar el token en la cookie
     res.cookie("verificationToken", tokenCode, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      //secure: process.env.NODE_ENV === "production",
       maxAge: 2 * 60 * 60 * 1000,
       sameSite: "strict",
     });
