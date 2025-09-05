@@ -65,7 +65,7 @@ registerCostumerController.register = async (req, res) => {
     // Guardar el token en la cookie
     res.cookie("verificationToken", tokenCode, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       maxAge: 2 * 60 * 60 * 1000,
       sameSite: "lax",
     });
@@ -151,8 +151,7 @@ registerCostumerController.resendVerificationCode =  async (req, res) => {
     res.cookie("verificationToken", tokenCode, {
       httpOnly: true,
       //secure: process.env.NODE_ENV === "production",
-     // maxAge: 2 * 60 * 60 * 1000,
-    //  sameSite: "lax",
+      maxAge: 2 * 60 * 60 * 1000,
     });
 
     await sendEmail(
