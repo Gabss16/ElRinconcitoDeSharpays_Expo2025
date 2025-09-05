@@ -141,17 +141,22 @@ registerCostumerController.resendVerificationCode =  async (req, res) => {
     const verificationCode = crypto.randomBytes(3).toString("hex");
 
     // Create JWT
-    const tokenCode = jwt.sign(
+     jwt.sign(
       { email, verificationCode },
       config.JWT.secret,
       { expiresIn: "2h" },
-      );
-      // Guardar el token en la cookie
-      res.cookie("verificationToken", tokenCode, {
+      (err, token) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ message: "Error generating token" });
+        }
+        // Guardar el token en la cookie
+      res.cookie("verificationToken", token, {
         httpOnly: true,
         //secure: process.env.NODE_ENV === "production",
         maxAge: 2 * 60 * 60 * 1000,
         sameSite: "lax",
+      });
       });
 
     await sendEmail(
@@ -165,7 +170,6 @@ registerCostumerController.resendVerificationCode =  async (req, res) => {
     res.status(201).json({
       message:
         "Código enviado. Porfavor revise su correo electrónico.",
-      token: tokenCode, // Devolver el token para verificación posterior
     });
   } catch (error) {
     console.error("Error resending verification code:", error);
