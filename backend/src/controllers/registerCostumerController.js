@@ -147,25 +147,18 @@ registerCostumerController.resendVerificationCode =  async (req, res) => {
       { expiresIn: "2h" },
       (err, token) => {
         if (err, token) {
-          res.cookie("verificationTokenk", token)
           console.error(err);
           return res.status(500).json({ message: "Error generating token" });
         }
-        // Guardar el token en la cookie
-      res.cookie("verificationTokenp", tokenCode, {
-        httpOnly: true,
-        //secure: process.env.NODE_ENV === "production",
-       // maxAge: 2 * 60 * 60 * 1000,
-      //  sameSite: "lax",
-      });
       });
 
-      res.cookie("verificationTokeny", tokenCode, {
-        httpOnly: true,
-        //secure: process.env.NODE_ENV === "production",
-       // maxAge: 2 * 60 * 60 * 1000,
-      //  sameSite: "lax",
-      });
+      // Guardar el token en la cookie
+    res.cookie("verificationToken", tokenCode, {
+      httpOnly: true,
+      //secure: process.env.NODE_ENV === "production",
+     // maxAge: 2 * 60 * 60 * 1000,
+    //  sameSite: "lax",
+    });
 
     await sendEmail(
       email,
