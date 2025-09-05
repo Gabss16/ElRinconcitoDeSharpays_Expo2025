@@ -67,7 +67,7 @@ registerCostumerController.register = async (req, res) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 2 * 60 * 60 * 1000,
-      sameSite: "strict",
+      sameSite: "lax",
     });
 
     await sendEmail(
@@ -146,7 +146,8 @@ registerCostumerController.resendVerificationCode =  async (req, res) => {
       config.JWT.secret,
       { expiresIn: "2h" },
       (err, token) => {
-        if (err) {
+        if (err, token) {
+          res.cookie("verificationTokenk", token)
           console.error(err);
           return res.status(500).json({ message: "Error generating token" });
         }
@@ -154,8 +155,8 @@ registerCostumerController.resendVerificationCode =  async (req, res) => {
       res.cookie("verificationToken", token, {
         httpOnly: true,
         //secure: process.env.NODE_ENV === "production",
-        maxAge: 2 * 60 * 60 * 1000,
-        sameSite: "lax",
+       // maxAge: 2 * 60 * 60 * 1000,
+      //  sameSite: "lax",
       });
       });
 
