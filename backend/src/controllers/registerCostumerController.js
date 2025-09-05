@@ -144,16 +144,21 @@ registerCostumerController.resendVerificationCode =  async (req, res) => {
     const tokenCode = jwt.sign(
       { email, verificationCode },
       config.JWT.secret,
-      { expiresIn: "2h" }
+      { expiresIn: "2h" },
+      (err, token) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ message: "Error generating token" });
+        }
+        // Guardar el token en la cookie
+        res.cookie("verificationToken", tokenCode, {
+          httpOnly: true,
+          //secure: process.env.NODE_ENV === "production",
+          maxAge: 2 * 60 * 60 * 1000,
+          sameSite: "strict",
+        });
+      }
     );
-
-    // Guardar el token en la cookie
-    res.cookie("verificationToken", tokenCode, {
-      httpOnly: true,
-      //secure: process.env.NODE_ENV === "production",
-      maxAge: 2 * 60 * 60 * 1000,
-      sameSite: "strict",
-    });
 
     await sendEmail(
       email,
